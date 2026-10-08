@@ -1,0 +1,26 @@
+name: check
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  skills:
+    name: Validate skills
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate skill frontmatter, references, and scripts
+        run: scripts/check.sh
+      - name: Lint shell scripts
+        run: shellcheck scripts/*.sh skills/*/scripts/*.sh
+      - name: Reject trailing whitespace
+        run: |
+          if grep -rnE ' +$' --include='*.md' --include='*.sh' --include='*.yml' . --exclude-dir=.git; then
+            echo "trailing whitespace found" >&2
+            exit 1
+          fi
