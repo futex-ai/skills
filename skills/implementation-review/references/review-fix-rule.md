@@ -6,7 +6,8 @@ Rules for applying review findings after the post-push review reports.
 
 After the review reports, fix the findings tagged `Auto-fix: yes` without
 waiting for the user. The reviewer may use that tag only when the finding
-has one clear fix, for small or medium effort findings in these categories:
+has one clear fix and no wider fix is available, for small or medium effort
+findings in these categories:
 
 - Product bugs, including edge cases, races, and platform differences.
 - Security issues.
@@ -33,8 +34,10 @@ the finding needs a decision:
   of a mockup and product mismatch is right.
 - The fix changes user-visible behaviour beyond what the contract says.
 - The fix adds a new build error, rejection, gate, or stricter validation.
-- A narrow fix and a better broader fix (a rule, test, lint, guard,
-  abstraction, or architectural change) both exist, so the user chooses.
+- A wider fix (a rule, test, lint, guard, abstraction, or architectural
+  change) is available beside the direct fix, so the user chooses. This
+  holds even when the direct fix looks sufficient and no previous example
+  of the class exists.
 - The fix deletes, skips, or weakens a test or gate, or raises a time limit.
 - The fix needs an audit exception, credentials, or infrastructure.
 - The finding is a flaky test that the diff does not touch. Report it for a
