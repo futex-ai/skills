@@ -10,7 +10,8 @@ has one clear fix, for small or medium effort findings in these categories:
 
 - Product bugs, including edge cases, races, and platform differences.
 - Security issues.
-- Docs or spec drift.
+- Docs or spec drift. Change the side that is wrong. A protocol doc is not
+  right by default; see the `documentation` skill.
 - Mockup mismatches that a protocol doc already settles.
 - Flaky tests that the diff adds or changes, under the flaky-test rule in
   the `deterministic-tests` skill.

@@ -32,6 +32,9 @@ change. [templates/plan.md](templates/plan.md) is the starting point.
 - The first milestone updates the relevant documentation and protocol or
   spec docs so that they define the complete contract for the work that
   follows.
+- The documentation milestone does not freeze the protocol docs. When a
+  later milestone finds a better design, update the protocol doc in the
+  milestone that changes the code. See the `documentation` skill.
 - When the plan needs mockup work, the second milestone is the initial
   mockup milestone, directly after the documentation milestone. Put all
   mockup work known at planning time in that one milestone. Add another

@@ -21,7 +21,8 @@ the rule.
 - `git-commit`: before and after you commit, and when you open a pull
   request.
 - `git-merge`: before you merge or rebase, and after each merge commit.
-- `documentation`: before you edit a `README.md`, a doc, or a protocol doc.
+- `documentation`: before you edit a `README.md`, a doc, or a protocol doc,
+  and when a change or a review option conflicts with a protocol doc.
 - `rust`: before you edit Rust. <delete if the repository has no Rust>
 - `databases`: before you touch migrations, Diesel, or store crates.
   <delete if none>
