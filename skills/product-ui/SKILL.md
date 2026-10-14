@@ -1,6 +1,6 @@
 ---
 name: product-ui
-description: Rules for user-facing screens and copy in product code and mockups. Use before you implement or change a screen, a component, a view, user-facing text, an empty or error state, or placeholder data. Covers component reuse, the forbidden left-edge accent border, no environment labels in product views, never faking displayed data, and product-language copy that leaks no implementation detail.
+description: Rules for user-facing screens and copy in product code and mockups. Use before you implement or change a screen, a component, a view, user-facing text, an empty or error state, or placeholder data. Covers component reuse, the forbidden left-edge accent border, no environment labels in product views, never faking displayed data, and product-language copy that keeps a positive frame and leaks no implementation detail.
 ---
 
 # Product UI
@@ -68,4 +68,8 @@ environment configuration.
   classes, file formats, environment names, or code identifiers.
 - When technical detail has genuine product value, surface it in a clearly
   secondary place such as a details or profile panel, not in headline copy.
+- Keep a positive frame. Say what the product does, where it is, and what
+  the reader can do. Answer a question with the positive fact, not with
+  "No". State a real limit only when the reader needs it, pair it with
+  what they can do instead, and keep it out of headlines.
 - This applies to mockups and to product implementation alike.
