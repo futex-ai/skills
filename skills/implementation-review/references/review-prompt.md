@@ -97,4 +97,13 @@ remove it, stating what it protects and how long it runs. Large findings,
 and findings about missing tests, performance, code structure, UX wording,
 and process, are always `Auto-fix: no`.
 
+Protocol docs record the current design, including implementation details
+that can and should change as the implementation develops. Do not treat
+them as fixed rules. When the code and a protocol doc disagree, do not
+assume that the doc is right: the fix for docs or spec drift changes the
+side that is wrong. Do not drop an option, rank it lower, or recommend a
+different option only because it conflicts with a protocol doc. Include the
+doc update in that option and in its effort grade, and recommend the option
+when it is the best one.
+
 If there are no findings, say so clearly and mention residual test risk.

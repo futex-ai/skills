@@ -47,6 +47,11 @@ Number each finding. For every finding give:
   Cite the examples you find. Propose the wider fix even when you find
   none.
 - A clear recommended option.
+- Options judged on their merits. Do not drop an option, rank it lower, or
+  recommend a different option only because it conflicts with a protocol
+  doc. Protocol docs record implementation details that change as the
+  implementation develops, so the doc update is part of that option and of
+  its effort. See the `documentation` skill.
 - A final line: `Auto-fix: yes` or `Auto-fix: no, because …`, following the
   review-fix rule below.
 
