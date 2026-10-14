@@ -1,6 +1,6 @@
 ---
 name: implementation-review
-description: The post-push implementation review and the review-fix rule. Use after you push a branch and before you run or apply a review, when a plan's review TODO is reached, or when the user asks for a code review of a branch. Covers the read-only reviewer prompt, the numbered finding format with severity, category, and effort grade, the Auto-fix yes and no conditions, the two fix-round limit, and how to report fixed and open findings.
+description: The post-push implementation review and the review-fix rule. Use after you push a branch and before you run or apply a review, when a plan's review TODO is reached, or when the user asks for a code review of a branch. Covers the read-only reviewer prompt, the numbered finding format with severity, category, and effort grade, the wider-fix option with its best-effort search for previous examples, the Auto-fix yes and no conditions, the two fix-round limit, and how to report fixed and open findings.
 ---
 
 # Implementation review
@@ -38,12 +38,20 @@ Number each finding. For every finding give:
 - The file path and line reference when possible.
 - Enough codebase and feature context for a reader with no prior knowledge.
 - The impact of making no change.
-- Solution options labelled A, B, and so on. Say whether a direct fix is
-  enough or whether a broader rule, test, lint, abstraction, or
-  architectural change would prevent the class of issue. Give the broader
-  change its own lettered option and say which option best protects the
-  codebase.
+- Solution options labelled A, B, and so on. Always consider a wider fix:
+  a rule, test, lint, guard, abstraction, or architectural change that
+  prevents the class of issue. Give the wider fix its own lettered option
+  and say which option best protects the codebase. Look for previous
+  examples of the class in the commit history, under `plans/`, and in
+  earlier review reports under `.context/`. This search is best effort.
+  Cite the examples you find. Propose the wider fix even when you find
+  none.
 - A clear recommended option.
+- Options judged on their merits. Do not drop an option, rank it lower, or
+  recommend a different option only because it conflicts with a protocol
+  doc. Protocol docs record implementation details that change as the
+  implementation develops, so the doc update is part of that option and of
+  its effort. See the `documentation` skill.
 - A final line: `Auto-fix: yes` or `Auto-fix: no, because …`, following the
   review-fix rule below.
 
@@ -52,18 +60,18 @@ Number each finding. For every finding give:
 The full rule with every condition is in
 [references/review-fix-rule.md](references/review-fix-rule.md). In short:
 
-- `Auto-fix: yes` is allowed only when the finding has one clear fix, for
-  small or medium effort findings in these categories: product bugs
-  (including edge cases, races, and platform differences), security issues,
-  docs or spec drift, mockup mismatches that a protocol doc already settles,
-  flaky tests that the diff adds or changes under the flaky-test rule in the
-  `deterministic-tests` skill, and repository-rule violations such as file
-  size, lint, and layout.
+- `Auto-fix: yes` is allowed only when the finding has one clear fix and
+  no wider fix is available, for small or medium effort findings in these
+  categories: product bugs (including edge cases, races, and platform
+  differences), security issues, docs or spec drift, mockup mismatches that
+  a protocol doc already settles, flaky tests that the diff adds or changes
+  under the flaky-test rule in the `deterministic-tests` skill, and
+  repository-rule violations such as file size, lint, and layout.
 - `Auto-fix: no` when the finding needs a decision: real trade-offs between
   options, a change to the meaning of a contract, a mockup versus product
   choice, user-visible behaviour beyond the contract, a new gate or stricter
-  validation, a narrow fix beside a better broader fix, weakening a test or
-  gate, or a need for credentials or infrastructure. Large findings, and
+  validation, a wider fix available beside the direct fix, weakening a test
+  or gate, or a need for credentials or infrastructure. Large findings, and
   findings about missing tests, performance, code structure, UX wording, and
   process, always wait for the user.
 

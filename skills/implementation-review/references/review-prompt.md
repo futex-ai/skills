@@ -37,6 +37,15 @@ git diff -- <path>
 sed -n '<start>,<end>p' <path>
 ```
 
+Look for previous examples of a finding's class. This search is best
+effort:
+
+```bash
+git log --oneline origin/main -- <path>
+git log --oneline -i --grep='<keyword>' origin/main
+grep -rni '<keyword>' plans/ .context/ 2>/dev/null
+```
+
 Return numbered findings first. For every finding:
 
 - Give it a severity.
@@ -52,37 +61,49 @@ Return numbered findings first. For every finding:
 - Explain enough codebase and feature context for a reader with no prior
   knowledge.
 - State the impact of making no change.
-- Give solution options labelled A, B, and so on.
-- Recommend one option and explain whether a direct fix is sufficient or a
-  broader rule, test, lint, abstraction, or architectural change would
-  better prevent the issue from recurring. Give the broader change its own
-  lettered option. When a narrow fix and a better broader fix both exist,
-  tag the finding `Auto-fix: no` so that the user chooses between them.
+- Give solution options labelled A, B, and so on. Always consider a wider
+  fix: a rule, test, lint, guard, abstraction, or architectural change that
+  prevents the class of issue. Give the wider fix its own lettered option.
+  Look for previous examples of the class in the commit history, under
+  `plans/`, and in earlier review reports under `.context/`. Cite the
+  examples you find. Propose the wider fix even when you find none.
+- Recommend one option and say which option best protects the codebase.
+  When a wider fix is available beside the direct fix, tag the finding
+  `Auto-fix: no` so that the user chooses between them.
 - End the finding with `Auto-fix: yes` or `Auto-fix: no, because …`.
 
-`Auto-fix: yes` is allowed only when the finding has one clear fix, for a
-small or medium effort finding about: a product bug (including edge cases,
-races, and platform differences); a security issue; docs or spec drift; a
-mockup mismatch that a protocol doc already settles; a flaky test that the
-diff adds or changes; or a repository-rule violation such as file size,
-lint, or layout. For a flaky test that the diff adds or changes, name the
-nondeterminism source and the deterministic fix (fake clock, event order,
-captured inputs, operation counts, explicit readiness signal, or isolated
-state), and require the fixer to reproduce the flake and record pass counts
-before and after.
+`Auto-fix: yes` is allowed only when the finding has one clear fix and no
+wider fix is available, for a small or medium effort finding about: a
+product bug (including edge cases, races, and platform differences); a
+security issue; docs or spec drift; a mockup mismatch that a protocol doc
+already settles; a flaky test that the diff adds or changes; or a
+repository-rule violation such as file size, lint, or layout. For a flaky
+test that the diff adds or changes, name the nondeterminism source and the
+deterministic fix (fake clock, event order, captured inputs, operation
+counts, explicit readiness signal, or isolated state), and require the fixer
+to reproduce the flake and record pass counts before and after.
 
 `Auto-fix: no` for every finding that needs a decision: more than one option
 with real trade-offs; a change to the meaning of a contract; a choice between
 a mockup and the product; user-visible behaviour beyond the contract; a new
-build error, rejection, gate, or stricter validation; a narrow fix beside a
-better broader fix; deleting or weakening a test or gate or raising a time
-limit; or a need for an audit exception, credentials, or infrastructure. Tag
-a flaky test that the diff does not touch `Auto-fix: no`, so that the user
-can fix it in a separate branch; report its name, failure text, and
-suspected source. Tag a slow, custom, or low-value test, gate, lint, or check
-`Auto-fix: no` and ask whether to fix it or remove it, stating what it
-protects and how long it runs. Large findings, and findings about missing
-tests, performance, code structure, UX wording, and process, are always
-`Auto-fix: no`.
+build error, rejection, gate, or stricter validation; a wider fix available
+beside the direct fix; deleting or weakening a test or gate or raising a
+time limit; or a need for an audit exception, credentials, or
+infrastructure. Tag a flaky test that the diff does not touch
+`Auto-fix: no`, so that the user can fix it in a separate branch; report its
+name, failure text, and suspected source. Tag a slow, custom, or low-value
+test, gate, lint, or check `Auto-fix: no` and ask whether to fix it or
+remove it, stating what it protects and how long it runs. Large findings,
+and findings about missing tests, performance, code structure, UX wording,
+and process, are always `Auto-fix: no`.
+
+Protocol docs record the current design, including implementation details
+that can and should change as the implementation develops. Do not treat
+them as fixed rules. When the code and a protocol doc disagree, do not
+assume that the doc is right: the fix for docs or spec drift changes the
+side that is wrong. Do not drop an option, rank it lower, or recommend a
+different option only because it conflicts with a protocol doc. Include the
+doc update in that option and in its effort grade, and recommend the option
+when it is the best one.
 
 If there are no findings, say so clearly and mention residual test risk.
