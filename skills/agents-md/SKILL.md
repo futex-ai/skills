@@ -21,10 +21,10 @@ rules. [templates/AGENTS.md](templates/AGENTS.md) is the template.
 
 | Monolith section | Now lives in |
 | --- | --- |
-| General: response style and reporting | the template's `## Communication` section, and the global always-on rules |
+| General: response style and reporting | the template's `## Communication` section, the global always-on rules, and `decisions-and-findings` |
 | General: retries, file length, scratch output, testing habits, safety | the global always-on rules |
 | General: targeted tests, gate, commit, push, review loop | `finish-work` |
-| General: review format and auto-fix | `implementation-review` |
+| General: review format and auto-fix | `implementation-review`, with the layout in `decisions-and-findings` |
 | General: flaky tests, no wall-clock assertions | `deterministic-tests` |
 | General: product data, copy, left-border rule | `product-ui` |
 | Readme, Docs, Protocol Docs | `documentation` |

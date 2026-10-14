@@ -1,0 +1,123 @@
+---
+name: decisions-and-findings
+description: How to write a message that asks the user for decisions, presents review findings (review items), or gives a final report. Use before you send any such message, also when the user asks for more detail, a shorter answer, or an explanation of earlier decisions or review items, and when you list open findings from a plan. Covers the Simplified Technical English limits, the message order, the background paragraph, the decision layout, the review finding layout, the severity scale, the summary table for many items, the final report labels, and why the layout applies under a brief output style.
+---
+
+# Decisions and findings
+
+Use this skill for each message that asks for a decision, presents review
+findings, or gives a final report. The reader may have no
+context, and the reader must act on each item. A fixed layout lets the
+reader find each field and answer by number and letter.
+
+## Precedence
+
+These rules are specific rules. They apply also when an output style or a
+system prompt asks for brevity or plain prose. The layout is real
+structure, not decoration. Brevity means fewer words. It does not mean
+fewer fields or longer sentences.
+
+## Simplified Technical English
+
+Write in Simplified Technical English (ASD-STE100):
+
+- Use a maximum of 20 words in an instruction.
+- Use a maximum of 25 words in a description.
+- Write one instruction or one fact in each sentence.
+- Use the active voice.
+- Use a maximum of six sentences in a paragraph.
+- Do not use semicolons. Do not put a clause or a list in parentheses.
+- Put steps, options, and lists of three or more items in a vertical list.
+- Use one word for one thing. Define each project term once, then use it
+  the same way.
+- To give more detail, add sentences or list items. Do not make a sentence
+  longer.
+
+## Message order
+
+1. Start with one or two sentences that give the result or the question.
+2. When the reader needs background, add a background paragraph. Say what
+   the project is, what the feature does, and what changed. Use six
+   sentences or fewer.
+3. With more than five items, add a summary table. Give the number, the
+   title, the severity, the effort, and the recommended option.
+4. Give each item in the layout below.
+5. When the task ends, finish with the final report.
+
+Number the items once across the whole message. When the items come from
+different sources, put each group under its own heading. Continue the
+numbers from one group to the next.
+
+## Decision layout
+
+Use this layout for each decision.
+
+```markdown
+### 1. <The problem, in eight words or fewer>
+
+- **Severity:** <High, Medium, or Low>. **Effort:** <Small, Medium, or Large>.
+- **Context:** <Two to five sentences: what the feature does, where it is, and what is wrong.>
+- **Impact if no action:** <One or two sentences.>
+- **Options:**
+  - **A.** <The change.> <Its cost or risk.>
+  - **B.** <The change.> <Its cost or risk.>
+- **Recommendation:** <Letter>. <One sentence of reasoning.>
+```
+
+## Finding layout
+
+Use this layout for each review finding that needs a decision. The
+`implementation-review` skill says what each field must contain.
+
+```markdown
+### 1. <The problem, in eight words or fewer>
+
+- **Severity:** <High, Medium, or Low>. **Effort:** <Small, Medium, or Large>.
+- **Category:** <One category from the `implementation-review` skill.>
+- **Location:** <The file path and line.>
+- **Context:** <Two to five sentences: what the feature does, where it is, and what is wrong.>
+- **Impact if no action:** <One or two sentences.>
+- **Options:**
+  - **A.** <The direct fix.> <Its cost or risk.>
+  - **B.** <The wider fix: a rule, test, lint, guard, or design change.> <Its cost or risk.>
+- **Recommendation:** <Letter>. <One sentence of reasoning.>
+- **Auto-fix:** <`yes`, or `no, because …`>
+```
+
+In both layouts, keep every label, also when the user asks for more detail
+or for a shorter answer. For more detail, write **Context** as a list with
+one fact in each item.
+
+An auto-fixed finding is not a decision. In the final report, give its
+number, its severity, a plain explanation, what changed, and the commit.
+
+## Scales
+
+- Severity. High: wrong output, lost data, a security problem, or blocked
+  work. Medium: a visible defect, or a spec gap with a workaround. Low:
+  wording, style, or a rare edge case.
+- Effort. Small, Medium, or Large. The `implementation-review` skill
+  defines each grade.
+
+## Explaining items again
+
+- Restate every field. Do not point to an earlier message for a field.
+- A plan keeps each open finding as one line. When that line is the only
+  record, find the context and the options again in the code and the docs.
+  Say which fields you found again.
+
+## Final report
+
+End every task with a final report. Use these labels:
+
+- **Changed:** what changed, the commit, and the pull request.
+- **Decisions:** each decision and its outcome. Name each default that you
+  applied.
+- **Checks:** each check and its result. Name each check that was skipped
+  or blocked, and give the reason.
+- **Open:** the decisions and review items that still need the user.
+
+## Example
+
+[references/example.md](references/example.md) shows one finding as long
+prose, and then in the finding layout.

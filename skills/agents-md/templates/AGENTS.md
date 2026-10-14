@@ -16,6 +16,8 @@ the rule.
 - `plans`: before you create, edit, or tick a plan under `plans/`.
 - `implementation-review`: after you push, before you run or apply a
   review.
+- `decisions-and-findings`: before you send a message with decisions,
+  review findings, or a final report.
 - `deterministic-tests`: when a test flakes, or when a test would assert
   elapsed time.
 - `git-commit`: before and after you commit, and when you open a pull

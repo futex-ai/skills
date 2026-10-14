@@ -46,9 +46,12 @@ git log --oneline -i --grep='<keyword>' origin/main
 grep -rni '<keyword>' plans/ .context/ 2>/dev/null
 ```
 
-Return numbered findings first. For every finding:
+Return numbered findings first. Use the finding layout in the
+`decisions-and-findings` skill. For every finding:
 
-- Give it a severity.
+- Give it a severity. High: wrong output, lost data, a security problem, or
+  blocked work. Medium: a visible defect, or a spec gap with a workaround.
+  Low: wording, style, or a rare edge case.
 - Give it a category: product bug, security, docs or spec, mockup,
   repository rule, test, performance, code structure, UX wording, or
   process.

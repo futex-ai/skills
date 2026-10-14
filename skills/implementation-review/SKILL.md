@@ -25,9 +25,12 @@ after the report.
 
 ## Finding format
 
-Number each finding. For every finding give:
+Number each finding. For every finding give the fields below. The
+`decisions-and-findings` skill gives the layout that shows them to the
+user.
 
-- A severity.
+- A severity: High, Medium, or Low, as the `decisions-and-findings` skill
+  defines them.
 - A category: product bug, security, docs or spec, mockup, repository rule,
   test, performance, code structure, UX wording, or process.
 - An effort grade. Small: one change in one or two files with no new
@@ -84,5 +87,7 @@ The full rule with every condition is in
    third fix round without the user.
 4. In the final message, list the auto-fixed findings (number, severity,
    plain explanation, what changed, commit) separately from the findings
-   that need a decision, each with a clear recommendation.
-5. Add each open finding as one line under the plan's review TODO.
+   that need a decision, each with a clear recommendation. Use the
+   `decisions-and-findings` skill.
+5. Add each open finding as one line under the plan's review TODO, in the
+   shape that the `plans` skill gives.
