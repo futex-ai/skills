@@ -43,8 +43,8 @@ to read them. Read the skill at that moment instead of guessing the rule.
 - Protocol docs describe the current design, including implementation
   details. They are not fixed rules. Change them as the implementation
   develops, and keep them aligned with the code in the same change. Do not
-  reject an option, or recommend a different one, only because it conflicts
-  with a protocol doc. See the `documentation` skill.
+  drop an option, rank it lower, or recommend a different option only
+  because it conflicts with a protocol doc. See the `documentation` skill.
 - When you add a new package, crate, or service, build it to check for
   errors.
 - If you get compile errors, keep working until there are none.

@@ -1,6 +1,6 @@
 ---
 name: documentation
-description: Rules for README files, the docs directory, and protocol docs, which are the spec and change with the implementation. Use before you edit a README.md, a Rust crate README, anything under docs/, or a protocol doc, whenever a code change could leave a doc stale, and when a design, a code change, or a review option conflicts with a protocol doc. Covers README structure, the required crate README sections, consistency and completeness rules for docs, protocol doc length, protocol docs as a record of the current design rather than fixed rules, and keeping docs aligned in the same change.
+description: Rules for README files, the docs directory, and protocol docs, which are the spec and change with the implementation. Use before you edit a README.md, a Rust crate README, anything under docs/, or a protocol doc, whenever a code change could leave a doc stale, and when a change or a review option conflicts with a protocol doc. Covers README structure, the required crate README sections, consistency and completeness rules for docs, protocol doc length, protocol docs as a record of the current design rather than fixed rules, and keeping docs aligned in the same change.
 ---
 
 # Documentation
@@ -82,10 +82,10 @@ with the code in the same change.
 - When the code and a protocol doc disagree, do not assume that the doc is
   right. Decide on the merits which side is right, then change the other
   side to match it.
-- Do not reject an option, rank it lower, or recommend a different option
-  only because the option conflicts with a protocol doc. Include the doc
-  update in that option and in its effort.
-- The decision and safety rules still apply. When an option needs a
-  decision from the user, for example under the review-fix rule in the
-  `implementation-review` skill or the deletion audit in the `git-commit`
-  skill, recommend it on its merits and let the user decide.
+- Do not drop an option, rank it lower, or recommend a different option
+  only because it conflicts with a protocol doc. Include the doc update in
+  that option and in its effort.
+- The decision and safety rules still apply. The review-fix rule in the
+  `implementation-review` skill and the deletion audit in the `git-commit`
+  skill send some options to the user. Recommend such an option on its
+  merits, and let the user decide.
