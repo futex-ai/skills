@@ -58,6 +58,8 @@ git clone git@github.com:futex-ai/skills.git ~/projects/futex/skills
 
 The script symlinks each skill into `~/.claude/skills` and `~/.agents/skills`,
 and links `global/AGENTS.md` to `~/.claude/CLAUDE.md` and `~/.codex/AGENTS.md`.
+A pull updates the skills that are already linked. When a pull adds a new
+skill, run `scripts/install.sh` again.
 Pass `--codex-home` to also link into `~/.codex/skills` for a Codex version
 that reads only that directory. The script skips a path that exists and is not
 a symlink; pass `--force` to replace it (the original is kept as `.bak`).
@@ -86,3 +88,5 @@ npx skills add futex-ai/skills -a claude-code -a codex -g -y
 - No repository-specific paths, commands, or crate names. Those belong in the
   repository's `AGENTS.md`; say "the gate named in `AGENTS.md`".
 - Run `scripts/check.sh` before you commit.
+- A new skill reaches an existing install only after `scripts/install.sh`
+  runs again. Say so in the pull request description.
