@@ -1,6 +1,6 @@
 ---
 name: product-ui
-description: Rules for user-facing screens and copy in product code and mockups. Use before you implement or change a screen, a component, a view, user-facing text such as a status, helper, or error message, an empty or error state, or placeholder data. Covers component reuse, the forbidden left-edge accent border, no environment labels in product views, never faking displayed data, product-language copy that leaks no implementation detail, and minimum necessary copy with one recovery action per error.
+description: Rules for user-facing screens and copy in product code and mockups. Use before you implement or change a screen, a component, a view, user-facing text such as a status, helper, or error message, an empty or error state, or placeholder data. Covers component reuse, the forbidden left-edge accent border, no environment labels in product views, never faking displayed data, product-language copy that leaks no implementation detail, and minimum necessary copy with one recovery action per error when one exists.
 ---
 
 # Product UI
