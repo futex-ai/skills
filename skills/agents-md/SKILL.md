@@ -1,6 +1,6 @@
 ---
 name: agents-md
-description: Create a repository's thin AGENTS.md, or migrate a monolithic AGENTS.md and docs/dev rule files into it. Use when a repository has no AGENTS.md, when it still carries the full General, Readme, Docs, Plans, Rust, Databases, Git, and Bash timeout sections, or when the user asks to migrate, slim down, or align a repository's agent rules with the shared skills.
+description: Use when a repository has no AGENTS.md or CLAUDE.md, when its AGENTS.md or docs/dev rule files still carry the full General, Readme, Docs, Plans, Rust, Databases, Git, or Bash timeout sections, when a repository rule duplicates or conflicts with a shared skill, and when the user asks to create, migrate, slim down, or align a repository's agent rules with the shared skills.
 ---
 
 # AGENTS.md

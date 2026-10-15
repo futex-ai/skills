@@ -1,6 +1,6 @@
 ---
 name: documentation
-description: Rules for README files, the docs directory, and protocol docs, which are the spec and change with the implementation. Use before you edit a README.md, a Rust crate README, anything under docs/, or a protocol doc, whenever a code change could leave a doc stale, and when a change or a review option conflicts with a protocol doc. Covers README structure, the required crate README sections, consistency and completeness rules for docs, protocol doc length, protocol docs as a record of the current design rather than fixed rules, and keeping docs aligned in the same change.
+description: Use when you edit a README.md, a Rust crate README, anything under docs/, or a protocol doc, when a code change could leave a doc stale or incomplete, when the code and a protocol doc disagree, when a change or a review option conflicts with a protocol doc, and when you add a crate, a package, or a workspace that needs a README.
 ---
 
 # Documentation

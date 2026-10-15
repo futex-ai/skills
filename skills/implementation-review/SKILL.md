@@ -1,6 +1,6 @@
 ---
 name: implementation-review
-description: The post-push implementation review and the review-fix rule. Use after you push a branch and before you run or apply a review, when a plan's review TODO is reached, or when the user asks for a code review of a branch. Covers the read-only reviewer prompt, the numbered finding format with severity, category, and effort grade, the wider-fix option with its best-effort search for previous examples, the Auto-fix yes and no conditions, the two fix-round limit, and how to report fixed and open findings.
+description: Use when you have pushed a branch and the work needs a review, before you run a review or apply its findings, when a plan's review TODO is reached, when the user asks for a code review of a branch or a pull request, when you decide whether a finding is Auto-fix yes or no, and when a review reports findings that you could fix at once.
 ---
 
 # Implementation review
