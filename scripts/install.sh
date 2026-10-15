@@ -43,7 +43,8 @@ drop_hooks='def ours: ((.command // "") | contains($mark));
   def drop: map(.hooks = ((.hooks // []) | map(select(ours | not))))
     | map(select((.hooks | length) > 0));
   .hooks = ((.hooks // {}) | with_entries(.value |= drop)
-    | with_entries(select((.value | length) > 0)))'
+    | with_entries(select((.value | length) > 0)))
+  | if (.hooks | length) == 0 then del(.hooks) else . end'
 # shellcheck disable=SC2016
 add_hooks="$drop_hooks"'
   | .hooks.SessionStart += [{hooks: [{type: "command",
@@ -106,6 +107,11 @@ write_hooks() {  # write_hooks <jq program> <verb>: rewrite settings.json
   mkdir -p "$(dirname "$settings")"
   tmp="$(mktemp "$settings.XXXXXX")"
   printf '%s' "$current" | jq --arg mark "$hook_mark" --arg cmd "$update_script" "$1" > "$tmp"
+  if [[ "$(jq -c . "$tmp")" == "$(printf '%s' "$current" | jq -c .)" ]]; then
+    rm "$tmp"
+    if (( ! quiet )); then echo "hooks    unchanged in $settings"; fi
+    return 0
+  fi
   chmod 0600 "$tmp"
   mv "$tmp" "$settings"
   echo "hooks    $2 $settings"

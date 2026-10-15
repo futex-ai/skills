@@ -89,7 +89,8 @@ gets its links and the links of a removed skill go away.
 
 The script runs unattended and plays safe:
 
-- It touches only a clone that is on `main` with no local changes.
+- It touches only a clone that is on `main`, with no local changes and no
+  local commits.
 - It fast-forwards only. It never resets, forces, or discards anything.
 - When it cannot update, it says why and exits 0, so that a setup script
   continues.

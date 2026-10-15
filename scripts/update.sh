@@ -83,9 +83,11 @@ report() {  # report <status> <detail>: log it, and print it when run by hand
 }
 
 holder_alive() {  # holder_alive <pid>: 0 when <pid> is a live update.sh
+  local args
   kill -0 "$1" 2>/dev/null || return 1
   command -v ps >/dev/null 2>&1 || return 0
-  ps -o args= -p "$1" 2>/dev/null | grep -q 'update\.sh'
+  args="$(ps -o args= -p "$1" 2>/dev/null)" || return 0
+  [[ "$args" == *update.sh* ]]
 }
 
 lock_acquire() {  # lock_acquire <dir>: 0 when this process holds the lock
@@ -99,7 +101,8 @@ lock_acquire() {  # lock_acquire <dir>: 0 when this process holds the lock
   elif [[ -z "$(find "$dir" -maxdepth 0 -mmin +1 2>/dev/null)" ]]; then
     return 1
   fi
-  rm -rf "$dir"
+  mv "$dir" "$dir.stale.$$" 2>/dev/null || return 1
+  rm -rf "$dir.stale.$$"
   mkdir "$dir" 2>/dev/null || return 1
   echo "$$" > "$dir/pid"
 }
@@ -136,6 +139,9 @@ check_repo() {  # one update attempt on the clone; every outcome is reported
   if [[ "$old" == "$new" ]]; then report up-to-date "${old:0:7}"; return 0; fi
   if ! err="$(git -C "$repo" merge --ff-only --quiet "origin/$branch" 2>&1)"; then
     report skipped "cannot fast-forward to ${new:0:7}: $(first_line "$err")"; return 0
+  fi
+  if [[ "$(git -C "$repo" rev-parse HEAD)" == "$old" ]]; then
+    report skipped "local $branch is ahead of origin/$branch (${new:0:7})"; return 0
   fi
   updated_from="$old"
   updated_to="$new"

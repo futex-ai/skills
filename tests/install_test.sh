@@ -32,7 +32,8 @@ test_hooks_are_added_once() {
   local s
   s="$(settings_file)"
   assert_contains "$(install --hooks --quiet)" "hooks    added to $s" "output"
-  install --hooks --quiet > /dev/null
+  assert_eq "" "$(install --hooks --quiet)" "second quiet run"
+  assert_eq "hooks    unchanged in $s" "$(install --hooks | grep hooks)" "second verbose run"
   assert_eq "1" "$(jq '.hooks.SessionStart | length' "$s")" "SessionStart entries"
   assert_eq "1" "$(jq '.hooks.UserPromptSubmit | length' "$s")" "UserPromptSubmit entries"
   assert_eq "\"$clone/scripts/update.sh\" --hook" \
@@ -78,7 +79,20 @@ test_uninstall_removes_links_and_hooks() {
   [[ ! -L "$HOME/.claude/skills/alpha" ]] || fail "alpha link still present"
   [[ ! -L "$HOME/.claude/skills/zeta" ]] || fail "dangling link still present"
   [[ ! -L "$HOME/.claude/CLAUDE.md" ]] || fail "rules link still present"
-  assert_eq "{}" "$(jq -c .hooks "$s")" "hooks removed"
+  assert_eq "null" "$(jq -c .hooks "$s")" "hooks removed"
+}
+
+test_uninstall_leaves_a_settings_file_without_our_hooks_alone() {
+  make_fixture "$1"
+  local s before out
+  s="$(settings_file)"
+  mkdir -p "$HOME/.claude"
+  printf '{ "env": {"X": "1"},\n  "hooks": {"Stop": [{"hooks": [{"type": "command", "command": "echo bye"}]}]} }\n' > "$s"
+  before="$(cat "$s")"
+  out="$(install --uninstall)"
+  assert_eq "$before" "$(cat "$s")" "file bytes"
+  assert_contains "$out" "hooks    unchanged in $s" "output"
+  assert_lacks "$out" "hooks    removed" "no removal claim"
 }
 
 run_all_tests

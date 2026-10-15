@@ -74,6 +74,20 @@ test_skips_when_it_cannot_fast_forward() {
   assert_eq "$old" "$(head_of "$clone")" "clone HEAD"
 }
 
+test_skips_a_main_that_is_ahead_of_origin() {
+  make_fixture "$1"
+  local old out
+  echo "local commit" > "$clone/local.md"
+  git_t -C "$clone" add local.md
+  git_t -C "$clone" commit -q -m "local commit"
+  old="$(head_of "$clone")"
+  out="$(update)"
+  assert_eq "skipped: local main is ahead of origin/main ($(short "$(head_of "$work")"))" "$out" "output"
+  assert_eq "$old" "$(head_of "$clone")" "clone HEAD"
+  assert_lacks "$(log_text)" " updated: " "log"
+  assert_eq "" "$(update --hook < /dev/null)" "hook output"
+}
+
 test_reports_a_failed_fetch_and_exits_zero() {
   make_fixture "$1"
   local out
@@ -169,6 +183,21 @@ test_loop_ignores_a_pid_that_is_not_an_update_loop() {
   update --loop 0 --max-runs 1
   kill "$other"
   assert_contains "$(log_text)" " up-to-date: " "log"
+}
+
+test_loop_trusts_a_live_pid_when_ps_fails() {
+  make_fixture "$1"
+  local other out
+  mkdir -p "$1/bin"
+  printf '#!/usr/bin/env bash\nexit 1\n' > "$1/bin/ps"
+  chmod +x "$1/bin/ps"
+  sleep 30 > /dev/null 2>&1 &
+  other=$!
+  mkdir -p "$state/skills-loop.lock"
+  echo "$other" > "$state/skills-loop.lock/pid"
+  out="$(PATH="$1/bin:$PATH" update --loop 0 --max-runs 1)"
+  kill "$other"
+  assert_eq "skipped: another update loop is running (pid $other)" "$out" "output"
 }
 
 test_loop_restarts_with_the_new_script() {
