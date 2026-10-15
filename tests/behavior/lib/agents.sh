@@ -7,7 +7,8 @@
 # without hooks, and the always-on rules are copied into it, so installed
 # skills stay out. The variant then appends the skill text to the rules
 # (skill), links the skill as an installed skill (discovery), or adds
-# nothing (control).
+# nothing (control). After the run, the authentication is removed from
+# the kept home.
 # shellcheck shell=bash disable=SC2154
 
 copy_if_present() {  # copy_if_present <source> <target>: copy a file, following links
@@ -56,6 +57,14 @@ make_home() {  # make_home <run dir> <agent> <variant> <skill dir>
       ln -s "$4" "$home/.codex/skills/$sc_skill"
       ;;
   esac
+}
+
+strip_credentials() {  # strip_credentials <home>: remove the copied authentication from a kept home
+  local settings="$1/.claude/settings.json"
+  rm -f "$1/.claude/.credentials.json" "$1/.codex/auth.json"
+  if [[ -f "$settings" ]]; then
+    jq 'del(.apiKeyHelper, .env)' "$settings" > "$settings.tmp" && mv "$settings.tmp" "$settings"
+  fi
 }
 
 agent_argv() {  # agent_argv <run dir> <agent> <variant>: set argv to the command of the run

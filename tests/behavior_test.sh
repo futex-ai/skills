@@ -23,6 +23,9 @@ done
   printf 'HOME=%s\nCLAUDE_CONFIG_DIR=%s\nCODEX_HOME=%s\nCLAUDECODE=%s\n' \
     "$HOME" "${CLAUDE_CONFIG_DIR-}" "${CODEX_HOME-}" "${CLAUDECODE-unset}"
   printf 'args=%s\n' "$all"
+  if [[ -f "$HOME/.claude/.credentials.json" ]]; then echo "credentials=present"; fi
+  if [[ -f "$HOME/.codex/auth.json" ]]; then echo "auth=present"; fi
+  printf 'apikeyhelper=%s\n' "$(jq -r '.apiKeyHelper // empty' "$HOME/.claude/settings.json" 2>/dev/null)"
   printf 'prompt=%s\n' "$(cat)"
 } > "$run/fake.log"
 if [[ -n "${FAKE_SLEEP-}" ]]; then sleep "$FAKE_SLEEP"; fi
@@ -101,8 +104,10 @@ test_control_run_gets_a_home_without_skills() {
   assert_eq "# Always-on rules" "$(cat "$run/home/.claude/CLAUDE.md")" "rules without the skill"
   [[ ! -e "$run/home/.claude/skills" ]] || fail "installed skills copied into the home"
   assert_eq "null" "$(jq '.hooks' "$run/home/.claude/settings.json")" "hooks removed"
-  assert_eq "echo key" "$(jq -r '.apiKeyHelper' "$run/home/.claude/settings.json")" "api key helper kept"
-  [[ -f "$run/home/.claude/.credentials.json" ]] || fail "credentials not copied"
+  assert_contains "$log" "apikeyhelper=echo key" "api key helper copied for the run"
+  assert_contains "$log" "credentials=present" "credentials copied for the run"
+  [[ ! -e "$run/home/.claude/.credentials.json" ]] || fail "credentials kept after the run"
+  assert_eq "null" "$(jq '.apiKeyHelper' "$run/home/.claude/settings.json")" "api key helper removed after the run"
   [[ -f "$run/home/.claude/.claude.json" ]] || fail ".claude.json not copied"
   [[ -f "$run/workspace/setup-ran" ]] || fail "setup.sh did not run"
   assert_eq "fixture file" "$(cat "$run/workspace/README.md")" "files copied"
@@ -120,7 +125,8 @@ test_skill_run_appends_the_skill_to_the_rules() {
   assert_lacks "$(cat "$c")" "description:" "claude frontmatter stripped"
   assert_contains "$(cat "$c")" "under $skill" "skill path named"
   assert_contains "$(cat "$x")" "Run the gate before you commit." "codex skill body"
-  [[ -f "$out/one/codex-skill-1/home/.codex/auth.json" ]] || fail "codex auth not copied"
+  assert_contains "$(cat "$out/one/codex-skill-1/fake.log")" "auth=present" "codex auth copied for the run"
+  [[ ! -e "$out/one/codex-skill-1/home/.codex/auth.json" ]] || fail "codex auth kept after the run"
   assert_eq 'model = "test"' "$(cat "$out/one/codex-skill-1/home/.codex/config.toml")" "codex config copied"
   [[ ! -e "$out/one/claude-skill-1/home/.claude/skills" ]] || fail "skill linked in the skill variant"
 }
@@ -206,6 +212,7 @@ test_list_and_bad_arguments() {
   make_behavior_fixture "$1"
   local text
   assert_eq "one" "$(run_behavior --list)" "list"
+  assert_eq "one" "$(PATH="$test_path" "$runner" --list --scenarios-dir "$scenarios")" "list before the scenarios dir"
   text="$(run_behavior --agent claude two 2>&1)" && fail "unknown scenario accepted"
   assert_contains "$text" "unknown scenario: two" "scenario message"
   text="$(run_behavior --agent gemini one 2>&1)" && fail "unknown agent accepted"

@@ -91,8 +91,9 @@ directory:
 - `notes.md`: a place for the excuses, copied verbatim from the runs.
 - `<scenario>/<agent>-<variant>-<rep>/`: `prompt.md`, `command.txt`,
   `transcript.jsonl`, `actions.md` with the agent's text and commands in
-  order, `final.md` with the last message, `stderr.log`, `setup.log`, the
-  temporary `home/`, and the `workspace/` as the agent left it.
+  order, `final.md` with the last message, `stderr.log`, `setup.log`,
+  `check.log`, the temporary `home/` without its authentication, and the
+  `workspace/` as the agent left it.
 
 The hint is the exit status of the scenario's `check.sh`, or else `PASS`
 when every `expect` pattern matches `actions.md` and no `forbid` pattern

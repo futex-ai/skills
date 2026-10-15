@@ -5,7 +5,10 @@
 #
 # A scenario.md starts with frontmatter: skill (required), variants (a
 # space-separated list), and any number of expect and forbid lines with
-# regular expressions. The rest of the file is the prompt.
+# regular expressions, which apply only when the scenario has no check.sh.
+# The rest of the file is the prompt. A files/ directory is copied into the
+# workspace, setup.sh runs there before the agent, and check.sh runs there
+# after the agent and decides the hint.
 # shellcheck shell=bash disable=SC2154,SC2034
 
 list_scenarios() {  # the scenario names, one per line

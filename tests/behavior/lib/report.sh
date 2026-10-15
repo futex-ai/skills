@@ -111,7 +111,8 @@ summary_end() {  # write the foot of summary.md
     echo
     printf '%s' "$summary_skills"
     echo
-    echo "Hint is a regular expression over actions.md, not a verdict. Read"
-    echo "every actions.md, and copy each excuse verbatim into notes.md."
+    echo "Hint comes from the scenario's check.sh, or from the expect and"
+    echo "forbid patterns. It is not a verdict. Read every actions.md, and"
+    echo "copy each excuse verbatim into notes.md."
   } >> "$run_dir/summary.md"
 }

@@ -48,6 +48,7 @@ timeout_s=900
 budget=2
 model=""
 dry_run=0
+list=0
 
 usage() { sed -n '2,/^set -euo/p' "$0" | sed '$d' | sed 's/^# \{0,1\}//'; }
 
@@ -68,13 +69,14 @@ while (( $# > 0 )); do
     --budget) need_value "$1" "${2-}"; budget="$2"; shift 2 ;;
     --model) need_value "$1" "${2-}"; model="$2"; shift 2 ;;
     --dry-run) dry_run=1; shift ;;
-    --list) list_scenarios; exit 0 ;;
+    --list) list=1; shift ;;
     -h|--help) usage; exit 0 ;;
     --*) echo "unknown option: $1" >&2; exit 2 ;;
     *) scenarios+=("$1"); shift ;;
   esac
 done
 
+if (( list )); then list_scenarios; exit 0; fi
 if (( ${#agents[@]} == 0 )); then
   for agent in claude codex; do
     if command -v "$agent" > /dev/null 2>&1; then agents+=("$agent"); fi
@@ -100,11 +102,12 @@ run_dir="$(cd "$run_dir" && pwd)"
 failures=0
 summary_start
 
-keep_run() {  # keep_run <scratch> <run dir>: move the run out of the scratch directory
+keep_run() {  # keep_run <scratch> <run dir>: move the run out of the scratch directory, without credentials
   mkdir -p "$2"
   mv "$1"/* "$2"/
   rmdir "$1"
   sed -i.bak "s|$1|$2|g" "$2/command.txt" && rm -f "$2/command.txt.bak"
+  strip_credentials "$2/home"
 }
 
 run_one() {  # run_one <agent> <variant> <rep>: one agent run of the loaded scenario
