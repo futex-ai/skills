@@ -68,6 +68,11 @@ On another machine, or in a cloud workspace setup script:
 npx skills add futex-ai/skills -a claude-code -a codex -g -y
 ```
 
+An installed copy does not change when a pull request merges here. To
+update it, run `git pull --ff-only` in the linked clone, or run
+`npx skills update -g -y` for an `npx skills` install. The `agents-md`
+migration does this before it compares rules.
+
 ## Adding a repository
 
 1. Copy `skills/agents-md/templates/AGENTS.md` to the repository root and
