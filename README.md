@@ -11,6 +11,8 @@ Codex, and with any other agent that reads the
 - `global/AGENTS.md`: the always-on rules. Linked to `~/.claude/CLAUDE.md`
   and `~/.codex/AGENTS.md`.
 - `skills/agents-md/templates/AGENTS.md`: the thin per-repository `AGENTS.md`.
+- `AGENTS.md`: this repository's own `AGENTS.md`, made from that template.
+  `CLAUDE.md` is a symlink to it.
 - `scripts/install.sh`: links everything into the agent directories.
 - `scripts/check.sh`: validates every skill.
 
