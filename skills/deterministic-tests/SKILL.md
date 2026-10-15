@@ -81,10 +81,11 @@ proposed removal stays `Auto-fix: no`.
 
 A flaky test that the diff does not touch is an unrelated flaky test. Do not
 fix it in this branch, so that one fix in a separate branch reaches every
-open branch quickly. Report it in the final message and, when a plan exists,
-as one line under the plan's review TODO, in the shape that the `plans`
-skill gives. Add the test name, the failure text, the rerun outcome, and
-the suspected source.
+open branch quickly. The implementation review lists it under
+`Outside the scope`, not as a finding. Report it in the final message and,
+when a plan exists, as one line under the plan's review TODO, in the shape
+that the `plans` skill gives. Add the test name, the failure text, the
+rerun outcome, and the suspected source.
 
 ## Slow and low-value tests
 
