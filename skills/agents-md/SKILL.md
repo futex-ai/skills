@@ -71,7 +71,8 @@ rules. [templates/AGENTS.md](templates/AGENTS.md) is the template.
 
 ## Communicating with the user
 
-The global always-on rules say how to ask for decisions and how to report.
+The global always-on rules and the `decisions-and-findings` skill say how to
+ask for decisions and how to report.
 This task has one checkpoint message and one final report.
 
 **The checkpoint message**, after classification and before any change:

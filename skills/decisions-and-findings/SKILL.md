@@ -59,7 +59,7 @@ Use this layout for each decision that is not a review finding.
 ### 1. <The problem, in eight words or fewer>
 
 - **Severity:** <High, Medium, or Low>. **Effort:** <Small, Medium, or Large>.
-- **Context:** <Two to five sentences: what the feature does, where it is, and what is wrong.>
+- **Context:** <Two to five sentences of background: what the feature does, where it is, and what is wrong.>
 - **Impact if no action:** <One or two sentences.>
 - **Options:**
   - **A.** <The change.> <Its cost or risk.>
@@ -71,8 +71,7 @@ Use this layout for each decision that is not a review finding.
 
 Use this layout for each review finding, also when it needs a decision. A
 review item is a review finding. The `implementation-review` skill says
-what each field must contain. When the record does not give a field, write
-"Not recorded".
+what each field must contain.
 
 ```markdown
 ### 1. <The problem, in eight words or fewer>
@@ -80,15 +79,18 @@ what each field must contain. When the record does not give a field, write
 - **Severity:** <High, Medium, or Low>. **Effort:** <Small, Medium, or Large>.
 - **Category:** <One category from the scales below.>
 - **Location:** <The file path and line.>
-- **Context:** <Two to five sentences: what the feature does, where it is, and what is wrong.>
+- **Context:** <Two to five sentences of background: what the feature does, where it is, and what is wrong.>
 - **Impact if no action:** <One or two sentences.>
 - **Options:**
   - **A.** <The direct fix.> <Its cost or risk.>
   - **B.** <The wider fix: a rule, test, lint, guard, abstraction, or architectural change.> <Its cost or risk.>
 - **Previous examples:** <Earlier cases of this class, with commits or files, or "None found".>
-- **Recommendation:** <Letter>. <One sentence of reasoning that also names the option that best protects the codebase.>
+- **Recommendation:** <Letter>. <One sentence of reasoning.> <When another option best protects the codebase, one sentence that names it.>
 - **Auto-fix:** <`yes`, or `no, because …`>
 ```
+
+When no wider fix is available, write option **B** as "No wider fix:" and
+the reason.
 
 In both layouts, keep every label, also when the user asks for more detail
 or for a shorter answer. For more detail, write **Context** as a list with
@@ -115,9 +117,14 @@ one fact in each item.
 - Keep the recorded number when no other item in the message has it.
   Otherwise, give the next free number. Then add a **Source:** line under
   the title with the record and the old number.
-- A plan keeps each open finding as one line. When that line is the only
-  record, find the context and the options again in the code and the docs.
-  Say which fields you found again.
+- Always write **Context**, **Impact if no action**, and **Options**. They
+  explain the problem, so you can write them from the record, the code,
+  and the docs.
+- Some fields are judgments: severity, effort, category, recommendation,
+  and Auto-fix. When the record does not give a judgment, give your own.
+  Say that it is your estimate.
+- When you cannot find the location, write "Not found". When you find no
+  previous examples, write "None found".
 
 ## Final report
 
