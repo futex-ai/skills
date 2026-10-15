@@ -38,10 +38,21 @@ rules. [templates/AGENTS.md](templates/AGENTS.md) is the template.
 
 ## Migration procedure
 
-1. Read the repository's `AGENTS.md`, `docs/dev/*.md` if present, and
+1. Update the shared skills before you compare rules with them. Get the
+   latest commit of `futex-ai/skills` `main` with
+   `git ls-remote https://github.com/futex-ai/skills.git refs/heads/main`.
+   Bring the installed skills to that commit:
+   - Skills linked from a clone of `futex-ai/skills`: when the clone is on
+     `main` and has no local changes, run `git pull --ff-only` in it. Its
+     `HEAD` must then be that commit.
+   - Skills installed with `npx skills add`: run `npx skills update -g -y`.
+   - Any other case, or a failed update: clone `main` under `.context/` and
+     read the skills from that clone.
+2. If step 1 brought a newer version of this skill, read that version.
+   Read the repository's `AGENTS.md`, `docs/dev/*.md` if present, and
    `docs/implementation-review-prompt.md` if present. The shared skill text
    is the canonical version of every general rule.
-2. Walk every rule and classify it:
+3. Walk every rule and classify it:
    - **Covered**: the shared skill or the global file says the same thing.
      Drop it.
    - **Repository-specific**: commands, paths, suite names, size caps and
@@ -53,21 +64,21 @@ rules. [templates/AGENTS.md](templates/AGENTS.md) is the template.
      rule. The user decides.
    - **Uncovered general rule**: a rule that belongs in a shared skill but
      is not there yet. The user decides. Never drop it silently.
-3. Send the checkpoint message described below and wait for the answers.
+4. Send the checkpoint message described below and wait for the answers.
    The new `AGENTS.md` replaces content on `origin/main`, so change no file
    before this checkpoint.
-4. Write the new `AGENTS.md` from the template with the decisions applied.
+5. Write the new `AGENTS.md` from the template with the decisions applied.
    Fill every section. Keep `CLAUDE.md` as a symlink to `AGENTS.md`.
-5. Delete the approved files: the `docs/dev/*.md` files now covered by
+6. Delete the approved files: the `docs/dev/*.md` files now covered by
    skills, and `docs/implementation-review-prompt.md` if the shared review
    prompt replaces it. Then search `docs/`, `plans/`, and every `README.md`
    for links to them. Update references in live content to name the skill
    instead. Do not change the words of history; replace a failing history
    link with a GitHub permalink. See the `git-commit` skill.
-6. Run the repository's Markdown and link checks. Commit with the
+7. Run the repository's Markdown and link checks. Commit with the
    `git-commit` skill, for example
    `docs(agents): point AGENTS.md at shared skills`, and push.
-7. Send the final report described below.
+8. Send the final report described below.
 
 ## Communicating with the user
 
@@ -77,6 +88,7 @@ This task has one checkpoint message and one final report.
 **The checkpoint message**, after classification and before any change:
 
 - One line with the counts: rules covered, kept, conflicting, uncovered.
+- One line with the `futex-ai/skills` commit from step 1.
 - The repository-specific rules you will keep, grouped by template section,
   one line each. Do not quote the old file at length.
 - The numbered decisions. Every conflict, every uncovered rule, and every
