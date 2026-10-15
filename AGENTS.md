@@ -4,7 +4,8 @@ This repository holds the shared agent skills for every futex repository,
 in the [Agent Skills](https://agentskills.io/specification) format for
 Claude Code and Codex. Each skill lives under `skills/<name>/`, the
 always-on rules in `global/AGENTS.md`, and the install and check scripts
-under `scripts/`. The repository holds only Markdown and Bash.
+under `scripts/`. The skills and rules are Markdown, and the scripts are
+Bash.
 
 This file holds the rules that are specific to this repository. The
 always-on rules and the detailed procedures live in the shared skills from
@@ -79,9 +80,11 @@ moment instead of guessing the rule.
   context on every turn.
 - Write each frontmatter `description` on one line. `scripts/check.sh`
   reads only that line for its 1024-character limit.
-- `scripts/check.sh` checks only the links from a `SKILL.md` into its own
-  `references/`, `scripts/`, `templates/`, and `assets/`. Check every other
-  link by hand.
+- In a `SKILL.md`, `scripts/check.sh` checks each link or code span that
+  starts with `references/`, `scripts/`, `templates/`, or `assets/`. It
+  looks for that path inside the skill's own directory, so a skill that
+  names a repository path such as `scripts/check.sh` this way fails. Check
+  every other link by hand.
 - Some text has more than one copy. Change every copy in the same change:
   - The skill list and when to read each skill: each `description`,
     `## Skills` in `README.md`, and `## Shared skills` in
