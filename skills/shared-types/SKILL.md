@@ -1,6 +1,6 @@
 ---
 name: shared-types
-description: Rules for types that cross between a Rust backend and a TypeScript or JavaScript frontend. Use before you add or change a request, response, query, event, message, or error type that the frontend reads, before you write a TypeScript type, interface, or data transfer object for backend data, when you add an endpoint or message, and when you change serde attributes on a boundary type. Covers Rust as the one source, generated TypeScript that is never hand-written or hand-edited, utoipa with openapi-typescript for an HTTP API and ts-rs for other boundaries, one regenerate command, committed output with a drift check, shapes the generator expresses exactly, and existing hand-written types as legacy to migrate.
+description: Rules for types that cross between a Rust backend and a TypeScript or JavaScript frontend. Use before you add or change a request, response, query, event, message, or error type that the frontend reads, before you write a TypeScript type, interface, or data transfer object for backend data, when you add an endpoint or message, and when you change serde attributes on a boundary type. Covers Rust as the one source, generated TypeScript that is never hand-written or hand-edited, utoipa with openapi-typescript for an HTTP API and ts-rs for other boundaries, one regenerate command, committed output and a drift check once the repository approves it, shapes the generator expresses exactly, and existing hand-written types as legacy to migrate.
 ---
 
 # Shared types

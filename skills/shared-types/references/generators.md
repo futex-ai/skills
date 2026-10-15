@@ -28,7 +28,8 @@ Rust side:
   `utoipa-axum`, or a `#[derive(OpenApi)]` struct that lists the paths and
   the schemas.
 - Write the document with a developer task, for example an `xtask`
-  command: call `openapi()` on the document, serialize it with
+  command: call `openapi()` on the `#[derive(OpenApi)]` struct, or
+  `into_openapi()` on the `OpenApiRouter`, serialize the document with
   `to_pretty_json()`, and write it to the path that `AGENTS.md` names. The
   document is OpenAPI 3.1, so a nullable field appears as a type array
   that includes `null`, and a field with `skip_serializing_if` is not
@@ -36,7 +37,8 @@ Rust side:
 
 Frontend side:
 
-- `npm install -D openapi-typescript` in the frontend package.
+- `npm install -D openapi-typescript typescript` in the frontend package.
+  TypeScript is a required peer dependency, also in a JavaScript frontend.
 - The regenerate command runs the Rust task, then
   `npx openapi-typescript <document> -o <generated directory>/api.d.ts`.
 - Import `components` and `paths` from the generated file, and derive the
@@ -57,7 +59,7 @@ Frontend side:
 Rust side:
 
 - `cargo add ts-rs`, with the feature for each external type you use, for
-  example `chrono-impl`, `uuid-impl`, or `serde-json-impl`. The
+  example `chrono-impl`, `uuid-impl`, or `bigdecimal-impl`. The
   `serde-compat` feature is on by default and reads `rename`,
   `rename_all`, `tag`, `content`, `untagged`, `skip`, `flatten`, and
   `default`.
@@ -72,10 +74,12 @@ Rust side:
 
 - `ts-rs` writes the files from a generated test. The regenerate command
   is `cargo test -p <crate> export_bindings`.
-- `ts-rs` maps `i64` and `u64` to `bigint` by default. Set
-  `TS_RS_LARGE_INT` to match the wire form that `AGENTS.md` records, or
-  send the value as a string with `#[ts(as = "String")]` and a matching
-  serde attribute.
+- `ts-rs` maps `i64` and `u64` to `bigint` by default, but plain JSON
+  parsing always gives a JavaScript `number`. Set
+  `TS_RS_LARGE_INT = "number"` in `.cargo/config.toml` when every value
+  fits in 2^53. Otherwise send the value as a string with
+  `#[ts(as = "String")]` and a matching serde attribute. Keep `bigint`
+  only when the frontend parses JSON with a big-integer parser.
 
 Frontend side:
 
