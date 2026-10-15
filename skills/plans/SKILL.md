@@ -51,6 +51,9 @@ change. [templates/plan.md](templates/plan.md) is the starting point.
 - Mark a milestone completed when all of its tasks are completed. Do not
   reopen a milestone. Create a new milestone for new tasks that do not fit
   an existing open one.
+- Before you mark a milestone completed, search the protocol docs for
+  markers that link to the plan. Remove each marker for planned behaviour
+  that the milestone implements. See the `documentation` skill.
 
 ## TODOs
 
