@@ -92,7 +92,8 @@ skill.
 
 ## After the subagents return
 
-1. Read each summary. Note the root cause and the files changed.
+1. Read each summary and save it under `.context/<plan-name>/`. Note the
+   root cause and the files changed.
 2. Check for conflicts. Did two subagents change the same code? Read the
    diff of each changed file.
 3. Run the checks from the `finish-work` skill on the combined result. Each
