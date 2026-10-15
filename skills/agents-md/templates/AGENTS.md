@@ -16,6 +16,8 @@ the rule.
 - `plans`: before you create, edit, or tick a plan under `plans/`.
 - `implementation-review`: after you push, before you run or apply a
   review.
+- `parallel-agents`: before you start a subagent, and when two or more
+  independent tasks can run at the same time.
 - `decisions-and-findings`: before you send a message with decisions,
   review findings, or a final report.
 - `deterministic-tests`: when a test flakes, or when a test would assert

@@ -39,6 +39,7 @@ Codex, and with any other agent that reads the
 | `finish-work` | Before you say work is complete, and before you commit. |
 | `plans` | Before you create, edit, or tick a plan. |
 | `implementation-review` | After you push. |
+| `parallel-agents` | Before you start a subagent, and when two or more independent tasks can run at the same time. |
 | `decisions-and-findings` | Before you send decisions, review findings, or a final report. |
 | `deterministic-tests` | A test flakes or would assert elapsed time. |
 | `git-commit` | Before and after you commit, and when you open a pull request. |
