@@ -43,6 +43,7 @@ Codex, and with any other agent that reads the
 | `documentation` | Before you edit a README, a doc, or a protocol doc, and when a change or a review option conflicts with a protocol doc. |
 | `rust` | Before you edit Rust. |
 | `databases` | Before you touch migrations, Diesel, or store crates. |
+| `shared-types` | Before you add or change a type that crosses between Rust and TypeScript, or write a TypeScript type for backend data. |
 | `mockups` | Before you create or change a mockup. |
 | `product-ui` | Before you change a user-facing screen or copy. |
 | `agents-md` | Creating or migrating a repository's `AGENTS.md`. |

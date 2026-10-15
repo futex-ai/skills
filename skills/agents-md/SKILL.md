@@ -13,8 +13,8 @@ rules. [templates/AGENTS.md](templates/AGENTS.md) is the template.
 ## New repository
 
 1. Copy the template to the repository root as `AGENTS.md`.
-2. Fill every section. Delete the `rust`, `databases`, `mockups`, and
-   `product-ui` lines when the repository has none of that.
+2. Fill every section. Delete the `rust`, `databases`, `shared-types`,
+   `mockups`, and `product-ui` lines when the repository has none of that.
 3. Create `CLAUDE.md` as a symlink to `AGENTS.md`.
 
 ## Section map for a monolith

@@ -42,6 +42,8 @@ with examples and take precedence when the two differ in detail:
   directives, tests, examples, and developer task output.
 - Prefer enums and structs over raw strings and `serde_json::Value`. Fully
   type domain, service, and interface code.
+- Types that cross to a TypeScript or JavaScript frontend are generated
+  from the Rust types. See the `shared-types` skill.
 
 ## Files and modules
 

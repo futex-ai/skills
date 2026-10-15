@@ -70,6 +70,9 @@ side-effect boundaries.
 - If a boundary must accept or emit JSON (external API, persistence,
   protobuf or HTTP passthrough), convert it into a structured type as close
   to that boundary as possible and keep the rest of the code typed.
+- A type that a TypeScript or JavaScript frontend reads is generated into
+  TypeScript from the Rust type. The frontend never hand-writes it. See the
+  `shared-types` skill.
 
 ## Mocking
 
