@@ -39,9 +39,10 @@ Write in Simplified Technical English (ASD-STE100):
 ## Message order
 
 1. Start with one or two sentences that give the result or the question.
-2. When the reader needs background, add a background paragraph. Say what
+2. When the items share background, add a background paragraph. Say what
    the project is, what the feature does, and what changed. Use six
-   sentences or fewer.
+   sentences or fewer. The **Background** of each item then adds only what
+   that item needs.
 3. With more than five items, add a summary table. Give the number, the
    title, the severity, the effort, and the recommended option.
 4. Give each item in the layout below.
@@ -59,7 +60,8 @@ Use this layout for each decision that is not a review finding.
 ### 1. <The problem, in eight words or fewer>
 
 - **Severity:** <High, Medium, or Low>. **Effort:** <Small, Medium, or Large>.
-- **Context:** <Two to five sentences of background: what the feature does, where it is, and what is wrong.>
+- **Background:** <Two to five sentences: what the feature does, where it is, and the terms that the reader needs.>
+- **Problem:** <One to three sentences that say what is wrong. Use only terms that the background explains.>
 - **Impact if no action:** <One or two sentences.>
 - **Options:**
   - **A.** <The change.> <Its cost or risk.>
@@ -81,7 +83,8 @@ what each field must contain.
 - **Severity:** <High, Medium, or Low>. **Effort:** <Small, Medium, or Large>.
 - **Category:** <One category from the scales below.>
 - **Location:** <The file path and line.>
-- **Context:** <Two to five sentences of background: what the feature does, where it is, and what is wrong.>
+- **Background:** <Two to five sentences: what the feature does, where it is, and the terms that the reader needs.>
+- **Problem:** <One to three sentences that say what is wrong. Use only terms that the background explains.>
 - **Impact if no action:** <One or two sentences.>
 - **Options:**
   - **A.** <A fix.> <Its cost or risk.>
@@ -97,8 +100,8 @@ Give one lettered option for each real choice. The wider fix is one of
 these options.
 
 In both layouts, keep every label, also when the user asks for more detail
-or for a shorter answer. For more detail, write **Context** as a list with
-one fact in each item.
+or for a shorter answer. For more detail, write **Background** as a list
+with one fact in each item.
 
 ## Scales
 
@@ -123,9 +126,9 @@ one fact in each item.
 - Keep the recorded number when no other item in the message has it.
   Otherwise, give the next free number. Then add a **Source:** line under
   the title with the record and the old number.
-- Always write **Context**, **Impact if no action**, and **Options**. They
-  explain the problem, so you can write them from the record, the code,
-  and the docs.
+- Always write **Background**, **Problem**, **Impact if no action**, and
+  **Options**. They explain the item, so you can write them from the
+  record, the code, and the docs.
 - Some fields are judgments: severity, effort, category, recommendation,
   and Auto-fix. When the record does not give a judgment, give your own.
   Add "(estimate)" after it.

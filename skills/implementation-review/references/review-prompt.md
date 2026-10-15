@@ -61,8 +61,9 @@ Return numbered findings first. Use the finding layout in the
   dependency, migration, protocol section, or mockup, a change across a
   package boundary, or more than five files.
 - Include the relevant file path and line reference when possible.
-- Explain enough codebase and feature context for a reader with no prior
-  knowledge.
+- Give the background: enough codebase and feature context, and the terms,
+  for a reader with no prior knowledge.
+- State the problem: what is wrong, in words that the background explains.
 - State the impact of making no change.
 - Give solution options labelled A, B, and so on. Always consider a wider
   fix: a rule, test, lint, guard, abstraction, or architectural change that

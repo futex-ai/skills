@@ -39,7 +39,9 @@ user.
   dependency, migration, protocol section, or mockup, a change across a
   package boundary, or more than five files.
 - The file path and line reference when possible.
-- Enough codebase and feature context for a reader with no prior knowledge.
+- The background: enough codebase and feature context, and the terms, for a
+  reader with no prior knowledge.
+- The problem: what is wrong, in words that the background explains.
 - The impact of making no change.
 - Solution options labelled A, B, and so on. Always consider a wider fix:
   a rule, test, lint, guard, abstraction, or architectural change that
