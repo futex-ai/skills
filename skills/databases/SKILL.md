@@ -1,6 +1,6 @@
 ---
 name: databases
-description: Rules for database code, Diesel migrations, seed migrations, and Postgres store crates. Use before you touch a migration, a schema, Diesel code, a migration lock, or a crate named *-store-pg. Covers query separation from business logic, migration naming, freezing merged migrations, immutable seed migrations, lock entries, and the store-crate boundary.
+description: Use when you add, edit, or name a database migration or a seed migration, when you touch a schema, Diesel code, a migration lock, or a crate named *-store-pg, when you write a database query or decide where it lives, when a migration that already merged looks wrong, and when a Postgres-backed service needs more than queries and mappings.
 ---
 
 # Databases

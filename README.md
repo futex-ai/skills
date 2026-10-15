@@ -36,21 +36,21 @@ Codex, and with any other agent that reads the
 
 | Skill | Read when |
 | --- | --- |
-| `finish-work` | Before you say work is complete, and before you commit. |
-| `plans` | Before you create, edit, or tick a plan. |
-| `implementation-review` | After you push. |
-| `decisions-and-findings` | Before you send decisions, review findings, or a final report. |
-| `deterministic-tests` | A test flakes or would assert elapsed time. |
-| `git-commit` | Before and after you commit, and when you open a pull request. |
-| `git-merge` | Before you merge or rebase, and after each merge commit. |
-| `documentation` | Before you edit a README, a doc, or a protocol doc, and when a change or a review option conflicts with a protocol doc. |
-| `rust` | Before you edit Rust. |
-| `typescript` | Before you edit TypeScript or JavaScript. |
-| `databases` | Before you touch migrations, Diesel, or store crates. |
+| `finish-work` | Before you say work is complete, before you commit or push, and when you choose which tests or gates to run. |
+| `plans` | When the user asks for a plan, before you create, edit, or tick a plan, and when you find a TODO during implementation. |
+| `implementation-review` | After you push, before you run or apply a review, and when the user asks for a code review. |
+| `decisions-and-findings` | Before you send decisions, review findings, or a final report, also under a brief output style. |
+| `deterministic-tests` | A test flakes, would assert elapsed time, or tempts you to add a sleep, a retry, or a longer time limit. |
+| `git-commit` | Before and after you commit, when you write a commit or pull request message, and when a diff deletes or renames something. |
+| `git-merge` | Before you merge or rebase, when you resolve conflicts, and after each merge commit. |
+| `documentation` | Before you edit a README, a doc, or a protocol doc, when a change could leave a doc stale, and when a change or a review option conflicts with a protocol doc. |
+| `rust` | Before you edit Rust, add a crate or a dependency, or define an error type. |
+| `typescript` | Before you edit TypeScript or JavaScript, add an npm dependency, or set up a package. |
+| `databases` | Before you touch migrations, a schema, Diesel code, or store crates. |
 | `shared-types` | Before you add or change a type that crosses between Rust and TypeScript, or write a TypeScript type for backend data. |
-| `mockups` | Before you create or change a mockup. |
-| `product-ui` | Before you change a user-facing screen or copy. |
-| `agents-md` | Creating or migrating a repository's `AGENTS.md`. |
+| `mockups` | Before you create or change a mockup, a screen component, or a user flow. |
+| `product-ui` | Before you change a user-facing screen, state, or copy, or hardcode data in a screen. |
+| `agents-md` | A repository has no `AGENTS.md`, still has a monolithic one, or needs its rules aligned with the shared skills. |
 
 ## Install
 
@@ -166,8 +166,10 @@ another branch.
 ## Writing a skill
 
 - Group by the moment an agent needs it ("before you commit"), not by topic.
-- `name` must match the directory. `description` says what the skill does
-  and when to use it, with the keywords an agent would match on.
+- `name` must match the directory. `description` starts with "Use when" and
+  lists only the moments, symptoms, and keywords that an agent would match
+  on. It never summarizes the procedure. An agent that reads a procedure in
+  a description applies that short version and skips the skill body.
 - Keep `SKILL.md` under about 150 lines. Put long contracts in `references/`.
   `scripts/check.sh` warns at 200 lines and fails at 500.
 - No repository-specific paths, commands, or crate names. Those belong in the

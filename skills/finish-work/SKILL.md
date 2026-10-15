@@ -1,6 +1,6 @@
 ---
 name: finish-work
-description: The definition of done for a change. Use before you say work is complete, before you commit, and whenever you decide which tests or gates to run. Covers targeted tests during development, the early repository check, the complete gate, flaky-test handling, smoke tests, the documentation-only exception, commit and push, the post-push review, and the final report.
+description: Use when you are about to say that work is complete or done, when you are ready to commit or push, when you decide which tests, checks, or gates to run, when a gate or a test suite fails or a run was partial, when you add a feature that needs a smoke test, and when the change that you finish is documentation-only or plan-only.
 ---
 
 # Finish work

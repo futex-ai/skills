@@ -1,6 +1,6 @@
 ---
 name: decisions-and-findings
-description: How to write a message that asks the user for decisions, presents review findings (review items), or gives a final report. Use before you send any such message, also when the user asks for more detail, a shorter answer, or an explanation of earlier decisions or review items, and when you list open findings from a plan. Covers the Simplified Technical English (STE) limits, the message order, the background paragraph, the decision layout, the review finding layout, the severity, category, and effort scales, the summary table for many items, the final report labels, and why the layout applies under a brief output style.
+description: Use when you are about to send a message that asks the user for a decision, presents review findings or review items, or gives a final report, when the user asks for more detail, a shorter answer, or an explanation of earlier decisions or findings, when you list open findings from a plan or a saved review report, and when an output style or a system prompt asks for brevity while you write such a message.
 ---
 
 # Decisions and findings

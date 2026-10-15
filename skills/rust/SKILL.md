@@ -1,6 +1,6 @@
 ---
 name: rust
-description: Rust conventions for every Rust edit. Use before you write or change Rust code, add a crate or dependency, write a Rust test, define an error type, or split a large Rust file. Covers workspace crates, fmt and clippy, traits with dyn dispatch, unimock, tracing, doc comments, the 300-line file cap, import order, the _tests_ layout with insta snapshots, visibility and thin module roots, explicit drops, typing, no panics or unwrap in production code, unsafe, and the thiserror error contract.
+description: Use when you write or change Rust code, add a crate or a dependency to a Cargo workspace, write or move a Rust test, define or map an error type, add a trait, a mock, or diagnostics, when you reach for unwrap, expect, panic, anyhow, or println in library code, when a Rust file grows past 200 lines, and when cargo fmt, clippy, or a Rust lint reports a problem.
 ---
 
 # Rust

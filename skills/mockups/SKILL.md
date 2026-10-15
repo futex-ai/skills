@@ -1,6 +1,6 @@
 ---
 name: mockups
-description: Rules for design mockups under docs/mockups, which are part of the spec. Use before you create or change a mockup, a screen component, a user flow, or Mokly-generated mockup output, and when a plan has a mockup milestone. Covers design before implementation, mobile and web variants, the five-screens-per-page limit, nested sub-pages, reachability, no annotations inside screens, one screen per component, user flows that reuse screens, and generated output that is never hand-edited or committed.
+description: Use when you create or change a mockup under docs/mockups, a screen component, a user flow, or a Mokly entry, component, or configuration, when a plan has a mockup milestone or a feature needs a new screen, when a mockup page needs more than five screens, when a user flow needs a screen that does not exist, and when generated mockup output looks wrong or is about to be edited or committed.
 ---
 
 # Mockups
