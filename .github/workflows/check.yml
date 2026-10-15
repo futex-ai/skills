@@ -19,7 +19,8 @@ jobs:
       - name: Lint shell scripts
         run: |
           shellcheck -x scripts/*.sh scripts/lib/*.sh tests/*.sh tests/behavior/*.sh \
-            tests/behavior/lib/*.sh tests/behavior/scenarios/*/setup.sh skills/*/scripts/*.sh
+            tests/behavior/lib/*.sh tests/behavior/scenarios/*/setup.sh \
+            tests/behavior/scenarios/*/check.sh skills/*/scripts/*.sh
       - name: Run the shell tests
         run: tests/run.sh
       - name: Reject trailing whitespace

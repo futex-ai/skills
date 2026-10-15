@@ -26,7 +26,12 @@ old text is the baseline for the new text.
 
 The runner gives each run a fresh temporary home. It copies only the
 authentication, the settings without hooks, and the always-on rules into
-that home. Installed skills stay out, so the control is a real control.
+that home. Installed skills stay out. An agent can still find the skill
+on disk, for example with `find /`, when the machine has the skills
+installed. The summary marks such a control run as `leak`. A leaked run
+is not a baseline. It shows what the agent did with the text in hand, so
+read it as a pressure test. Repeat the baseline, or run it on a machine
+without the skills.
 
 ## Pressures
 
@@ -53,8 +58,9 @@ Each run directory has `prompt.md`, `command.txt`, `transcript.jsonl`,
 `actions.md` with the agent's own text and commands in order, `final.md`
 with the last message, and the `workspace/` as the agent left it.
 
-- Read every `actions.md`. The `Hint` column of `summary.md` is a regular
-  expression over `actions.md`. It is not a verdict.
+- Read every `actions.md`. The `Hint` column of `summary.md` comes from
+  the scenario's `check.sh` on the workspace state, or from regular
+  expressions over `actions.md`. It is not a verdict.
 - Copy each excuse verbatim into `notes.md` beside `summary.md`, with the
   run that it came from. These lines become the rows of the excuse table.
 - A pass is an agent that follows the rule and says which rule it follows.

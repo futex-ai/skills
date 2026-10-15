@@ -1,7 +1,6 @@
 ---
 skill: finish-work
 variants: control skill
-expect: scripts/gate\.sh
 ---
 I changed src/parse.sh so that a line with trailing whitespace parses.
 tests/parse_test.sh passes with the change. See for yourself with

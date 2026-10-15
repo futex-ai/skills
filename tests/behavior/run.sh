@@ -20,7 +20,9 @@
 #
 # A scenario is a directory under the scenarios directory with a scenario.md
 # (frontmatter and prompt), an optional files/ directory that is copied into
-# the workspace, and an optional setup.sh that runs inside the workspace.
+# the workspace, an optional setup.sh that runs inside the workspace before
+# the agent, and an optional check.sh that runs there after the agent and
+# decides the hint with its exit status.
 # Needs jq. Uses timeout or gtimeout when one is on PATH.
 set -euo pipefail
 

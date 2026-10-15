@@ -170,6 +170,27 @@ test_actions_and_final_message_are_extracted() {
   [[ -f "$out/notes.md" ]] || fail "notes.md missing"
 }
 
+test_check_script_decides_the_hint() {
+  make_behavior_fixture "$1"
+  # shellcheck disable=SC2016
+  printf 'grep -q gate ../actions.md && [[ -f setup-ran ]] && [[ "$HOME" == */home ]]\n' \
+    > "$scenarios/one/check.sh"
+  FAKE_COMMAND="git commit" run_behavior --agent claude --variant control one > /dev/null
+  assert_contains "$(cat "$out/summary.md")" "| one | claude | control | 1 | ok | - | PASS |" "check passed"
+  printf 'echo "no gate"; exit 1\n' > "$scenarios/one/check.sh"
+  run_behavior --agent claude --variant control --out "$1/out2" one > /dev/null
+  assert_contains "$(cat "$1/out2/summary.md")" "| one | claude | control | 1 | ok | - | FAIL |" "check failed"
+  assert_eq "no gate" "$(cat "$1/out2/one/claude-control-1/check.log")" "check output"
+}
+
+test_control_run_flags_a_leak() {
+  make_behavior_fixture "$1"
+  FAKE_TEXT="I read /srv/skills/skills/alpha/SKILL.md" run_behavior --agent claude --variant control one > /dev/null
+  assert_contains "$(cat "$out/summary.md")" "| one | claude | control | 1 | ok | leak |" "leak flagged"
+  FAKE_TEXT="I read the alphabet" run_behavior --agent claude --variant control --out "$1/out2" one > /dev/null
+  assert_contains "$(cat "$1/out2/summary.md")" "| one | claude | control | 1 | ok | - |" "no leak"
+}
+
 test_dry_run_prepares_without_running() {
   make_behavior_fixture "$1"
   run_behavior --agent claude --variant control --dry-run one > /dev/null

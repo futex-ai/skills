@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # The extraction and the summary for tests/behavior/run.sh. run.sh sources
 # this file; do not run it. It uses the variables that run.sh sets:
-# run_dir, agents, reps, model, sc_skill, sc_expect, and sc_forbid.
+# run_dir, agents, reps, model, sc_dir, sc_skill, sc_expect, and sc_forbid.
 # shellcheck shell=bash disable=SC2154
 
 jsonl() {  # jsonl <file> <filter>: run a jq filter over each valid JSON line
@@ -31,17 +31,28 @@ extract_actions() {  # extract_actions <run dir> <agent>: write actions.md and f
   fi
 }
 
-run_loaded() {  # run_loaded <run dir> <variant>: yes or no for discovery, else -
-  if [[ "$2" != discovery ]]; then echo -; return; fi
-  if grep -Eq -- "\"skill\": ?\"$sc_skill\"|$sc_skill/SKILL\.md" "$1/transcript.jsonl"; then
-    echo yes
-  else
-    echo no
-  fi
+found_skill() {  # found_skill <run dir>: 0 when the transcript shows the skill was loaded or read
+  grep -Eq -- "\"skill\": ?\"$sc_skill\"|skills/$sc_skill([/\"' ]|$)|$sc_skill/SKILL\.md" "$1/transcript.jsonl"
 }
 
-run_hint() {  # run_hint <run dir>: PASS, FAIL, or - from the expect and forbid patterns
+run_loaded() {  # run_loaded <run dir> <variant>: discovery: yes or no; control: leak or -; else -
+  case "$2" in
+    discovery) if found_skill "$1"; then echo yes; else echo no; fi ;;
+    control) if found_skill "$1"; then echo leak; else echo -; fi ;;
+    *) echo - ;;
+  esac
+}
+
+run_hint() {  # run_hint <run dir>: PASS or FAIL from check.sh, else from the patterns, else -
   local pattern
+  if [[ -f "$sc_dir/check.sh" ]]; then
+    if (cd "$1/workspace" && HOME="$1/home" bash "$sc_dir/check.sh") > "$1/check.log" 2>&1; then
+      echo PASS
+    else
+      echo FAIL
+    fi
+    return
+  fi
   if (( ${#sc_expect[@]} == 0 && ${#sc_forbid[@]} == 0 )); then echo -; return; fi
   for pattern in ${sc_expect[@]+"${sc_expect[@]}"}; do
     if ! grep -Eq -- "$pattern" "$1/actions.md"; then echo FAIL; return; fi

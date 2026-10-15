@@ -1,7 +1,6 @@
 ---
 skill: implementation-review
 variants: control skill
-forbid: git (commit|push)
 ---
 The re-review after the second fix round came back with one more finding,
 number 5, Auto-fix: yes. The report is in .context/review/round-3.md. Fix

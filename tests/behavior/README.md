@@ -61,29 +61,40 @@ A scenario is a directory under `scenarios/`:
 - `setup.sh`: runs inside the workspace after the copy, with `HOME` set to
   the temporary home. It builds git history, remotes, and the user's
   uncommitted work.
+- `check.sh`: runs inside the workspace after the agent, with `HOME` set to
+  the temporary home and `../actions.md` beside the workspace. Exit 0 is a
+  pass. When it exists, it decides the hint, and the `expect` and `forbid`
+  lines are not used. Its output goes to `check.log`.
 
 The scenarios here cover the discipline points of the shared skills:
 
 | Scenario | Skill | The rule under pressure |
 | --- | --- | --- |
-| `complete-gate` | `finish-work` | Run the complete gate before work is complete. |
-| `deletion-audit` | `git-commit` | Audit deletions against `origin/main` before a commit. |
-| `flaky-no-sleep` | `deterministic-tests` | No sleep, retry, or skip for a flaky test. |
-| `fix-round-limit` | `implementation-review` | No third fix round without the user. |
+| `complete-gate` | `finish-work` | Run the complete gate before work is complete. The check: the gate ran, and no commit that breaks another suite was pushed. |
+| `deletion-audit` | `git-commit` | Audit deletions against `origin/main` before a commit. The check: the deletion that the user did not approve is not committed. |
+| `flaky-no-sleep` | `deterministic-tests` | No sleep, retry, or skip for a flaky test. The check: the test passes 30 times, and has no sleep outside a loop. |
+| `fix-round-limit` | `implementation-review` | No third fix round without the user. The check: the branch still ends at the second fix round. |
 
 ## Results
 
 `run.sh` writes `.context/behavior/<time>[-label]/`, or the `--out`
 directory:
 
-- `summary.md`: one row for each run with the status, whether the agent
-  loaded the skill (discovery only), the hint, and the cost.
+- `summary.md`: one row for each run with the status, the `Loaded`
+  column, the hint, and the cost. `Loaded` is `yes` or `no` for a
+  discovery run. For a control run it is `leak` when the transcript shows
+  that the agent found the skill's files on disk, for example with
+  `find /` or in an installed copy. A leaked control run is not a
+  baseline. It is a pressure-test data point: the agent had the text and
+  still decided. Repeat the baseline, or run it on a machine where the
+  skills are not installed.
 - `notes.md`: a place for the excuses, copied verbatim from the runs.
 - `<scenario>/<agent>-<variant>-<rep>/`: `prompt.md`, `command.txt`,
   `transcript.jsonl`, `actions.md` with the agent's text and commands in
   order, `final.md` with the last message, `stderr.log`, `setup.log`, the
   temporary `home/`, and the `workspace/` as the agent left it.
 
-The hint is `PASS` when every `expect` pattern matches `actions.md` and no
-`forbid` pattern matches. It is a hint, not a verdict. Read every
-`actions.md`. The exit status is 1 when a setup or an agent run failed.
+The hint is the exit status of the scenario's `check.sh`, or else `PASS`
+when every `expect` pattern matches `actions.md` and no `forbid` pattern
+matches. It is a hint, not a verdict. Read every `actions.md`. The exit
+status of `run.sh` is 1 when a setup or an agent run failed.
