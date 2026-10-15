@@ -107,11 +107,12 @@ limited() {  # limited <seconds> <command...>: run it, and stop it after <second
   return "$status"
 }
 
-fetch_limited() {  # fetch the branch within --timeout; git's errors go to stdout
+fetch_limited() {  # fetch the branch within --timeout; the reason goes to stdout
   local errors status
   errors="$(mktemp)"
   limited "$net_timeout" env GIT_TERMINAL_PROMPT=0 git -C "$repo" fetch --quiet origin "$branch" \
     > /dev/null 2> "$errors" && status=0 || status=$?
+  if (( status == 143 )); then echo "no response within ${net_timeout}s"; fi
   cat "$errors"
   rm -f "$errors"
   return "$status"

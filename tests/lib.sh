@@ -80,11 +80,17 @@ make_fixture() {  # make_fixture <dir>: build the remote, work clone, clone, and
   "$clone/scripts/install.sh" --quiet > /dev/null
 }
 
-fake_git() {  # fake_git <dir> <seconds>: a git on PATH whose fetch sleeps <seconds>
+fake_git() {  # fake_git <dir> <seconds> [text]: a git whose fetch prints <text> and sleeps
   mkdir -p "$1"
-  # shellcheck disable=SC2016
-  printf '#!/usr/bin/env bash\nfor a in "$@"; do [[ "$a" == fetch ]] && exec sleep %s; done\nexec %s "$@"\n' \
-    "$2" "$(command -v git)" > "$1/git"
+  {
+    echo '#!/usr/bin/env bash'
+    # shellcheck disable=SC2016
+    echo 'for a in "$@"; do if [[ "$a" == fetch ]]; then'
+    if [[ -n "${3-}" ]]; then printf '  echo %q >&2\n' "$3"; fi
+    printf '  exec sleep %s\nfi; done\n' "$2"
+    # shellcheck disable=SC2016
+    printf 'exec %s "$@"\n' "$(command -v git)"
+  } > "$1/git"
   chmod +x "$1/git"
 }
 

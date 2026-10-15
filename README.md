@@ -126,7 +126,8 @@ Both hooks tell the agent which skills changed since the session last
 heard, also when the loop or another session applied the update. When the
 always-on rules changed, they ask the agent to read `~/.claude/CLAUDE.md`
 again. For this the script keeps one small file per session under
-`~/.futex/sessions/` and removes files older than seven days.
+`~/.futex/sessions/` and removes the file of a session that was idle for
+seven days.
 
 Claude Code runs hooks from settings files only after you trust the folder
 in an interactive session. `install.sh --uninstall` stops the loop and

@@ -6,7 +6,8 @@
 # Each session gets one file under the sessions directory. It holds the
 # commit that the session last heard about. The hook announces the changes
 # from that commit to HEAD, so that a session also hears about an update
-# that the loop or another session applied.
+# that the loop or another session applied. Every hook run refreshes the
+# file's time, so that the cleanup removes only the files of idle sessions.
 # shellcheck shell=bash disable=SC2154
 
 json_field() {  # json_field <name>: a string field of the hook input, or nothing
@@ -53,9 +54,9 @@ hook_output() {  # tell the agent what changed since it last heard
     announced="$(cat "$file")"
     git -C "$repo" cat-file -e "$announced^{commit}" 2>/dev/null || announced=""
   fi
-  if [[ -n "$file" && "$announced" != "$current" ]]; then
+  if [[ -n "$file" ]]; then
     mkdir -p "$sessions"
-    printf '%s\n' "$current" > "$file"
+    if [[ "$announced" != "$current" ]]; then printf '%s\n' "$current" > "$file"; else touch "$file"; fi
     find "$sessions" -type f -mtime +7 -delete 2>/dev/null || true
   fi
   from="${announced:-$updated_from}"

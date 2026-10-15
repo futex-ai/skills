@@ -112,6 +112,14 @@ test_stops_a_fetch_that_gives_no_answer() {
   assert_eq "up-to-date: $(short "$(head_of "$clone")")" "$(update)" "the real git works after it"
 }
 
+test_reports_a_stalled_fetch_as_no_response() {
+  make_fixture "$1"
+  local out
+  fake_git "$1/bin" 30 "Warning: Permanently added 'github.com' (ED25519) to the list of known hosts."
+  out="$(PATH="$1/bin:$PATH" update --timeout 1)"
+  assert_eq "failed: fetch from origin: no response within 1s" "$out" "output"
+}
+
 test_skips_while_another_check_runs() {
   make_fixture "$1"
   local first out
@@ -205,12 +213,16 @@ test_hook_announces_a_resume_with_json() {
   assert_contains "$(jq -r .hookSpecificOutput.additionalContext <<< "$out")" " Changed skills: gamma." "context"
 }
 
-test_hook_forgets_old_sessions() {
+test_hook_forgets_idle_sessions_only() {
   make_fixture "$1"
   mkdir -p "$state/sessions"
   touch -t 202001010000 "$state/sessions/old"
+  head_of "$clone" > "$state/sessions/active"
+  touch -t 202001010000 "$state/sessions/active"
+  assert_eq "" "$(hook UserPromptSubmit active)" "the active session has nothing new"
   hook UserPromptSubmit s1 > /dev/null
   [[ ! -f "$state/sessions/old" ]] || fail "old session file kept"
+  [[ -f "$state/sessions/active" ]] || fail "the file of the active session was removed"
   [[ -f "$state/sessions/s1" ]] || fail "new session file missing"
 }
 

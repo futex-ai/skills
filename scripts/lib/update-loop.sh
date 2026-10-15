@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 # The locks, the loop, --detach, and --stop of scripts/update.sh. update.sh
 # sources this file; do not run it. It uses the variables that update.sh
-# sets: state_dir, check_lock, loop_lock, log, script, interval, max_runs,
-# net_timeout, branch, and script_changed, and the functions log_line and
-# run_check.
+# sets: state_dir, check_lock, loop_lock, log, script, mode, interval,
+# max_runs, net_timeout, branch, and script_changed, and the functions
+# log_line and run_check.
 # shellcheck shell=bash disable=SC2154
 
 sleep_pid=""
