@@ -16,6 +16,8 @@ the rule.
 - `plans`: before you create, edit, or tick a plan under `plans/`.
 - `implementation-review`: after you push, before you run or apply a
   review.
+- `decisions-and-findings`: before you send a message with decisions,
+  review findings, or a final report.
 - `deterministic-tests`: when a test flakes, or when a test would assert
   elapsed time.
 - `git-commit`: before and after you commit, and when you open a pull
@@ -42,8 +44,9 @@ the rule.
 - Report outcomes faithfully. Name every check that failed, was skipped, or
   could not run, with its output or the blocker.
 - Ask for all decisions in one numbered message. For each decision give
-  its severity and effort, the context, the impact if no action is taken,
-  lettered options, and a recommended option. Do the independent work
+  its severity and effort, the background, the problem, the impact if no
+  action is taken, lettered options, and a recommended option. Do the
+  independent work
   first, then stop and wait.
 - End every task with a final report: what changed and the commit, each
   decision and its outcome, the checks that ran, anything skipped, and the

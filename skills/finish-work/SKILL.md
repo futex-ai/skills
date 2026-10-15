@@ -63,7 +63,8 @@ run.
 
 ## 6. Report
 
-Write the final message in Simplified Technical English. Include:
+Write the final message in Simplified Technical English, with the layout
+and labels in the `decisions-and-findings` skill. Include:
 
 - What changed, and the commit or PR.
 - The checks that ran and their results. Name any check that was skipped or

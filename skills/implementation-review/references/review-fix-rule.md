@@ -63,9 +63,10 @@ process always wait for the user.
 
 - List the auto-fixed findings (number, severity, plain explanation, what
   changed, commit) separately from the findings that need a decision, each
-  with a clear recommendation.
+  with a clear recommendation. Use the `decisions-and-findings` skill.
 - Name the fixed finding in its commit message.
 - Add each open finding as one line under the plan's review TODO so that it
-  is not lost when the session ends.
+  is not lost when the session ends. Use the shape that the `plans` skill
+  gives.
 - Keep the review report and any evidence under the git-ignored `.context/`
   directory, not in the repository.
