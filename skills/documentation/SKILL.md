@@ -1,6 +1,6 @@
 ---
 name: documentation
-description: Rules for README files, the docs directory, and protocol docs, which are the spec and change with the implementation. Use before you edit a README.md, a Rust crate README, anything under docs/, or a protocol doc, whenever a code change could leave a doc stale, and when a change or a review option conflicts with a protocol doc. Covers README structure, the required crate README sections, consistency and completeness rules for docs, protocol doc length, protocol docs as a record of the current design rather than fixed rules, and keeping docs aligned in the same change.
+description: Rules for README files, the docs directory, and protocol docs, which are the spec and change with the implementation. Use before you edit a README.md, a Rust crate README, anything under docs/, or a protocol doc, whenever a code change could leave a doc stale, and when a change or a review option conflicts with a protocol doc. Covers README structure, the required crate README sections, consistency and completeness rules for docs, protocol doc length, markers for planned behaviour that a later milestone implements, protocol docs as a record of the current design rather than fixed rules, and keeping docs aligned in the same change.
 ---
 
 # Documentation
@@ -68,6 +68,15 @@ update it with any new useful context in the same change.
 - The first milestone of every plan updates the protocol docs so that they
   define the complete contract before implementation starts; see the
   `plans` skill.
+- Add a marker to protocol doc text that describes behaviour that a later
+  milestone implements. The marker is a short note that links to the plan
+  and names the milestone. It lets readers tell planned behaviour from
+  implemented behaviour.
+- When the plan moves the behaviour to another milestone or renumbers that
+  milestone, update the marker.
+- Remove the marker in the milestone that implements the behaviour, in the
+  same change as the code. Before you mark a milestone completed, search
+  the protocol docs for markers that link to its plan.
 
 ## Protocol docs change with the implementation
 
