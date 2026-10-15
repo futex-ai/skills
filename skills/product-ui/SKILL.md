@@ -1,6 +1,6 @@
 ---
 name: product-ui
-description: Rules for user-facing screens and copy in product code and mockups. Use before you implement or change a screen, a component, a view, user-facing text, an empty or error state, or placeholder data. Covers component reuse, the forbidden left-edge accent border, no environment labels in product views, never faking displayed data, and product-language copy that keeps a positive frame and leaks no implementation detail.
+description: Rules for user-facing screens and copy in product code and mockups. Use before you implement or change a screen, a component, a view, user-facing text such as a status, helper, or error message, an empty or error state, or placeholder data. Covers component reuse, the forbidden left-edge accent border, no environment labels in product views, never faking displayed data, product-language copy that keeps a positive frame and leaks no implementation detail, and minimum necessary copy with one recovery action per error when one exists.
 ---
 
 # Product UI
@@ -63,6 +63,13 @@ environment configuration.
   engineer-facing build or status output.
 - Lead with the outcome or action the user cares about. Keep it plain and
   professional.
+- Keep copy to the minimum that the user needs to understand the outcome,
+  decide, or act. Prefer one short sentence for routine status and helper
+  text.
+- For an error, name what failed and give one recovery action when one
+  exists.
+- Remove any sentence whose absence would not change what the user
+  understands, decides, or does next.
 - Never leak internal implementation detail into text users read:
   validation-artefact, schema, or pipeline names, internal flags, message
   classes, file formats, environment names, or code identifiers.

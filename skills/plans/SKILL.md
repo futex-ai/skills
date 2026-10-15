@@ -1,6 +1,6 @@
 ---
 name: plans
-description: Rules for implementation plan files under plans/. Use before you create, edit, or tick a plan, when the user asks for a plan, or when you discover a TODO during implementation. Covers the Status paragraph, milestones, TODO checklists, the documentation-first milestone, mockup and ui tags, the PR-merge completion boundary, post-merge follow-ups, the review TODO, and where evidence logs go.
+description: Rules for implementation plan files under plans/. Use before you create, edit, or tick a plan, when the user asks for a plan, or when you discover a TODO during implementation. Covers the Status paragraph, milestones, TODO checklists, the documentation-first milestone, the initial mockup milestone for each product area, mockup and ui tags, the PR-merge completion boundary, post-merge follow-ups, the review TODO, and where evidence logs go.
 ---
 
 # Plans
@@ -35,10 +35,14 @@ change. [templates/plan.md](templates/plan.md) is the starting point.
 - The documentation milestone does not freeze the protocol docs. When a
   later milestone finds a better design, update the protocol doc in the
   milestone that changes the code. See the `documentation` skill.
-- When the plan needs mockup work, the second milestone is the initial
-  mockup milestone, directly after the documentation milestone. Put all
-  mockup work known at planning time in that one milestone. Add another
-  mockup milestone only when implementation finds a genuine mockup gap.
+- When a product area needs mockup work, its initial mockup milestone comes
+  directly after the documentation milestone for that area. It also comes
+  before any UI milestone for that area. Milestones for repository
+  bootstrap work, such as the workspace skeleton, checks, CI, and the
+  mockup catalogue tooling, can come before the first mockup milestone.
+- Put all mockup work for an area that is known at planning time in the
+  initial mockup milestone for that area. Add another mockup milestone only
+  when implementation finds a genuine mockup gap.
 - Keep backend changes, mockup or design updates, and UI implementation in
   separate milestones. Mockups complete before UI implementation begins.
 - A milestone with UI or mockup work has a tag line directly below its
