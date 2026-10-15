@@ -16,8 +16,8 @@ the rule.
 - `plans`: before you create, edit, or tick a plan under `plans/`.
 - `implementation-review`: after you push, before you run or apply a
   review.
-- `deterministic-tests`: when a test flakes, or when a test would assert
-  elapsed time.
+- `deterministic-tests`: when a test flakes, would assert elapsed time, or
+  would use the network.
 - `git-commit`: before and after you commit, and when you open a pull
   request.
 - `git-merge`: before you merge or rebase, and after each merge commit.
@@ -54,6 +54,8 @@ the rule.
 - Build: `<command>`
 - Targeted tests: `<command for one file or name pattern>`
 - Early check (format, lint, file length): `<command>`
+- Smoke test: `<command or steps>`. <What it calls, for example each
+  endpoint of a vendor API, and the credentials it needs.>
 - Complete gate: `<command>`. <How failures report, for example "A local
   run stops at the first failed suite.">
 - Format: `<command>`

@@ -1,6 +1,6 @@
 ---
 name: deterministic-tests
-description: Rules for tests that must not depend on machine speed, and the flaky-test procedure. Use when a test fails and then passes on a rerun, when a test would assert elapsed time, timeouts, or performance, when you choose between a real and a fake clock, or when a review finding concerns a flaky, slow, or low-value test. Covers operation counts, captured inputs, event order, fake clocks, allowed clock uses, the reproduce-and-name-the-source procedure, and what may never be added to a flaky test.
+description: Rules for tests that must not depend on machine speed, which tests may use the network and other real boundaries, and the flaky-test procedure. Use when a test fails and then passes on a rerun, when a test would assert elapsed time, timeouts, or performance, when you choose between a real and a fake clock, when a test would use the network or call an external service such as a vendor API, or when a review finding concerns a flaky, slow, or low-value test. Covers operation counts, captured inputs, event order, fake clocks, allowed clock uses, real boundaries in unit, integration, and smoke tests, the reproduce-and-name-the-source procedure, and what may never be added to a flaky test.
 ---
 
 # Deterministic tests
@@ -13,11 +13,19 @@ that passes on a fast machine and fails on a slow one is a bug in the test.
 - Tests must not assert elapsed wall-clock time as an upper or lower bound.
   "Finishes within N ms" and "takes at least N ms" are both forbidden. Keep
   the correctness assertions when you replace either form.
-- Unit tests must not use real disk IO, databases, Docker, subprocesses,
-  clocks, or network calls. Mock those boundaries. Integration tests may use
-  real implementations for end-to-end behaviour.
 - Report a duration only as text, through a diagnostic or an annotation. A
   reported duration must never decide whether the test passes.
+
+## Real boundaries and the network
+
+- Unit tests must not use real disk IO, databases, Docker, subprocesses,
+  clocks, or network calls. Mock those boundaries.
+- Integration tests may use real implementations for end-to-end behaviour.
+  A local loopback server, for example a fake HTTP server on `127.0.0.1`,
+  may stand in for a remote service.
+- Smoke tests may use the network and real credentials. For example, a
+  smoke test may call each endpoint of a vendor API. `AGENTS.md` names the
+  smoke-test command, what it calls, and the credentials it needs.
 
 ## Evidence methods
 

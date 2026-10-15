@@ -18,7 +18,10 @@ run.
   before long test runs.
 - Leave complete unit and browser suite runs to the complete gate.
 - When you add a feature, run a smoke test: start the server, run the
-  command, open the page. Do this before the gate.
+  command, open the page. Do this before the gate. A smoke test may use the
+  network and the real credentials named in `AGENTS.md`, for example to call
+  each endpoint of a vendor API. If a credential is missing, report the
+  smoke test as not run and name the credential.
 
 ## 2. The complete gate
 

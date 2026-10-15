@@ -63,7 +63,8 @@ to read them. Read the skill at that moment instead of guessing the rule.
 - When you find a bug, add a test that captures the failure first, then fix
   it.
 - When you add a feature, run a smoke test: start the server, run the
-  command, open the page.
+  command, open the page. A smoke test may use the network, for example to
+  call each endpoint of a vendor API.
 - Tests must not assert elapsed wall-clock time. Use operation counts,
   captured inputs, event order, or fake-clock time. See the
   `deterministic-tests` skill.

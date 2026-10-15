@@ -36,7 +36,7 @@ Codex, and with any other agent that reads the
 | `finish-work` | Before you say work is complete, and before you commit. |
 | `plans` | Before you create, edit, or tick a plan. |
 | `implementation-review` | After you push. |
-| `deterministic-tests` | A test flakes or would assert elapsed time. |
+| `deterministic-tests` | A test flakes, would assert elapsed time, or would use the network. |
 | `git-commit` | Before and after you commit, and when you open a pull request. |
 | `git-merge` | Before you merge or rebase, and after each merge commit. |
 | `documentation` | Before you edit a README, a doc, or a protocol doc, and when a change or a review option conflicts with a protocol doc. |
