@@ -41,6 +41,7 @@ Codex, and with any other agent that reads the
 | `git-merge` | Before you merge or rebase, and after each merge commit. |
 | `documentation` | Before you edit a README, a doc, or a protocol doc, and when a change or a review option conflicts with a protocol doc. |
 | `rust` | Before you edit Rust. |
+| `typescript` | Before you edit TypeScript or JavaScript. |
 | `databases` | Before you touch migrations, Diesel, or store crates. |
 | `shared-types` | Before you add or change a type that crosses between Rust and TypeScript, or write a TypeScript type for backend data. |
 | `mockups` | Before you create or change a mockup. |
