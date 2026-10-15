@@ -26,6 +26,8 @@ the rule.
 - `documentation`: before you edit a `README.md`, a doc, or a protocol doc,
   and when a change or a review option conflicts with a protocol doc.
 - `rust`: before you edit Rust. <delete if the repository has no Rust>
+- `typescript`: before you edit TypeScript or JavaScript. <delete if the
+  repository has no TypeScript or JavaScript>
 - `databases`: before you touch migrations, Diesel, or store crates.
   <delete if none>
 - `shared-types`: before you add or change a type that crosses between
@@ -59,6 +61,7 @@ the rule.
 
 - Build: `<command>`
 - Targeted tests: `<command for one file or name pattern>`
+- Typecheck: `<command>` <delete if the repository has no TypeScript>
 - Early check (format, lint, file length): `<command>`
 - Complete gate: `<command>`. <How failures report, for example "A local
   run stops at the first failed suite.">
