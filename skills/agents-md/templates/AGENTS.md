@@ -92,8 +92,9 @@ Delete this section if the repository has no product UI.>
 
 ## Review focus
 
-<Areas the implementation review must pay particular attention to, beyond
-the generic focus list in the `implementation-review` skill.>
+<Areas the implementation review must pay particular attention to in the
+changed code, beyond the generic focus list in the `implementation-review`
+skill.>
 
 - <Example: app independence, generated-output safety, server and watcher
   lifecycle, protocol alignment.>

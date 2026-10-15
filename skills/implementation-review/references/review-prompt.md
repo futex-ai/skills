@@ -4,16 +4,40 @@ Give this prompt to the reviewer. Replace `<review focus>` with the
 `## Review focus` list from the repository's `AGENTS.md`, or delete that
 sentence when the repository has none.
 
+The scope of the prompt is the diff. When the user explicitly asks for a
+review outside the changes, for example of the whole repository or of a
+named area, replace the first paragraph of `## Scope` with the scope that
+the user named. Do not widen the scope for any other reason.
+
 ---
 
 You are reviewing local changes in this repository.
 
 Review the local diff against `origin/main`. You may inspect the repository
 read-only for context. Focus on concrete bugs, security issues, missing
-tests, stale docs, generated artifact drift, and implementation risks. Pay
-particular attention to <review focus>. Do not treat speculative or purely
-theoretical concerns as findings. Do not modify files or automatically fix
-findings.
+tests, stale docs, generated artifact drift, and implementation risks in
+the scope below. Pay particular attention to <review focus> in that scope.
+Do not treat speculative or purely theoretical concerns as findings. Do not
+modify files or automatically fix findings.
+
+## Scope
+
+The scope is the diff: each changed or added hunk, and the code outside the
+diff whose behaviour the diff changes. That code includes a caller of a
+changed function, a test that covers changed code, a doc that describes
+changed behaviour, and a generated artifact of a changed source. A finding
+must anchor to the scope.
+
+A problem outside the scope is not a finding. Do not number it, and do not
+give it the finding layout. Put it in one list under the heading
+`Outside the scope` at the end of the report. Give each problem one line:
+the file path and one sentence. The whole list is `Auto-fix: no`. Nobody
+fixes these problems in this branch. A flaky test that the diff does not
+touch belongs in this list, with its name, failure text, rerun outcome, and
+suspected source.
+
+The context reads, the review focus, and the previous-examples search serve
+the findings in scope. They are not a search for new findings.
 
 Start by collecting compact summaries so that large diffs fit in context:
 
@@ -38,7 +62,7 @@ sed -n '<start>,<end>p' <path>
 ```
 
 Look for previous examples of a finding's class. This search is best
-effort:
+effort. Use a hit only as an example. A hit is not a new finding:
 
 ```bash
 git log --oneline origin/main -- <path>
@@ -46,9 +70,10 @@ git log --oneline -i --grep='<keyword>' origin/main
 grep -rni '<keyword>' plans/ .context/ 2>/dev/null
 ```
 
-Return numbered findings first. Order them by severity, High first, then
-Medium, then Low, and number them in that order. Use the finding layout in
-the `decisions-and-findings` skill. For every finding:
+Return the numbered findings first and the `Outside the scope` list last.
+Order the findings by severity, High first, then Medium, then Low, and
+number them in that order. Use the finding layout in the
+`decisions-and-findings` skill. For every finding:
 
 - Give it a severity. High: wrong output, lost data, a security problem, or
   blocked work. Medium: a visible defect, or a spec gap with a workaround.
@@ -94,13 +119,11 @@ a mockup and the product; user-visible behaviour beyond the contract; a new
 build error, rejection, gate, or stricter validation; a wider fix available
 beside the direct fix; deleting or weakening a test or gate or raising a
 time limit; or a need for an audit exception, credentials, or
-infrastructure. Tag a flaky test that the diff does not touch
-`Auto-fix: no`, so that the user can fix it in a separate branch; report its
-name, failure text, and suspected source. Tag a slow, custom, or low-value
-test, gate, lint, or check `Auto-fix: no` and ask whether to fix it or
-remove it, stating what it protects and how long it runs. Large findings,
-and findings about missing tests, performance, code structure, UX wording,
-and process, are always `Auto-fix: no`.
+infrastructure. Tag a slow, custom, or low-value test, gate, lint, or check
+in the scope `Auto-fix: no` and ask whether to fix it or remove it, stating
+what it protects and how long it runs. Large findings, and findings about
+missing tests, performance, code structure, UX wording, and process, are
+always `Auto-fix: no`.
 
 Protocol docs record the current design, including implementation details
 that can and should change as the implementation develops. Do not treat
