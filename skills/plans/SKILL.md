@@ -69,8 +69,9 @@ change. [templates/plan.md](templates/plan.md) is the starting point.
   report the rest. Read an older review TODO that says "without changing
   the implementation" under the same rule.
 - Add each open review finding as one line under the review TODO so that it
-  is not lost when the session ends. Give its number, title, severity,
-  effort, and recommended option, for example:
+  is not lost when the session ends. List the lines by severity, High
+  first. Each line gives the number, title, severity, effort, and
+  recommended option, for example:
   `3. Retry loop has no limit. Severity High, effort Small. Recommended: A, cap the retries.`
 
 ## Completion boundary
