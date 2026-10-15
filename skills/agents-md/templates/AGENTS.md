@@ -26,6 +26,9 @@ the rule.
 - `rust`: before you edit Rust. <delete if the repository has no Rust>
 - `databases`: before you touch migrations, Diesel, or store crates.
   <delete if none>
+- `shared-types`: before you add or change a type that crosses between
+  Rust and TypeScript, or write a TypeScript type for backend data.
+  <delete if the repository has no Rust and TypeScript boundary>
 - `mockups`: before you create or change a mockup under `docs/mockups`.
   <delete if none>
 - `product-ui`: before you implement or change a user-facing screen or
@@ -57,6 +60,7 @@ the rule.
 - Complete gate: `<command>`. <How failures report, for example "A local
   run stops at the first failed suite.">
 - Format: `<command>`
+- Generate types: `<command>` <delete if none>
 - Mockup check: `<command>` <delete if none>
 
 ## Repository rules
@@ -68,6 +72,9 @@ the rule.
 - `tests/markdown_links.test.ts` checks local links in `AGENTS.md`,
   `docs/`, `plans/`, and every `README.md`.
 - Never commit anything under `<generated directory>`.
+- TypeScript types under `<generated types directory>` are generated from
+  `<crate>` by `<command>`. Never hand-edit them.
+- Boundary types send 64-bit integers, decimals, and dates as `<form>`.
 
 ## Product
 
