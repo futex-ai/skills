@@ -1,11 +1,15 @@
 #!/usr/bin/env bash
-# Tests for scripts/update.sh: the fast-forward, the guards, the hook output,
-# the throttle, the loop, and the detached start.
+# Tests for scripts/update.sh: the fast-forward, the guards, the fetch limit,
+# the log, the throttle, and the hook notices. The loop has its own file.
 set -euo pipefail
 # shellcheck source=tests/lib.sh
 source "$(dirname "${BASH_SOURCE[0]}")/lib.sh"
 
 update() { "$clone/scripts/update.sh" --state-dir "$state" "$@"; }
+
+hook() {  # hook <event> <session id>: run the hook as Claude Code would
+  printf '{"hook_event_name":"%s","session_id":"%s"}' "$1" "$2" | update --hook
+}
 
 test_reports_up_to_date() {
   make_fixture "$1"
@@ -70,7 +74,8 @@ test_skips_when_it_cannot_fast_forward() {
   write_skill gamma
   commit_push "add gamma"
   out="$(update)"
-  assert_contains "$out" "skipped: cannot fast-forward to $(short "$(head_of "$work")")" "output"
+  assert_eq "skipped: cannot fast-forward to $(short "$(head_of "$work")"): Not possible to fast-forward, aborting." \
+    "$out" "output"
   assert_eq "$old" "$(head_of "$clone")" "clone HEAD"
 }
 
@@ -93,9 +98,41 @@ test_reports_a_failed_fetch_and_exits_zero() {
   local out
   git -C "$clone" remote set-url origin "$1/missing.git"
   out="$(update)" || fail "exit status $?"
-  assert_contains "$out" "failed: fetch from origin: " "output"
+  assert_eq "failed: fetch from origin: '$1/missing.git' does not appear to be a git repository" "$out" "output"
   out="$(update --hook < /dev/null)" || fail "hook exit status $?"
   assert_eq "" "$out" "hook output"
+}
+
+test_stops_a_fetch_that_gives_no_answer() {
+  make_fixture "$1"
+  local out
+  fake_git "$1/bin" 30
+  out="$(PATH="$1/bin:$PATH" update --timeout 1)"
+  assert_eq "failed: fetch from origin: no response within 1s" "$out" "output"
+  assert_eq "up-to-date: $(short "$(head_of "$clone")")" "$(update)" "the real git works after it"
+}
+
+test_skips_while_another_check_runs() {
+  make_fixture "$1"
+  local first out
+  fake_git "$1/bin" 5
+  PATH="$1/bin:$PATH" "$clone/scripts/update.sh" --state-dir "$state" --timeout 10 > /dev/null 2>&1 &
+  first=$!
+  wait_for 100 test -f "$state/skills-update.lock/pid" || fail "first check did not start"
+  out="$(update)"
+  end_process "$first"
+  assert_eq "skipped: another update is running" "$out" "output"
+}
+
+test_keeps_the_log_small() {
+  make_fixture "$1"
+  local i
+  for (( i = 0; i < 6000; i++ )); do echo "2026-01-01T00:00:00Z up-to-date: 0000000 line $i"; done \
+    > "$state/skills-update.log"
+  (( $(wc -c < "$state/skills-update.log") > 262144 )) || fail "seed log too small"
+  update > /dev/null
+  assert_eq "201" "$(wc -l < "$state/skills-update.log" | tr -d ' ')" "lines after truncation"
+  assert_contains "$(tail -n 1 "$state/skills-update.log")" " up-to-date: $(short "$(head_of "$clone")")" "new line"
 }
 
 test_hook_is_silent_without_a_change() {
@@ -129,6 +166,54 @@ test_hook_prints_json_for_session_start() {
   assert_lacks "$context" "always-on rules" "rules unchanged"
 }
 
+test_hook_tells_a_session_about_an_update_by_another_process() {
+  make_fixture "$1"
+  local out
+  assert_eq "" "$(hook UserPromptSubmit s1)" "first prompt"
+  assert_eq "$(head_of "$clone")" "$(cat "$state/sessions/s1")" "session file"
+  write_skill gamma
+  commit_push "add gamma"
+  update > /dev/null
+  out="$(hook UserPromptSubmit s1)"
+  assert_contains "$out" " Changed skills: gamma." "notice after the loop updated"
+  assert_eq "" "$(hook UserPromptSubmit s1)" "told once"
+  assert_eq "" "$(hook SessionStart s1)" "resume with nothing new"
+  assert_eq "" "$(hook SessionStart s9)" "a new session starts current"
+}
+
+test_hook_tells_each_session_once() {
+  make_fixture "$1"
+  hook SessionStart s1 > /dev/null
+  hook SessionStart s2 > /dev/null
+  write_skill gamma
+  commit_push "add gamma"
+  assert_contains "$(hook UserPromptSubmit s1)" "gamma" "session 1 applied the update"
+  assert_contains "$(hook UserPromptSubmit s2)" "gamma" "session 2 hears about it"
+  assert_eq "" "$(hook UserPromptSubmit s1)" "session 1 told once"
+  assert_eq "" "$(hook UserPromptSubmit s2)" "session 2 told once"
+}
+
+test_hook_announces_a_resume_with_json() {
+  make_fixture "$1"
+  local out
+  hook SessionStart s1 > /dev/null
+  write_skill gamma
+  commit_push "add gamma"
+  update > /dev/null
+  out="$(hook SessionStart s1)"
+  assert_eq "true" "$(jq -r .hookSpecificOutput.reloadSkills <<< "$out")" "reloadSkills"
+  assert_contains "$(jq -r .hookSpecificOutput.additionalContext <<< "$out")" " Changed skills: gamma." "context"
+}
+
+test_hook_forgets_old_sessions() {
+  make_fixture "$1"
+  mkdir -p "$state/sessions"
+  touch -t 202001010000 "$state/sessions/old"
+  hook UserPromptSubmit s1 > /dev/null
+  [[ ! -f "$state/sessions/old" ]] || fail "old session file kept"
+  [[ -f "$state/sessions/s1" ]] || fail "new session file missing"
+}
+
 test_min_interval_skips_a_recent_check() {
   make_fixture "$1"
   local old out
@@ -143,93 +228,6 @@ test_min_interval_skips_a_recent_check() {
   out="$(SKILLS_UPDATE_NOW=1400 update --min-interval 300)"
   assert_contains "$out" "updated: $(short "$old") -> " "after the interval"
   assert_eq "1400" "$(cat "$state/skills-update.stamp")" "stamp"
-}
-
-test_loop_runs_max_runs_times_then_stops() {
-  make_fixture "$1"
-  update --loop 0 --max-runs 3
-  assert_eq "3" "$(grep -c ' up-to-date: ' "$state/skills-update.log")" "checks"
-  assert_contains "$(log_text)" "loop: stopped after 3 checks" "log"
-  [[ ! -d "$state/skills-loop.lock" ]] || fail "loop lock not released"
-}
-
-test_loop_refuses_a_second_loop() {
-  make_fixture "$1"
-  local first out
-  "$clone/scripts/update.sh" --state-dir "$state" --loop 60 --max-runs 2 > /dev/null 2>&1 &
-  first=$!
-  wait_for 100 test -f "$state/skills-loop.lock/pid" || fail "first loop did not start"
-  out="$(update --loop 0 --max-runs 1)"
-  kill "$first" 2>/dev/null || true
-  assert_eq "skipped: another update loop is running (pid $first)" "$out" "output"
-}
-
-test_loop_takes_over_a_stale_lock() {
-  make_fixture "$1"
-  mkdir -p "$state/skills-loop.lock"
-  sh -c 'echo $$' > "$state/skills-loop.lock/pid"
-  update --loop 0 --max-runs 1
-  assert_contains "$(log_text)" " up-to-date: " "log"
-  [[ ! -d "$state/skills-loop.lock" ]] || fail "loop lock not released"
-}
-
-test_loop_ignores_a_pid_that_is_not_an_update_loop() {
-  make_fixture "$1"
-  local other
-  sleep 30 > /dev/null 2>&1 &
-  other=$!
-  mkdir -p "$state/skills-loop.lock"
-  echo "$other" > "$state/skills-loop.lock/pid"
-  update --loop 0 --max-runs 1
-  kill "$other"
-  assert_contains "$(log_text)" " up-to-date: " "log"
-}
-
-test_loop_trusts_a_live_pid_when_ps_fails() {
-  make_fixture "$1"
-  local other out
-  mkdir -p "$1/bin"
-  printf '#!/usr/bin/env bash\nexit 1\n' > "$1/bin/ps"
-  chmod +x "$1/bin/ps"
-  sleep 30 > /dev/null 2>&1 &
-  other=$!
-  mkdir -p "$state/skills-loop.lock"
-  echo "$other" > "$state/skills-loop.lock/pid"
-  out="$(PATH="$1/bin:$PATH" update --loop 0 --max-runs 1)"
-  kill "$other"
-  assert_eq "skipped: another update loop is running (pid $other)" "$out" "output"
-}
-
-test_loop_restarts_with_the_new_script() {
-  make_fixture "$1"
-  sed 's/loop: stopped after/loop v2: stopped after/' "$work/scripts/update.sh" > "$work/update.new"
-  mv "$work/update.new" "$work/scripts/update.sh"
-  chmod +x "$work/scripts/update.sh"
-  commit_push "change update.sh"
-  update --loop 0 --max-runs 2
-  assert_contains "$(log_text)" " updated: " "first check"
-  assert_contains "$(log_text)" "loop: update.sh changed, restarting" "restart"
-  assert_contains "$(log_text)" "loop v2: stopped after 1 checks" "second check by the new script"
-}
-
-test_detach_starts_the_loop_in_the_background() {
-  make_fixture "$1"
-  local out
-  out="$(update --detach --loop 0 --max-runs 1)"
-  assert_eq "started: update loop every 0s, log in $state/skills-update.log" "$out" "output"
-  wait_for 100 grep -q "loop: stopped" "$state/skills-update.log" || fail "loop did not finish"
-  assert_contains "$(log_text)" " up-to-date: " "log"
-}
-
-test_detach_skips_when_a_loop_is_running() {
-  make_fixture "$1"
-  local first out
-  "$clone/scripts/update.sh" --state-dir "$state" --loop 60 --max-runs 2 > /dev/null 2>&1 &
-  first=$!
-  wait_for 100 test -f "$state/skills-loop.lock/pid" || fail "first loop did not start"
-  out="$(update --detach --loop 0)"
-  kill "$first" 2>/dev/null || true
-  assert_eq "skipped: update loop already running (pid $first), log in $state/skills-update.log" "$out" "output"
 }
 
 test_rejects_a_bad_option_value() {

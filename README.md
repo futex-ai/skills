@@ -12,7 +12,8 @@ Codex, and with any other agent that reads the
   and `~/.codex/AGENTS.md`.
 - `skills/agents-md/templates/AGENTS.md`: the thin per-repository `AGENTS.md`.
 - `scripts/install.sh`: links everything into the agent directories.
-- `scripts/update.sh`: brings an installed clone to the latest `main`.
+- `scripts/update.sh`: brings an installed clone to the latest `main`. Its
+  lock, loop, and hook functions live in `scripts/lib/`.
 - `scripts/check.sh`: validates every skill.
 - `tests/`: shell tests for the scripts. `tests/run.sh` runs them all.
 
@@ -64,9 +65,10 @@ The script symlinks each skill into `~/.claude/skills` and `~/.agents/skills`,
 and links `global/AGENTS.md` to `~/.claude/CLAUDE.md` and `~/.codex/AGENTS.md`.
 A pull updates the skills that are already linked. When a pull adds a new
 skill, run `scripts/install.sh` again.
-Pass `--codex-home` to also link into `~/.codex/skills` for a Codex version
-that reads only that directory. The script skips a path that exists and is not
-a symlink; pass `--force` to replace it (the original is kept as `.bak`).
+Pass `--codex-home` once to also link into `~/.codex/skills` for a Codex
+version that reads only that directory. Later runs keep that directory
+current without the flag. The script skips a path that exists and is not a
+symlink; pass `--force` to replace it (the original is kept as `.bak`).
 `--uninstall` removes the links. Run `/skills` in Codex to confirm discovery.
 
 On another machine, or in a cloud workspace setup script:
@@ -94,6 +96,7 @@ The script runs unattended and plays safe:
 - It fast-forwards only. It never resets, forces, or discards anything.
 - When it cannot update, it says why and exits 0, so that a setup script
   continues.
+- It stops a fetch that gives no answer within 20 seconds.
 - It logs each run to `~/.futex/skills-update.log` and keeps that file
   small.
 
@@ -106,22 +109,34 @@ Three ways to run it:
 ```
 
 The loop is one process per machine. A second `--detach` sees the first
-and returns. The loop does not survive a restart of the machine, so the
-setup script that starts it must run again after a restart.
+and returns. `update.sh --stop` ends the loop. The loop does not survive a
+restart of the machine, so the setup script that starts it must run again
+after a restart.
 
 `install.sh --hooks` adds two hooks to `~/.claude/settings.json` and needs
 `jq`:
 
-- `SessionStart` runs the update before the first prompt. When skills
-  changed, the hook asks Claude Code to rescan the skill directories and
-  tells the agent which skills changed. When the always-on rules changed,
-  it asks the agent to read `~/.claude/CLAUDE.md` again.
+- `SessionStart` runs the update before the first prompt, unless a check
+  ran in the last minute. When skills changed, it asks Claude Code to
+  rescan the skill directories.
 - `UserPromptSubmit` runs the update in the background, at most once every
   5 minutes while a session is active. A change shows up on the next turn.
 
+Both hooks tell the agent which skills changed since the session last
+heard, also when the loop or another session applied the update. When the
+always-on rules changed, they ask the agent to read `~/.claude/CLAUDE.md`
+again. For this the script keeps one small file per session under
+`~/.futex/sessions/` and removes files older than seven days.
+
 Claude Code runs hooks from settings files only after you trust the folder
-in an interactive session. `install.sh --uninstall` removes the hooks with
-the links. Codex has no hook here. The loop keeps its skills current.
+in an interactive session. `install.sh --uninstall` stops the loop and
+removes the hooks with the links. Codex has no hook here. The loop keeps
+its skills current.
+
+Every machine with the loop or the hooks runs the scripts from `main`
+within minutes of a merge, with the rights of the user. Protect `main` with
+a required pull-request review, and review each change under `scripts/` as
+code that runs everywhere.
 
 A cloud workspace setup script can do all three in a row:
 
@@ -137,7 +152,8 @@ fi
 
 More options: `--min-interval <s>` skips a check that ran less than `<s>`
 seconds ago. `--timeout <s>` bounds the fetch. `--state-dir <dir>` moves the
-log, the stamp, and the locks. `--branch <name>` follows another branch.
+log, the stamp, the locks, and the session files. `--branch <name>` follows
+another branch.
 
 ## Adding a repository
 
@@ -158,3 +174,5 @@ log, the stamp, and the locks. `--branch <name>` follows another branch.
 - Run `scripts/check.sh` and `tests/run.sh` before you commit.
 - A new skill reaches an existing install when `scripts/update.sh` or
   `scripts/install.sh` runs there. Say so in the pull request description.
+- A change under `scripts/` runs on every installed machine minutes after
+  the merge. Review it as code that runs everywhere.

@@ -45,6 +45,11 @@ short() { printf '%s' "${1:0:7}"; }
 
 log_text() { cat "$state/skills-update.log"; }
 
+end_process() {  # end_process <pid>: stop a child of this shell and wait for it
+  kill "$1" 2>/dev/null || true
+  wait "$1" 2>/dev/null || true
+}
+
 wait_for() {  # wait_for <max polls> <command...>: poll until the command passes
   local polls="$1" i
   shift
@@ -67,12 +72,20 @@ make_fixture() {  # make_fixture <dir>: build the remote, work clone, clone, and
   git_t clone -q "$remote" "$work" 2>/dev/null
   write_skill alpha
   write_skill beta
-  mkdir -p "$work/global" "$work/scripts"
+  mkdir -p "$work/global"
   echo "# Always-on rules" > "$work/global/AGENTS.md"
-  cp "$repo_under_test/scripts/install.sh" "$repo_under_test/scripts/update.sh" "$work/scripts/"
+  cp -R "$repo_under_test/scripts" "$work/"
   commit_push "initial skills"
   git_t clone -q "$remote" "$clone"
   "$clone/scripts/install.sh" --quiet > /dev/null
+}
+
+fake_git() {  # fake_git <dir> <seconds>: a git on PATH whose fetch sleeps <seconds>
+  mkdir -p "$1"
+  # shellcheck disable=SC2016
+  printf '#!/usr/bin/env bash\nfor a in "$@"; do [[ "$a" == fetch ]] && exec sleep %s; done\nexec %s "$@"\n' \
+    "$2" "$(command -v git)" > "$1/git"
+  chmod +x "$1/git"
 }
 
 run_test() {  # run_test <function>: run it in a temp dir, print PASS or FAIL
@@ -86,7 +99,7 @@ run_test() {  # run_test <function>: run it in a temp dir, print PASS or FAIL
     echo "FAIL $name"
     printf '%s\n' "$output" | sed 's/^/     /'
   fi
-  rm -rf "$dir"
+  rm -rf "$dir" 2>/dev/null || true
 }
 
 run_all_tests() {  # run every function named test_* in the calling file

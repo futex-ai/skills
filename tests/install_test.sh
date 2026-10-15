@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-# Tests for scripts/install.sh: quiet mode, dangling-link removal, the Claude
-# Code hooks, and uninstall.
+# Tests for scripts/install.sh: quiet mode, dangling-link removal, the Codex
+# home directory, the Claude Code hooks, and uninstall.
 set -euo pipefail
 # shellcheck source=tests/lib.sh
 source "$(dirname "${BASH_SOURCE[0]}")/lib.sh"
@@ -27,6 +27,23 @@ test_removes_dangling_links_into_the_repository_only() {
   [[ -L "$HOME/.claude/skills/alpha" ]] || fail "valid link removed"
 }
 
+test_removes_a_dangling_rules_link() {
+  make_fixture "$1"
+  rm "$clone/global/AGENTS.md"
+  assert_contains "$(install --quiet)" "removed  $HOME/.claude/CLAUDE.md (target is gone)" "output"
+  [[ ! -L "$HOME/.claude/CLAUDE.md" ]] || fail "rules link still present"
+}
+
+test_codex_home_stays_a_skill_root() {
+  make_fixture "$1"
+  install --codex-home --quiet > /dev/null
+  [[ -L "$HOME/.codex/skills/alpha" ]] || fail "alpha not linked into the Codex home"
+  mkdir -p "$clone/skills/gamma"
+  printf -- '---\nname: gamma\ndescription: test\n---\n' > "$clone/skills/gamma/SKILL.md"
+  install --quiet > /dev/null
+  [[ -L "$HOME/.codex/skills/gamma" ]] || fail "gamma not linked into the Codex home"
+}
+
 test_hooks_are_added_once() {
   make_fixture "$1"
   local s
@@ -36,7 +53,7 @@ test_hooks_are_added_once() {
   assert_eq "hooks    unchanged in $s" "$(install --hooks | grep hooks)" "second verbose run"
   assert_eq "1" "$(jq '.hooks.SessionStart | length' "$s")" "SessionStart entries"
   assert_eq "1" "$(jq '.hooks.UserPromptSubmit | length' "$s")" "UserPromptSubmit entries"
-  assert_eq "\"$clone/scripts/update.sh\" --hook" \
+  assert_eq "\"$clone/scripts/update.sh\" --hook --min-interval 60" \
     "$(jq -r '.hooks.SessionStart[0].hooks[0].command' "$s")" "SessionStart command"
   assert_eq "60" "$(jq '.hooks.SessionStart[0].hooks[0].timeout' "$s")" "SessionStart timeout"
   assert_eq "\"$clone/scripts/update.sh\" --hook --min-interval 300" \
@@ -69,6 +86,36 @@ test_hooks_skip_invalid_json() {
   assert_eq '{not json' "$(cat "$s")" "file unchanged"
 }
 
+test_hooks_skip_a_file_that_is_not_an_object() {
+  make_fixture "$1"
+  local s
+  s="$(settings_file)"
+  mkdir -p "$HOME/.claude"
+  printf '  \n' > "$s"
+  assert_eq "skipped  hooks ($s is not a JSON object)" "$(install --hooks --quiet)" "whitespace output"
+  assert_eq "3" "$(wc -c < "$s" | tr -d ' ')" "whitespace file unchanged"
+  echo '[]' > "$s"
+  assert_eq "skipped  hooks ($s is not a JSON object)" "$(install --hooks --quiet)" "array output"
+  assert_eq '[]' "$(cat "$s")" "array file unchanged"
+  [[ -z "$(find "$HOME/.claude" -name 'settings.json.*')" ]] || fail "temp file left behind"
+}
+
+test_hooks_write_through_a_symlink() {
+  make_fixture "$1"
+  local s target="$1/dotfiles/settings.json"
+  s="$(settings_file)"
+  mkdir -p "$HOME/.claude" "$1/dotfiles"
+  echo '{"env": {"X": "1"}}' > "$target"
+  ln -s "$target" "$s"
+  install --hooks --quiet > /dev/null
+  [[ -L "$s" ]] || fail "settings path is no longer a symlink"
+  assert_eq "1" "$(jq '.hooks.SessionStart | length' "$target")" "hooks in the target"
+  assert_eq "1" "$(jq -r .env.X "$target")" "env kept"
+  install --uninstall > /dev/null
+  [[ -L "$s" ]] || fail "settings path is no longer a symlink after uninstall"
+  assert_eq "null" "$(jq -c .hooks "$target")" "hooks removed from the target"
+}
+
 test_uninstall_removes_links_and_hooks() {
   make_fixture "$1"
   local s
@@ -80,6 +127,18 @@ test_uninstall_removes_links_and_hooks() {
   [[ ! -L "$HOME/.claude/skills/zeta" ]] || fail "dangling link still present"
   [[ ! -L "$HOME/.claude/CLAUDE.md" ]] || fail "rules link still present"
   assert_eq "null" "$(jq -c .hooks "$s")" "hooks removed"
+}
+
+test_uninstall_stops_the_loop() {
+  make_fixture "$1"
+  local pid out
+  "$clone/scripts/update.sh" --detach --loop 60 > /dev/null
+  wait_for 100 test -s "$HOME/.futex/skills-loop.lock/pid" || fail "loop did not start"
+  pid="$(cat "$HOME/.futex/skills-loop.lock/pid")"
+  out="$(install --uninstall)"
+  assert_contains "$out" "stopped: update loop (pid $pid)" "output"
+  [[ ! -d "$HOME/.futex/skills-loop.lock" ]] || fail "loop lock still present"
+  wait_for 100 bash -c "! kill -0 $pid 2>/dev/null" || fail "loop still running"
 }
 
 test_uninstall_leaves_a_settings_file_without_our_hooks_alone() {
