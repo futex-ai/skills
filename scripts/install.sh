@@ -1,22 +1,29 @@
 #!/usr/bin/env bash
 # Link every skill under skills/ into the Claude Code and Codex skill
 # directories, and link global/AGENTS.md as the always-on rules file for both
-# agents. Safe to re-run.
+# agents. Remove a link into this repository when its target is gone. Safe to
+# re-run.
 #
-# Usage: install.sh [--force] [--codex-home] [--uninstall]
+# Usage: install.sh [--force] [--codex-home] [--hooks] [--quiet] [--uninstall]
 #   --force       replace an existing non-symlink path (kept as <path>.bak)
 #   --codex-home  also link skills into ~/.codex/skills
-#   --uninstall   remove links that point into this repository
+#   --hooks       add the Claude Code hooks that run scripts/update.sh (needs jq)
+#   --quiet       print only new links, replaced paths, removed links, and skips
+#   --uninstall   remove the links and the hooks that point into this repository
 set -euo pipefail
 
 repo="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 force=0
 codex_home=0
+hooks=0
+quiet=0
 uninstall=0
 for arg in "$@"; do
   case "$arg" in
     --force) force=1 ;;
     --codex-home) codex_home=1 ;;
+    --hooks) hooks=1 ;;
+    --quiet) quiet=1 ;;
     --uninstall) uninstall=1 ;;
     *) echo "unknown option: $arg" >&2; exit 2 ;;
   esac
@@ -25,14 +32,33 @@ done
 skill_roots=("$HOME/.claude/skills" "$HOME/.agents/skills")
 if (( codex_home )); then skill_roots+=("$HOME/.codex/skills"); fi
 global_links=("$HOME/.claude/CLAUDE.md" "$HOME/.codex/AGENTS.md")
+settings="$HOME/.claude/settings.json"
+update_script="$repo/scripts/update.sh"
+
+# Every hook entry that this script writes contains this text. The jq
+# programs below read $mark and $cmd as jq variables, not shell variables.
+hook_mark='/scripts/update.sh" --hook'
+# shellcheck disable=SC2016
+drop_hooks='def ours: ((.command // "") | contains($mark));
+  def drop: map(.hooks = ((.hooks // []) | map(select(ours | not))))
+    | map(select((.hooks | length) > 0));
+  .hooks = ((.hooks // {}) | with_entries(.value |= drop)
+    | with_entries(select((.value | length) > 0)))'
+# shellcheck disable=SC2016
+add_hooks="$drop_hooks"'
+  | .hooks.SessionStart += [{hooks: [{type: "command",
+      command: ("\"" + $cmd + "\" --hook"), timeout: 60}]}]
+  | .hooks.UserPromptSubmit += [{hooks: [{type: "command",
+      command: ("\"" + $cmd + "\" --hook --min-interval 300"), async: true}]}]'
 
 link() {
-  local target="$1" path="$2"
+  local target="$1" path="$2" old
   mkdir -p "$(dirname "$path")"
   if [[ -L "$path" ]]; then
+    old="$(readlink "$path")"
     rm "$path"
     ln -s "$target" "$path"
-    echo "linked   $path"
+    if (( ! quiet )) || [[ "$old" != "$target" ]]; then echo "linked   $path"; fi
   elif [[ -e "$path" ]]; then
     if (( force )); then
       mv "$path" "$path.bak"
@@ -55,6 +81,36 @@ unlink_if_ours() {
   fi
 }
 
+prune_dangling() {  # prune_dangling <path>...: remove our links whose target is gone
+  local path
+  for path in "$@"; do
+    [[ -L "$path" ]] || continue
+    [[ "$(readlink "$path")" == "$repo"/* ]] || continue
+    [[ -e "$path" ]] && continue
+    rm "$path"
+    echo "removed  $path (target is gone)"
+  done
+}
+
+write_hooks() {  # write_hooks <jq program> <verb>: rewrite settings.json
+  local tmp current='{}'
+  if ! command -v jq >/dev/null 2>&1; then
+    echo "skipped  hooks (jq not found)"; return 0
+  fi
+  if [[ -s "$settings" ]]; then
+    if ! jq empty "$settings" >/dev/null 2>&1; then
+      echo "skipped  hooks ($settings is not valid JSON)"; return 0
+    fi
+    current="$(cat "$settings")"
+  fi
+  mkdir -p "$(dirname "$settings")"
+  tmp="$(mktemp "$settings.XXXXXX")"
+  printf '%s' "$current" | jq --arg mark "$hook_mark" --arg cmd "$update_script" "$1" > "$tmp"
+  chmod 0600 "$tmp"
+  mv "$tmp" "$settings"
+  echo "hooks    $2 $settings"
+}
+
 if (( uninstall )); then
   for dir in "$repo"/skills/*/; do
     name="$(basename "${dir%/}")"
@@ -62,7 +118,9 @@ if (( uninstall )); then
       unlink_if_ours "$root/$name"
     done
   done
+  for root in "${skill_roots[@]}" "$HOME/.codex/skills"; do prune_dangling "$root"/*; done
   for path in "${global_links[@]}"; do unlink_if_ours "$path"; done
+  if [[ -s "$settings" ]]; then write_hooks "$drop_hooks" "removed from"; fi
   exit 0
 fi
 
@@ -78,3 +136,8 @@ done
 for path in "${global_links[@]}"; do
   link "$repo/global/AGENTS.md" "$path"
 done
+
+for root in "${skill_roots[@]}" "$HOME/.codex/skills"; do prune_dangling "$root"/*; done
+prune_dangling "${global_links[@]}"
+
+if (( hooks )); then write_hooks "$add_hooks" "added to"; fi

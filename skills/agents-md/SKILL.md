@@ -43,9 +43,9 @@ rules. [templates/AGENTS.md](templates/AGENTS.md) is the template.
    latest commit of `futex-ai/skills` `main` with
    `git ls-remote https://github.com/futex-ai/skills.git refs/heads/main`.
    Bring the installed skills to that commit:
-   - Skills linked from a clone of `futex-ai/skills`: when the clone is on
-     `main` and has no local changes, run `git pull --ff-only` in it. Its
-     `HEAD` must then be that commit.
+   - Skills linked from a clone of `futex-ai/skills`: run
+     `./scripts/update.sh` in the clone. It fast-forwards a clean `main`
+     and relinks the skills. Its `HEAD` must then be that commit.
    - Skills installed with `npx skills add`: run `npx skills update -g -y`.
    - Any other case, or a failed update: clone `main` under `.context/` and
      read the skills from that clone.

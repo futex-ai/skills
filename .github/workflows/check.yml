@@ -17,7 +17,9 @@ jobs:
       - name: Validate skill frontmatter, references, and scripts
         run: scripts/check.sh
       - name: Lint shell scripts
-        run: shellcheck scripts/*.sh skills/*/scripts/*.sh
+        run: shellcheck scripts/*.sh tests/*.sh skills/*/scripts/*.sh
+      - name: Run the shell tests
+        run: tests/run.sh
       - name: Reject trailing whitespace
         run: |
           if grep -rnE ' +$' --include='*.md' --include='*.sh' --include='*.yml' . --exclude-dir=.git; then
