@@ -64,7 +64,9 @@ Use this layout for each decision that is not a review finding.
 - **Options:**
   - **A.** <The change.> <Its cost or risk.>
   - **B.** <The change.> <Its cost or risk.>
+  - <More options as C, D, and so on, when the problem has them.>
 - **Recommendation:** <Letter>. <One sentence of reasoning.>
+- **Auto-fix:** no, because <the reason that you cannot choose alone.>
 ```
 
 ## Finding layout
@@ -82,15 +84,17 @@ what each field must contain.
 - **Context:** <Two to five sentences of background: what the feature does, where it is, and what is wrong.>
 - **Impact if no action:** <One or two sentences.>
 - **Options:**
-  - **A.** <The direct fix.> <Its cost or risk.>
-  - **B.** <The wider fix: a rule, test, lint, guard, abstraction, or architectural change.> <Its cost or risk.>
+  - **A.** <A fix.> <Its cost or risk.>
+  - **B.** <Another fix.> <Its cost or risk.>
+  - <More options as C, D, and so on, when the problem has them.>
+- **Wider fix:** <The letter of the option that prevents this class of issue: a rule, test, lint, guard, abstraction, or architectural change. Or "None" and the reason.>
 - **Previous examples:** <Earlier cases of this class, with commits or files, or "None found".>
 - **Recommendation:** <Letter>. <One sentence of reasoning.> <When another option best protects the codebase, one sentence that names it.>
-- **Auto-fix:** <`yes`, or `no, because …`>
+- **Auto-fix:** <`yes`, or `no, because` and the condition that stops the fix.>
 ```
 
-When no wider fix is available, write option **B** as "No wider fix:" and
-the reason.
+Give one lettered option for each real choice. The wider fix is one of
+these options.
 
 In both layouts, keep every label, also when the user asks for more detail
 or for a shorter answer. For more detail, write **Context** as a list with
@@ -114,6 +118,8 @@ one fact in each item.
 - Read the saved review report first, when it exists.
 - Restate every field. Do not point to an earlier message for a field.
 - Keep the recorded option letters of each item.
+- When the record gives no wider fix, look for one. Add the wider fix that
+  you find as a new option with the next free letter.
 - Keep the recorded number when no other item in the message has it.
   Otherwise, give the next free number. Then add a **Source:** line under
   the title with the record and the old number.
