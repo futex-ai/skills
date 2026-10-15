@@ -1,6 +1,6 @@
 ---
 name: decisions-and-findings
-description: How to write a message that asks the user for decisions, presents review findings (review items), or gives a final report. Use before you send any such message, also when the user asks for more detail, a shorter answer, or an explanation of earlier decisions or review items, and when you list open findings from a plan. Covers the Simplified Technical English (STE) limits, the message order, the background paragraph, the decision layout, the review finding layout, the severity, category, and effort scales, the summary table for many items, the final report labels, and why the layout applies under a brief output style.
+description: How to write a message that asks the user for decisions, presents review findings (review items), or gives a final report. Use before you send any such message, also when the user asks for more detail, a shorter answer, or an explanation of earlier decisions or review items, and when you list open findings from a plan. Covers the Simplified Technical English (STE) limits, the message order, the severity order of items, the background paragraph, the decision layout, the review finding layout, the severity, category, and effort scales, the summary table for many items, the final report labels, and why the layout applies under a brief output style.
 ---
 
 # Decisions and findings
@@ -18,7 +18,8 @@ structure, not decoration. Brevity means fewer words. It does not mean
 fewer fields or longer sentences.
 
 A skill or a prompt for one task can set its own message order. Then use
-that order, but keep the layouts and the labels of this skill.
+that order, but keep the layouts, the labels, and the item order of this
+skill.
 
 ## Simplified Technical English
 
@@ -44,13 +45,19 @@ Write in Simplified Technical English (ASD-STE100):
    sentences or fewer. The **Background** of each item then adds only what
    that item needs.
 3. With more than five items, add a summary table. Give the number, the
-   title, the severity, the effort, and the recommended option.
+   title, the severity, the effort, and the recommended option. Use the
+   same order as the items.
 4. Give each item in the layout below.
 5. When the task ends, finish with the final report.
 
-Number the items once across the whole message. When the items come from
-different sources, put each group under its own heading. Continue the
-numbers from one group to the next.
+## Item order
+
+List the items by severity in every message: High first, then Medium,
+then Low. Keep the relative order of items with the same severity. Number
+the items once across the whole message, in that order. When the items
+come from different sources, put each group under its own heading. List
+the items of each group by severity. Continue the numbers from one group
+to the next.
 
 ## Decision layout
 
@@ -130,6 +137,8 @@ with one fact in each item.
 - Keep the recorded number when no other item in the message has it.
   Otherwise, give the next free number. Then add a **Source:** line under
   the title with the record and the old number.
+- List the items by severity, also when the recorded numbers are then out
+  of sequence. Do not renumber them for this.
 - Always write **Background**, **Problem**, **Impact if no action**, and
   **Options**. They explain the item, so you can write them from the
   record, the code, and the docs.
@@ -141,7 +150,8 @@ with one fact in each item.
 
 ## Final report
 
-End every task with a final report. Use these labels:
+End every task with a final report. List the items under **Fixed** and
+under **Open** by severity, High first. Use these labels:
 
 - **Changed:** what changed, the commit, and the pull request.
 - **Fixed:** each auto-fixed finding. Give its number, its severity, a
