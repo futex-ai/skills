@@ -22,15 +22,18 @@ Codex, and with any other agent that reads the
 1. **Always-on rules** in `global/AGENTS.md` apply in every session: writing
    style, working habits, testing habits, safety rules. Keep this file short.
    Every line costs context on every turn.
-2. **Skills** hold the detailed procedures. An agent loads a skill when the
-   moment matches its description, or when the repository `AGENTS.md` names
-   it.
+2. **Skills** hold the detailed procedures. An agent sees the name and
+   description of every installed skill, and loads a skill when the moment
+   matches its description. The description is the one place that says
+   when to read a skill.
 3. **The per-repository `AGENTS.md`** holds what is specific to that
-   repository: commands, layout, caps, product locations, review focus. It
-   lists the shared skills that apply and when to read them. It also
-   repeats the communication preference (Simplified Technical English,
-   faithful reporting, batched decisions, final report) so that it reaches
-   an agent that does not have the global file installed.
+   repository: commands, layout, caps, product locations, review focus, and
+   what a skill description cannot know, such as a skill that does not
+   apply or a path that differs from the skill's default. It does not
+   repeat the skill list. It does repeat the communication preference
+   (Simplified Technical English, faithful reporting, batched decisions,
+   final report) so that it reaches an agent that does not have the global
+   file installed.
 
 ## Skills
 

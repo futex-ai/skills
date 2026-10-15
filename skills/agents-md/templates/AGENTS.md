@@ -7,36 +7,17 @@ Rust task runner under `xtask/`.">
 
 This file holds the rules that are specific to this repository. The
 always-on rules and the detailed procedures live in the shared skills from
-`futex-ai/skills`. Read the skill at the named moment instead of guessing
-the rule.
+`futex-ai/skills`. Each skill's description says when to read it. Read the
+skill at that moment instead of guessing the rule.
 
 ## Shared skills
 
-- `finish-work`: before you say work is complete, and before you commit.
-- `plans`: before you create, edit, or tick a plan under `plans/`.
-- `implementation-review`: after you push, before you run or apply a
-  review.
-- `decisions-and-findings`: before you send a message with decisions,
-  review findings, or a final report.
-- `deterministic-tests`: when a test flakes, or when a test would assert
-  elapsed time.
-- `git-commit`: before and after you commit, and when you open a pull
-  request.
-- `git-merge`: before you merge or rebase, and after each merge commit.
-- `documentation`: before you edit a `README.md`, a doc, or a protocol doc,
-  and when a change or a review option conflicts with a protocol doc.
-- `rust`: before you edit Rust. <delete if the repository has no Rust>
-- `typescript`: before you edit TypeScript or JavaScript. <delete if the
-  repository has no TypeScript or JavaScript>
-- `databases`: before you touch migrations, Diesel, or store crates.
-  <delete if none>
-- `shared-types`: before you add or change a type that crosses between
-  Rust and TypeScript, or write a TypeScript type for backend data.
-  <delete if the repository has no Rust and TypeScript boundary>
-- `mockups`: before you create or change a mockup under `docs/mockups`.
-  <delete if none>
-- `product-ui`: before you implement or change a user-facing screen or
-  copy. <delete if none>
+<Only what a skill description cannot know about this repository. Delete
+the section when there is nothing to say. Examples:>
+
+- Plans live under `<path>`, not `plans/`.
+- The `rust`, `databases`, and `shared-types` skills do not apply. This
+  repository has no Rust.
 
 ## Communication
 
