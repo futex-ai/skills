@@ -122,7 +122,7 @@ one fact in each item.
   and the docs.
 - Some fields are judgments: severity, effort, category, recommendation,
   and Auto-fix. When the record does not give a judgment, give your own.
-  Say that it is your estimate.
+  Add "(estimate)" after it.
 - When you cannot find the location, write "Not found". When you find no
   previous examples, write "None found".
 
