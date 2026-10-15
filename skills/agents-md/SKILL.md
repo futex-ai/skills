@@ -65,8 +65,8 @@ rules. [templates/AGENTS.md](templates/AGENTS.md) is the template.
    - **Uncovered general rule**: a rule that belongs in a shared skill but
      is not there yet. The user decides. Never drop it silently.
 4. Send the checkpoint message described below and wait for the answers.
-   The new `AGENTS.md` replaces content on `origin/main`, so change no file
-   before this checkpoint.
+   The new `AGENTS.md` replaces content on `origin/main`, so change no
+   tracked file in this repository before this checkpoint.
 5. Write the new `AGENTS.md` from the template with the decisions applied.
    Fill every section. Keep `CLAUDE.md` as a symlink to `AGENTS.md`.
 6. Delete the approved files: the `docs/dev/*.md` files now covered by
