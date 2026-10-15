@@ -72,6 +72,8 @@ change. [templates/plan.md](templates/plan.md) is the starting point.
   is not lost when the session ends. Give its number, title, severity,
   effort, and recommended option, for example:
   `3. Retry loop has no limit. Severity High, effort Small. Recommended: A, cap the retries.`
+- Add each problem that the review listed under `Outside the scope` as one
+  line too: its path, one sentence, and `Separate branch.`
 
 ## Completion boundary
 

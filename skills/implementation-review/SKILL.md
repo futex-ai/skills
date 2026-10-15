@@ -1,6 +1,6 @@
 ---
 name: implementation-review
-description: The post-push implementation review and the review-fix rule. Use after you push a branch and before you run or apply a review, when a plan's review TODO is reached, or when the user asks for a code review of a branch. Covers the read-only reviewer prompt, the numbered finding format with severity, category, and effort grade, the wider-fix option with its best-effort search for previous examples, the Auto-fix yes and no conditions, the two fix-round limit, and how to report fixed and open findings.
+description: The post-push implementation review and the review-fix rule. Use after you push a branch and before you run or apply a review, when a plan's review TODO is reached, or when the user asks for a code review of a branch. Covers the diff scope with the Outside the scope list and the user-widened scope, the read-only reviewer prompt, the numbered finding format with severity, category, and effort grade, the wider-fix option with its best-effort search for previous examples, the Auto-fix yes and no conditions, the two fix-round limit, and how to report fixed and open findings.
 ---
 
 # Implementation review
@@ -10,16 +10,33 @@ committed, and been pushed. The reviewer inspects the complete local diff
 against `origin/main` and changes nothing. Fixing happens in a separate step
 after the report.
 
+## Scope
+
+- The scope is the diff: each changed or added hunk, and the code outside
+  the diff whose behaviour the diff changes, such as a caller of a changed
+  function, a test that covers changed code, or a doc that describes
+  changed behaviour.
+- A finding must anchor to the scope.
+- The reviewer lists every other problem under `Outside the scope`, one
+  line each, without a number or the finding layout. Nobody fixes these
+  problems in this branch. An unrelated flaky test is such a problem.
+- The user can widen the scope by asking for it explicitly, for example a
+  review of the whole repository or of a named area. Then the requested
+  scope replaces the diff. Do not widen the scope for any other reason.
+
 ## Running the review
 
 1. Run the review as a separate read-only pass with a fresh context: a
    subagent, a second agent, or a new session. Give it the prompt in
    [references/review-prompt.md](references/review-prompt.md) and the
-   `## Review focus` list from the repository's `AGENTS.md`.
+   `## Review focus` list from the repository's `AGENTS.md`. When the user
+   asked for a wider scope, replace the first paragraph of the prompt's
+   `## Scope` section with the requested scope.
 2. The reviewer starts with `scripts/diff-summary.sh` so that a large diff
    fits in context, then reads changed files and focused patches directly.
-3. The reviewer returns numbered findings, or says clearly that there are
-   none and names the residual test risk.
+3. The reviewer returns numbered findings and then the `Outside the scope`
+   list, or says clearly that there are none and names the residual test
+   risk.
 4. Save the full report under `.context/<plan-name>/`, not in the
    repository.
 
@@ -79,17 +96,21 @@ The full rule with every condition is in
   or gate, or a need for credentials or infrastructure. Large findings, and
   findings about missing tests, performance, code structure, UX wording, and
   process, always wait for the user.
+- An `Outside the scope` problem is not a finding. Do not fix it in this
+  branch. Report it for a separate branch.
 
 ## After the review
 
-1. Fix the `Auto-fix: yes` findings without waiting for the user.
+1. Fix the `Auto-fix: yes` findings without waiting for the user. Leave the
+   `Outside the scope` problems alone.
 2. Run the checks, commit, push, and run the review once more on the fix.
    Name each fixed finding in its commit message.
 3. Fix any new `Auto-fix: yes` findings once more, then stop. Do not start a
    third fix round without the user.
 4. In the final message, list the auto-fixed findings (number, severity,
    plain explanation, what changed, commit) separately from the findings
-   that need a decision, each with a clear recommendation. Use the
-   `decisions-and-findings` skill.
-5. Add each open finding as one line under the plan's review TODO, in the
-   shape that the `plans` skill gives.
+   that need a decision, each with a clear recommendation. List the
+   `Outside the scope` problems under **Open**, for a separate branch. Use
+   the `decisions-and-findings` skill.
+5. Add each open finding, and each `Outside the scope` problem, as one line
+   under the plan's review TODO, in the shape that the `plans` skill gives.

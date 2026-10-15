@@ -99,6 +99,10 @@ what each field must contain.
 Give one lettered option for each real choice. The wider fix is one of
 these options.
 
+A problem outside the review scope is not a finding. The
+`implementation-review` skill gives its one-line shape. The final report
+lists it under **Open**, for a separate branch.
+
 In both layouts, keep every label, also when the user asks for more detail
 or for a shorter answer. For more detail, write **Background** as a list
 with one fact in each item.
@@ -149,4 +153,5 @@ End every task with a final report. Use these labels:
   Name each unrelated flaky test with its failure text, rerun outcome, and
   suspected source.
 - **Open:** the decisions and review items that still need the user. Add
-  the open plan TODOs, the follow-ups, and other skipped or blocked work.
+  the open plan TODOs, the follow-ups, the problems outside the review
+  scope for a separate branch, and other skipped or blocked work.
