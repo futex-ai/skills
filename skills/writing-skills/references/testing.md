@@ -60,7 +60,7 @@ Pressure test, with the skill text in context:
 ```sh
 claude -p --disable-slash-commands --permission-mode acceptEdits \
   --max-budget-usd 2 --output-format stream-json --verbose \
-  --append-system-prompt-file path/to/SKILL.md \
+  --append-system-prompt "$(cat path/to/SKILL.md)" \
   "$(cat prompt.md)" > ../skill-1.jsonl
 ```
 
