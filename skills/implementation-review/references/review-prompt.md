@@ -101,17 +101,16 @@ finding:
   `Auto-fix: no` so that the user chooses between them.
 - End the finding with `Auto-fix: yes` or `Auto-fix: no, because …`.
 
-`Auto-fix: yes` is allowed only when the finding has one clear fix and no
-wider fix is available, or the only wider fix is the known one for its
-class, for a small or medium effort finding about: a product bug (including
-edge cases, races, and platform differences); a security issue; docs or spec
-drift; a mockup mismatch that a protocol doc already settles; a flaky test
-that the diff adds or changes; or a repository-rule violation such as file
-size, lint, or layout. For a flaky
-test that the diff adds or changes, name the nondeterminism source and the
-deterministic fix (fake clock, event order, captured inputs, operation
-counts, explicit readiness signal, or isolated state), and require the fixer
-to reproduce the flake and record pass counts before and after.
+`Auto-fix: yes` is allowed only when the finding has one clear fix and no wider
+fix is available, or the only wider fix is the known one for its class, for a
+small or medium effort finding about: a product bug (including edge cases,
+races, and platform differences); a security issue; docs or spec drift; a
+mockup mismatch that a protocol doc already settles; a flaky test that the diff
+adds or changes; or a repository-rule violation such as file size, lint, or
+layout. For a flaky test that the diff adds or changes, name the nondeterminism
+source and the deterministic fix (fake clock, event order, captured inputs,
+operation counts, explicit readiness signal, or isolated state), and require
+the fixer to reproduce the flake and record pass counts before and after.
 
 `Auto-fix: no` for every finding that needs a decision: more than one option
 with real trade-offs; a change to a requirement in a protocol doc without a
