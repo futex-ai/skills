@@ -102,23 +102,25 @@ finding:
 - End the finding with `Auto-fix: yes` or `Auto-fix: no, because …`.
 
 `Auto-fix: yes` is allowed only when the finding has one clear fix and no
-wider fix is available, for a small or medium effort finding about: a
-product bug (including edge cases, races, and platform differences); a
-security issue; docs or spec drift; a mockup mismatch that a protocol doc
-already settles; a flaky test that the diff adds or changes; or a
-repository-rule violation such as file size, lint, or layout. For a flaky
+wider fix is available, or the only wider fix is the known one for its
+class, for a small or medium effort finding about: a product bug (including
+edge cases, races, and platform differences); a security issue; docs or spec
+drift; a mockup mismatch that a protocol doc already settles; a flaky test
+that the diff adds or changes; or a repository-rule violation such as file
+size, lint, or layout. For a flaky
 test that the diff adds or changes, name the nondeterminism source and the
 deterministic fix (fake clock, event order, captured inputs, operation
 counts, explicit readiness signal, or isolated state), and require the fixer
 to reproduce the flake and record pass counts before and after.
 
 `Auto-fix: no` for every finding that needs a decision: more than one option
-with real trade-offs; a change to the meaning of a contract; a choice between
-a mockup and the product; user-visible behaviour beyond the contract; a new
-build error, rejection, gate, or stricter validation; a wider fix available
-beside the direct fix; deleting or weakening a test or gate or raising a
-time limit; or a need for an audit exception, credentials, or
-infrastructure. Tag a slow, custom, or low-value test, gate, lint, or check
+with real trade-offs; a change to a requirement in a protocol doc without a
+recorded user decision; a new requirement for behaviour at the boundary; a
+choice between a mockup and the product; user-visible behaviour beyond the
+contract; a new build error, rejection, gate, or stricter validation; a
+wider fix available beside the direct fix; deleting or weakening a test or
+gate or raising a time limit; or a need for an audit exception, credentials,
+or infrastructure. Tag a slow, custom, or low-value test, gate, lint, or check
 in the scope `Auto-fix: no` and ask whether to fix it or remove it, stating
 what it protects and how long it runs. Large findings, and findings about
 missing tests, performance, code structure, UX wording, and process, are

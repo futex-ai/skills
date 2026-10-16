@@ -83,19 +83,21 @@ The full rule with every condition is in
 [references/review-fix-rule.md](references/review-fix-rule.md). In short:
 
 - `Auto-fix: yes` is allowed only when the finding has one clear fix and
-  no wider fix is available, for small or medium effort findings in these
-  categories: product bugs (including edge cases, races, and platform
-  differences), security issues, docs or spec drift, mockup mismatches that
-  a protocol doc already settles, flaky tests that the diff adds or changes
-  under the flaky-test rule in the `deterministic-tests` skill, and
-  repository-rule violations such as file size, lint, and layout.
+  no wider fix is available, or the only wider fix is the known one for its
+  class, for small or medium effort findings in these categories: product
+  bugs (including edge cases, races, and platform differences), security
+  issues, docs or spec drift, mockup mismatches that a protocol doc already
+  settles, flaky tests that the diff adds or changes under the flaky-test
+  rule in the `deterministic-tests` skill, and repository-rule violations
+  such as file size, lint, and layout.
 - Docs or spec drift is a doc that contradicts the changed code. A doc that
   is silent on how the code works is not a finding. The class has a known
   wider fix, the `documentation` skill, so the reviewer proposes no other
   wider fix for it. The review-fix rule says when the doc side changes
   without the user.
 - `Auto-fix: no` when the finding needs a decision: real trade-offs between
-  options, a change to the meaning of a contract, a mockup versus product
+  options, a requirement change without a recorded user decision, a new
+  requirement for behaviour at the boundary, a mockup versus product
   choice, user-visible behaviour beyond the contract, a new gate or stricter
   validation, a wider fix available beside the direct fix, weakening a test
   or gate, or a need for credentials or infrastructure. Large findings, and

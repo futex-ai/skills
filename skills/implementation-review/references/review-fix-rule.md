@@ -6,8 +6,9 @@ Rules for applying review findings after the post-push review reports.
 
 After the review reports, fix the findings tagged `Auto-fix: yes` without
 waiting for the user. The reviewer may use that tag only when the finding
-has one clear fix and no wider fix is available, for small or medium effort
-findings in these categories:
+has one clear fix and no wider fix is available, or the only wider fix is
+the known one for its class, for small or medium effort findings in these
+categories:
 
 - Product bugs, including edge cases, races, and platform differences.
 - Security issues.

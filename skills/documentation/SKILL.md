@@ -74,7 +74,7 @@ update it with any new useful context in the same change.
   that contradicts the code in the same change.
 - Docs are consistent with themselves: no conflicting statements.
 - Docs may be nested in multiple directories.
-- A gap in the requirements found during implementation is a decision; see
+- A gap in the requirements found during implementation is a decision. See
   "Protocol docs change with the behaviour" below.
 
 ## Architecture docs
@@ -146,7 +146,9 @@ review.
 - The first milestone of every plan writes the requirements and the
   decisions for the work that follows; see the `plans` skill.
 - When a bug reaches a review or production, check whether a requirement
-  was missing or unclear. Add or clarify it in the same change as the fix.
+  was missing or unclear. Propose the missing or clearer requirement as a
+  decision with the other decisions of the task. Update the doc in the same
+  change as the fix.
 
 ## Protocol docs change with the behaviour
 
