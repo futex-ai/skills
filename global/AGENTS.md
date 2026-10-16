@@ -43,11 +43,12 @@ to read them. Read the skill at that moment instead of guessing the rule.
   Use best practices. Code quality is important.
 - Read the `README.md` for the area of code you work on before you change it.
   Keep every `README.md` up to date with the code you change.
-- Protocol docs describe the current design, including implementation
-  details. They are not fixed rules. Change them as the implementation
-  develops, and keep them aligned with the code in the same change. Do not
-  drop an option, rank it lower, or recommend a different option only
-  because it conflicts with a protocol doc. See the `documentation` skill.
+- Protocol docs hold the requirements and the decisions in force, not
+  implementation details. A change that keeps the behaviour needs no doc
+  change. A change to the behaviour changes a requirement: propose it as a
+  decision and update the doc in the same change. Do not drop an option,
+  rank it lower, or recommend a different option only because it conflicts
+  with a protocol doc. See the `documentation` skill.
 - When you add a new package, crate, or service, build it to check for
   errors.
 - If you get compile errors, keep working until there are none.

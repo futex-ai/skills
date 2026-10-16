@@ -40,7 +40,9 @@ run.
 ## 3. Keep the spec aligned
 
 - Docs, protocol docs, mockups, and every `README.md` are part of the spec.
-  Update them in the same change. See the `documentation` skill.
+  Update them in the same change. A protocol doc changes only when a
+  requirement or a decision changes. A README changes when an entry point
+  or the public behaviour changes. See the `documentation` skill.
 - Tick completed plan TODOs and add discovered TODOs. See the `plans` skill.
 - When the change removes or renames anything, search `docs/`, `plans/`, and
   every `README.md` for its name and update live references. See the

@@ -23,6 +23,10 @@ change. [templates/plan.md](templates/plan.md) is the starting point.
   individual plan, unless a specific change needs the reference.
 - Each plan describes the work needed for complete alignment with the spec
   docs.
+- The plan is the dated record of each decision: the choice, the
+  alternatives, the reason, and the date. The protocol doc keeps only the
+  decision in force. History, such as what the code did before the change,
+  belongs in the plan, not in a protocol doc.
 
 ## Milestones
 
@@ -30,11 +34,15 @@ change. [templates/plan.md](templates/plan.md) is the starting point.
   milestone the product works. Never leave the code base or feature broken.
 - Each milestone has a short summary and a TODO checklist.
 - The first milestone updates the relevant documentation and protocol or
-  spec docs so that they define the complete contract for the work that
-  follows.
-- The documentation milestone does not freeze the protocol docs. When a
-  later milestone finds a better design, update the protocol doc in the
-  milestone that changes the code. See the `documentation` skill.
+  spec docs so that they state the requirements and the decisions for the
+  work that follows. The plan itself holds the design: the approach, the
+  components, and the mechanics. See the `documentation` skill for what
+  belongs in a protocol doc.
+- The documentation milestone does not freeze the protocol docs. A later
+  milestone that keeps the behaviour needs no protocol doc change. A later
+  milestone that changes a requirement proposes the change as a decision
+  and updates the protocol doc in the milestone that changes the code. See
+  the `documentation` skill.
 - When a product area needs mockup work, its initial mockup milestone comes
   directly after the documentation milestone for that area. It also comes
   before any UI milestone for that area. Milestones for repository

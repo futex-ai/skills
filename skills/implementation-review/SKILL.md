@@ -71,9 +71,9 @@ user.
 - A clear recommended option.
 - Options judged on their merits. Do not drop an option, rank it lower, or
   recommend a different option only because it conflicts with a protocol
-  doc. Protocol docs record implementation details that change as the
-  implementation develops, so the doc update is part of that option and of
-  its effort. See the `documentation` skill.
+  doc. Protocol docs record the current requirements and change with the
+  behaviour, so the doc update is part of that option and of its effort.
+  See the `documentation` skill.
 - A final line: `Auto-fix: yes` or `Auto-fix: no, because …`, following the
   review-fix rule below.
 
@@ -89,6 +89,11 @@ The full rule with every condition is in
   a protocol doc already settles, flaky tests that the diff adds or changes
   under the flaky-test rule in the `deterministic-tests` skill, and
   repository-rule violations such as file size, lint, and layout.
+- Docs or spec drift is a doc that contradicts the changed code. A doc that
+  is silent on how the code works is not a finding. The class has a known
+  wider fix, the `documentation` skill, so the reviewer proposes no other
+  wider fix for it. The review-fix rule says when the doc side changes
+  without the user.
 - `Auto-fix: no` when the finding needs a decision: real trade-offs between
   options, a change to the meaning of a contract, a mockup versus product
   choice, user-visible behaviour beyond the contract, a new gate or stricter

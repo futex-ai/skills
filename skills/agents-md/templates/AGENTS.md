@@ -24,7 +24,9 @@ the rule.
   request.
 - `git-merge`: before you merge or rebase, and after each merge commit.
 - `documentation`: before you edit a `README.md`, a doc, or a protocol doc,
-  and when a change or a review option conflicts with a protocol doc.
+  when you decide whether a sentence belongs in a protocol doc, a README,
+  a plan, or the code, and when a change or a review option conflicts with
+  a protocol doc.
 - `rust`: before you edit Rust. <delete if the repository has no Rust>
 - `typescript`: before you edit TypeScript or JavaScript. <delete if the
   repository has no TypeScript or JavaScript>
