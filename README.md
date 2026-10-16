@@ -16,8 +16,6 @@ Codex, and with any other agent that reads the
   lock, loop, and hook functions live in `scripts/lib/`.
 - `scripts/check.sh`: validates every skill.
 - `tests/`: shell tests for the scripts. `tests/run.sh` runs them all.
-- `tests/behavior/`: the on-demand runner that drives `claude -p` and
-  `codex exec` with scenario files to test a skill. Not in CI.
 
 ## How the pieces fit
 
@@ -53,7 +51,7 @@ Codex, and with any other agent that reads the
 | `mockups` | Before you create or change a mockup. |
 | `product-ui` | Before you change a user-facing screen or copy. |
 | `agents-md` | Creating or migrating a repository's `AGENTS.md`. |
-| `writing-skills` | Before you create or edit a skill, its description, or a behavior scenario. |
+| `writing-skills` | Before you create or edit a skill or its description. |
 
 ## Install
 
@@ -169,9 +167,9 @@ another branch.
 ## Writing a skill
 
 The `writing-skills` skill gives the procedure: the description as
-triggers, the layout and size limits, the baseline and the pressure test
-with `tests/behavior/run.sh`, the form that fixes each kind of failure,
-and the repository steps. In short:
+triggers, the layout and size limits, the baseline and the pressure test,
+the form that fixes each kind of failure, and the repository steps. In
+short:
 
 - Group by the moment an agent needs it ("before you commit"), not by topic.
 - `name` must match the directory. `description` starts with "Use when"
@@ -180,8 +178,8 @@ and the repository steps. In short:
   `scripts/check.sh` warns at 200 lines and fails at 500.
 - No repository-specific paths, commands, or crate names. Those belong in the
   repository's `AGENTS.md`; say "the gate named in `AGENTS.md`".
-- Run a baseline without the skill before you write it, and a pressure test
-  with it. See `tests/behavior/README.md`. The runs are on demand, not in CI.
+- Before you write a discipline skill, watch an agent fail without it.
+  Build the excuse table from the words that agents really used.
 - Run `scripts/check.sh` and `tests/run.sh` before you commit.
 - A new skill reaches an existing install when `scripts/update.sh` or
   `scripts/install.sh` runs there. Say so in the pull request description.

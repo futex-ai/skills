@@ -1,6 +1,6 @@
 ---
 name: writing-skills
-description: Use when you create a skill, edit a SKILL.md, write or change a skill description, add a reference, template, or script to a skill, add a behavior scenario, or when an agent skipped a rule, did not load a skill, or loaded the wrong one. Covers the trigger-style description, the SKILL.md layout and size limits, the baseline, pressure test, and micro-test with the behavior runner, the form that fixes each kind of failure, excuse tables built from recorded excuses, and the repository steps for a new or changed skill.
+description: Use when you create a skill, edit a SKILL.md, write or change a skill description, add a reference, template, or script to a skill, or when an agent skipped a rule, did not load a skill, or loaded the wrong one. Covers the trigger-style description, the SKILL.md layout and size limits, the baseline, pressure test, and micro-test, the form that fixes each kind of failure, excuse tables built from recorded excuses, and the repository steps for a new or changed skill.
 ---
 
 # Writing skills
@@ -9,11 +9,11 @@ A skill is a procedure that an agent loads at one moment. The always-on
 rules are short because every line costs context on every turn. A skill
 holds the detail and costs context only when its moment comes.
 
-Write a skill for a rule that an agent needs at a moment, that is too long
-for the always-on rules, and that no check can enforce. A command, path,
-or cap of one repository belongs in that repository's `AGENTS.md`. A rule
-that a script can enforce belongs in a check. A new check needs the user's
-approval.
+Write a skill for a rule that an agent needs at a moment and that no
+check can enforce. The rule must be too long for the always-on rules. A
+command, path, or cap of one repository belongs in that repository's
+`AGENTS.md`. A rule that a script can enforce belongs in a check. A new
+check needs the user's approval.
 
 Writing a skill is test-driven. The test is a scenario that an agent runs
 without the skill. The failure that you record says what the skill must
@@ -34,15 +34,20 @@ you imagined, not what the agent does.
 An agent sees only the description before the moment. The description
 decides whether the agent loads the skill.
 
-- Start with `Use when` or `Use before`. Then list the moments and the
-  symptoms as keywords: what the agent sees, is asked, or is about to do.
-  Name file types, commands, error texts, and the words a user would type.
+- Start with `Use when`, `Use before`, or `Use after`. Then list the
+  moments and the symptoms as keywords: what the agent sees, is asked, or
+  is about to do. Name file types, commands, error texts, and the words a
+  user would type.
 - Then write `Covers` and the topic nouns, so that an agent can tell two
   skills apart. Do not list the steps of the procedure in their order. An
   agent reads an ordered list as the procedure and skips the file.
-- Write in the third person. Do not describe the skill's own method.
+- Do not write in the first person. Address the agent as you. Do not
+  describe the skill's own method.
 - Stay under 1024 characters. The repository check, `check.sh` under
   `scripts/`, fails above that.
+- An existing description that starts with a noun phrase moves to this
+  form when the skill is next edited. Check that the agent still loads
+  it, as [references/testing.md](references/testing.md) describes.
 
 Example: "Use when a test fails and then passes on a rerun, when a test
 would assert elapsed time, timeouts, or performance, or when you choose
@@ -55,9 +60,10 @@ event order, fake clocks, and the flaky-test procedure."
 - Order the content by the moment the agent needs each part, in the order
   of the work. [templates/SKILL.md](templates/SKILL.md) is the skeleton.
 - Target 150 lines. The repository check warns at 200 and fails at 500.
-  Put a long contract, a prompt, or a set of examples under `references/`,
-  a skeleton under `templates/`, and an executable script under `scripts/`.
-  Link each file by its relative path. The check confirms that it exists.
+  Put a long contract, a prompt, or a set of examples under `references/`.
+  Put a skeleton under `templates/` and an executable script under
+  `scripts/`. Link each file by its relative path. The check confirms that
+  it exists.
 - Write in Simplified Technical English, as the always-on rules say.
 - Name another skill in backticks, as in "the `git-commit` skill". Do not
   use an `@` link. It loads the file at once, before the moment.
@@ -84,36 +90,32 @@ Match the form of the text to the failure that the baseline shows.
   safe" as permission. Write the predicate instead.
 - A workaround that keeps the words of a rule and loses its purpose breaks
   the rule. Say so in a discipline skill.
-- Build an excuse table only from excuses that a baseline or a pressure
-  test recorded verbatim. An imagined excuse misses the real one. Each row
-  gives the excuse and the answer.
+- Build an excuse table only from excuses that an agent really gave. Take
+  them verbatim from a baseline, a pressure test, or a real session. An
+  imagined excuse misses the real one. Each row gives the excuse and the
+  answer.
 
 ## Test the skill
 
-The method, the pressures, and how to read a run are in
-[references/testing.md](references/testing.md). The runner is
-`tests/behavior/run.sh` in a clone of `futex-ai/skills`. The runs are
-slow, cost money, and are not deterministic. They run on demand, never in
-CI.
+[references/testing.md](references/testing.md) gives the method: the
+baseline, the pressure test, the micro-test, and how to read a run. The
+runs are manual. They cost money and are not deterministic, so they are
+not in CI.
 
-1. Write a scenario under `tests/behavior/scenarios/` from
-   [templates/scenario.md](templates/scenario.md), with the pressures that
-   fit the kind of skill.
-2. Baseline: run the scenario with `--variant control`, without the skill.
-   Record what the agent did and each excuse verbatim.
+1. Write the scenario: a prompt with the pressures that fit the kind of
+   skill, and a small workspace.
+2. Baseline: run the scenario without the skill. Record what the agent
+   did and each excuse verbatim under `.context/`.
 3. Write the smallest text that answers the recorded failures, in the form
    from the table above.
-4. Pressure test: run with `--variant skill`. The agent must follow the
-   rule under three or more combined pressures. Read every transcript.
+4. Pressure test: run the scenario with the skill text. The agent must
+   follow the rule under three or more combined pressures.
 5. Add a counter for each new excuse that the pressure test shows. Rerun.
-6. Micro-test a sentence that you are unsure about: two wordings, five or
-   more reps each, and the control. Count the outcomes. A wording that
-   passes three of five is not done.
-7. Discovery: run with `--variant discovery` to see whether the agent
-   loads the skill from its description.
 
-An edit of an existing skill follows the same loop, with the old text as
-the baseline. Put the counts in the pull request, not the transcripts.
+A discipline skill needs steps 2 and 4. A procedure or reference skill
+needs only a check of the output shape or the fact. An edit of an
+existing skill follows the same loop, with the old text as the baseline.
+Put the counts in the pull request, not the transcripts.
 
 ## Repository steps
 
@@ -128,11 +130,13 @@ the baseline. Put the counts in the pull request, not the transcripts.
 
 ## Checklist
 
-- [ ] The description starts with `Use when` or `Use before`, has symptom
-      keywords and topic nouns, and lists no ordered steps.
-- [ ] The baseline is recorded under `.context/behavior/` before the text.
+- [ ] The description starts with `Use when`, `Use before`, or `Use
+      after`. It has symptom keywords and topic nouns. It lists no steps.
+- [ ] For a discipline skill, the baseline is recorded under `.context/`
+      before the text.
 - [ ] The form of the text matches the recorded failure.
 - [ ] Every excuse table row comes from a recorded excuse.
-- [ ] The pressure test passed. The counts are in the pull request.
+- [ ] For a discipline skill, the pressure test passed. The counts are in
+      the pull request.
 - [ ] `SKILL.md` is near 150 lines. Detail is under `references/`.
 - [ ] The README row exists. The repository check and `tests/run.sh` pass.
