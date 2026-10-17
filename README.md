@@ -51,6 +51,7 @@ Codex, and with any other agent that reads the
 | `mockups` | Before you create or change a mockup. |
 | `product-ui` | Before you change a user-facing screen or copy. |
 | `agents-md` | Creating or migrating a repository's `AGENTS.md`. |
+| `writing-skills` | Before you create or edit a skill or its description. |
 
 ## Install
 
@@ -165,13 +166,21 @@ another branch.
 
 ## Writing a skill
 
+The `writing-skills` skill gives the procedure: the description as
+triggers, the layout and size limits, the baseline and the pressure test,
+the form that fixes each kind of failure, and the repository steps. In
+short:
+
 - Group by the moment an agent needs it ("before you commit"), not by topic.
-- `name` must match the directory. `description` says what the skill does
-  and when to use it, with the keywords an agent would match on.
+- `name` must match the directory. `description` starts with "Use when"
+  and names the moments and the symptoms, then the topics it covers.
+  Target 300 characters. `scripts/check.sh` warns above 500.
 - Keep `SKILL.md` under about 150 lines. Put long contracts in `references/`.
   `scripts/check.sh` warns at 200 lines and fails at 500.
 - No repository-specific paths, commands, or crate names. Those belong in the
   repository's `AGENTS.md`; say "the gate named in `AGENTS.md`".
+- Before you write a discipline skill, watch an agent fail without it.
+  Build the excuse table from the words that agents really used.
 - Run `scripts/check.sh` and `tests/run.sh` before you commit.
 - A new skill reaches an existing install when `scripts/update.sh` or
   `scripts/install.sh` runs there. Say so in the pull request description.
