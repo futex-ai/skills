@@ -6,13 +6,19 @@ Rules for applying review findings after the post-push review reports.
 
 After the review reports, fix the findings tagged `Auto-fix: yes` without
 waiting for the user. The reviewer may use that tag only when the finding
-has one clear fix and no wider fix is available, for small or medium effort
-findings in these categories:
+has one clear fix and no wider fix is available, or the only wider fix is
+the known one for its class, for small or medium effort findings in these
+categories:
 
 - Product bugs, including edge cases, races, and platform differences.
 - Security issues.
-- Docs or spec drift. Change the side that is wrong. A protocol doc is not
-  right by default; see the `documentation` skill.
+- Docs or spec drift: a doc that contradicts the changed code. Change the
+  side that is wrong. A protocol doc is not right by default; see the
+  `documentation` skill. The class has a known wider fix, the
+  `documentation` skill, so no other wider fix blocks the tag. The doc side
+  changes without the user only when the plan records the user's decision
+  for the behaviour change, or when the doc content is implementation
+  detail or history that moves to its home.
 - Mockup mismatches that a protocol doc already settles.
 - Flaky tests that the diff adds or changes, under the flaky-test rule in
   the `deterministic-tests` skill.
@@ -31,8 +37,9 @@ the finding needs a decision:
 
 - More than one option has real trade-offs and the recommendation is not
   clearly best.
-- The fix changes the meaning of a protocol contract, or decides which side
-  of a mockup and product mismatch is right.
+- The fix changes a requirement in a protocol doc without a recorded user
+  decision, adds a requirement for new behaviour at the boundary, or
+  decides which side of a mockup and product mismatch is right.
 - The fix changes user-visible behaviour beyond what the contract says.
 - The fix adds a new build error, rejection, gate, or stricter validation.
 - A wider fix (a rule, test, lint, guard, abstraction, or architectural

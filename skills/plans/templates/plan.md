@@ -3,7 +3,9 @@
 Status: Active. <One sentence on the branch or PR, for example "[PR #123](<url>) is open. The plan closes when its PR merges.">
 
 <One or two short paragraphs: the problem, the chosen approach, and what the
-change does not cover. Record user decisions with their date.>
+change does not cover. Record each user decision with its date, the
+alternatives, and the reason. The design and the history of the change live
+here, not in the protocol docs.>
 
 Contract owners:
 
@@ -12,10 +14,10 @@ Contract owners:
 
 ## Milestone 1: Documentation and protocol
 
-<Summary: which docs and protocol docs change so that they define the
-complete contract for the work below.>
+<Summary: which docs and protocol docs change so that they state the
+requirements and the decisions for the work below.>
 
-- [ ] Update `docs/protocol/<doc>.md` with <contract>.
+- [ ] Update `docs/protocol/<doc>.md` with <requirements and decisions>.
 - [ ] Update `<path>/README.md`.
 
 ## Milestone 2: <Name>
