@@ -1,6 +1,6 @@
 ---
 name: writing-skills
-description: Use when you create a skill, edit a SKILL.md, write or change a skill description, add a reference, template, or script to a skill, or when an agent skipped a rule, did not load a skill, or loaded the wrong one. Covers the trigger-style description, the SKILL.md layout and size limits, the baseline, pressure test, and micro-test, the form that fixes each kind of failure, excuse tables built from recorded excuses, and the repository steps for a new or changed skill.
+description: Use when you create or edit a skill, write or change a skill description, or when an agent skipped a rule, did not load a skill, or loaded the wrong one. Covers trigger descriptions, the SKILL.md layout, the baseline and pressure test, the form for each failure, and excuse tables.
 ---
 
 # Writing skills
@@ -43,8 +43,10 @@ decides whether the agent loads the skill.
   agent reads an ordered list as the procedure and skips the file.
 - Do not write in the first person. Address the agent as you. Do not
   describe the skill's own method.
-- Stay under 1024 characters. The repository check, `check.sh` under
-  `scripts/`, fails above that.
+- Target 300 characters. Keep under 500. Every description loads into
+  every session on every turn, so each character has a cost. Put at most
+  seven nouns after `Covers`. The repository check, `check.sh` under
+  `scripts/`, warns above 500 characters and fails above 1024.
 - An existing description that starts with a noun phrase moves to this
   form when the skill is next edited. Check that the agent still loads
   it, as [references/testing.md](references/testing.md) describes.
@@ -132,6 +134,7 @@ Put the counts in the pull request, not the transcripts.
 
 - [ ] The description starts with `Use when`, `Use before`, or `Use
       after`. It has symptom keywords and topic nouns. It lists no steps.
+      It is near 300 characters and under 500.
 - [ ] For a discipline skill, the baseline is recorded under `.context/`
       before the text.
 - [ ] The form of the text matches the recorded failure.

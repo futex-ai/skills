@@ -174,6 +174,7 @@ short:
 - Group by the moment an agent needs it ("before you commit"), not by topic.
 - `name` must match the directory. `description` starts with "Use when"
   and names the moments and the symptoms, then the topics it covers.
+  Target 300 characters. `scripts/check.sh` warns above 500.
 - Keep `SKILL.md` under about 150 lines. Put long contracts in `references/`.
   `scripts/check.sh` warns at 200 lines and fails at 500.
 - No repository-specific paths, commands, or crate names. Those belong in the
