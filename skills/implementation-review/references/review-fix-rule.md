@@ -71,10 +71,12 @@ when:
   such as the `documentation` skill for docs drift or an existing lint, the
   reviewer says so and proposes no other wider fix.
 - A blocked wider fix is not applied in the fix round. The direct fix is
-  applied when it is not blocked. The agent lists the wider fix as a
-  follow-up: one line per class under **Open** in the final message and
-  under the plan's review TODO. The line gives the wider fix, its effort,
-  the finding numbers it covers, and the previous examples.
+  applied when it is not blocked. When the finding is fixed, the agent
+  lists the blocked wider fix as a follow-up: one line per class under
+  **Open** in the final message and under the plan's review TODO. The line
+  gives the wider fix, its effort, the finding numbers it covers, and the
+  previous examples. When the finding stays open, its wider fix stays one
+  of its options, and it gets no follow-up line.
 - Count the occurrences of the class: the findings of this review that
   share the wider fix, plus the previous examples that the reviewer cited.
   When the count is two or more, the agent raises the wider fix as a

@@ -121,7 +121,7 @@ An option is blocked when:
 - It changes user-visible behaviour beyond the contract.
 - It adds a new build error, rejection, gate, lint, or stricter validation.
   This holds for a wider fix too, whatever its effort.
-- It deletes or weakens a test or gate, or raises a time limit.
+- It deletes, skips, or weakens a test or gate, or raises a time limit.
 - It needs an audit exception, credentials, or infrastructure.
 
 `Auto-fix: yes, apply <letter>` is allowed only when at least one option is

@@ -97,8 +97,9 @@ what each field must contain.
 ```
 
 Give one lettered option for each real choice. Order the options from the
-smallest effort to the largest, and give each its own grade. The wider fix
-is one of these options.
+smallest effort to the largest, and give each its own grade. When you
+explain an item again, keep the recorded letters and their order. The
+wider fix is one of these options.
 
 A problem outside the review scope is not a finding. The
 `implementation-review` skill gives its one-line shape. The final report

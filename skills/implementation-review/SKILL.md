@@ -128,9 +128,10 @@ The full rule with every condition is in
    plain explanation, the applied option, what changed, commit) separately
    from the findings that need a decision, each with a clear
    recommendation. Use the `decisions-and-findings` skill.
-5. List each wider fix that was not applied as a follow-up under **Open**,
-   one line per class: the wider fix, its effort, the finding numbers it
-   covers, and the previous examples. Count the occurrences of the class:
+5. List each blocked wider fix of a fixed finding as a follow-up under
+   **Open**, one line per class: the wider fix, its effort, the finding
+   numbers it covers, and the previous examples. An open finding keeps its
+   wider fix as one of its options. Count the occurrences of the class:
    the findings of this review that share the wider fix, plus the previous
    examples. When the count is two or more, raise the wider fix as a
    numbered decision in the decision layout instead.
