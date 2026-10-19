@@ -52,11 +52,12 @@ Write in Simplified Technical English (ASD-STE100):
 
 ## Item order
 
-List the items by severity in every message: High first, then Medium,
-then Low. Keep the relative order of items with the same severity. Number
-the items once across the whole message, in that order. Decisions and
-review findings go in the same list. Do not group them by where they come
-from.
+Keep the decisions and the review findings in two separate lists, each
+under its own heading. In each list, order the items by severity: High
+first, then Medium, then Low. Keep the relative order of items with the
+same severity. Put the review findings first and the decisions second.
+Number the items once across the whole message, in that order. The summary
+table and the final report keep the same lists and the same order.
 
 ## Decision layout
 
@@ -149,8 +150,8 @@ with one fact in each item.
 
 ## Final report
 
-End every task with a final report. List the items under **Fixed** and
-under **Open** by severity, High first. Use these labels:
+End every task with a final report. Under **Fixed** and under **Open**,
+keep the item order above. Use these labels:
 
 - **Changed:** what changed, the commit, and the pull request.
 - **Fixed:** each auto-fixed finding. Give its number, its severity, a
