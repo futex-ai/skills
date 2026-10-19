@@ -1,15 +1,31 @@
 ---
 name: documentation
-description: Rules for README files, the docs directory, and protocol docs, which are the spec and change with the implementation. Use before you edit a README.md, a Rust crate README, anything under docs/, or a protocol doc, whenever a code change could leave a doc stale, and when a change or a review option conflicts with a protocol doc. Covers README structure, the required crate README sections, consistency and completeness rules for docs, protocol doc length, protocol docs as a record of the current design rather than fixed rules, and keeping docs aligned in the same change.
+description: Rules for README files, the docs directory, architecture docs, generated reference, and protocol docs. Protocol docs hold the requirements and the decisions in force, not implementation details, and change only when the behaviour changes. Use before you edit a README.md, a Rust crate README, anything under docs/, or a protocol doc, whenever a behaviour change could leave a doc stale, when you decide whether a sentence belongs in a protocol doc, a README, a plan, a test, or the code, and when a change or a review option conflicts with a protocol doc. Covers the home of each kind of content, README structure, the required crate README sections with Key Code as the home of code references, architecture docs, generated reference, the requirement test for protocol doc sentences, the decision record, protocol doc length and splitting, requirement changes as decisions, and keeping docs aligned in the same change.
 ---
 
 # Documentation
 
 Docs under `docs/`, protocol docs, mockups, and every `README.md` are part
-of the spec. Keep them aligned with the implementation in the same change.
-When a change removes or renames anything, search `docs/`, `plans/`, and
-every `README.md` for its name; see the `git-commit` skill.
-Mockups have their own rules in the `mockups` skill.
+of the spec. Keep them aligned with the behaviour of the implementation in
+the same change. A doc is stale when it contradicts the code. A doc that is
+silent on a detail is not stale. When a change removes or renames anything,
+search `docs/`, `plans/`, and every `README.md` for its name; see the
+`git-commit` skill. Mockups have their own rules in the `mockups` skill.
+
+## The home of each kind of content
+
+Each fact lives in one place. Other docs link to it.
+
+| Content | Home |
+| --- | --- |
+| A requirement: observable behaviour at a boundary | The protocol doc |
+| A decision in force, with the rejected alternative and the reason | The protocol doc, next to its requirement |
+| Components, their responsibilities, and their boundaries | The architecture doc |
+| Entry points into the code: files, types, functions | The crate or area `README.md`, under `### Key Code` |
+| How the code works: mechanics, call order, module layout | The code and its doc comments |
+| The design of one change, its dated decisions, and history | The plan under `plans/` |
+| Cases and examples | The tests |
+| An API surface, a schema, a type list | Generated reference |
 
 ## Workspace README
 
@@ -18,7 +34,8 @@ Mockups have their own rules in the `mockups` skill.
 - User-facing interface documentation: CLI, API, and similar.
 - Developer get-started steps.
 - Key code jumping-in points.
-- Links to the protocol docs and to the `plans/` directory.
+- Links to the architecture doc, the protocol docs, and the `plans/`
+  directory.
 
 Read the `README.md` for the area you work on before you change it, and
 update it with any new useful context in the same change.
@@ -36,6 +53,12 @@ update it with any new useful context in the same change.
   `### Key Code`, `### Related Docs`.
 - `## Quick Start` includes example code or runnable commands, not only
   prose.
+- `### Key Code` names the entry points: the files, types, and functions
+  that a reader opens first, each with one sentence on what it does. This
+  is the home of code references, so that protocol docs do not need them.
+  Update it when an entry point moves or changes.
+- `### Related Docs` links to the protocol docs and the architecture doc
+  that the crate implements.
 - For binary crates or user-facing tools, document the CLI or external
   interface, not only the internal architecture.
 - Keep examples aligned with the real public API and current behaviour. Do
@@ -47,38 +70,101 @@ update it with any new useful context in the same change.
 
 ## Docs (`docs/`)
 
-- Docs are kept up to date with the implementation at all times.
-- A gap found in the docs during implementation is fixed in the protocol
-  docs as part of the change.
+- Docs stay aligned with the behaviour of the implementation. Fix a doc
+  that contradicts the code in the same change.
 - Docs are consistent with themselves: no conflicting statements.
-- Docs cover the entire implementation: no guesswork is needed.
-- Every code change prompts the question whether a doc could be clarified
-  or enhanced.
 - Docs may be nested in multiple directories.
+- A gap in the requirements found during implementation is a decision. See
+  "Protocol docs change with the behaviour" below.
+
+## Architecture docs
+
+An architecture doc describes the structure that no single piece of code
+shows: the components of the system, the responsibility of each, the
+boundaries between them, and the flow of data across the boundaries. It
+lives under `docs/`, for example `docs/architecture.md` or
+`docs/architecture/<area>.md`.
+
+- Describe components and their responsibilities, not modules, files, or
+  functions. Code-level structure goes stale on every refactor. A component
+  boundary does not.
+- Keep few architecture docs: one for the system, and one for a large area
+  when the system doc passes the length target.
+- Update an architecture doc when a component, a responsibility, or a
+  boundary changes. A change inside a component needs no update.
+- Apply the same length target as protocol docs.
+
+## Generated reference
+
+Reference content lists what exists: an API surface, a schema, a type list,
+a command list. Hand-written reference drifts on every addition.
+
+- When a generator exists, generate the reference from the code and commit
+  the output. The `shared-types` skill gives the generators for types that
+  cross between Rust and TypeScript, and utoipa gives the OpenAPI document
+  for an HTTP API.
+- Keep in prose only the semantics that a generator cannot express, such as
+  idempotency, authorization, and ordering rules. These are requirements and
+  belong in the protocol doc.
+- Do not hand-edit generated output. Regenerate it in the same change as
+  the code.
 
 ## Protocol docs (`docs/protocol`), the specs
 
-- Protocol docs define the contract between the spec and the code.
-- They are as detailed as possible and complete: no guesswork is needed
-  during implementation.
-- They stay aligned with the implementation. If there is a bug in the code,
-  review whether the spec needed to be better defined.
-- Keep each doc short, about 250 lines. Split a doc that grows past that
-  into linked pages.
-- The first milestone of every plan updates the protocol docs so that they
-  define the complete contract before implementation starts; see the
-  `plans` skill.
+A protocol doc holds the requirements and the decisions in force for one
+area. A human reviews it before implementation starts. The post-push review
+checks the behaviour of the code against it. Every change to a protocol doc
+is therefore a change to a requirement or to a decision, and is worth a
+review.
 
-## Protocol docs change with the implementation
+- A requirement states observable behaviour at a boundary: an interface, a
+  wire format, a state transition, an error, a limit, or what a user sees.
+  Write one requirement in each sentence.
+- Apply this test to every sentence: could a different implementation
+  satisfy the sentence? If yes, the sentence is a requirement and stays. If
+  no, the sentence describes the implementation. Move it to the home that
+  the table above gives.
+- A decision in force stands next to the requirement that it explains. Give
+  the choice, the rejected alternative, and the reason, in one or two
+  sentences. Its purpose is to stop an agent from proposing the rejected
+  alternative again.
+- Do not keep a dated decision log in a protocol doc. The plan holds the
+  dated record of each decision. When a later decision supersedes an
+  earlier one, the plan that made it holds the history, and the protocol
+  doc shows only the decision in force.
+- Do not name source files, functions, hooks, modules, or internal call
+  order. Do not record history, such as what the code did before a change.
+  Do not give implementation tips. Do not list every case: state the rule
+  once and let the tests hold the cases.
+- A protocol doc is complete when a reader can tell, for every behaviour at
+  the boundary, whether the code meets the requirements. It does not say
+  how the code meets them.
+- Keep each doc short, about 250 lines. When you touch a doc that passes
+  the target, split it into linked pages in the same change.
+- When a protocol doc that you touch still names code or describes
+  mechanics, move that content to its home in the same change.
+- The first milestone of every plan writes the requirements and the
+  decisions for the work that follows; see the `plans` skill.
+- When a bug reaches a review or production, check whether a requirement
+  was missing or unclear. Propose the missing or clearer requirement as a
+  decision with the other decisions of the task. Update the doc in the same
+  change as the fix.
 
-Protocol docs are detailed, so they record implementation details as well
-as the contract. They describe the current design. They are not fixed
-rules: change them as the implementation develops, and keep them aligned
-with the code in the same change.
+## Protocol docs change with the behaviour
 
-- When the implementation finds a better design than a protocol doc
-  describes, use the better design and update the doc. Do not keep a
-  weaker design only because a doc describes it.
+Protocol docs describe the current requirements. They are not fixed rules.
+
+- A change that keeps the behaviour at the boundary needs no protocol doc
+  change, however much the code changes.
+- A change to the behaviour changes a requirement. Update the protocol doc
+  in the same change.
+- A requirement change is a decision for the user. When the implementation
+  finds that a requirement is wrong, incomplete, or worse than an
+  alternative, propose the change as a decision in the layout of the
+  `decisions-and-findings` skill, with the other decisions of the task. Do
+  everything that does not depend on it first. When the user does not
+  answer, apply the recommended option, update the doc, and name the
+  default in the final report.
 - When the code and a protocol doc disagree, do not assume that the doc is
   right. Decide on the merits which side is right, then change the other
   side to match it.

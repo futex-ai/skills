@@ -46,7 +46,7 @@ Codex, and with any other agent that reads the
 | `deterministic-tests` | A test flakes or would assert elapsed time. |
 | `git-commit` | Before and after you commit, and when you open a pull request. |
 | `git-merge` | Before you merge or rebase, and after each merge commit. |
-| `documentation` | Before you edit a README, a doc, or a protocol doc, and when a change or a review option conflicts with a protocol doc. |
+| `documentation` | Before you edit a README, a doc, or a protocol doc, when you decide where a sentence belongs, and when a change or a review option conflicts with a protocol doc. |
 | `rust` | Before you edit Rust. |
 | `typescript` | Before you edit TypeScript or JavaScript. |
 | `databases` | Before you touch migrations, Diesel, or store crates. |
