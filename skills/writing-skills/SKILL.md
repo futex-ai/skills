@@ -1,6 +1,6 @@
 ---
 name: writing-skills
-description: Use when you create or edit a skill, write or change a skill description, or when an agent skipped a rule, did not load a skill, or loaded the wrong one. Covers trigger descriptions, the SKILL.md layout, the baseline and pressure test, the form for each failure, and excuse tables.
+description: Use when you create or edit a skill, write or change a skill description, or when an agent skipped a rule, did not load a skill, or loaded the wrong one. Covers trigger descriptions, the SKILL.md layout, the form for each failure, excuse tables, and real-session evidence.
 ---
 
 # Writing skills
@@ -15,19 +15,21 @@ command, path, or cap of one repository belongs in that repository's
 `AGENTS.md`. A rule that a script can enforce belongs in a check. A new
 check needs the user's approval.
 
-Writing a skill is test-driven. The test is a scenario that an agent runs
-without the skill. The failure that you record says what the skill must
-say, and in which form. A skill written without a baseline teaches what
-you imagined, not what the agent does.
+A skill answers a failure that an agent really had. The failure says what
+the skill must say, and in which form. Real sessions are the evidence. A
+staged scenario in a toy repository shows the prompt, not the agent. A
+skill written from an imagined failure answers the wrong one.
 
 ## Kinds of skill
 
 - **Discipline**: a rule that the agent knows and is tempted to skip, for
-  example the complete gate or the deletion audit. Test it under pressure.
+  example the complete gate or the deletion audit. The evidence is a
+  session where the agent skipped it.
 - **Procedure**: steps and a layout that give an output of a fixed shape,
-  for example a commit message or a final report. Test the shape.
+  for example a commit message or a final report. The evidence is an
+  output with the wrong shape.
 - **Reference**: facts to look up, for example the sections of a crate
-  README. Test that the agent finds the fact and applies it.
+  README. The evidence is a session where the agent guessed the fact.
 
 ## The description
 
@@ -48,8 +50,8 @@ decides whether the agent loads the skill.
   seven nouns after `Covers`. The repository check, `check.sh` under
   `scripts/`, warns above 500 characters and fails above 1024.
 - An existing description that starts with a noun phrase moves to this
-  form when the skill is next edited. Check that the agent still loads
-  it, as [references/testing.md](references/testing.md) describes.
+  form when the skill is next edited. Then watch the next real session
+  that reaches the moment, and confirm that it loads the skill.
 
 Example: "Use when a test fails and then passes on a rerun, when a test
 would assert elapsed time, timeouts, or performance, or when you choose
@@ -77,10 +79,10 @@ event order, fake clocks, and the flaky-test procedure."
 
 ## The form that fixes each failure
 
-Match the form of the text to the failure that the baseline shows.
+Match the form of the text to the failure that the session shows.
 [references/forms.md](references/forms.md) gives an example of each form.
 
-| The baseline shows | Write |
+| The session shows | Write |
 | --- | --- |
 | The agent knows the rule and skips it under pressure | A prohibition, a table of excuses with answers, and a red-flag list |
 | The output has the wrong shape | A recipe with the steps, and a template with labels |
@@ -92,32 +94,28 @@ Match the form of the text to the failure that the baseline shows.
   safe" as permission. Write the predicate instead.
 - A workaround that keeps the words of a rule and loses its purpose breaks
   the rule. Say so in a discipline skill.
-- Build an excuse table only from excuses that an agent really gave. Take
-  them verbatim from a baseline, a pressure test, or a real session. An
-  imagined excuse misses the real one. Each row gives the excuse and the
-  answer.
+- Build an excuse table only from excuses that an agent really gave in a
+  real session. Copy them verbatim. An imagined excuse misses the real
+  one. Each row gives the excuse and the answer.
 
-## Test the skill
+## Learn from real sessions
 
-[references/testing.md](references/testing.md) gives the method: the
-baseline, the pressure test, the micro-test, and how to read a run. The
-runs are manual. They cost money and are not deterministic, so they are
-not in CI.
+The evidence for a skill comes from real work in a real repository. A
+staged test does not give it. The pressure in a real session is implicit:
+a long task, a late hour, a gate that really takes twenty minutes. A
+staged prompt announces the pressure, and the agent answers the prompt.
 
-1. Write the scenario: a prompt with the pressures that fit the kind of
-   skill, and a small workspace.
-2. Baseline: run the scenario without the skill. Record what the agent
-   did and each excuse verbatim under `.context/`.
-3. Write the smallest text that answers the recorded failures, in the form
-   from the table above.
-4. Pressure test: run the scenario with the skill text. The agent must
-   follow the rule under three or more combined pressures.
-5. Add a counter for each new excuse that the pressure test shows. Rerun.
-
-A discipline skill needs steps 2 and 4. A procedure or reference skill
-needs only a check of the output shape or the fact. An edit of an
-existing skill follows the same loop, with the old text as the baseline.
-Put the counts in the pull request, not the transcripts.
+- Watch for a failure in real work: a skipped rule, a wrong shape, or a
+  guessed fact. Copy the agent's words from the transcript into a notes
+  file under `.context/`. Record the repository, the moment, and the
+  words verbatim.
+- Write the smallest text that answers the recorded failures, in the form
+  from the table above.
+- After the change, watch the next real sessions that reach the moment.
+  Record whether the agent loaded the skill and followed the rule. Add a
+  counter for each new excuse that you see.
+- Keep the notes file. It is the record of why each row and each rule
+  exists. It is not committed.
 
 ## Repository steps
 
@@ -135,11 +133,10 @@ Put the counts in the pull request, not the transcripts.
 - [ ] The description starts with `Use when`, `Use before`, or `Use
       after`. It has symptom keywords and topic nouns. It lists no steps.
       It is near 300 characters and under 500.
-- [ ] For a discipline skill, the baseline is recorded under `.context/`
-      before the text.
+- [ ] The failure that the skill answers is recorded under `.context/`
+      from a real session, before the text.
 - [ ] The form of the text matches the recorded failure.
-- [ ] Every excuse table row comes from a recorded excuse.
-- [ ] For a discipline skill, the pressure test passed. The counts are in
-      the pull request.
+- [ ] Every excuse table row quotes a real session.
+- [ ] A real session that reached the moment loaded the skill.
 - [ ] `SKILL.md` is near 150 lines. Detail is under `references/`.
 - [ ] The README row exists. The repository check and `tests/run.sh` pass.

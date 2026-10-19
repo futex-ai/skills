@@ -167,8 +167,8 @@ another branch.
 ## Writing a skill
 
 The `writing-skills` skill gives the procedure: the description as
-triggers, the layout and size limits, the baseline and the pressure test,
-the form that fixes each kind of failure, and the repository steps. In
+triggers, the layout and size limits, the form that fixes each kind of
+failure, the evidence from real sessions, and the repository steps. In
 short:
 
 - Group by the moment an agent needs it ("before you commit"), not by topic.
@@ -179,8 +179,8 @@ short:
   `scripts/check.sh` warns at 200 lines and fails at 500.
 - No repository-specific paths, commands, or crate names. Those belong in the
   repository's `AGENTS.md`; say "the gate named in `AGENTS.md`".
-- Before you write a discipline skill, watch an agent fail without it.
-  Build the excuse table from the words that agents really used.
+- Write a skill from a failure in a real session, not from a staged
+  test. Build each excuse table row from the words the agent really used.
 - Run `scripts/check.sh` and `tests/run.sh` before you commit.
 - A new skill reaches an existing install when `scripts/update.sh` or
   `scripts/install.sh` runs there. Say so in the pull request description.

@@ -23,9 +23,9 @@ the push, or you call a partial run "the tests".
 ```
 
 The rows above show the layout only. Build real rows from excuses that
-an agent really gave, verbatim, in a baseline, a pressure test, or a real
-session. Add one sentence to the skill: a workaround that keeps the words
-of the rule and loses its purpose breaks the rule.
+an agent really gave in a real session, verbatim. Add one sentence to the
+skill: a workaround that keeps the words of the rule and loses its
+purpose breaks the rule.
 
 ## A recipe with a template
 
