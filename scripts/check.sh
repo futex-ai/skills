@@ -25,6 +25,7 @@ for dir in "$repo"/skills/*/; do
   (( ${#name} <= 64 )) || err "$name: name is longer than 64 characters"
   [[ -n "$fm_desc" ]] || err "$name: description is empty"
   (( ${#fm_desc} <= 1024 )) || err "$name: description is longer than 1024 characters"
+  (( ${#fm_desc} <= 500 )) || echo "warning: $name: description has ${#fm_desc} characters; target 300, keep under 500"
 
   lines="$(wc -l < "$file")"
   (( lines <= 500 )) || err "$name: SKILL.md has $lines lines (max 500)"
