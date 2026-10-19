@@ -1,6 +1,6 @@
 ---
 name: product-ui
-description: Use when you implement or change a screen, a component, a view, or a mockup that users see, when you write or edit user-facing text such as a status, helper, label, or error message, when you add an empty, loading, or error state, when you are about to hardcode a number, a row, or sample data in a screen, when you add an accent border, a badge, or an environment label, and when you need a component that may already exist.
+description: Use before you implement or change a screen, a view, or a mockup that users see, when you write or edit user-facing text such as a status, helper, label, or error message, when you add an empty, loading, or error state, when you are about to hardcode a number, a row, or sample data in a screen, and when you add an accent border, a badge, or an environment label. Covers component reuse, forbidden visual patterns, environment labels, real data, and product copy.
 ---
 
 # Product UI

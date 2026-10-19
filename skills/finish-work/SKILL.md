@@ -1,6 +1,6 @@
 ---
 name: finish-work
-description: Use when you are about to say that work is complete or done, when you are ready to commit or push, when you decide which tests, checks, or gates to run, when a gate or a test suite fails or a run was partial, when you add a feature that needs a smoke test, and when the change that you finish is documentation-only or plan-only.
+description: Use before you say that work is complete, before you commit or push, when you choose which tests or gates to run, when a gate fails or a run was partial, and when a change adds a feature or is documentation-only. Covers the definition of done, the complete gate, partial verification, smoke tests, and the final report.
 ---
 
 # Finish work

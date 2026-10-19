@@ -166,10 +166,9 @@ another branch.
 ## Writing a skill
 
 - Group by the moment an agent needs it ("before you commit"), not by topic.
-- `name` must match the directory. `description` starts with "Use when" and
-  lists only the moments, symptoms, and keywords that an agent would match
-  on. It never summarizes the procedure. An agent that reads a procedure in
-  a description applies that short version and skips the skill body.
+- `name` must match the directory. `description` starts with "Use when"
+  and names the moments and the symptoms, then the topics it covers. It
+  lists no steps. Target 300 characters and keep under 500.
 - Keep `SKILL.md` under about 150 lines. Put long contracts in `references/`.
   `scripts/check.sh` warns at 200 lines and fails at 500.
 - No repository-specific paths, commands, or crate names. Those belong in the
