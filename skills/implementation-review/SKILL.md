@@ -1,6 +1,6 @@
 ---
 name: implementation-review
-description: Use after you push a branch and the work needs a review, before you run a review or apply its findings, when a plan's review TODO is reached, when the user asks for a code review of a branch, a pull request, the whole repository, or a named area, when a review finds a problem outside the diff, and when you decide whether a finding is Auto-fix yes or no.
+description: Use after you push a branch and the work needs a review, before you run a review or apply its findings, when a plan's review TODO is reached, when the user asks for a code review of a branch, a pull request, the whole repository, or a named area, when a review finds a problem outside the diff, when you order or number the findings of a review, and when you decide whether a finding is Auto-fix yes or no.
 ---
 
 # Implementation review
@@ -42,7 +42,8 @@ after the report.
 
 ## Finding format
 
-Number each finding. For every finding give the fields below. The
+Order the findings by severity, High first, then Medium, then Low. Number
+each finding in that order. For every finding give the fields below. The
 `decisions-and-findings` skill gives the layout that shows them to the
 user.
 
@@ -116,8 +117,9 @@ The full rule with every condition is in
    third fix round without the user.
 4. In the final message, list the auto-fixed findings (number, severity,
    plain explanation, what changed, commit) separately from the findings
-   that need a decision, each with a clear recommendation. List the
-   `Outside the scope` problems under **Open**, for a separate branch. Use
-   the `decisions-and-findings` skill.
+   that need a decision, each with a clear recommendation. Order both
+   lists by severity, High first. List the `Outside the scope` problems
+   under **Open**, for a separate branch. Use the `decisions-and-findings`
+   skill.
 5. Add each open finding, and each `Outside the scope` problem, as one line
    under the plan's review TODO, in the shape that the `plans` skill gives.
