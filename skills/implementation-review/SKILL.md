@@ -52,9 +52,12 @@ user.
 - A category: product bug, security, docs or spec, mockup, repository rule,
   test, performance, code structure, UX wording, or process.
 - The file path and line reference when possible.
-- The background: enough codebase and feature context, and the terms, for a
-  reader with no prior knowledge.
-- The problem: what is wrong, in words that the background explains.
+- The terms: each project term that the finding uses, with one sentence
+  that explains it. The `decisions-and-findings` skill says what a term
+  is, when to leave the slot out, and how many entries a list holds.
+- The background: enough codebase and feature context for a reader with
+  no prior knowledge.
+- The problem: what is wrong, in plain words and defined terms.
 - The impact of making no change.
 - Solution options labelled A, B, and so on, from the smallest effort to
   the largest. Always consider a wider fix: a rule, test, lint, guard,

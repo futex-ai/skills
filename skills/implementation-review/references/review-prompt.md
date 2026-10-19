@@ -82,9 +82,13 @@ number them in that order. Use the finding layout in the
   repository rule, test, performance, code structure, UX wording, or
   process.
 - Include the relevant file path and line reference when possible.
-- Give the background: enough codebase and feature context, and the terms,
-  for a reader with no prior knowledge.
-- State the problem: what is wrong, in words that the background explains.
+- Give the terms: each project term that the finding uses, with one
+  sentence that explains it. The `decisions-and-findings` skill says what
+  a term is, when to leave the slot out, and how many entries a list
+  holds.
+- Give the background: enough codebase and feature context for a reader
+  with no prior knowledge.
+- State the problem: what is wrong, in plain words and defined terms.
 - State the impact of making no change.
 - Give solution options labelled A, B, and so on, from the smallest effort
   to the largest. Always consider a wider fix: a rule, test, lint, guard,
