@@ -158,6 +158,9 @@ fi
 "$skills_dir/scripts/update.sh" --detach --loop 300
 ```
 
+In the setup script of this repository's own workspace, add `--opt-in` to
+the install line so that `writing-skills` is linked there.
+
 More options: `--min-interval <s>` skips a check that ran less than `<s>`
 seconds ago. `--timeout <s>` bounds the fetch. `--state-dir <dir>` moves the
 log, the stamp, the locks, and the session files. `--branch <name>` follows
