@@ -8,9 +8,6 @@ Codex, and with any other agent that reads the
 
 - `skills/<name>/SKILL.md`: one skill per directory, with optional
   `references/`, `scripts/`, and `templates/`.
-- `.claude/skills/<name>/`: skills for work in this repository only. They
-  are not installed anywhere. Claude Code reads them from this directory,
-  and Codex reads them through the links under `.agents/skills/`.
 - `global/AGENTS.md`: the always-on rules. Linked to `~/.claude/CLAUDE.md`
   and `~/.codex/AGENTS.md`.
 - `skills/agents-md/templates/AGENTS.md`: the thin per-repository `AGENTS.md`.
@@ -54,7 +51,7 @@ Codex, and with any other agent that reads the
 | `mockups` | Before you create or change a mockup. |
 | `product-ui` | Before you change a user-facing screen or copy. |
 | `agents-md` | Creating or migrating a repository's `AGENTS.md`. |
-| `writing-skills` | Before you create or edit a skill or its description. Repository-local: it loads only in this repository. |
+| `writing-skills` | Before you create or edit a skill or its description. Opt-in: linked only with `install.sh --opt-in`. |
 
 ## Install
 
@@ -71,7 +68,13 @@ A pull updates the skills that are already linked. When a pull adds a new
 skill, run `scripts/install.sh` again.
 Pass `--codex-home` once to also link into `~/.codex/skills` for a Codex
 version that reads only that directory. Later runs keep that directory
-current without the flag. The script skips a path that exists and is not a
+current without the flag.
+A skill with an `opt-in` file in its directory is linked only when you
+pass `--opt-in` once. Later runs keep a linked opt-in skill current
+without the flag, and the update hooks announce its changes only where
+it is linked. `writing-skills` is opt-in: it applies to work in this
+repository only. An `npx skills add` install takes every skill, including
+the opt-in ones. The script skips a path that exists and is not a
 symlink; pass `--force` to replace it (the original is kept as `.bak`).
 `--uninstall` removes the links. Run `/skills` in Codex to confirm discovery.
 
@@ -174,8 +177,9 @@ triggers, the layout and size limits, the form that fixes each kind of
 failure, the check against a real repository, and the repository steps.
 In short:
 
-- A shared skill goes under `skills/`. A skill for work in this repository
-  only goes under `.claude/skills/`, with a link under `.agents/skills/`.
+- A skill that applies to work in this repository only gets an `opt-in`
+  file in its directory, so that `install.sh` links it only with
+  `--opt-in`.
 - Group by the moment an agent needs it ("before you commit"), not by topic.
 - `name` must match the directory. `description` starts with "Use when"
   and names the moments and the symptoms. It does not summarise the

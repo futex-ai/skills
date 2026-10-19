@@ -122,8 +122,8 @@ needs one to check against.
 ## Repository steps
 
 1. Create `skills/<name>/SKILL.md` and the files that it links. A skill
-   for work in the skills repository only goes under `.claude/skills/`
-   instead, with a link under `.agents/skills/`, and is not installed.
+   for work in the skills repository only also gets an `opt-in` file in
+   its directory, so that the install script links it only on request.
 2. Add the row to the skills table in the repository `README.md`.
 3. Run the repository check, `shellcheck` on new scripts, and
    `tests/run.sh`.
