@@ -59,8 +59,12 @@ user.
 - Solution options labelled A, B, and so on, from the smallest effort to
   the largest. Always consider a wider fix: a rule, test, lint, guard,
   abstraction, or architectural change that prevents the class of issue.
-  Give the wider fix its own lettered option and say which option best
-  protects the codebase. Look for previous examples of the class in the
+  Prefer a structural fix that removes the wrong case, such as a helper,
+  an abstraction, a marker, a default, or a type, over a detection fix
+  that catches it, such as a test for the class, a lint, or a guard.
+  Propose a detection fix only when you find no structural fix. Give the
+  wider fix its own lettered option and say which option best protects
+  the codebase. Look for previous examples of the class in the
   commit history, under `plans/`, and in earlier review reports under
   `.context/`. This search is best effort. Cite the examples you find.
   Propose the wider fix even when you find none. When the wider fix for
@@ -99,9 +103,9 @@ The full rule with every condition is in
   spec drift, mockup mismatches that a protocol doc already settles, flaky
   tests that the diff adds or changes under the flaky-test rule in the
   `deterministic-tests` skill, and repository-rule violations such as file
-  size, lint, and layout. The letter names the widest option that is not
-  blocked: the wider fix when it is not blocked, otherwise the direct fix.
-  A blocked wider fix does not block the tag.
+  size, lint, and layout. The letter names the best-ranked option that is
+  not blocked: a structural wider fix, then a detection wider fix, then
+  the direct fix. A blocked wider fix does not block the tag.
 - Docs or spec drift is a doc that contradicts the changed code. A doc that
   is silent on how the code works is not a finding. The wider fix for the
   class is already in force, the `documentation` skill, so the reviewer
@@ -119,9 +123,11 @@ The full rule with every condition is in
 ## After the review
 
 1. Fix the `Auto-fix: yes` findings without waiting for the user. Apply the
-   option that the tag names. If the change grows past Medium while you
-   work, revert it. Apply the next smaller option that is not blocked, or
-   leave the finding open. Leave the `Outside the scope` problems alone.
+   option that the tag names. If the change grows past twice the Medium
+   band while you work, or needs a Large trigger such as a dependency or a
+   migration, revert it. Apply the next smaller option that is not
+   blocked, or leave the finding open. Leave the `Outside the scope`
+   problems alone.
 2. Run the checks, commit, push, and run the review once more on the fix.
    Name each fixed finding in its commit message.
 3. Fix any new `Auto-fix: yes` findings once more, then stop. Do not start a

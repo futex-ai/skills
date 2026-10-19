@@ -97,7 +97,7 @@ what each field must contain.
   - **A.** <A fix.> <Its cost or risk.> Effort: <Small, Medium, or Large>.
   - **B.** <Another fix.> <Its cost or risk.> Effort: <Small, Medium, or Large>.
   - <More options as C, D, and so on, when the problem has them.>
-- **Wider fix:** <The letter of the option that prevents this class of issue: a rule, test, lint, guard, abstraction, or architectural change. Or "None" and the reason, for example that the wider fix is already in force.>
+- **Wider fix:** <The letter of the option that prevents this class of issue. A structural fix, such as a helper, an abstraction, a marker, a default, or a type, ranks above a detection fix, such as a test for the class, a lint, or a guard. Or "None" and the reason, for example that the wider fix is already in force.>
 - **Previous examples:** <Earlier cases of this class, with commits or files, or "None found". Also the other findings in this review that share the wider fix.>
 - **Recommendation:** <Letter>. <One sentence of reasoning.> <When another option best protects the codebase, one sentence that names it.>
 - **Auto-fix:** <`yes, apply` and the letter of the option to apply, or `no, because` and the condition that stops the fix.>

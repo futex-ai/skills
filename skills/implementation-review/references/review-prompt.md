@@ -89,7 +89,15 @@ number them in that order. Use the finding layout in the
 - Give solution options labelled A, B, and so on, from the smallest effort
   to the largest. Always consider a wider fix: a rule, test, lint, guard,
   abstraction, or architectural change that prevents the class of issue.
-  Give the wider fix its own lettered option. Look for previous examples of
+  Prefer a structural fix that removes the wrong case, such as a helper or
+  an abstraction that every call site uses, a default that is right, a
+  marker that shared code honours, or a type that cannot hold the wrong
+  value. Propose a detection fix that catches the case, such as a test for
+  the class, a lint, or a guard, only when you find no structural fix. For
+  example, when a modal focuses a helper icon button because no autofocus
+  target was given, a guard that requires a target detects the case, and a
+  marker that excludes helper icons from autofocus removes it. Give the
+  wider fix its own lettered option. Look for previous examples of
   the class in the commit history, under `plans/`, and in earlier review
   reports under `.context/`. Cite the examples you find. Propose the wider
   fix even when you find none. When the wider fix for the class is already
@@ -131,13 +139,13 @@ not blocked, for a finding about: a product bug (including edge cases,
 races, and platform differences); a security issue; docs or spec drift; a
 mockup mismatch that a protocol doc already settles; a flaky test that the
 diff adds or changes; or a repository-rule violation such as file size,
-lint, or layout. The letter names the widest option that is not blocked:
-the wider fix when it is not blocked, otherwise the direct fix. A blocked
-wider fix does not block the tag. For a flaky test that the diff adds or
-changes, name the nondeterminism source and the deterministic fix (fake
-clock, event order, captured inputs, operation counts, explicit readiness
-signal, or isolated state), and require the fixer to reproduce the flake
-and record pass counts before and after.
+lint, or layout. The letter names the best-ranked option that is not
+blocked: a structural wider fix, then a detection wider fix, then the
+direct fix. A blocked wider fix does not block the tag. For a flaky test
+that the diff adds or changes, name the nondeterminism source and the
+deterministic fix (fake clock, event order, captured inputs, operation
+counts, explicit readiness signal, or isolated state), and require the
+fixer to reproduce the flake and record pass counts before and after.
 
 `Auto-fix: no` for every finding that needs a decision:
 
