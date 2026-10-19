@@ -1,6 +1,6 @@
 ---
 name: typescript
-description: Use before you write or change TypeScript or JavaScript, add an npm dependency, set up a package, or write a frontend file, a Node script, or a test, when you reach for any, a cast, an enum, a default export, a barrel file, or console output, when a file passes 200 lines, and when ESLint, Prettier, or the typecheck complains. Covers strict mode, ESLint and Prettier, unknown at the boundary, discriminated unions, generated backend types, and the 300-line cap.
+description: Use before you write or change TypeScript or JavaScript, add an npm dependency, set up a new package, or write a frontend file, a Node script, or a test file, when you define a type for backend data or model a known set of states, when you reach for any, a cast, an enum, a default export, a barrel file, or console output, when a file passes 200 lines, and when ESLint, Prettier, or the typecheck reports a problem.
 ---
 
 # TypeScript

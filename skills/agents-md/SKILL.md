@@ -1,6 +1,6 @@
 ---
 name: agents-md
-description: Use when a repository has no AGENTS.md, when its AGENTS.md or docs/dev rule files still carry General, Readme, Docs, Plans, Rust, Databases, or Git sections, when a repository rule duplicates or conflicts with a shared skill, and when the user asks to create, migrate, slim down, or align a repository's agent rules with the shared skills. Covers the thin AGENTS.md template, the section map, the four rule classes, and the checkpoint message.
+description: Use when a repository has no AGENTS.md or CLAUDE.md, when its AGENTS.md or docs/dev rule files still carry General, Readme, Docs, Plans, Rust, Databases, Git, or Bash timeout sections, when a repository rule duplicates or conflicts with a shared skill, and when the user asks to create, migrate, slim down, or align a repository's agent rules with the shared skills.
 ---
 
 # AGENTS.md

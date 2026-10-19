@@ -1,6 +1,6 @@
 ---
 name: decisions-and-findings
-description: Use before you send a message that asks for a decision, presents review findings or review items, or gives a final report, when the user asks for more detail, a shorter answer, or an explanation of earlier items, and when an output style asks for brevity. Covers Simplified Technical English limits, message order, the decision and finding layouts, the severity and effort scales, the summary table, and the final report labels.
+description: Use before you send a message that asks the user for a decision, presents review findings or review items, or gives a final report, when the user asks for more detail, a shorter answer, or an explanation of earlier decisions or findings, when you list open findings from a plan or a saved review report, and when an output style asks for brevity while you write such a message.
 ---
 
 # Decisions and findings

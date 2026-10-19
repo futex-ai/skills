@@ -1,6 +1,6 @@
 ---
 name: documentation
-description: Use before you edit a README.md, a crate README, anything under docs/, or a protocol doc, when a behaviour change could leave a doc stale, when you decide whether a sentence belongs in a protocol doc, a README, a plan, a test, or the code, and when a change or a review option conflicts with a protocol doc. Covers the home of each kind of content, README sections, architecture docs, generated reference, the requirement test, and requirement changes as decisions.
+description: Use before you edit a README.md, a crate README, anything under docs/, an architecture doc, or a protocol doc, when a behaviour change could leave a doc stale, when the code and a protocol doc disagree, when you decide whether a sentence belongs in a protocol doc, a README, a plan, a test, or the code, and when a change or a review option conflicts with a protocol doc.
 ---
 
 # Documentation

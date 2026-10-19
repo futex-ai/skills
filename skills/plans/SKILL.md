@@ -1,6 +1,6 @@
 ---
 name: plans
-description: Use when the user asks for a plan, before you create, edit, or tick a plan under plans/, when you discover a TODO or blocked work, when a review finding stays open, and when the plan's pull request merges. Covers the Status paragraph, milestones and tags, TODO checklists, dated decisions, the completion boundary, and evidence under .context/.
+description: Use when the user asks for a plan, before you create, edit, or tick a plan file under plans/, when you discover a TODO or blocked work during implementation, when a milestone has UI or mockup work, when you would paste command output or a review report into a plan, when a review finding stays open, and when the pull request for a plan merges.
 ---
 
 # Plans

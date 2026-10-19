@@ -1,6 +1,6 @@
 ---
 name: implementation-review
-description: Use after you push a branch and before you run or apply a review, when a plan's review TODO is reached, when the user asks for a code review of a branch, a pull request, or a named area, and when you decide whether a finding is Auto-fix yes or no. Covers the review scope, the reviewer prompt, the finding format, the wider fix, the review-fix rule, and fix rounds.
+description: Use after you push a branch and the work needs a review, before you run a review or apply its findings, when a plan's review TODO is reached, when the user asks for a code review of a branch, a pull request, the whole repository, or a named area, when a review finds a problem outside the diff, and when you decide whether a finding is Auto-fix yes or no.
 ---
 
 # Implementation review

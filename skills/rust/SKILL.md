@@ -1,6 +1,6 @@
 ---
 name: rust
-description: Use before you write or change Rust code, add a crate or a dependency, write a Rust test, define an error type, or add a trait or a mock, when you reach for unwrap, expect, panic, anyhow, or println in library code, when a Rust file passes 200 lines, and when cargo fmt or clippy complains. Covers workspace crates, dyn traits with unimock, tracing, the 300-line cap, the _tests_ layout with insta, and the thiserror error contract.
+description: Use before you write or change Rust code, add a crate or a dependency to a Cargo workspace, write or move a Rust test, define or map an error type, or add a trait, a mock, or diagnostics, when you reach for unwrap, expect, panic, anyhow, or println in library code, when a Rust file passes 200 lines, and when cargo fmt, clippy, or a Rust lint reports a problem.
 ---
 
 # Rust

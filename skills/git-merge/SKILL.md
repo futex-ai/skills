@@ -1,6 +1,6 @@
 ---
 name: git-merge
-description: Use before you merge or rebase a branch, when origin/main has moved ahead of your branch, when you resolve merge conflicts, directly after you commit a merge, and when a merge may have dropped content from origin/main. Covers mainline preservation, conflict resolution, the two-parent check, the remerge diff, and merge justifications.
+description: Use before you merge or rebase a branch, when origin/main has moved ahead of your branch, when you resolve merge conflicts, directly after you commit a merge, when a merge may have dropped content that was already on origin/main, and before you push a merge.
 ---
 
 # Git merge

@@ -1,6 +1,6 @@
 ---
 name: mockups
-description: Use before you create or change a mockup under docs/mockups, a screen component, a user flow, or a Mokly entry or configuration, when a plan has a mockup milestone or a feature needs a new screen, when a page needs more than five screens, and when generated mockup output looks wrong or is about to be edited. Covers design before implementation, mobile and web variants, the five-screen limit, nested sub-pages, screen components, user flows, and Mokly-generated output.
+description: Use before you create or change a mockup under docs/mockups, a screen component, a user flow, or a Mokly entry, component, or configuration, when a plan has a mockup milestone or a feature needs a new screen, when a page needs more than five screens, when a user flow needs a screen that does not exist, and when generated mockup output looks wrong or is about to be edited or committed.
 ---
 
 # Mockups
