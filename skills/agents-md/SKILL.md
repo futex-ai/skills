@@ -6,16 +6,16 @@ description: Use when a repository has no AGENTS.md, when its AGENTS.md or docs/
 # AGENTS.md
 
 The target is an `AGENTS.md` of about 50 lines that holds only what is
-specific to the repository and lists the shared skills that apply.
-Everything general lives in the shared skills and in the always-on global
-rules. [templates/AGENTS.md](templates/AGENTS.md) is the template.
+specific to the repository. Everything general lives in the shared skills
+and in the always-on global rules. The file does not list the shared
+skills. An agent sees every skill's description, and the description says
+when to read it. [templates/AGENTS.md](templates/AGENTS.md) is the template.
 
 ## New repository
 
 1. Copy the template to the repository root as `AGENTS.md`.
-2. Fill every section. Delete the `rust`, `typescript`, `databases`,
-   `shared-types`, `mockups`, and `product-ui` lines when the repository
-   has none of that.
+2. Fill every section. Delete each line and section that the template
+   marks for deletion when the repository has none of that.
 3. Create `CLAUDE.md` as a symlink to `AGENTS.md`.
 
 ## Section map for a monolith

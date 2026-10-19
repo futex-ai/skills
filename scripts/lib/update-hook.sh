@@ -21,11 +21,18 @@ session_file() {  # the file of the hook's session, or nothing without a session
   printf '%s' "$sessions/$id"
 }
 
+installed_skill() {  # installed_skill <name>: 0 unless it is an opt-in skill that is not linked
+  [[ -f "$repo/skills/$1/opt-in" ]] || return 0
+  [[ -L "$HOME/.claude/skills/$1" ]]
+}
+
 notice_text() {  # notice_text <from> <to>: what changed, for the agent
-  local text changed
+  local text changed name
   text="Shared skills updated from ${1:0:7} to ${2:0:7}."
   changed="$(git -C "$repo" diff --name-only "$1" "$2" -- skills \
-    | awk -F/ 'NF > 1 { print $2 }' | sort -u | paste -sd ' ' -)"
+    | awk -F/ 'NF > 1 { print $2 }' | sort -u \
+    | while IFS= read -r name; do installed_skill "$name" && echo "$name"; done \
+    | paste -sd ' ' -)"
   if [[ -n "$changed" ]]; then text+=" Changed skills: ${changed// /, }."; fi
   if ! git -C "$repo" diff --quiet "$1" "$2" -- global/AGENTS.md; then
     text+=" The always-on rules changed: read ~/.claude/CLAUDE.md again before you continue."
