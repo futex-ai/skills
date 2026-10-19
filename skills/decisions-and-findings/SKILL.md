@@ -54,10 +54,9 @@ Write in Simplified Technical English (ASD-STE100):
 
 List the items by severity in every message: High first, then Medium,
 then Low. Keep the relative order of items with the same severity. Number
-the items once across the whole message, in that order. When the items
-come from different sources, put each group under its own heading. List
-the items of each group by severity. Continue the numbers from one group
-to the next.
+the items once across the whole message, in that order. Decisions and
+review findings go in the same list. Do not group them by where they come
+from.
 
 ## Decision layout
 
