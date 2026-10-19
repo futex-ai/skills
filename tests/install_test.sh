@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Tests for scripts/install.sh: quiet mode, dangling-link removal, the Codex
-# home directory, the Claude Code hooks, and uninstall.
+# home directory, opt-in skills, the Claude Code hooks, and uninstall.
 set -euo pipefail
 # shellcheck source=tests/lib.sh
 source "$(dirname "${BASH_SOURCE[0]}")/lib.sh"
@@ -42,6 +42,24 @@ test_codex_home_stays_a_skill_root() {
   printf -- '---\nname: gamma\ndescription: test\n---\n' > "$clone/skills/gamma/SKILL.md"
   install --quiet > /dev/null
   [[ -L "$HOME/.codex/skills/gamma" ]] || fail "gamma not linked into the Codex home"
+}
+
+test_opt_in_skill_is_linked_only_on_request() {
+  make_fixture "$1"
+  mkdir -p "$clone/skills/gamma"
+  printf -- '---\nname: gamma\ndescription: test\n---\n' > "$clone/skills/gamma/SKILL.md"
+  echo "for the skills repository only" > "$clone/skills/gamma/opt-in"
+  assert_contains "$(install)" "skipped  gamma (opt-in skill; pass --opt-in to link it)" "verbose skip"
+  assert_eq "" "$(install --quiet)" "quiet run says nothing"
+  [[ ! -e "$HOME/.claude/skills/gamma" ]] || fail "gamma linked without the flag"
+  [[ ! -e "$HOME/.agents/skills/gamma" ]] || fail "gamma linked into .agents without the flag"
+  [[ -L "$HOME/.claude/skills/alpha" ]] || fail "alpha not linked"
+  assert_contains "$(install --opt-in --quiet)" "linked   $HOME/.claude/skills/gamma" "flag links it"
+  [[ -L "$HOME/.agents/skills/gamma" ]] || fail "gamma not linked into .agents with the flag"
+  assert_eq "" "$(install --quiet)" "later run keeps the link quietly"
+  [[ -L "$HOME/.claude/skills/gamma" ]] || fail "later run removed the link"
+  install --uninstall > /dev/null
+  [[ ! -L "$HOME/.claude/skills/gamma" ]] || fail "uninstall left the link"
 }
 
 test_hooks_are_added_once() {

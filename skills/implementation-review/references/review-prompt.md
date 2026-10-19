@@ -71,8 +71,9 @@ grep -rni '<keyword>' plans/ .context/ 2>/dev/null
 ```
 
 Return the numbered findings first and the `Outside the scope` list last.
-Use the finding layout in the `decisions-and-findings` skill. For every
-finding:
+Order the findings by severity, High first, then Medium, then Low, and
+number them in that order. Use the finding layout in the
+`decisions-and-findings` skill. For every finding:
 
 - Give it a severity. High: wrong output, lost data, a security problem, or
   blocked work. Medium: a visible defect, or a spec gap with a workaround.

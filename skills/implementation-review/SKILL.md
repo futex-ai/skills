@@ -1,6 +1,6 @@
 ---
 name: implementation-review
-description: The post-push implementation review and the review-fix rule. Use after you push a branch and before you run or apply a review, when a plan's review TODO is reached, or when the user asks for a code review of a branch. Covers the diff scope with the Outside the scope list and the user-widened scope, the read-only reviewer prompt, the numbered finding format with severity, category, and an effort grade for each option, the wider-fix option with its best-effort search for previous examples, the blocked-option conditions, the Auto-fix tag that applies the widest unblocked option, the follow-up list for wider fixes that were not applied, the two fix-round limit, and how to report fixed and open findings.
+description: The post-push implementation review and the review-fix rule. Use after you push a branch and before you run or apply a review, when a plan's review TODO is reached, or when the user asks for a code review of a branch. Covers the diff scope with the Outside the scope list and the user-widened scope, the read-only reviewer prompt, the numbered finding format with severity, category, and an effort grade for each option, the severity order of findings, the wider-fix option with its best-effort search for previous examples, the blocked-option conditions, the Auto-fix tag that applies the widest unblocked option, the follow-up list for wider fixes that were not applied, the two fix-round limit, and how to report fixed and open findings.
 ---
 
 # Implementation review
@@ -42,7 +42,8 @@ after the report.
 
 ## Finding format
 
-Number each finding. For every finding give the fields below. The
+Order the findings by severity, High first, then Medium, then Low. Number
+each finding in that order. For every finding give the fields below. The
 `decisions-and-findings` skill gives the layout that shows them to the
 user.
 
@@ -127,7 +128,8 @@ The full rule with every condition is in
 4. In the final message, list the auto-fixed findings (number, severity,
    plain explanation, the applied option, what changed, commit) separately
    from the findings that need a decision, each with a clear
-   recommendation. Use the `decisions-and-findings` skill.
+   recommendation. Order both lists by severity, High first. Use the
+   `decisions-and-findings` skill.
 5. List each blocked wider fix of a fixed finding as a follow-up under
    **Open**, one line per class: the wider fix, its effort, the finding
    numbers it covers, and the previous examples. An open finding keeps its

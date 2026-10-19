@@ -40,9 +40,10 @@ Tags: mockup <keep the tag line only for a mockup or ui milestone>
       `implementation-review` skill after the push. Report the findings,
       then apply the review-fix rule: fix the `Auto-fix: yes` findings,
       re-review once, and report the rest.
-  - <Open findings go here, one line each: number, title, severity, effort,
-    and recommended option. Follow-ups for wider fixes that the review did
-    not apply, and problems outside the scope, go here too, one line each.>
+  - <Open findings go here by severity, High first, one line each: number,
+    title, severity, effort, and recommended option. Follow-ups for wider
+    fixes that the review did not apply, and problems outside the scope, go
+    here too, one line each.>
 
 ## Post-merge follow-up (non-blocking)
 

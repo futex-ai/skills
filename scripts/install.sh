@@ -4,10 +4,14 @@
 # agents. Remove a link into this repository when its target is gone. Safe to
 # re-run.
 #
-# Usage: install.sh [--force] [--codex-home] [--hooks] [--quiet] [--uninstall]
+# Usage: install.sh [--force] [--codex-home] [--opt-in] [--hooks] [--quiet]
+#                   [--uninstall]
 #   --force       replace an existing non-symlink path (kept as <path>.bak)
 #   --codex-home  also link skills into ~/.codex/skills; later runs keep that
 #                 directory current without the flag
+#   --opt-in      also link the opt-in skills, those with an opt-in file in
+#                 their directory; later runs keep a linked one current
+#                 without the flag
 #   --hooks       add the Claude Code hooks that run scripts/update.sh (needs jq)
 #   --quiet       print only new links, replaced paths, removed links, and skips
 #   --uninstall   stop the update loop, and remove the links and the hooks that
@@ -17,6 +21,7 @@ set -euo pipefail
 repo="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 force=0
 codex_home=0
+opt_in=0
 hooks=0
 quiet=0
 uninstall=0
@@ -24,6 +29,7 @@ for arg in "$@"; do
   case "$arg" in
     --force) force=1 ;;
     --codex-home) codex_home=1 ;;
+    --opt-in) opt_in=1 ;;
     --hooks) hooks=1 ;;
     --quiet) quiet=1 ;;
     --uninstall) uninstall=1 ;;
@@ -35,6 +41,16 @@ holds_our_link() {  # holds_our_link <dir>: 0 when a link in <dir> points into t
   local path
   for path in "$1"/*; do
     if [[ -L "$path" && "$(readlink "$path")" == "$repo"/* ]]; then return 0; fi
+  done
+  return 1
+}
+
+wanted() {  # wanted <dir> <name>: 0 unless <dir> is an opt-in skill that is not asked for or linked
+  local root
+  [[ -f "$1/opt-in" ]] || return 0
+  if (( opt_in )); then return 0; fi
+  for root in "${skill_roots[@]}"; do
+    if [[ -L "$root/$2" && "$(readlink "$root/$2")" == "$1" ]]; then return 0; fi
   done
   return 1
 }
@@ -163,6 +179,10 @@ for dir in "$repo"/skills/*/; do
   dir="${dir%/}"
   name="$(basename "$dir")"
   [[ -f "$dir/SKILL.md" ]] || { echo "skipped  $name (no SKILL.md)"; continue; }
+  if ! wanted "$dir" "$name"; then
+    if (( ! quiet )); then echo "skipped  $name (opt-in skill; pass --opt-in to link it)"; fi
+    continue
+  fi
   for root in "${skill_roots[@]}"; do
     link "$dir" "$root/$name"
   done

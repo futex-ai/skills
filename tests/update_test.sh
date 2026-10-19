@@ -189,6 +189,24 @@ test_hook_tells_a_session_about_an_update_by_another_process() {
   assert_eq "" "$(hook SessionStart s9)" "a new session starts current"
 }
 
+test_hook_announces_an_opt_in_skill_only_where_it_is_linked() {
+  make_fixture "$1"
+  local out
+  hook SessionStart s1 > /dev/null
+  write_skill gamma
+  echo "for the skills repository only" > "$work/skills/gamma/opt-in"
+  echo "more" >> "$work/skills/alpha/SKILL.md"
+  commit_push "add the opt-in skill gamma"
+  out="$(hook UserPromptSubmit s1)"
+  assert_contains "$out" " Changed skills: alpha." "the linked skill is announced"
+  assert_lacks "$out" "gamma" "the opt-in skill is not announced"
+  [[ ! -e "$HOME/.claude/skills/gamma" ]] || fail "the update linked the opt-in skill"
+  "$clone/scripts/install.sh" --opt-in --quiet > /dev/null
+  echo "more" >> "$work/skills/gamma/SKILL.md"
+  commit_push "change gamma"
+  assert_contains "$(hook UserPromptSubmit s1)" " Changed skills: gamma." "announced once linked"
+}
+
 test_hook_tells_each_session_once() {
   make_fixture "$1"
   hook SessionStart s1 > /dev/null

@@ -2,8 +2,8 @@
 
 These rules apply in every repository and every session. Repository-specific
 rules live in each repository's `AGENTS.md`. Detailed procedures live in the
-shared skills. Each repository's `AGENTS.md` says which skills apply and when
-to read them. Read the skill at that moment instead of guessing the rule.
+shared skills. Each skill's description says when to read it. Read the skill
+at that moment instead of guessing the rule.
 
 ## Responses
 
@@ -22,7 +22,8 @@ to read them. Read the skill at that moment instead of guessing the rule.
   report, read the `decisions-and-findings` skill. It gives the layout and
   the writing limits.
 - When a task needs decisions from the user, ask for all of them in one
-  message, not one at a time. Number each decision. For each give its
+  message, not one at a time. Number each decision. List the decisions and
+  the review findings by severity, highest first. For each give its
   severity and effort, the background that a reader without prior
   knowledge needs, the problem, the impact if no action is taken, lettered
   options, and the recommended option with one sentence of reasoning.
