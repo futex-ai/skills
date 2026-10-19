@@ -22,15 +22,18 @@ Codex, and with any other agent that reads the
 1. **Always-on rules** in `global/AGENTS.md` apply in every session: writing
    style, working habits, testing habits, safety rules. Keep this file short.
    Every line costs context on every turn.
-2. **Skills** hold the detailed procedures. An agent loads a skill when the
-   moment matches its description, or when the repository `AGENTS.md` names
-   it.
+2. **Skills** hold the detailed procedures. An agent sees the name and
+   description of every installed skill, and loads a skill when the moment
+   matches its description. The description is the one place that says
+   when to read a skill.
 3. **The per-repository `AGENTS.md`** holds what is specific to that
-   repository: commands, layout, caps, product locations, review focus. It
-   lists the shared skills that apply and when to read them. It also
-   repeats the communication preference (Simplified Technical English,
-   faithful reporting, batched decisions, final report) so that it reaches
-   an agent that does not have the global file installed.
+   repository: commands, layout, caps, product locations, review focus, and
+   the choices that a skill leaves to the repository, such as the type
+   generator, the test runner, or the shared UI library. It does not
+   repeat the skill list. It does repeat the communication preference
+   (Simplified Technical English, faithful reporting, batched decisions,
+   final report) so that it reaches an agent that does not have the global
+   file installed.
 
 ## Skills
 
@@ -44,7 +47,7 @@ Codex, and with any other agent that reads the
 | `deterministic-tests` | A test flakes or would assert elapsed time. |
 | `git-commit` | Before and after you commit, and when you open a pull request. |
 | `git-merge` | Before you merge or rebase, and after each merge commit. |
-| `documentation` | Before you edit a README, a doc, or a protocol doc, and when a change or a review option conflicts with a protocol doc. |
+| `documentation` | Before you edit a README, a doc, or a protocol doc, when you decide where a sentence belongs, and when a change or a review option conflicts with a protocol doc. |
 | `rust` | Before you edit Rust. |
 | `typescript` | Before you edit TypeScript or JavaScript. |
 | `databases` | Before you touch migrations, Diesel, or store crates. |
@@ -52,6 +55,7 @@ Codex, and with any other agent that reads the
 | `mockups` | Before you create or change a mockup. |
 | `product-ui` | Before you change a user-facing screen or copy. |
 | `agents-md` | Creating or migrating a repository's `AGENTS.md`. |
+| `writing-skills` | Before you create or edit a skill or its description. Opt-in: linked only with `install.sh --opt-in`. |
 
 ## Install
 
@@ -68,7 +72,13 @@ A pull updates the skills that are already linked. When a pull adds a new
 skill, run `scripts/install.sh` again.
 Pass `--codex-home` once to also link into `~/.codex/skills` for a Codex
 version that reads only that directory. Later runs keep that directory
-current without the flag. The script skips a path that exists and is not a
+current without the flag.
+A skill with an `opt-in` file in its directory is linked only when you
+pass `--opt-in` once. Later runs keep a linked opt-in skill current
+without the flag, and the update hooks announce its changes only where
+it is linked. `writing-skills` is opt-in: it applies to work in this
+repository only. An `npx skills add` install takes every skill, including
+the opt-in ones. The script skips a path that exists and is not a
 symlink; pass `--force` to replace it (the original is kept as `.bak`).
 `--uninstall` removes the links. Run `/skills` in Codex to confirm discovery.
 
@@ -152,6 +162,9 @@ fi
 "$skills_dir/scripts/update.sh" --detach --loop 300
 ```
 
+In the setup script of this repository's own workspace, add `--opt-in` to
+the install line so that `writing-skills` is linked there.
+
 More options: `--min-interval <s>` skips a check that ran less than `<s>`
 seconds ago. `--timeout <s>` bounds the fetch. `--state-dir <dir>` moves the
 log, the stamp, the locks, and the session files. `--branch <name>` follows
@@ -166,13 +179,25 @@ another branch.
 
 ## Writing a skill
 
+The `writing-skills` skill gives the procedure: the description as
+triggers, the layout and size limits, the form that fixes each kind of
+failure, the check against a real repository, and the repository steps.
+In short:
+
+- A skill that applies to work in this repository only gets an `opt-in`
+  file in its directory, so that `install.sh` links it only with
+  `--opt-in`.
 - Group by the moment an agent needs it ("before you commit"), not by topic.
-- `name` must match the directory. `description` says what the skill does
-  and when to use it, with the keywords an agent would match on.
+- `name` must match the directory. `description` starts with "Use when"
+  and names the moments and the symptoms. It does not summarise the
+  content. When two skills share a moment, both load. Target 300
+  characters. `scripts/check.sh` warns above 500.
 - Keep `SKILL.md` under about 150 lines. Put long contracts in `references/`.
   `scripts/check.sh` warns at 200 lines and fails at 500.
 - No repository-specific paths, commands, or crate names. Those belong in the
   repository's `AGENTS.md`; say "the gate named in `AGENTS.md`".
+- Ask for a real repository first. Write the skill from the cases in its
+  history, not from a staged test, and walk each case with the final text.
 - Run `scripts/check.sh` and `tests/run.sh` before you commit.
 - A new skill reaches an existing install when `scripts/update.sh` or
   `scripts/install.sh` runs there. Say so in the pull request description.

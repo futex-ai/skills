@@ -1,6 +1,6 @@
 ---
 name: implementation-review
-description: The post-push implementation review and the review-fix rule. Use after you push a branch and before you run or apply a review, when a plan's review TODO is reached, or when the user asks for a code review of a branch. Covers the read-only reviewer prompt, the numbered finding format with severity, category, and effort grade, the wider-fix option with its best-effort search for previous examples, the Auto-fix yes and no conditions, the two fix-round limit, and how to report fixed and open findings.
+description: The post-push implementation review and the review-fix rule. Use after you push a branch and before you run or apply a review, when a plan's review TODO is reached, or when the user asks for a code review of a branch. Covers the diff scope with the Outside the scope list and the user-widened scope, the read-only reviewer prompt, the numbered finding format with severity, category, and effort grade, the wider-fix option with its best-effort search for previous examples, the Auto-fix yes and no conditions, the two fix-round limit, and how to report fixed and open findings.
 ---
 
 # Implementation review
@@ -10,16 +10,33 @@ committed, and been pushed. The reviewer inspects the complete local diff
 against `origin/main` and changes nothing. Fixing happens in a separate step
 after the report.
 
+## Scope
+
+- The scope is the diff: each changed or added hunk, and the code outside
+  the diff whose behaviour the diff changes, such as a caller of a changed
+  function, a test that covers changed code, or a doc that describes
+  changed behaviour.
+- A finding must anchor to the scope.
+- The reviewer lists every other problem under `Outside the scope`, one
+  line each, without a number or the finding layout. Nobody fixes these
+  problems in this branch. An unrelated flaky test is such a problem.
+- The user can widen the scope by asking for it explicitly, for example a
+  review of the whole repository or of a named area. Then the requested
+  scope replaces the diff. Do not widen the scope for any other reason.
+
 ## Running the review
 
 1. Run the review as a separate read-only pass with a fresh context: a
    subagent, a second agent, or a new session. Give it the prompt in
    [references/review-prompt.md](references/review-prompt.md) and the
-   `## Review focus` list from the repository's `AGENTS.md`.
+   `## Review focus` list from the repository's `AGENTS.md`. When the user
+   asked for a wider scope, replace the first paragraph of the prompt's
+   `## Scope` section with the requested scope.
 2. The reviewer starts with `scripts/diff-summary.sh` so that a large diff
    fits in context, then reads changed files and focused patches directly.
-3. The reviewer returns numbered findings, or says clearly that there are
-   none and names the residual test risk.
+3. The reviewer returns numbered findings and then the `Outside the scope`
+   list, or says clearly that there are none and names the residual test
+   risk.
 4. Save the full report under `.context/<plan-name>/`, not in the
    repository.
 
@@ -54,9 +71,9 @@ user.
 - A clear recommended option.
 - Options judged on their merits. Do not drop an option, rank it lower, or
   recommend a different option only because it conflicts with a protocol
-  doc. Protocol docs record implementation details that change as the
-  implementation develops, so the doc update is part of that option and of
-  its effort. See the `documentation` skill.
+  doc. Protocol docs record the current requirements and change with the
+  behaviour, so the doc update is part of that option and of its effort.
+  See the `documentation` skill.
 - A final line: `Auto-fix: yes` or `Auto-fix: no, because …`, following the
   review-fix rule below.
 
@@ -66,30 +83,41 @@ The full rule with every condition is in
 [references/review-fix-rule.md](references/review-fix-rule.md). In short:
 
 - `Auto-fix: yes` is allowed only when the finding has one clear fix and
-  no wider fix is available, for small or medium effort findings in these
-  categories: product bugs (including edge cases, races, and platform
-  differences), security issues, docs or spec drift, mockup mismatches that
-  a protocol doc already settles, flaky tests that the diff adds or changes
-  under the flaky-test rule in the `deterministic-tests` skill, and
-  repository-rule violations such as file size, lint, and layout.
+  no wider fix is available, or the only wider fix is the known one for its
+  class, for small or medium effort findings in these categories: product
+  bugs (including edge cases, races, and platform differences), security
+  issues, docs or spec drift, mockup mismatches that a protocol doc already
+  settles, flaky tests that the diff adds or changes under the flaky-test
+  rule in the `deterministic-tests` skill, and repository-rule violations
+  such as file size, lint, and layout.
+- Docs or spec drift is a doc that contradicts the changed code. A doc that
+  is silent on how the code works is not a finding. The class has a known
+  wider fix, the `documentation` skill, so the reviewer proposes no other
+  wider fix for it. The review-fix rule says when the doc side changes
+  without the user.
 - `Auto-fix: no` when the finding needs a decision: real trade-offs between
-  options, a change to the meaning of a contract, a mockup versus product
+  options, a requirement change without a recorded user decision, a new
+  requirement for behaviour at the boundary, a mockup versus product
   choice, user-visible behaviour beyond the contract, a new gate or stricter
   validation, a wider fix available beside the direct fix, weakening a test
   or gate, or a need for credentials or infrastructure. Large findings, and
   findings about missing tests, performance, code structure, UX wording, and
   process, always wait for the user.
+- An `Outside the scope` problem is not a finding. Do not fix it in this
+  branch. Report it for a separate branch.
 
 ## After the review
 
-1. Fix the `Auto-fix: yes` findings without waiting for the user.
+1. Fix the `Auto-fix: yes` findings without waiting for the user. Leave the
+   `Outside the scope` problems alone.
 2. Run the checks, commit, push, and run the review once more on the fix.
    Name each fixed finding in its commit message.
 3. Fix any new `Auto-fix: yes` findings once more, then stop. Do not start a
    third fix round without the user.
 4. In the final message, list the auto-fixed findings (number, severity,
    plain explanation, what changed, commit) separately from the findings
-   that need a decision, each with a clear recommendation. Use the
-   `decisions-and-findings` skill.
-5. Add each open finding as one line under the plan's review TODO, in the
-   shape that the `plans` skill gives.
+   that need a decision, each with a clear recommendation. List the
+   `Outside the scope` problems under **Open**, for a separate branch. Use
+   the `decisions-and-findings` skill.
+5. Add each open finding, and each `Outside the scope` problem, as one line
+   under the plan's review TODO, in the shape that the `plans` skill gives.

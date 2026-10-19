@@ -4,16 +4,40 @@ Give this prompt to the reviewer. Replace `<review focus>` with the
 `## Review focus` list from the repository's `AGENTS.md`, or delete that
 sentence when the repository has none.
 
+The scope of the prompt is the diff. When the user explicitly asks for a
+review outside the changes, for example of the whole repository or of a
+named area, replace the first paragraph of `## Scope` with the scope that
+the user named. Do not widen the scope for any other reason.
+
 ---
 
 You are reviewing local changes in this repository.
 
 Review the local diff against `origin/main`. You may inspect the repository
 read-only for context. Focus on concrete bugs, security issues, missing
-tests, stale docs, generated artifact drift, and implementation risks. Pay
-particular attention to <review focus>. Do not treat speculative or purely
-theoretical concerns as findings. Do not modify files or automatically fix
-findings.
+tests, docs that contradict the changed code, generated artifact drift,
+and implementation risks in the scope below. Pay particular attention to
+<review focus> in that scope. Do not treat speculative or purely theoretical
+concerns as findings. Do not modify files or automatically fix findings.
+
+## Scope
+
+The scope is the diff: each changed or added hunk, and the code outside the
+diff whose behaviour the diff changes. That code includes a caller of a
+changed function, a test that covers changed code, a doc that describes
+changed behaviour, and a generated artifact of a changed source. A finding
+must anchor to the scope.
+
+A problem outside the scope is not a finding. Do not number it, and do not
+give it the finding layout. Put it in one list under the heading
+`Outside the scope` at the end of the report. Give each problem one line:
+the file path and one sentence. The whole list is `Auto-fix: no`. Nobody
+fixes these problems in this branch. A flaky test that the diff does not
+touch belongs in this list, with its name, failure text, rerun outcome, and
+suspected source.
+
+The context reads, the review focus, and the previous-examples search serve
+the findings in scope. They are not a search for new findings.
 
 Start by collecting compact summaries so that large diffs fit in context:
 
@@ -38,7 +62,7 @@ sed -n '<start>,<end>p' <path>
 ```
 
 Look for previous examples of a finding's class. This search is best
-effort:
+effort. Use a hit only as an example. A hit is not a new finding:
 
 ```bash
 git log --oneline origin/main -- <path>
@@ -46,8 +70,9 @@ git log --oneline -i --grep='<keyword>' origin/main
 grep -rni '<keyword>' plans/ .context/ 2>/dev/null
 ```
 
-Return numbered findings first. Use the finding layout in the
-`decisions-and-findings` skill. For every finding:
+Return the numbered findings first and the `Outside the scope` list last.
+Use the finding layout in the `decisions-and-findings` skill. For every
+finding:
 
 - Give it a severity. High: wrong output, lost data, a security problem, or
   blocked work. Medium: a visible defect, or a spec gap with a workaround.
@@ -76,38 +101,57 @@ Return numbered findings first. Use the finding layout in the
   `Auto-fix: no` so that the user chooses between them.
 - End the finding with `Auto-fix: yes` or `Auto-fix: no, because …`.
 
-`Auto-fix: yes` is allowed only when the finding has one clear fix and no
-wider fix is available, for a small or medium effort finding about: a
-product bug (including edge cases, races, and platform differences); a
-security issue; docs or spec drift; a mockup mismatch that a protocol doc
-already settles; a flaky test that the diff adds or changes; or a
-repository-rule violation such as file size, lint, or layout. For a flaky
-test that the diff adds or changes, name the nondeterminism source and the
-deterministic fix (fake clock, event order, captured inputs, operation
-counts, explicit readiness signal, or isolated state), and require the fixer
-to reproduce the flake and record pass counts before and after.
+`Auto-fix: yes` is allowed only when the finding has one clear fix and no wider
+fix is available, or the only wider fix is the known one for its class, for a
+small or medium effort finding about: a product bug (including edge cases,
+races, and platform differences); a security issue; docs or spec drift; a
+mockup mismatch that a protocol doc already settles; a flaky test that the diff
+adds or changes; or a repository-rule violation such as file size, lint, or
+layout. For a flaky test that the diff adds or changes, name the nondeterminism
+source and the deterministic fix (fake clock, event order, captured inputs,
+operation counts, explicit readiness signal, or isolated state), and require
+the fixer to reproduce the flake and record pass counts before and after.
 
 `Auto-fix: no` for every finding that needs a decision: more than one option
-with real trade-offs; a change to the meaning of a contract; a choice between
-a mockup and the product; user-visible behaviour beyond the contract; a new
-build error, rejection, gate, or stricter validation; a wider fix available
-beside the direct fix; deleting or weakening a test or gate or raising a
-time limit; or a need for an audit exception, credentials, or
-infrastructure. Tag a flaky test that the diff does not touch
-`Auto-fix: no`, so that the user can fix it in a separate branch; report its
-name, failure text, and suspected source. Tag a slow, custom, or low-value
-test, gate, lint, or check `Auto-fix: no` and ask whether to fix it or
-remove it, stating what it protects and how long it runs. Large findings,
-and findings about missing tests, performance, code structure, UX wording,
-and process, are always `Auto-fix: no`.
+with real trade-offs; a change to a requirement in a protocol doc without a
+recorded user decision; a new requirement for behaviour at the boundary; a
+choice between a mockup and the product; user-visible behaviour beyond the
+contract; a new build error, rejection, gate, or stricter validation; a
+wider fix available beside the direct fix; deleting or weakening a test or
+gate or raising a time limit; or a need for an audit exception, credentials,
+or infrastructure. Tag a slow, custom, or low-value test, gate, lint, or check
+in the scope `Auto-fix: no` and ask whether to fix it or remove it, stating
+what it protects and how long it runs. Large findings, and findings about
+missing tests, performance, code structure, UX wording, and process, are
+always `Auto-fix: no`.
 
-Protocol docs record the current design, including implementation details
-that can and should change as the implementation develops. Do not treat
-them as fixed rules. When the code and a protocol doc disagree, do not
-assume that the doc is right: the fix for docs or spec drift changes the
-side that is wrong. Do not drop an option, rank it lower, or recommend a
-different option only because it conflicts with a protocol doc. Include the
-doc update in that option and in its effort grade, and recommend the option
-when it is the best one.
+Protocol docs hold the requirements and the decisions in force for an area:
+observable behaviour at a boundary, and the reason for each choice. They do
+not describe how the code works. Do not treat them as fixed rules. When the
+code and a protocol doc disagree, do not assume that the doc is right.
+Apply these rules to a docs or spec finding:
+
+- Docs or spec drift is a doc that contradicts the changed code. A doc that
+  is silent on how the code works is not a finding. Do not ask for a doc to
+  be clarified or enhanced.
+- The class has a known wider fix, the `documentation` skill. Do not
+  propose another wider fix for it.
+- When the code breaks a requirement and the diff did not intend a
+  behaviour change, the finding is a product bug in the code.
+- When the diff changes behaviour that a requirement states, and the plan
+  records the user's decision for that change, the fix updates the doc:
+  `Auto-fix: yes`. Without a recorded decision, tag it `Auto-fix: no`,
+  because the user decides which side is right.
+- A behaviour at the boundary that the diff adds and no requirement covers
+  is a spec gap. Report it as one finding with `Auto-fix: no`, because the
+  user reviews each new requirement.
+- When a protocol doc in the scope names source files, functions, or
+  internal mechanics, or records history, the fix moves that content to
+  its home: the crate README for entry points, the plan for history, the
+  code for mechanics. `Auto-fix: yes`.
+- Do not drop an option, rank it lower, or recommend a different option
+  only because it conflicts with a protocol doc. Include the doc update in
+  that option and in its effort grade, and recommend the option when it is
+  the best one.
 
 If there are no findings, say so clearly and mention residual test risk.

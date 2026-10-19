@@ -40,7 +40,9 @@ run.
 ## 3. Keep the spec aligned
 
 - Docs, protocol docs, mockups, and every `README.md` are part of the spec.
-  Update them in the same change. See the `documentation` skill.
+  Update them in the same change. A protocol doc changes only when a
+  requirement or a decision changes. A README changes when an entry point
+  or the public behaviour changes. See the `documentation` skill.
 - Tick completed plan TODOs and add discovered TODOs. See the `plans` skill.
 - When the change removes or renames anything, search `docs/`, `plans/`, and
   every `README.md` for its name and update live references. See the
@@ -57,7 +59,9 @@ run.
 ## 5. Review
 
 - After the push, review the complete local diff against `origin/main` with
-  the `implementation-review` skill. The review itself is read-only.
+  the `implementation-review` skill. The review itself is read-only. Its
+  findings stay in the diff unless the user explicitly asked for a wider
+  review.
 - Apply the review-fix rule: fix only the findings tagged `Auto-fix: yes`,
   run the checks, commit, push, re-review once, then stop and report.
 
@@ -71,7 +75,8 @@ and labels in the `decisions-and-findings` skill. Include:
   could not run, and why.
 - Auto-fixed review findings, separately from the findings that need a
   decision, each with a recommendation.
-- Unrelated flaky tests: name, failure text, rerun outcome, suspected
+- Problems outside the review scope, for a separate branch. An unrelated
+  flaky test gives its name, failure text, rerun outcome, and suspected
   source.
 - Open plan TODOs or follow-ups.
 
