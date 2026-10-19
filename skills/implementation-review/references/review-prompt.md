@@ -142,6 +142,8 @@ and record pass counts before and after.
 `Auto-fix: no` for every finding that needs a decision:
 
 - Every option is blocked.
+- The best option on the merits is blocked and is not a wider fix.
+  Recommend that option, so that the user decides.
 - More than one option has real trade-offs and no option is clearly best.
 - The finding is a slow, custom, or low-value test, gate, lint, or check in
   the scope. Ask whether to fix it or remove it, and state what it protects

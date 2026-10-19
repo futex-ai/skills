@@ -56,6 +56,8 @@ The reviewer tags a finding `Auto-fix: no` and the agent asks the user
 when:
 
 - Every option is blocked.
+- The best option on the merits is blocked and is not a wider fix. The
+  reviewer recommends that option, and the user decides.
 - More than one option has real trade-offs and the recommendation is not
   clearly best.
 - The finding is a slow, custom, or low-value test, gate, lint, or check.

@@ -107,7 +107,8 @@ The full rule with every condition is in
   class is already in force, the `documentation` skill, so the reviewer
   proposes no other wider fix for it. The review-fix rule says when the doc
   side changes without the user.
-- `Auto-fix: no` when every option is blocked, when the options have real
+- `Auto-fix: no` when every option is blocked, when the best option on
+  the merits is blocked and is not a wider fix, when the options have real
   trade-offs and no option is clearly best, or when the finding is a slow,
   custom, or low-value test, gate, lint, or check. Findings about missing
   tests, performance, code structure, UX wording, and process always wait
