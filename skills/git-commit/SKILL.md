@@ -1,6 +1,6 @@
 ---
 name: git-commit
-description: What to do before and after every commit. Use before you commit, when you write a commit message or a pull request title and description, when you squash, when a change removes or renames a feature, test, fixture, command, or file, and when a link check fails on history content. Covers the deletion audit against origin/main, stale-reference search, live versus history content, the GitHub permalink fix, the Conventional Commits format with its title limits, multiple entries in one commit, and what the description must record.
+description: Use before you commit and directly after, when you write a commit message or a pull request title and description, when you squash, when the diff against origin/main deletes or renames a file, feature, test, fixture, or command, when you are not sure whether a plan or doc passage is live content or history, and when a link check fails on a link in history content.
 ---
 
 # Git commit

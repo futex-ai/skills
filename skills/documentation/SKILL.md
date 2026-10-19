@@ -1,6 +1,6 @@
 ---
 name: documentation
-description: Rules for README files, the docs directory, architecture docs, generated reference, and protocol docs. Protocol docs hold the requirements and the decisions in force, not implementation details, and change only when the behaviour changes. Use before you edit a README.md, a Rust crate README, anything under docs/, or a protocol doc, whenever a behaviour change could leave a doc stale, when you decide whether a sentence belongs in a protocol doc, a README, a plan, a test, or the code, and when a change or a review option conflicts with a protocol doc. Covers the home of each kind of content, README structure, the required crate README sections with Key Code as the home of code references, architecture docs, generated reference, the requirement test for protocol doc sentences, the decision record, protocol doc length and splitting, requirement changes as decisions, and keeping docs aligned in the same change.
+description: Use before you edit a README.md, a crate README, anything under docs/, an architecture doc, or a protocol doc, when a behaviour change could leave a doc stale, when the code and a protocol doc disagree, when you decide whether a sentence belongs in a protocol doc, a README, a plan, a test, or the code, and when a change or a review option conflicts with a protocol doc.
 ---
 
 # Documentation
