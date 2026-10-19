@@ -1,6 +1,6 @@
 ---
 name: writing-skills
-description: Use when you create or edit a skill, write or change a skill description, or when an agent skipped a rule, did not load a skill, or loaded the wrong one. Covers trigger descriptions, the SKILL.md layout, the form for each failure, excuse tables, and the check against a real repository.
+description: Use when you create or edit a skill, write or change a skill description, or when an agent skipped a rule, did not load a skill, or loaded the wrong one.
 ---
 
 # Writing skills
@@ -41,22 +41,23 @@ decides whether the agent loads the skill.
   moments and the symptoms as keywords: what the agent sees, is asked, or
   is about to do. Name file types, commands, error texts, and the words a
   user would type.
-- Then write `Covers` and the topic nouns, so that an agent can tell two
-  skills apart. Do not list the steps of the procedure in their order. An
-  agent reads an ordered list as the procedure and skips the file.
+- Write triggers only. Do not summarise the content, and do not list
+  the steps of the procedure. An agent reads a summary as the skill and
+  skips the file.
+- When two skills share a moment, both load. That is correct. Make a
+  trigger more specific only when the skill must not load at a moment.
 - Do not write in the first person. Address the agent as you. Do not
   describe the skill's own method.
 - Target 300 characters. Keep under 500. Every description loads into
-  every session on every turn, so each character has a cost. Put at most
-  seven nouns after `Covers`. The repository check, `check.sh` under
-  `scripts/`, warns above 500 characters and fails above 1024.
-- An existing description that starts with a noun phrase moves to this
-  form when the skill is next edited.
+  every session on every turn, so each character has a cost. The
+  repository check, `check.sh` under `scripts/`, warns above 500
+  characters and fails above 1024.
+- An existing description can start with a noun phrase or end with a
+  `Covers` summary. It moves to this form when the skill is next edited.
 
 Example: "Use when a test fails and then passes on a rerun, when a test
 would assert elapsed time, timeouts, or performance, or when you choose
-between a real and a fake clock. Covers operation counts, captured inputs,
-event order, fake clocks, and the flaky-test procedure."
+between a real and a fake clock."
 
 ## The SKILL.md file
 
@@ -132,7 +133,7 @@ needs one to check against.
 ## Checklist
 
 - [ ] The description starts with `Use when`, `Use before`, or `Use
-      after`. It has symptom keywords and topic nouns. It lists no steps.
+      after`. It has symptom keywords. It does not summarise the content.
       It is near 300 characters and under 500.
 - [ ] The repository is named. Its past cases are recorded under
       `.context/` before the text.

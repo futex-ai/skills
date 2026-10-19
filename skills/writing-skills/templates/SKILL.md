@@ -1,6 +1,6 @@
 ---
 name: <directory-name>
-description: Use when <the moments and the symptoms: what the agent sees, is asked, or is about to do>. Covers <the topic nouns, not the steps in order>.
+description: Use when <the moments and the symptoms: what the agent sees, is asked, or is about to do. Triggers only, no summary of the content>.
 ---
 
 # <Title>

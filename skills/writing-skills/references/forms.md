@@ -89,8 +89,7 @@ Before: "Rules for tests that must not depend on machine speed."
 
 After: "Use when a test fails and then passes on a rerun, when a test
 would assert elapsed time, timeouts, or performance, or when you choose
-between a real and a fake clock. Covers operation counts, captured inputs,
-event order, fake clocks, and the flaky-test procedure."
+between a real and a fake clock."
 
 The second text names the rerun that passes and the assertion on elapsed
 time. Those are the words in the agent's context at the moment.
