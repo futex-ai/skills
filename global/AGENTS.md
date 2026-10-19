@@ -22,7 +22,8 @@ at that moment instead of guessing the rule.
   report, read the `decisions-and-findings` skill. It gives the layout and
   the writing limits.
 - When a task needs decisions from the user, ask for all of them in one
-  message, not one at a time. Number each decision. For each give its
+  message, not one at a time. Number each decision. List the decisions and
+  the review findings by severity, highest first. For each give its
   severity and effort, the background that a reader without prior
   knowledge needs, the problem, the impact if no action is taken, lettered
   options, and the recommended option with one sentence of reasoning.
