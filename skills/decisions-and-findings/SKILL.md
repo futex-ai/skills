@@ -44,11 +44,14 @@ Write in Simplified Technical English (ASD-STE100):
    the project is, what the feature does, and what changed. Use six
    sentences or fewer. The **Background** of each item then adds only what
    that item needs.
-3. With more than five items, add a summary table. Give the number, the
+3. When two or more items use the same term, add a shared **Terms** list
+   after the background paragraph. The **Terms** of each item then adds
+   only the terms that no other item uses.
+4. With more than five items, add a summary table. Give the number, the
    title, the severity, the effort, and the recommended option. Use the
    same order as the items.
-4. Give each item in the layout below.
-5. When the task ends, finish with the final report.
+5. Give each item in the layout below.
+6. When the task ends, finish with the final report.
 
 ## Item order
 
@@ -67,8 +70,10 @@ Use this layout for each decision that is not a review finding.
 ### 1. <The problem, in eight words or fewer>
 
 - **Severity:** <High, Medium, or Low>. **Effort:** <Small, Medium, or Large>.
-- **Background:** <Two to five sentences: what the feature does, where it is, and the terms that the reader needs.>
-- **Problem:** <One to three sentences that say what is wrong. Use only terms that the background explains.>
+- **Terms:** <Only when the item uses a term that the shared list does not define. Up to five entries.>
+  - **<Term>:** <One sentence: what it is, and where it lives when that helps the reader find it.>
+- **Background:** <Two to five sentences: what the feature does and where it is. Use plain words and defined terms only.>
+- **Problem:** <One to three sentences that say what is wrong. Use plain words and defined terms only.>
 - **Impact if no action:** <One or two sentences.>
 - **Options:**
   - **A.** <The change.> <Its cost or risk.>
@@ -90,8 +95,10 @@ what each field must contain.
 - **Severity:** <High, Medium, or Low>. **Effort:** <Small, Medium, or Large>.
 - **Category:** <One category from the scales below.>
 - **Location:** <The file path and line.>
-- **Background:** <Two to five sentences: what the feature does, where it is, and the terms that the reader needs.>
-- **Problem:** <One to three sentences that say what is wrong. Use only terms that the background explains.>
+- **Terms:** <Only when the item uses a term that the shared list does not define. Up to five entries.>
+  - **<Term>:** <One sentence: what it is, and where it lives when that helps the reader find it.>
+- **Background:** <Two to five sentences: what the feature does and where it is. Use plain words and defined terms only.>
+- **Problem:** <One to three sentences that say what is wrong. Use plain words and defined terms only.>
 - **Impact if no action:** <One or two sentences.>
 - **Options:**
   - **A.** <A fix.> <Its cost or risk.>
@@ -111,8 +118,25 @@ A problem outside the review scope is not a finding. The
 lists it under **Open**, for a separate branch.
 
 In both layouts, keep every label, also when the user asks for more detail
-or for a shorter answer. For more detail, write **Background** as a list
-with one fact in each item.
+or for a shorter answer. An item leaves out **Terms** only under the rule
+below. For more detail, write **Background** as a list with one fact in
+each item.
+
+## Terms
+
+A term is a name from the codebase, the product, or the toolchain that an
+engineer new to the repository would look up. A general programming word
+is not a term. When the **Problem** or the **Options** of an item use a
+term that the shared list does not define, add **Terms** before
+**Background** and define the term there. Otherwise leave **Terms** out.
+
+Each entry is one sentence of 25 words or fewer. Say what the thing is.
+Add where it lives when that helps the reader find it.
+
+A **Terms** list holds at most five entries. When an item needs more,
+move the terms that two or more items use to the shared list, or write
+the item in plainer words. The shared list uses the same entry shape
+under a **Terms** heading.
 
 ## Scales
 
@@ -142,6 +166,8 @@ with one fact in each item.
 - Always write **Background**, **Problem**, **Impact if no action**, and
   **Options**. They explain the item, so you can write them from the
   record, the code, and the docs.
+- Add **Terms** under the rule above, also when the record has none. You
+  can write it from the code and the docs.
 - Some fields are judgments: severity, effort, category, recommendation,
   and Auto-fix. When the record does not give a judgment, give your own.
   Add "(estimate)" after it.

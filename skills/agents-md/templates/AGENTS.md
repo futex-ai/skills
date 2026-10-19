@@ -22,9 +22,9 @@ skill at that moment instead of guessing the rule.
   could not run, with its output or the blocker.
 - Ask for all decisions in one numbered message. List decisions and review
   findings by severity, highest first. For each decision give its severity
-  and effort, the background, the problem, the impact if no action is
-  taken, lettered options, and a recommended option. Do the independent
-  work first, then stop and wait.
+  and effort, the terms, the background, the problem, the impact if no
+  action is taken, lettered options, and a recommended option. Do the
+  independent work first, then stop and wait.
 - End every task with a final report: what changed and the commit, each
   decision and its outcome, the checks that ran, anything skipped, and the
   outstanding decisions or review items that still need the user.

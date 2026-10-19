@@ -57,9 +57,12 @@ user.
   dependency, migration, protocol section, or mockup, a change across a
   package boundary, or more than five files.
 - The file path and line reference when possible.
-- The background: enough codebase and feature context, and the terms, for a
-  reader with no prior knowledge.
-- The problem: what is wrong, in words that the background explains.
+- The terms: each project term that the problem or the options use, with
+  one sentence that explains it. The `decisions-and-findings` skill says
+  what a term is and sets the cap.
+- The background: enough codebase and feature context for a reader with
+  no prior knowledge.
+- The problem: what is wrong, in plain words and defined terms.
 - The impact of making no change.
 - Solution options labelled A, B, and so on. Always consider a wider fix:
   a rule, test, lint, guard, abstraction, or architectural change that
