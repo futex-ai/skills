@@ -1,6 +1,6 @@
 ---
 name: git-merge
-description: The merge and rebase procedure that preserves everything already on origin/main. Use before you merge or rebase a branch, when you resolve conflicts, and directly after you commit a merge. Covers the pre-integration audit from the source tip, path-by-path conflict resolution, the two-parent check, the remerge diff review, restoring lost content, and justifying intentional merge decisions.
+description: Use before you merge or rebase a branch, when origin/main has moved ahead of your branch, when you resolve merge conflicts, directly after you commit a merge, when a merge may have dropped content that was already on origin/main, and before you push a merge.
 ---
 
 # Git merge

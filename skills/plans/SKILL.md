@@ -1,6 +1,6 @@
 ---
 name: plans
-description: Rules for implementation plan files under plans/. Use before you create, edit, or tick a plan, when the user asks for a plan, or when you discover a TODO during implementation. Covers the Status paragraph, milestones, TODO checklists, the documentation-first milestone, the initial mockup milestone for each product area, mockup and ui tags, the PR-merge completion boundary, post-merge follow-ups, the review TODO, and where evidence logs go.
+description: Use when the user asks for a plan, before you create, edit, or tick a plan file under plans/, when you discover a TODO or blocked work during implementation, when a milestone has UI or mockup work, when you would paste command output or a review report into a plan, when a review finding stays open, and when the pull request for a plan merges.
 ---
 
 # Plans
