@@ -1,6 +1,6 @@
 ---
 name: implementation-review
-description: The post-push implementation review and the review-fix rule. Use after you push a branch and before you run or apply a review, when a plan's review TODO is reached, or when the user asks for a code review of a branch. Covers the diff scope with the Outside the scope list and the user-widened scope, the read-only reviewer prompt, the numbered finding format with severity, category, and effort grade, the wider-fix option with its best-effort search for previous examples, the Auto-fix yes and no conditions, the two fix-round limit, and how to report fixed and open findings.
+description: The post-push implementation review and the review-fix rule. Use after you push a branch and before you run or apply a review, when a plan's review TODO is reached, or when the user asks for a code review of a branch. Covers the diff scope with the Outside the scope list and the user-widened scope, the read-only reviewer prompt, the numbered finding format with severity, category, and effort grade, the severity order of findings, the wider-fix option with its best-effort search for previous examples, the Auto-fix yes and no conditions, the two fix-round limit, and how to report fixed and open findings.
 ---
 
 # Implementation review
@@ -42,7 +42,8 @@ after the report.
 
 ## Finding format
 
-Number each finding. For every finding give the fields below. The
+Order the findings by severity, High first, then Medium, then Low. Number
+each finding in that order. For every finding give the fields below. The
 `decisions-and-findings` skill gives the layout that shows them to the
 user.
 
@@ -116,8 +117,9 @@ The full rule with every condition is in
    third fix round without the user.
 4. In the final message, list the auto-fixed findings (number, severity,
    plain explanation, what changed, commit) separately from the findings
-   that need a decision, each with a clear recommendation. List the
-   `Outside the scope` problems under **Open**, for a separate branch. Use
-   the `decisions-and-findings` skill.
+   that need a decision, each with a clear recommendation. Order both
+   lists by severity, High first. List the `Outside the scope` problems
+   under **Open**, for a separate branch. Use the `decisions-and-findings`
+   skill.
 5. Add each open finding, and each `Outside the scope` problem, as one line
    under the plan's review TODO, in the shape that the `plans` skill gives.
