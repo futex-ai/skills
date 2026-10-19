@@ -28,8 +28,8 @@ Codex, and with any other agent that reads the
    when to read a skill.
 3. **The per-repository `AGENTS.md`** holds what is specific to that
    repository: commands, layout, caps, product locations, review focus, and
-   what a skill description cannot know, such as a skill that does not
-   apply or a path that differs from the skill's default. It does not
+   the choices that a skill leaves to the repository, such as the type
+   generator, the test runner, or the shared UI library. It does not
    repeat the skill list. It does repeat the communication preference
    (Simplified Technical English, faithful reporting, batched decisions,
    final report) so that it reaches an agent that does not have the global

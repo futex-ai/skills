@@ -10,15 +10,6 @@ always-on rules and the detailed procedures live in the shared skills from
 `futex-ai/skills`. Each skill's description says when to read it. Read the
 skill at that moment instead of guessing the rule.
 
-## Shared skills
-
-<Only what a skill description cannot know about this repository. Delete
-the section when there is nothing to say. Examples:>
-
-- Plans live under `<path>`, not `plans/`.
-- The `rust`, `databases`, and `shared-types` skills do not apply. This
-  repository has no Rust.
-
 ## Communication
 
 - Write responses, summaries, plans, and review output in Simplified
