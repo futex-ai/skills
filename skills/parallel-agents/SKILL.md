@@ -1,6 +1,6 @@
 ---
 name: parallel-agents
-description: How to split work across subagents that run at the same time, and how to write the prompt for any subagent. Use when you have two or more independent tasks, such as failing tests in separate files, bugs in separate subsystems, or separate research questions, before you start a subagent, and when you decide between one agent and several. Covers the independence test, one subagent per domain, the prompt with scope, goal, context, constraints, and output, dispatch in one response, the shared working tree, the summary that each subagent returns, and the integration checks.
+description: Use when you have two or more independent tasks, such as failing tests in separate files, bugs in separate subsystems, or separate research questions, before you start a subagent or write its prompt, when you decide between one agent and several, when subagents would edit the same files, and after the subagents return with their results.
 ---
 
 # Parallel agents
