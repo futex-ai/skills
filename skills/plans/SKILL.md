@@ -81,9 +81,9 @@ change. [templates/plan.md](templates/plan.md) is the starting point.
   effort of the recommended option, and the recommended option, for
   example:
   `3. Retry loop has no limit. Severity High, effort Small. Recommended: A, cap the retries.`
-- Add each wider fix that the review did not apply as one line too, one
-  per class: the wider fix, its effort, the finding numbers it covers, and
-  the previous examples, for example:
+- Add each follow-up, the blocked wider fix of a fixed finding, as one
+  line too, one per class: the wider fix, its effort, the finding numbers
+  it covers, and the previous examples, for example:
   `Follow-up: guard port reuse in the test harness. Effort Large. Covers findings 2 and 5. Previous examples: 3f2c1ab.`
 - Add each problem that the review listed under `Outside the scope` as one
   line too: its path, one sentence, and `Separate branch.`

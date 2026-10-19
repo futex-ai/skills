@@ -123,10 +123,11 @@ with one fact in each item.
   Small: two code files or fewer, 30 code lines or fewer, and no new code
   or test file. Medium: five code files or fewer in one package, and 150
   code lines or fewer. A new test file or a new helper module in the same
-  package is Medium. Large: more code files or lines, a new dependency, a
-  migration, a change on both sides of the backend and frontend boundary,
-  a new mockup, or a new protocol section. The effort of an item is the
-  grade of its recommended option.
+  package is Medium. Large: every option that is not Small or Medium. A
+  new dependency, a migration, a change on both sides of the backend and
+  frontend boundary, a new mockup, or a new protocol section is Large
+  whatever its size. The effort of an item is the grade of its
+  recommended option.
 
 ## Explaining items again
 
