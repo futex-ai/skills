@@ -66,13 +66,13 @@ Use this layout for each decision that is not a review finding.
 ```markdown
 ### 1. <The problem, in eight words or fewer>
 
-- **Severity:** <High, Medium, or Low>. **Effort:** <Small, Medium, or Large>.
+- **Severity:** <High, Medium, or Low>. **Effort:** <Small, Medium, or Large: the grade of the recommended option.>
 - **Background:** <Two to five sentences: what the feature does, where it is, and the terms that the reader needs.>
 - **Problem:** <One to three sentences that say what is wrong. Use only terms that the background explains.>
 - **Impact if no action:** <One or two sentences.>
 - **Options:**
-  - **A.** <The change.> <Its cost or risk.>
-  - **B.** <The change.> <Its cost or risk.>
+  - **A.** <The change.> <Its cost or risk.> Effort: <Small, Medium, or Large>.
+  - **B.** <The change.> <Its cost or risk.> Effort: <Small, Medium, or Large>.
   - <More options as C, D, and so on, when the problem has them.>
 - **Recommendation:** <Letter>. <One sentence of reasoning.>
 - **Auto-fix:** no, because <the reason that you cannot choose alone.>
@@ -87,24 +87,26 @@ what each field must contain.
 ```markdown
 ### 1. <The problem, in eight words or fewer>
 
-- **Severity:** <High, Medium, or Low>. **Effort:** <Small, Medium, or Large>.
+- **Severity:** <High, Medium, or Low>. **Effort:** <Small, Medium, or Large: the grade of the recommended option.>
 - **Category:** <One category from the scales below.>
 - **Location:** <The file path and line.>
 - **Background:** <Two to five sentences: what the feature does, where it is, and the terms that the reader needs.>
 - **Problem:** <One to three sentences that say what is wrong. Use only terms that the background explains.>
 - **Impact if no action:** <One or two sentences.>
 - **Options:**
-  - **A.** <A fix.> <Its cost or risk.>
-  - **B.** <Another fix.> <Its cost or risk.>
+  - **A.** <A fix.> <Its cost or risk.> Effort: <Small, Medium, or Large>.
+  - **B.** <Another fix.> <Its cost or risk.> Effort: <Small, Medium, or Large>.
   - <More options as C, D, and so on, when the problem has them.>
-- **Wider fix:** <The letter of the option that prevents this class of issue: a rule, test, lint, guard, abstraction, or architectural change. Or "None" and the reason.>
-- **Previous examples:** <Earlier cases of this class, with commits or files, or "None found".>
+- **Wider fix:** <The letter of the option that prevents this class of issue. A structural fix, such as a helper, an abstraction, a marker, a default, or a type, ranks above a detection fix, such as a test for the class, a lint, or a guard. Or "None" and the reason, for example that the wider fix is already in force.>
+- **Previous examples:** <Earlier cases of this class, with commits or files, or "None found". Also the other findings in this review that share the wider fix.>
 - **Recommendation:** <Letter>. <One sentence of reasoning.> <When another option best protects the codebase, one sentence that names it.>
-- **Auto-fix:** <`yes`, or `no, because` and the condition that stops the fix.>
+- **Auto-fix:** <`yes, apply` and the letter of the option to apply, or `no, because` and the condition that stops the fix.>
 ```
 
-Give one lettered option for each real choice. The wider fix is one of
-these options.
+Give one lettered option for each real choice. Order the options from the
+smallest effort to the largest, and give each its own grade. When you
+explain an item again, keep the recorded letters and their order. The
+wider fix is one of these options.
 
 A problem outside the review scope is not a finding. The
 `implementation-review` skill gives its one-line shape. The final report
@@ -121,11 +123,18 @@ with one fact in each item.
   wording, style, or a rare edge case.
 - Category. Product bug, security, docs or spec, mockup, repository rule,
   test, performance, code structure, UX wording, or process.
-- Effort. Small: one change in one or two files, with no new module,
-  dependency, migration, protocol section, or test file. Medium: a few
-  files. Tests may change in existing files. Large: a new module,
-  dependency, migration, protocol section, or mockup. A change across a
-  package boundary or in more than five files is also large.
+- Effort. The grade of one option, not of the problem. Count the code
+  change only: product code, scripts, configuration, and infrastructure
+  files. Do not count tests, README files, protocol docs, plans, or mockup
+  output, because the repository rules require them with each code change.
+  Small: two code files or fewer, 30 code lines or fewer, and no new code
+  or test file. Medium: five code files or fewer in one package, and 150
+  code lines or fewer. A new test file or a new helper module in the same
+  package is Medium. Large: every option that is not Small or Medium. A
+  new dependency, a migration, a change on both sides of the backend and
+  frontend boundary, a new mockup, or a new protocol section is Large
+  whatever its size. The effort of an item is the grade of its
+  recommended option.
 
 ## Explaining items again
 
@@ -155,7 +164,7 @@ keep the item order above. Use these labels:
 
 - **Changed:** what changed, the commit, and the pull request.
 - **Fixed:** each auto-fixed finding. Give its number, its severity, a
-  plain explanation, what changed, and the commit.
+  plain explanation, the applied option, what changed, and the commit.
 - **Decisions:** each decision and its outcome. Name each default that you
   applied.
 - **Checks:** each check and its result. Give the output of a failed
@@ -164,4 +173,7 @@ keep the item order above. Use these labels:
   suspected source.
 - **Open:** the decisions and review items that still need the user. Add
   the open plan TODOs, the follow-ups, the problems outside the review
-  scope for a separate branch, and other skipped or blocked work.
+  scope for a separate branch, and other skipped or blocked work. A
+  follow-up for a wider fix that the review did not apply is one line per
+  class. The line gives the wider fix, its effort, the finding numbers it
+  covers, and the previous examples.

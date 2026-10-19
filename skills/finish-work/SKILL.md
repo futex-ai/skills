@@ -63,7 +63,8 @@ run.
   findings stay in the diff unless the user explicitly asked for a wider
   review.
 - Apply the review-fix rule: fix only the findings tagged `Auto-fix: yes`,
-  run the checks, commit, push, re-review once, then stop and report.
+  with the option that each tag names, run the checks, commit, push,
+  re-review once, then stop and report.
 
 ## 6. Report
 
@@ -75,6 +76,8 @@ and labels in the `decisions-and-findings` skill. Include:
   could not run, and why.
 - Auto-fixed review findings, separately from the findings that need a
   decision, each with a recommendation.
+- Follow-ups for the wider fixes that the review did not apply, one line
+  per class.
 - Problems outside the review scope, for a separate branch. An unrelated
   flaky test gives its name, failure text, rerun outcome, and suspected
   source.
