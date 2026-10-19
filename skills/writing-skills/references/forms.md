@@ -22,10 +22,11 @@ Red flags: you wrote "should be fine", you plan to run the gate after
 the push, or you call a partial run "the tests".
 ```
 
-The rows above show the layout only. Build real rows from excuses that
-an agent really gave in a real session, verbatim. Add one sentence to the
-skill: a workaround that keeps the words of the rule and loses its
-purpose breaks the rule.
+The rows above show the layout only. Build real rows from the excuses in
+the repository's record, verbatim: a commit body, a pull request
+description, a review report, or a plan. Add one sentence to the skill: a
+workaround that keeps the words of the rule and loses its purpose breaks
+the rule.
 
 ## A recipe with a template
 

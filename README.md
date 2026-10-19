@@ -168,8 +168,8 @@ another branch.
 
 The `writing-skills` skill gives the procedure: the description as
 triggers, the layout and size limits, the form that fixes each kind of
-failure, the evidence from real sessions, and the repository steps. In
-short:
+failure, the check against a real repository, and the repository steps.
+In short:
 
 - Group by the moment an agent needs it ("before you commit"), not by topic.
 - `name` must match the directory. `description` starts with "Use when"
@@ -179,8 +179,8 @@ short:
   `scripts/check.sh` warns at 200 lines and fails at 500.
 - No repository-specific paths, commands, or crate names. Those belong in the
   repository's `AGENTS.md`; say "the gate named in `AGENTS.md`".
-- Write a skill from a failure in a real session, not from a staged
-  test. Build each excuse table row from the words the agent really used.
+- Ask for a real repository first. Write the skill from the cases in its
+  history, not from a staged test, and walk each case with the final text.
 - Run `scripts/check.sh` and `tests/run.sh` before you commit.
 - A new skill reaches an existing install when `scripts/update.sh` or
   `scripts/install.sh` runs there. Say so in the pull request description.
