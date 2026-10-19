@@ -87,9 +87,10 @@ number them in that order. Use the finding layout in the
   dependency, migration, protocol section, or mockup, a change across a
   package boundary, or more than five files.
 - Include the relevant file path and line reference when possible.
-- Give the terms: each project term that the problem or the options use,
-  with one sentence that explains it. The `decisions-and-findings` skill
-  says what a term is and sets the cap.
+- Give the terms: each project term that the finding uses, with one
+  sentence that explains it. The `decisions-and-findings` skill says what
+  a term is, when to leave the slot out, and how many entries a list
+  holds.
 - Give the background: enough codebase and feature context for a reader
   with no prior knowledge.
 - State the problem: what is wrong, in plain words and defined terms.

@@ -126,17 +126,18 @@ each item.
 
 A term is a name from the codebase, the product, or the toolchain that an
 engineer new to the repository would look up. A general programming word
-is not a term. When the **Problem** or the **Options** of an item use a
-term that the shared list does not define, add **Terms** before
-**Background** and define the term there. Otherwise leave **Terms** out.
+is not a term. When an item uses a term that the shared list does not
+define, add **Terms** before **Background**. Define the term there.
+Otherwise leave **Terms** out.
 
 Each entry is one sentence of 25 words or fewer. Say what the thing is.
 Add where it lives when that helps the reader find it.
 
 A **Terms** list holds at most five entries. When an item needs more,
-move the terms that two or more items use to the shared list, or write
-the item in plainer words. The shared list uses the same entry shape
-under a **Terms** heading.
+first check that the shared list holds each term that two or more items
+use. Then write the item in plainer words. When the shared list needs
+more, write the items in plainer words. The shared list uses the same
+entry shape under a **Terms** heading.
 
 ## Scales
 
