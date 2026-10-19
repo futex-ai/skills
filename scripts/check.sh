@@ -1,14 +1,16 @@
 #!/usr/bin/env bash
-# Validate every skill under skills/: frontmatter, name, description, size,
-# relative file references, and scripts. Exits 1 on any error.
+# Validate every skill under skills/ and every repository-local skill under
+# .claude/skills/: frontmatter, name, description, size, relative file
+# references, and scripts. Exits 1 on any error.
 set -euo pipefail
 
 repo="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 errors=0
 err() { echo "error: $*" >&2; errors=$((errors + 1)); }
 
-for dir in "$repo"/skills/*/; do
+for dir in "$repo"/skills/*/ "$repo"/.claude/skills/*/; do
   dir="${dir%/}"
+  [[ -d "$dir" ]] || continue
   name="$(basename "$dir")"
   file="$dir/SKILL.md"
   if [[ ! -f "$file" ]]; then err "$name: missing SKILL.md"; continue; fi
