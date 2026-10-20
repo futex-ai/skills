@@ -55,6 +55,9 @@ the `README.md`, doc, or protocol doc next to that code.
 - TypeScript types under `<generated types directory>` are generated from
   `<crate>` by `<command>`. Never hand-edit them.
 - Boundary types send 64-bit integers, decimals, and dates as `<form>`.
+- This repository has no mockup requirement. The Storybook story of a
+  component is its visual spec. <keep only in a repository without
+  mockups, such as a component library>
 
 ## Product
 
