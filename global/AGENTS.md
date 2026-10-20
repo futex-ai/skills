@@ -32,8 +32,8 @@ at that moment instead of guessing the rule.
   wait. Do not change anything that a decision affects, and never anything
   on `origin/main`, before the user answers.
 - When the user does not answer a decision, apply the recommended option.
-  The exception is a deletion, which you skip. Name every default you
-  applied in the final report.
+  The exception is a deletion of functionality, which you skip. Name every
+  default you applied in the final report.
 - End every task with a final report: what changed and the commit, each
   decision and its outcome, the checks that ran and their results, anything
   skipped or blocked, and the outstanding decisions or review items that
@@ -76,9 +76,10 @@ at that moment instead of guessing the rule.
 
 ## Safety
 
-- Do not delete or override anything already on `origin/main`, including
-  code, APIs, tests, docs, mockups, plans, migrations, and schema, without
-  explicit user approval. See the `git-commit` and `git-merge` skills.
+- Do not delete or override functionality already on `origin/main`
+  without explicit user approval. Dead code needs no approval. The
+  `git-commit` skill says what is functionality, when code is dead, and
+  what to record. See also the `git-merge` skill.
 - Prefer graceful handling. When input is recoverable, warn and continue.
   Fail only when the output would be wrong or unsafe.
 - Do not add a new build error, rejection, gate, lint, or stricter validation

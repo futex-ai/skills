@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 # Before and after a commit: list changed and deleted paths relative to the
-# mainline so that every deletion can be checked for authorization.
+# mainline so that each deletion can be checked: dead code under the
+# git-commit skill, or approved by the user.
 # Usage: audit-deletions.sh [base-ref]   (default: origin/main)
 set -euo pipefail
 base="${1:-origin/main}"
