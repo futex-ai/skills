@@ -127,8 +127,8 @@ needs one to check against.
 2. Add the row to the skills table in the repository `README.md`.
 3. Run the repository check, `shellcheck` on new scripts, and
    `tests/run.sh`.
-4. Add the skill to the `agents-md` template when product repositories
-   need it at a named moment.
+4. When the skill reads a choice from the repository `AGENTS.md`, add a
+   slot for it to the `agents-md` template.
 5. Say in the pull request that an existing install gets the skill when
    `update.sh` or `install.sh` under `scripts/` runs there.
 
