@@ -42,9 +42,10 @@ conductor session message <sessionId> --after <messageId>
 conductor message create --session <sessionId> --message-file <path>
 ```
 
-The agent reports in its session. Read its final report and its pull
-request, not the whole transcript. Send a fix request as one message
-with the numbered findings and the option to apply for each.
+The agent reports in its session. Read its first message for the
+branch, then its final report and its pull request, not the whole
+transcript. Send a fix request as one message with the numbered findings
+and the option to apply for each.
 
 ## Integrate and close
 

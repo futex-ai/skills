@@ -103,14 +103,13 @@ one combined gate.
   is fine. Anything larger goes back to the delegate.
 - Name the workspace `<plan-name>: <item>`. Conductor creates the branch
   from that name. Record the branch that the workspace reports in the
-  ledger and on its TODO lines after `Branch:`.
-- The plan file is the one shared file. A workspace ticks only the TODO
-  lines that carry its `Branch:`. You resolve a plan conflict path by
-  path at the merge.
+  ledger.
+- The plan file is the one shared file. A workspace adds `Branch:` and
+  its branch name to the TODO lines that it owns, and it ticks only those
+  lines. You resolve a plan conflict path by path at the merge.
 - Keep a ledger under `.context/<plan-name>/workspaces.md`. It lists
-  the item, the workspace id, the session id, the model, and the branch.
-  It lists the pull request, the review round, and the state. Keep the
-  prompts and the reports there too, never in the plan.
+  the item, the ids, the model, the branch, the pull request, the review
+  round, and the state. Keep the prompts and the reports there too.
 - The workspace agent commits with the `git-commit` skill, pushes its
   branch, and opens a pull request into the primary branch. It never
   merges. When its push fails for a missing credential, it reports the
@@ -130,12 +129,12 @@ retry. Examples: a usage limit, an input limit, a missing or revoked
 credential, or a rejected model id. When a model blocks a request, send
 the same request to its peer. When the peer blocks it too, send it one
 rank down. Fable 5.1 has no peer. When it blocks, send the request one
-rank down: Opus 5.5 takes screens, components, mockups, and copy, and
-Astra 6 takes the rest. When every model blocks it, stop and ask the
-user, with the refusal text verbatim. When a delegate's model blocks
-mid-item, give the item to the peer in the same workspace, with the
-prompt and the diff so far. Do not rewrite the request to hide what it
-does, and do not skip the step.
+rank down. Opus 5.5 takes screens, components, mockups, and copy. Astra 6
+takes the rest. When every model blocks it, stop and ask the user, with
+the refusal text verbatim. When a delegate's model blocks during an item,
+give the item to the peer in the same workspace. Give the peer the prompt
+and the diff so far. Do not rewrite the request to hide what it does, and
+do not skip the step.
 
 | The record says | The answer |
 | --- | --- |
@@ -147,16 +146,16 @@ does, and do not skip the step.
 
 1. When a workspace reports, run the `implementation-review` skill on
    its branch against the primary branch, in a fresh read-only agent. A
-   large diff can split by area, one reviewer per area, each on
-   Fable 5.1. Then read the diff yourself and re-run
-   the checks. Confirm every ticked TODO and the push, and run the
-   deletion audit from the `git-commit` skill. Never accept the report
-   alone.
+   large diff can split by area, one reviewer per area, each on Fable
+   5.1. Then read the diff yourself and re-run the checks. Confirm every
+   ticked TODO and the push, and run the deletion audit from the
+   `git-commit` skill. Never accept the report alone.
 2. Send the findings back to the same workspace session as one fix
-   request. Give the numbers, the option to apply for each, and "do not
-   start the next item". The review-fix rule allows two fix rounds. Then
-   you decide, or you ask the user. List every open finding under the
-   plan's review TODO, as the `plans` skill says.
+   request. Give the numbers, the option that the review-fix rule or the
+   user chose for each, and "do not start the next item". The review-fix
+   rule allows two fix rounds. Then you decide, or you ask the user. List
+   every open finding under the plan's review TODO, as the `plans` skill
+   says.
 3. Merge the branch into the primary branch with the `git-merge` skill.
    Run the complete gate from `AGENTS.md` on the merged tree, then push.
    Each workspace ran the gate on its own tree only. The combined gate

@@ -27,7 +27,8 @@ Context:
 Steps:
 1. <the first step>
 2. <the next step>
-3. Tick the TODOs that you complete. Run the complete gate from
+3. Add `Branch:` and your branch name to the TODO lines in your scope.
+   Tick the TODOs that you complete. Run the complete gate from
    `AGENTS.md`.
 4. Commit with the `git-commit` skill and push your branch.
 5. Open a pull request into `<primary-branch>` with
@@ -37,6 +38,7 @@ Constraints:
 - Change only <the files or the directory>.
 - Merge only from `<primary-branch>`, never from `main`.
 - Do not merge your pull request. The orchestrator merges it.
+- Do not rename your branch.
 - <Do not change the protocol docs. | Do not add a dependency.>
 - When the work needs a change outside the scope, stop and report it.
 
