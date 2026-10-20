@@ -82,6 +82,11 @@ side-effect boundaries.
   databases, Docker, subprocesses, clocks, network calls, or other impure
   dependencies. Integration tests can use real implementations to validate
   end-to-end behaviour.
+- A hand-written in-memory store is not a mock. It is a second
+  implementation of the store trait, and it drifts from the database. Do
+  not write one for tests or as a fallback. Mock the trait with `unimock`,
+  or test against the database. The `databases` skill gives the rule and
+  the case where an in-memory store is allowed.
 
 ## Diagnostics
 

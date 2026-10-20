@@ -49,7 +49,7 @@ Codex, and with any other agent that reads the
 | `documentation` | Before you edit a README, a doc, or a protocol doc, when a change could leave a doc stale, when you decide where a sentence belongs, and when a change or a review option conflicts with a protocol doc. |
 | `rust` | Before you edit Rust, add a crate or a dependency, or define an error type. |
 | `typescript` | Before you edit TypeScript or JavaScript, add an npm dependency, or set up a package. |
-| `databases` | Before you touch migrations, a schema, Diesel code, or store crates. |
+| `databases` | Before you touch migrations, a schema, Diesel code, or store crates, and when a test needs a store. |
 | `shared-types` | Before you add or change a type that crosses between Rust and TypeScript, or write a TypeScript type for backend data. |
 | `mockups` | Before you create or change a mockup, a screen component, or a user flow. |
 | `product-ui` | Before you change a user-facing screen, state, or copy, or hardcode data in a screen. |

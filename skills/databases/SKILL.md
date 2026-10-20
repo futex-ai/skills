@@ -1,6 +1,6 @@
 ---
 name: databases
-description: Use before you add, edit, or name a database migration or a seed migration, when you touch a schema, Diesel code, a migration lock, or a crate named *-store-pg, when you write a database query or decide where it lives, when a migration that already merged looks wrong, and when a Postgres-backed service needs more than queries and mappings.
+description: Use before you add, edit, or name a database migration or a seed migration, when you touch a schema, Diesel code, a migration lock, or a crate named *-store-pg, when you are about to write an in-memory, fake, or test-only store, when a test needs a store, when you write a database query or decide where it lives, when a migration that already merged looks wrong, and when a Postgres-backed service needs more than queries and mappings.
 ---
 
 # Databases
@@ -45,3 +45,42 @@ description: Use before you add, edit, or name a database migration or a seed mi
   the service and composition logic in a separate non-store crate.
 - Existing `*-store-pg` code that violates this rule is legacy structure to
   extract, not precedent for new code.
+
+## In-memory stores and tests
+
+- Do not write an in-memory implementation of a store trait that has a
+  database implementation: not for tests, not as a fallback when the
+  database is not configured, and not as a development backend. It
+  re-creates the database and drifts from it. Tests then pass against
+  behaviour that the database does not have, and every store change also
+  changes the fake.
+- A unit test of a service mocks the store trait with `unimock`. A test of
+  a workflow across many calls, of stored state read back, of a race, or
+  of a constraint runs against a disposable test database, and so does
+  every store test. The repository `AGENTS.md` names the setup.
+- An in-memory store is allowed when it is useful in itself, for example a
+  per-run output store that expires with the run. All of these hold:
+  production constructs it, it has its own purpose and semantics rather
+  than a copy of a database store's, and it has its own tests. A store
+  that exists so that tests avoid the database fails this test, whatever
+  its size.
+- An existing fake store is legacy. It gets no new behaviour. When the
+  store trait gains a method, the fake's version fails at once with a
+  message that says to mock the method. Retire the fakes with a plan.
+
+A workaround that keeps the words of the `unimock` rule and loses its
+purpose breaks the rule. The excuses below were given in real
+repositories.
+
+| The excuse | The answer |
+| --- | --- |
+| "Unit-style service and API tests may use test-only store doubles that implement the same traits." | A double that implements the trait is a second store. Mock the trait, or use the database. |
+| "The in-memory posting store mirrors PostgreSQL source-mode, ownership, coverage, draft-consumption, and stale-fact guards." | A mirror is a copy, and a copy drifts. The fakes that claimed this failed the database's own store tests and hid four constraint differences. |
+| "Reject new handwritten Rust test doubles unless they are explicit approved exceptions." | An exception clause widens the rule, and new fakes appeared under it. Apply the predicate above instead. |
+
+Red flags: a struct named `Test*Store` or `InMemory*Store` that implements
+a store trait, a `Mutex<HashMap>` behind a store trait in a test support
+crate, a `unimock` answer that keeps a table of rows, a README that says a
+store "mirrors" or "matches" the database, a seed, a counter, or a failure
+injection that only the fake has, and a fake that grows with each store
+change.

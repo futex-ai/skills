@@ -1,6 +1,6 @@
 ---
 name: rust
-description: Use before you write or change Rust code, add a crate or a dependency to a Cargo workspace, write or move a Rust test, define or map an error type, or add a trait, a mock, or diagnostics, when you reach for unwrap, expect, panic, anyhow, or println in library code, when a Rust file passes 200 lines, and when cargo fmt, clippy, or a Rust lint reports a problem.
+description: Use before you write or change Rust code, add a crate or a dependency to a Cargo workspace, write or move a Rust test, define or map an error type, or add a trait, a mock, a fake, an in-memory store, or diagnostics, when you reach for unwrap, expect, panic, anyhow, or println in library code, when a Rust file passes 200 lines, and when cargo fmt, clippy, or a Rust lint reports a problem.
 ---
 
 # Rust
@@ -36,6 +36,10 @@ with examples and take precedence when the two differ in detail:
 - Use `unimock` to mock trait boundaries in unit tests, including same-crate
   traits with one implementation. Unit tests must not use real disk IO,
   databases, Docker, subprocesses, clocks, or network calls.
+- Do not hand-write an in-memory store for tests or as a fallback. It is a
+  second implementation of the store trait, and it drifts from the
+  database. Mock the trait with `unimock`, or test against the database.
+  The `databases` skill gives the rule and the one allowed case.
 - Use `tracing` for diagnostics in libraries, servers, and workers; never
   `println!`, `eprintln!`, or `dbg!` there. Direct terminal output is only
   for CLI results, prompts, raw data output, REPL messages, build-script
