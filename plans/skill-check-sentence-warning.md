@@ -1,7 +1,7 @@
 # Sentence-length warning in the skill check
 
-Status: Active. Branch `calummoore/skill-check-sentence-length-plan`, no PR
-yet. The plan closes when its PR merges.
+Status: Active. [PR #26](https://github.com/futex-ai/skills/pull/26) is
+open. The plan closes when its PR merges.
 
 The always-on rules ask for Simplified Technical English (STE) in every
 skill. STE gives an instruction 20 words or fewer. The skill check is
@@ -168,7 +168,7 @@ the scan and the exit status of the check.
 - [ ] Run `scripts/check.sh` on macOS with BSD awk, through the user's Mac,
       and compare the warning lines with the Linux run. Save the diff under
       `.context/skill-check-sentence-warning/`.
-- [ ] Commit with Conventional Commits, for example
+- [x] Commit with Conventional Commits, for example
       `feat(check): warn about sentences over 20 words`, and push the
       branch. Say in the PR description that an installed clone gets the
       new check when `scripts/update.sh` runs there.
