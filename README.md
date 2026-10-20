@@ -39,22 +39,22 @@ Codex, and with any other agent that reads the
 
 | Skill | Read when |
 | --- | --- |
-| `finish-work` | Before you say work is complete, and before you commit. |
-| `plans` | Before you create, edit, or tick a plan. |
-| `implementation-review` | After you push. |
-| `parallel-agents` | Before you start a subagent, and when two or more independent tasks can run at the same time. |
-| `decisions-and-findings` | Before you send decisions, review findings, or a final report. |
-| `deterministic-tests` | A test flakes or would assert elapsed time. |
-| `git-commit` | Before and after you commit, and when you open a pull request. |
-| `git-merge` | Before you merge or rebase, and after each merge commit. |
-| `documentation` | Before you edit a README, a doc, or a protocol doc, when you decide where a sentence belongs, and when a change or a review option conflicts with a protocol doc. |
-| `rust` | Before you edit Rust. |
-| `typescript` | Before you edit TypeScript or JavaScript. |
-| `databases` | Before you touch migrations, Diesel, or store crates. |
+| `finish-work` | Before you say work is complete, before you commit or push, and when you choose which tests or gates to run. |
+| `plans` | When the user asks for a plan, before you create, edit, or tick a plan, and when you find a TODO during implementation. |
+| `implementation-review` | After you push, before you run or apply a review, and when the user asks for a code review. |
+| `parallel-agents` | Before you start a subagent or write its prompt, when two or more independent tasks can run at the same time, and after the subagents return. |
+| `decisions-and-findings` | Before you send decisions, review findings, or a final report, also under a brief output style. |
+| `deterministic-tests` | A test flakes, would assert elapsed time, or tempts you to add a sleep, a retry, or a longer time limit. |
+| `git-commit` | Before and after you commit, when you write a commit or pull request message, and when a diff deletes or renames something. |
+| `git-merge` | Before you merge or rebase, when you resolve conflicts, and after each merge commit. |
+| `documentation` | Before you edit a README, a doc, or a protocol doc, when a change could leave a doc stale, when you decide where a sentence belongs, and when a change or a review option conflicts with a protocol doc. |
+| `rust` | Before you edit Rust, add a crate or a dependency, or define an error type. |
+| `typescript` | Before you edit TypeScript or JavaScript, add an npm dependency, or set up a package. |
+| `databases` | Before you touch migrations, a schema, Diesel code, or store crates. |
 | `shared-types` | Before you add or change a type that crosses between Rust and TypeScript, or write a TypeScript type for backend data. |
-| `mockups` | Before you create or change a mockup. |
-| `product-ui` | Before you change a user-facing screen or copy. |
-| `agents-md` | Creating or migrating a repository's `AGENTS.md`. |
+| `mockups` | Before you create or change a mockup, a screen component, or a user flow. |
+| `product-ui` | Before you change a user-facing screen, state, or copy, or hardcode data in a screen. |
+| `agents-md` | A repository has no `AGENTS.md`, still has a monolithic one, or needs its rules aligned with the shared skills. |
 | `writing-skills` | Before you create or edit a skill or its description. Opt-in: linked only with `install.sh --opt-in`. |
 
 ## Install
@@ -188,10 +188,10 @@ In short:
   file in its directory, so that `install.sh` links it only with
   `--opt-in`.
 - Group by the moment an agent needs it ("before you commit"), not by topic.
-- `name` must match the directory. `description` starts with "Use when"
-  and names the moments and the symptoms. It does not summarise the
-  content. When two skills share a moment, both load. Target 300
-  characters. `scripts/check.sh` warns above 500.
+- `name` must match the directory. `description` starts with "Use when",
+  "Use before", or "Use after" and names the moments and the symptoms. It
+  does not summarise the content. When two skills share a moment, both
+  load. Target 300 characters. `scripts/check.sh` warns above 500.
 - Keep `SKILL.md` under about 150 lines. Put long contracts in `references/`.
   `scripts/check.sh` warns at 200 lines and fails at 500.
 - No repository-specific paths, commands, or crate names. Those belong in the

@@ -1,6 +1,6 @@
 ---
 name: typescript
-description: TypeScript and JavaScript conventions for every edit in a TypeScript or JavaScript package. Use before you write or change TypeScript or JavaScript, add an npm dependency, write a frontend or script test, or set up a new package. Covers strict mode, ESLint with typescript-eslint and Prettier in every package, typecheck and lint after every change, no any with unknown at the boundary, discriminated unions instead of enum, generated types for backend data, one shared package for data transfer objects and clients, the 300-line file cap, import order, named exports, no barrel files, the test runner and layout from AGENTS.md, and no console output in product code.
+description: Use before you write or change TypeScript or JavaScript, add an npm dependency, set up a new package, or write a frontend file, a Node script, or a test file, when you define a type for backend data or model a known set of states, when you reach for any, a cast, an enum, a default export, a barrel file, or console output, when a file passes 200 lines, and when ESLint, Prettier, or the typecheck reports a problem.
 ---
 
 # TypeScript

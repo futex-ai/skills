@@ -81,50 +81,87 @@ number them in that order. Use the finding layout in the
 - Give it a category: product bug, security, docs or spec, mockup,
   repository rule, test, performance, code structure, UX wording, or
   process.
-- Give it an effort grade. Small: one change in one or two files with no new
-  module, dependency, migration, protocol section, or test file. Medium: a
-  few files, and tests may change in existing files. Large: a new module,
-  dependency, migration, protocol section, or mockup, a change across a
-  package boundary, or more than five files.
 - Include the relevant file path and line reference when possible.
-- Give the background: enough codebase and feature context, and the terms,
-  for a reader with no prior knowledge.
-- State the problem: what is wrong, in words that the background explains.
+- Give the terms: each project term that the finding uses, with one
+  sentence that explains it. The `decisions-and-findings` skill says what
+  a term is, when to leave the slot out, and how many entries a list
+  holds.
+- Give the background: enough codebase and feature context for a reader
+  with no prior knowledge.
+- State the problem: what is wrong, in plain words and defined terms.
 - State the impact of making no change.
-- Give solution options labelled A, B, and so on. Always consider a wider
-  fix: a rule, test, lint, guard, abstraction, or architectural change that
-  prevents the class of issue. Give the wider fix its own lettered option.
-  Look for previous examples of the class in the commit history, under
-  `plans/`, and in earlier review reports under `.context/`. Cite the
-  examples you find. Propose the wider fix even when you find none.
+- Give solution options labelled A, B, and so on, from the smallest effort
+  to the largest. Always consider a wider fix: a rule, test, lint, guard,
+  abstraction, or architectural change that prevents the class of issue.
+  Prefer a structural fix that removes the wrong case, such as a helper or
+  an abstraction that every call site uses, a default that is right, a
+  marker that shared code honours, or a type that cannot hold the wrong
+  value. Propose a detection fix that catches the case, such as a test for
+  the class, a lint, or a guard, only when you find no structural fix. For
+  example, when a modal focuses a helper icon button because no autofocus
+  target was given, a guard that requires a target detects the case, and a
+  marker that excludes helper icons from autofocus removes it. Give the
+  wider fix its own lettered option. Look for previous examples of
+  the class in the commit history, under `plans/`, and in earlier review
+  reports under `.context/`. Cite the examples you find. Propose the wider
+  fix even when you find none. When the wider fix for the class is already
+  in force, such as a skill rule or an existing lint, say so and propose no
+  other wider fix. When two or more findings share one wider fix, say so in
+  each of them.
+- Give each option an effort grade. Effort grades the code change of one
+  option, not the problem. Count product code, scripts, configuration, and
+  infrastructure files. Do not count tests, README files, protocol docs,
+  plans, or mockup output, because the repository rules require them with
+  each code change. Small: two code files or fewer, 30 code lines or fewer,
+  and no new code or test file. Medium: five code files or fewer in one
+  package, and 150 code lines or fewer. A new test file or a new helper
+  module in the same package is Medium. Large: every option that is not
+  Small or Medium. A new dependency, a migration, a change on both sides
+  of the backend and frontend boundary, a new mockup, or a new protocol
+  section is Large whatever its size. The finding's effort is the grade of
+  the recommended option.
 - Recommend one option and say which option best protects the codebase.
-  When a wider fix is available beside the direct fix, tag the finding
-  `Auto-fix: no` so that the user chooses between them.
-- End the finding with `Auto-fix: yes` or `Auto-fix: no, because …`.
+  For a finding that you tag `Auto-fix: yes`, recommend the option that the
+  tag names.
+- End the finding with `Auto-fix: yes, apply <letter>` or `Auto-fix: no,
+  because …`.
 
-`Auto-fix: yes` is allowed only when the finding has one clear fix and no wider
-fix is available, or the only wider fix is the known one for its class, for a
-small or medium effort finding about: a product bug (including edge cases,
+An option is blocked when:
+
+- It is Large.
+- It changes a requirement in a protocol doc without a recorded user
+  decision, adds a requirement for new behaviour at the boundary, or
+  decides which side of a mockup and product mismatch is right.
+- It changes user-visible behaviour beyond the contract.
+- It adds a new build error, rejection, gate, lint, or stricter validation.
+  This holds for a wider fix too, whatever its effort.
+- It deletes, skips, or weakens a test or gate, or raises a time limit.
+- It needs an audit exception, credentials, or infrastructure.
+
+`Auto-fix: yes, apply <letter>` is allowed only when at least one option is
+not blocked, for a finding about: a product bug (including edge cases,
 races, and platform differences); a security issue; docs or spec drift; a
-mockup mismatch that a protocol doc already settles; a flaky test that the diff
-adds or changes; or a repository-rule violation such as file size, lint, or
-layout. For a flaky test that the diff adds or changes, name the nondeterminism
-source and the deterministic fix (fake clock, event order, captured inputs,
-operation counts, explicit readiness signal, or isolated state), and require
-the fixer to reproduce the flake and record pass counts before and after.
+mockup mismatch that a protocol doc already settles; a flaky test that the
+diff adds or changes; or a repository-rule violation such as file size,
+lint, or layout. The letter names the best-ranked option that is not
+blocked: a structural wider fix, then a detection wider fix, then the
+direct fix. A blocked wider fix does not block the tag. For a flaky test
+that the diff adds or changes, name the nondeterminism source and the
+deterministic fix (fake clock, event order, captured inputs, operation
+counts, explicit readiness signal, or isolated state), and require the
+fixer to reproduce the flake and record pass counts before and after.
 
-`Auto-fix: no` for every finding that needs a decision: more than one option
-with real trade-offs; a change to a requirement in a protocol doc without a
-recorded user decision; a new requirement for behaviour at the boundary; a
-choice between a mockup and the product; user-visible behaviour beyond the
-contract; a new build error, rejection, gate, or stricter validation; a
-wider fix available beside the direct fix; deleting or weakening a test or
-gate or raising a time limit; or a need for an audit exception, credentials,
-or infrastructure. Tag a slow, custom, or low-value test, gate, lint, or check
-in the scope `Auto-fix: no` and ask whether to fix it or remove it, stating
-what it protects and how long it runs. Large findings, and findings about
-missing tests, performance, code structure, UX wording, and process, are
-always `Auto-fix: no`.
+`Auto-fix: no` for every finding that needs a decision:
+
+- Every option is blocked.
+- The best option on the merits is blocked and is not a wider fix.
+  Recommend that option, so that the user decides.
+- More than one option has real trade-offs and no option is clearly best.
+- The finding is a slow, custom, or low-value test, gate, lint, or check in
+  the scope. Ask whether to fix it or remove it, and state what it protects
+  and how long it runs.
+- The finding is about missing tests, performance, code structure, UX
+  wording, or process.
 
 Protocol docs hold the requirements and the decisions in force for an area:
 observable behaviour at a boundary, and the reason for each choice. They do
@@ -135,21 +172,22 @@ Apply these rules to a docs or spec finding:
 - Docs or spec drift is a doc that contradicts the changed code. A doc that
   is silent on how the code works is not a finding. Do not ask for a doc to
   be clarified or enhanced.
-- The class has a known wider fix, the `documentation` skill. Do not
-  propose another wider fix for it.
+- The wider fix for the class is already in force, the `documentation`
+  skill. Do not propose another wider fix for it.
 - When the code breaks a requirement and the diff did not intend a
   behaviour change, the finding is a product bug in the code.
 - When the diff changes behaviour that a requirement states, and the plan
   records the user's decision for that change, the fix updates the doc:
-  `Auto-fix: yes`. Without a recorded decision, tag it `Auto-fix: no`,
-  because the user decides which side is right.
+  `Auto-fix: yes`, with the doc update as the named option. Without a
+  recorded decision, tag it `Auto-fix: no`, because the user decides which
+  side is right.
 - A behaviour at the boundary that the diff adds and no requirement covers
   is a spec gap. Report it as one finding with `Auto-fix: no`, because the
   user reviews each new requirement.
 - When a protocol doc in the scope names source files, functions, or
   internal mechanics, or records history, the fix moves that content to
   its home: the crate README for entry points, the plan for history, the
-  code for mechanics. `Auto-fix: yes`.
+  code for mechanics. `Auto-fix: yes`, with the move as the named option.
 - Do not drop an option, rank it lower, or recommend a different option
   only because it conflicts with a protocol doc. Include the doc update in
   that option and in its effort grade, and recommend the option when it is

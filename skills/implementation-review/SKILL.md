@@ -1,6 +1,6 @@
 ---
 name: implementation-review
-description: The post-push implementation review and the review-fix rule. Use after you push a branch and before you run or apply a review, when a plan's review TODO is reached, or when the user asks for a code review of a branch. Covers the diff scope with the Outside the scope list and the user-widened scope, the read-only reviewer prompt, the numbered finding format with severity, category, and effort grade, the severity order of findings, the wider-fix option with its best-effort search for previous examples, the Auto-fix yes and no conditions, the two fix-round limit, and how to report fixed and open findings.
+description: Use after you push a branch and the work needs a review, before you run a review or apply its findings, when a plan's review TODO is reached, when the user asks for a code review of a branch, a pull request, the whole repository, or a named area, when a review finds a problem outside the diff, when you order or number the findings of a review, when you grade effort or weigh a wider fix, and when you decide whether a finding is Auto-fix yes or no or which option to apply.
 ---
 
 # Implementation review
@@ -51,75 +51,104 @@ user.
   defines them.
 - A category: product bug, security, docs or spec, mockup, repository rule,
   test, performance, code structure, UX wording, or process.
-- An effort grade. Small: one change in one or two files with no new
-  module, dependency, migration, protocol section, or test file. Medium: a
-  few files, and tests may change in existing files. Large: a new module,
-  dependency, migration, protocol section, or mockup, a change across a
-  package boundary, or more than five files.
 - The file path and line reference when possible.
-- The background: enough codebase and feature context, and the terms, for a
-  reader with no prior knowledge.
-- The problem: what is wrong, in words that the background explains.
+- The terms: each project term that the finding uses, with one sentence
+  that explains it. The `decisions-and-findings` skill says what a term
+  is, when to leave the slot out, and how many entries a list holds.
+- The background: enough codebase and feature context for a reader with
+  no prior knowledge.
+- The problem: what is wrong, in plain words and defined terms.
 - The impact of making no change.
-- Solution options labelled A, B, and so on. Always consider a wider fix:
-  a rule, test, lint, guard, abstraction, or architectural change that
-  prevents the class of issue. Give the wider fix its own lettered option
-  and say which option best protects the codebase. Look for previous
-  examples of the class in the commit history, under `plans/`, and in
-  earlier review reports under `.context/`. This search is best effort.
-  Cite the examples you find. Propose the wider fix even when you find
-  none.
-- A clear recommended option.
+- Solution options labelled A, B, and so on, from the smallest effort to
+  the largest. Always consider a wider fix: a rule, test, lint, guard,
+  abstraction, or architectural change that prevents the class of issue.
+  Prefer a structural fix that removes the wrong case, such as a helper,
+  an abstraction, a marker, a default, or a type, over a detection fix
+  that catches it, such as a test for the class, a lint, or a guard.
+  Propose a detection fix only when you find no structural fix. Give the
+  wider fix its own lettered option and say which option best protects
+  the codebase. Look for previous examples of the class in the
+  commit history, under `plans/`, and in earlier review reports under
+  `.context/`. This search is best effort. Cite the examples you find.
+  Propose the wider fix even when you find none. When the wider fix for
+  the class is already in force, such as a skill rule or an existing lint,
+  say so and propose no other wider fix.
+- An effort grade for each option, under the scale in the
+  `decisions-and-findings` skill. Effort grades the code change of one
+  option, not the problem. The finding's effort is the grade of the
+  recommended option.
+- A clear recommended option. For a finding that the review-fix rule
+  applies without the user, recommend the option that the tag names.
 - Options judged on their merits. Do not drop an option, rank it lower, or
   recommend a different option only because it conflicts with a protocol
   doc. Protocol docs record the current requirements and change with the
   behaviour, so the doc update is part of that option and of its effort.
   See the `documentation` skill.
-- A final line: `Auto-fix: yes` or `Auto-fix: no, because …`, following the
-  review-fix rule below.
+- A final line: `Auto-fix: yes, apply <letter>` or `Auto-fix: no,
+  because …`, following the review-fix rule below.
 
 ## Review-fix rule
 
 The full rule with every condition is in
 [references/review-fix-rule.md](references/review-fix-rule.md). In short:
 
-- `Auto-fix: yes` is allowed only when the finding has one clear fix and
-  no wider fix is available, or the only wider fix is the known one for its
-  class, for small or medium effort findings in these categories: product
-  bugs (including edge cases, races, and platform differences), security
-  issues, docs or spec drift, mockup mismatches that a protocol doc already
-  settles, flaky tests that the diff adds or changes under the flaky-test
-  rule in the `deterministic-tests` skill, and repository-rule violations
-  such as file size, lint, and layout.
+- An option is blocked when it is Large, or when it needs a decision:
+  - It changes a requirement without a recorded user decision, or adds a
+    requirement for new behaviour at the boundary.
+  - It decides between a mockup and the product.
+  - It changes user-visible behaviour beyond the contract.
+  - It adds a gate, lint, or stricter validation, also as a wider fix.
+  - It weakens a test or gate.
+  - It needs credentials or infrastructure.
+- `Auto-fix: yes, apply <letter>` is allowed only when at least one option
+  is not blocked, for findings in these categories: product bugs (including
+  edge cases, races, and platform differences), security issues, docs or
+  spec drift, mockup mismatches that a protocol doc already settles, flaky
+  tests that the diff adds or changes under the flaky-test rule in the
+  `deterministic-tests` skill, and repository-rule violations such as file
+  size, lint, and layout. The letter names the best-ranked option that is
+  not blocked: a structural wider fix, then a detection wider fix, then
+  the direct fix. A blocked wider fix does not block the tag.
 - Docs or spec drift is a doc that contradicts the changed code. A doc that
-  is silent on how the code works is not a finding. The class has a known
-  wider fix, the `documentation` skill, so the reviewer proposes no other
-  wider fix for it. The review-fix rule says when the doc side changes
-  without the user.
-- `Auto-fix: no` when the finding needs a decision: real trade-offs between
-  options, a requirement change without a recorded user decision, a new
-  requirement for behaviour at the boundary, a mockup versus product
-  choice, user-visible behaviour beyond the contract, a new gate or stricter
-  validation, a wider fix available beside the direct fix, weakening a test
-  or gate, or a need for credentials or infrastructure. Large findings, and
-  findings about missing tests, performance, code structure, UX wording, and
-  process, always wait for the user.
+  is silent on how the code works is not a finding. The wider fix for the
+  class is already in force, the `documentation` skill, so the reviewer
+  proposes no other wider fix for it. The review-fix rule says when the doc
+  side changes without the user.
+- `Auto-fix: no` when every option is blocked, when the best option on
+  the merits is blocked and is not a wider fix, when the options have real
+  trade-offs and no option is clearly best, or when the finding is a slow,
+  custom, or low-value test, gate, lint, or check. Findings about missing
+  tests, performance, code structure, UX wording, and process always wait
+  for the user.
 - An `Outside the scope` problem is not a finding. Do not fix it in this
   branch. Report it for a separate branch.
 
 ## After the review
 
-1. Fix the `Auto-fix: yes` findings without waiting for the user. Leave the
-   `Outside the scope` problems alone.
+1. Fix the `Auto-fix: yes` findings without waiting for the user. Apply the
+   option that the tag names. If the change grows past twice the Medium
+   band while you work, or needs a Large trigger such as a dependency or a
+   migration, revert it. Apply the next smaller option that is not
+   blocked, or leave the finding open. Leave the `Outside the scope`
+   problems alone.
 2. Run the checks, commit, push, and run the review once more on the fix.
    Name each fixed finding in its commit message.
 3. Fix any new `Auto-fix: yes` findings once more, then stop. Do not start a
    third fix round without the user.
 4. In the final message, list the auto-fixed findings (number, severity,
-   plain explanation, what changed, commit) separately from the findings
-   that need a decision, each with a clear recommendation. Order both
-   lists by severity, High first. List the `Outside the scope` problems
-   under **Open**, for a separate branch. Use the `decisions-and-findings`
-   skill.
-5. Add each open finding, and each `Outside the scope` problem, as one line
-   under the plan's review TODO, in the shape that the `plans` skill gives.
+   plain explanation, the applied option, what changed, commit) separately
+   from the findings that need a decision, each with a clear
+   recommendation. Order both lists by severity, High first. Use the
+   `decisions-and-findings` skill.
+5. List each blocked wider fix of a fixed finding as a follow-up under
+   **Open**, one line per class: the wider fix, its effort, the finding
+   numbers it covers, and the previous examples. An open finding keeps its
+   wider fix as one of its options. Count the occurrences of the class:
+   the findings of this review that share the wider fix, plus the previous
+   examples. When the count is two or more, raise the wider fix as a
+   numbered decision in the decision layout instead.
+6. List the `Outside the scope` problems under **Open**, for a separate
+   branch.
+7. Add each open finding, each follow-up, and each `Outside the scope`
+   problem as one line under the plan's review TODO, in the shape that the
+   `plans` skill gives.

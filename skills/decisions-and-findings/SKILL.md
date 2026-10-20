@@ -1,6 +1,6 @@
 ---
 name: decisions-and-findings
-description: How to write a message that asks the user for decisions, presents review findings (review items), or gives a final report. Use before you send any such message, also when the user asks for more detail, a shorter answer, or an explanation of earlier decisions or review items, and when you list open findings from a plan. Covers the Simplified Technical English (STE) limits, the message order, the severity order of items, the background paragraph, the decision layout, the review finding layout, the severity, category, and effort scales, the summary table for many items, the final report labels, and why the layout applies under a brief output style.
+description: Use before you send a message that asks the user for a decision, presents review findings or review items, or gives a final report, when the user asks for more detail, a shorter answer, or an explanation of earlier decisions or findings, when you list open findings from a plan or a saved review report, when you order or number the decisions and the findings of a message, and when an output style asks for brevity while you write such a message.
 ---
 
 # Decisions and findings
@@ -44,11 +44,14 @@ Write in Simplified Technical English (ASD-STE100):
    the project is, what the feature does, and what changed. Use six
    sentences or fewer. The **Background** of each item then adds only what
    that item needs.
-3. With more than five items, add a summary table. Give the number, the
+3. When two or more items use the same term, add a shared **Terms** list
+   after the background paragraph. The **Terms** of each item then adds
+   only the terms that no other item uses.
+4. With more than five items, add a summary table. Give the number, the
    title, the severity, the effort, and the recommended option. Use the
    same order as the items.
-4. Give each item in the layout below.
-5. When the task ends, finish with the final report.
+5. Give each item in the layout below.
+6. When the task ends, finish with the final report.
 
 ## Item order
 
@@ -66,13 +69,15 @@ Use this layout for each decision that is not a review finding.
 ```markdown
 ### 1. <The problem, in eight words or fewer>
 
-- **Severity:** <High, Medium, or Low>. **Effort:** <Small, Medium, or Large>.
-- **Background:** <Two to five sentences: what the feature does, where it is, and the terms that the reader needs.>
-- **Problem:** <One to three sentences that say what is wrong. Use only terms that the background explains.>
+- **Severity:** <High, Medium, or Low>. **Effort:** <Small, Medium, or Large: the grade of the recommended option.>
+- **Terms:** <Only when the item uses a term that the shared list does not define. Up to five entries.>
+  - **<Term>:** <One sentence: what it is, and where it lives when that helps the reader find it.>
+- **Background:** <Two to five sentences: what the feature does and where it is. Use plain words and defined terms only.>
+- **Problem:** <One to three sentences that say what is wrong. Use plain words and defined terms only.>
 - **Impact if no action:** <One or two sentences.>
 - **Options:**
-  - **A.** <The change.> <Its cost or risk.>
-  - **B.** <The change.> <Its cost or risk.>
+  - **A.** <The change.> <Its cost or risk.> Effort: <Small, Medium, or Large>.
+  - **B.** <The change.> <Its cost or risk.> Effort: <Small, Medium, or Large>.
   - <More options as C, D, and so on, when the problem has them.>
 - **Recommendation:** <Letter>. <One sentence of reasoning.>
 - **Auto-fix:** no, because <the reason that you cannot choose alone.>
@@ -87,32 +92,54 @@ what each field must contain.
 ```markdown
 ### 1. <The problem, in eight words or fewer>
 
-- **Severity:** <High, Medium, or Low>. **Effort:** <Small, Medium, or Large>.
+- **Severity:** <High, Medium, or Low>. **Effort:** <Small, Medium, or Large: the grade of the recommended option.>
 - **Category:** <One category from the scales below.>
 - **Location:** <The file path and line.>
-- **Background:** <Two to five sentences: what the feature does, where it is, and the terms that the reader needs.>
-- **Problem:** <One to three sentences that say what is wrong. Use only terms that the background explains.>
+- **Terms:** <Only when the item uses a term that the shared list does not define. Up to five entries.>
+  - **<Term>:** <One sentence: what it is, and where it lives when that helps the reader find it.>
+- **Background:** <Two to five sentences: what the feature does and where it is. Use plain words and defined terms only.>
+- **Problem:** <One to three sentences that say what is wrong. Use plain words and defined terms only.>
 - **Impact if no action:** <One or two sentences.>
 - **Options:**
-  - **A.** <A fix.> <Its cost or risk.>
-  - **B.** <Another fix.> <Its cost or risk.>
+  - **A.** <A fix.> <Its cost or risk.> Effort: <Small, Medium, or Large>.
+  - **B.** <Another fix.> <Its cost or risk.> Effort: <Small, Medium, or Large>.
   - <More options as C, D, and so on, when the problem has them.>
-- **Wider fix:** <The letter of the option that prevents this class of issue: a rule, test, lint, guard, abstraction, or architectural change. Or "None" and the reason.>
-- **Previous examples:** <Earlier cases of this class, with commits or files, or "None found".>
+- **Wider fix:** <The letter of the option that prevents this class of issue. A structural fix, such as a helper, an abstraction, a marker, a default, or a type, ranks above a detection fix, such as a test for the class, a lint, or a guard. Or "None" and the reason, for example that the wider fix is already in force.>
+- **Previous examples:** <Earlier cases of this class, with commits or files, or "None found". Also the other findings in this review that share the wider fix.>
 - **Recommendation:** <Letter>. <One sentence of reasoning.> <When another option best protects the codebase, one sentence that names it.>
-- **Auto-fix:** <`yes`, or `no, because` and the condition that stops the fix.>
+- **Auto-fix:** <`yes, apply` and the letter of the option to apply, or `no, because` and the condition that stops the fix.>
 ```
 
-Give one lettered option for each real choice. The wider fix is one of
-these options.
+Give one lettered option for each real choice. Order the options from the
+smallest effort to the largest, and give each its own grade. When you
+explain an item again, keep the recorded letters and their order. The
+wider fix is one of these options.
 
 A problem outside the review scope is not a finding. The
 `implementation-review` skill gives its one-line shape. The final report
 lists it under **Open**, for a separate branch.
 
 In both layouts, keep every label, also when the user asks for more detail
-or for a shorter answer. For more detail, write **Background** as a list
-with one fact in each item.
+or for a shorter answer. An item leaves out **Terms** only under the rule
+below. For more detail, write **Background** as a list with one fact in
+each item.
+
+## Terms
+
+A term is a name from the codebase, the product, or the toolchain that an
+engineer new to the repository would look up. A general programming word
+is not a term. When an item uses a term that the shared list does not
+define, add **Terms** before **Background**. Define the term there.
+Otherwise leave **Terms** out.
+
+Each entry is one sentence of 25 words or fewer. Say what the thing is.
+Add where it lives when that helps the reader find it.
+
+A **Terms** list holds at most five entries. When an item needs more,
+first check that the shared list holds each term that two or more items
+use. Then write the item in plainer words. When the shared list needs
+more, write the items in plainer words. The shared list uses the same
+entry shape under a **Terms** heading.
 
 ## Scales
 
@@ -121,11 +148,18 @@ with one fact in each item.
   wording, style, or a rare edge case.
 - Category. Product bug, security, docs or spec, mockup, repository rule,
   test, performance, code structure, UX wording, or process.
-- Effort. Small: one change in one or two files, with no new module,
-  dependency, migration, protocol section, or test file. Medium: a few
-  files. Tests may change in existing files. Large: a new module,
-  dependency, migration, protocol section, or mockup. A change across a
-  package boundary or in more than five files is also large.
+- Effort. The grade of one option, not of the problem. Count the code
+  change only: product code, scripts, configuration, and infrastructure
+  files. Do not count tests, README files, protocol docs, plans, or mockup
+  output, because the repository rules require them with each code change.
+  Small: two code files or fewer, 30 code lines or fewer, and no new code
+  or test file. Medium: five code files or fewer in one package, and 150
+  code lines or fewer. A new test file or a new helper module in the same
+  package is Medium. Large: every option that is not Small or Medium. A
+  new dependency, a migration, a change on both sides of the backend and
+  frontend boundary, a new mockup, or a new protocol section is Large
+  whatever its size. The effort of an item is the grade of its
+  recommended option.
 
 ## Explaining items again
 
@@ -142,6 +176,8 @@ with one fact in each item.
 - Always write **Background**, **Problem**, **Impact if no action**, and
   **Options**. They explain the item, so you can write them from the
   record, the code, and the docs.
+- Add **Terms** under the rule above, also when the record has none. You
+  can write it from the code and the docs.
 - Some fields are judgments: severity, effort, category, recommendation,
   and Auto-fix. When the record does not give a judgment, give your own.
   Add "(estimate)" after it.
@@ -155,7 +191,7 @@ keep the item order above. Use these labels:
 
 - **Changed:** what changed, the commit, and the pull request.
 - **Fixed:** each auto-fixed finding. Give its number, its severity, a
-  plain explanation, what changed, and the commit.
+  plain explanation, the applied option, what changed, and the commit.
 - **Decisions:** each decision and its outcome. Name each default that you
   applied.
 - **Checks:** each check and its result. Give the output of a failed
@@ -164,4 +200,7 @@ keep the item order above. Use these labels:
   suspected source.
 - **Open:** the decisions and review items that still need the user. Add
   the open plan TODOs, the follow-ups, the problems outside the review
-  scope for a separate branch, and other skipped or blocked work.
+  scope for a separate branch, and other skipped or blocked work. A
+  follow-up for a wider fix that the review did not apply is one line per
+  class. The line gives the wider fix, its effort, the finding numbers it
+  covers, and the previous examples.
