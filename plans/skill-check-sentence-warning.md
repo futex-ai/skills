@@ -176,12 +176,13 @@ the scan and the exit status of the check.
       `feat(check): warn about sentences over 20 words`, and push the
       branch. Say in the PR description that an installed clone gets the
       new check when `scripts/update.sh` runs there.
-- [ ] Review the complete local diff against `origin/main` with the
+- [x] Review the complete local diff against `origin/main` with the
       `implementation-review` skill after the push. Report the findings,
       then apply the review-fix rule: fix the `Auto-fix: yes` findings,
       re-review once, and report the rest.
-  - Round 1 fixed finding 3: the `tests/lib.sh` header. Report:
-    `.context/skill-check-sentence-warning/review/round-1.md`.
+  - Round 1 fixed finding 3: the `tests/lib.sh` header. Round 2 found no
+    findings. Reports: `round-1.md` and `round-2.md` under
+    `.context/skill-check-sentence-warning/review/`.
   - 1. Marks inside a code span split sentences. Severity Low, effort
     Small. Recommended: C, count each code span as one word.
   - 2. Four stated scan rules have no test. Severity Low, effort Small.
