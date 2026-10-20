@@ -25,12 +25,15 @@ repository's `AGENTS.md` under `## Product`.
   content surface, including strokes with rounded ends or corners.
 - Do not recreate the pattern with a pseudo-element, inset shadow,
   gradient, outline, or separate adjacent bar.
+- A thick tone-colored strip on the top, right, or bottom edge is the same
+  pattern rotated and is equally banned.
 - Use the component system's typography, spacing, icons, full-surface
-  treatments (a full-perimeter border, a tinted fill, a leading icon), or
-  standard selection controls instead.
+  treatments (a full-perimeter border, a tinted fill, a leading icon), an
+  inset selection ring, a badge, a status dot, or standard selection
+  controls instead.
 - Neutral structural borders such as column dividers and nesting indent
   guides are layout, not emphasis, and remain fine.
-- This applies to product code and to mockups.
+- This applies to product code, stories, mockups, protocol docs, and plans.
 
 ## Environments
 

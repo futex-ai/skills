@@ -57,7 +57,9 @@ layout.
 - Use the test runner and the test layout named in `AGENTS.md`. Do not
   add a second runner to a package.
 - Unit tests do not use the real network, file system, clock, or a
-  running server. Inject or stub those at the module boundary.
+  running server. Inject or stub those at the module boundary. A guard
+  test that checks the repository's own files follows the guard-test rule
+  in the `deterministic-tests` skill.
 - Tests must not assert elapsed time. See the `deterministic-tests`
   skill, including its ESLint guard.
 

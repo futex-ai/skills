@@ -9,6 +9,11 @@ Mockups are part of the spec and stay aligned with the implementation at
 all times. The forbidden visual patterns and copy rules in the `product-ui`
 skill apply to mockups too.
 
+A repository can have no mockup requirement, for example a component
+library whose Storybook stories are its visual spec. When the repository's
+`AGENTS.md` says that it has no mockup requirement, skip this skill and the
+mockup milestones of the `plans` skill.
+
 ## Design before implementation
 
 - Any work that needs design implementation updates an existing mockup or

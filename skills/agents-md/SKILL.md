@@ -52,7 +52,8 @@ when to read it. [templates/AGENTS.md](templates/AGENTS.md) is the template.
 2. If step 1 brought a newer version of this skill, read that version.
    Read the repository's `AGENTS.md`, `docs/dev/*.md` if present, and
    `docs/implementation-review-prompt.md` if present. The shared skill text
-   is the canonical version of every general rule.
+   is the canonical version of every general rule. When the repository and
+   a shared skill conflict, the shared skill wins.
 3. Walk every rule and classify it:
    - **Covered**: the shared skill or the global file says the same thing.
      Drop it.
@@ -62,7 +63,10 @@ when to read it. [templates/AGENTS.md](templates/AGENTS.md) is the template.
      production status. Keep it in the matching template section.
    - **Conflicting**: the repository says something different from the
      shared skill, for example an older plan index rule or an older review
-     rule. The user decides.
+     rule. The shared skill wins, and this is not a decision. Drop the
+     repository's rule and do the migration that the shared rule needs. If
+     the repository's rule looks better, propose a shared-skill change in
+     the final report.
    - **Uncovered general rule**: a rule that belongs in a shared skill but
      is not there yet. The user decides. Never drop it silently.
 4. Send the checkpoint message described below and wait for the answers.
@@ -70,6 +74,13 @@ when to read it. [templates/AGENTS.md](templates/AGENTS.md) is the template.
    tracked file in this repository before this checkpoint.
 5. Write the new `AGENTS.md` from the template with the decisions applied.
    Fill every section. Keep `CLAUDE.md` as a symlink to `AGENTS.md`.
+   - Some behaviour has an owner file in the repository, such as a test
+     helper, a configuration file, or a README section. For that
+     behaviour, state the rule and name the owner file. Do not restate its
+     details.
+   - Check each fact that you write or move against its source: the code,
+     a README, a plan, or a merged pull request. An old index or an old
+     rule file can be stale. Do not copy a fact from it without a check.
 6. Delete the approved files: the `docs/dev/*.md` files now covered by
    skills, and `docs/implementation-review-prompt.md` if the shared review
    prompt replaces it. Then search `docs/`, `plans/`, and every `README.md`
@@ -93,12 +104,11 @@ This task has one checkpoint message and one final report.
 - One line with the `futex-ai/skills` commit from step 1.
 - The repository-specific rules you will keep, grouped by template section,
   one line each. Do not quote the old file at length.
-- The numbered decisions. Every conflict, every uncovered rule, and every
-  file deletion is one decision. Give the repository's wording and the
-  shared skill's wording when there is one.
-  - A conflict offers: A, use the shared rule; B, keep the repository's rule
-    as an override under `## Repository rules`; C, change the shared skill
-    and apply it everywhere.
+- The conflicts, one line each: the repository's rule and the shared rule
+  that replaces it. They are not decisions.
+- The numbered decisions. Every uncovered rule and every file deletion is
+  one decision, including a deletion that a shared rule needs. Give the
+  repository's wording.
   - An uncovered rule offers: A, add it to a named shared skill with the
     proposed text; B, keep it as a repository rule; C, drop it.
   - A deletion offers: A, delete and update links; B, keep the file.
@@ -109,5 +119,6 @@ This task has one checkpoint message and one final report.
 
 - The line count of `AGENTS.md` before and after.
 - The files deleted and the links updated.
+- The conflicting rules that the shared rules replaced, one line each.
 - The proposed shared-skill changes, with their text, so that the user can
   apply them in the skills repository.

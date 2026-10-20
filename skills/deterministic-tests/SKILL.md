@@ -14,8 +14,13 @@ that passes on a fast machine and fails on a slow one is a bug in the test.
   "Finishes within N ms" and "takes at least N ms" are both forbidden. Keep
   the correctness assertions when you replace either form.
 - Unit tests must not use real disk IO, databases, Docker, subprocesses,
-  clocks, or network calls. Mock those boundaries. Integration tests may use
-  real implementations for end-to-end behaviour.
+  clocks, or network calls at the boundary of the code under test. Mock
+  those boundaries. Integration tests may use real implementations for
+  end-to-end behaviour.
+- A guard test checks the repository's own files, for example a source
+  scan, a README check, or a typecheck probe. A guard test may read those
+  files, write temporary files, and run the repository's own tools. It
+  must not use the network or a real clock.
 - Report a duration only as text, through a diagnostic or an annotation. A
   reported duration must never decide whether the test passes.
 
