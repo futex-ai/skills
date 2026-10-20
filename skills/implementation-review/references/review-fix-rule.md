@@ -48,14 +48,12 @@ when at least one option is not blocked, for findings in these categories:
 - Mockup mismatches that a protocol doc already settles.
 - Flaky tests that the diff adds or changes, under the flaky-test rule in
   the `deterministic-tests` skill.
-- Dead code: code that the product never runs, under the four conditions
-  in the `git-commit` skill. The reviewer checks each condition with a
+- Dead code: code that the product never runs, under the predicate in
+  the `git-commit` skill. The reviewer checks each condition with a
   search and cites the searches in the finding. The option deletes the
-  code, the tests that cover only it, and what the deletion leaves unused.
-  It moves a test that reaches live behaviour through the dead code to the
-  live path, with every assertion kept. Code that the product runs rarely,
-  such as an error path or a fallback, is functionality and waits for the
-  user.
+  dead code with the steps under "When you delete dead code" in the
+  `git-commit` skill. Code that the product runs rarely, such as an error
+  path or a fallback, is functionality and waits for the user.
 - Repository-rule violations such as file size, lint, and layout.
 
 The letter names the best-ranked option that is not blocked: a structural

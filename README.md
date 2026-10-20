@@ -44,7 +44,7 @@ Codex, and with any other agent that reads the
 | `implementation-review` | After you push, before you run or apply a review, and when the user asks for a code review. |
 | `decisions-and-findings` | Before you send decisions, review findings, or a final report, also under a brief output style. |
 | `deterministic-tests` | A test flakes, would assert elapsed time, or tempts you to add a sleep, a retry, or a longer time limit. |
-| `git-commit` | Before and after you commit, when you write a commit or pull request message, when a diff deletes or renames something, and when you find dead code. |
+| `git-commit` | Before and after you commit, and when you write a commit or pull request message. When a diff deletes or renames something, or when you find dead code. |
 | `git-merge` | Before you merge or rebase, when you resolve conflicts, and after each merge commit. |
 | `documentation` | Before you edit a README, a doc, or a protocol doc, when a change could leave a doc stale, when you decide where a sentence belongs, and when a change or a review option conflicts with a protocol doc. |
 | `rust` | Before you edit Rust, add a crate or a dependency, or define an error type. |

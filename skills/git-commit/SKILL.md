@@ -36,8 +36,9 @@ scratch output; it lives under the git-ignored `.context/`.
 Dead code is code that the product never runs. Deleting it needs no
 approval. Code is dead only when all of these hold:
 
-1. No product code, script, configuration, build file, or generated
-   artifact references it. Search the repository for its name. An
+1. No product code, test of live code, script, configuration, build
+   file, or generated artifact references it. Search the repository for
+   its name. An
    unused-item warning from the compiler or the linter proves this for a
    private item. The warning counts only when the build compiles every
    feature, platform, and test target.

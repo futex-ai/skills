@@ -115,11 +115,10 @@ The full rule with every condition is in
 - The letter names the best-ranked option that is not blocked: a
   structural wider fix, then a detection wider fix, then the direct fix.
   A blocked wider fix does not block the tag.
-- Dead code is code that the product never runs, under the four
-  conditions in the `git-commit` skill. The reviewer checks each condition
-  with a search and cites the searches in the finding. Code that the
-  product runs rarely is functionality, and its deletion waits for the
-  user.
+- Dead code is code that the product never runs, under the predicate in
+  the `git-commit` skill. The reviewer checks each condition with a search
+  and cites the searches in the finding. Code that the product runs rarely
+  is functionality, and its deletion waits for the user.
 - Docs or spec drift is a doc that contradicts the changed code. A doc that
   is silent on how the code works is not a finding. The wider fix for the
   class is already in force, the `documentation` skill, so the reviewer

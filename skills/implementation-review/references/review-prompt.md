@@ -78,9 +78,9 @@ number them in that order. Use the finding layout in the
 - Give it a severity. High: wrong output, lost data, a security problem, or
   blocked work. Medium: a visible defect, or a spec gap with a workaround.
   Low: wording, style, or a rare edge case.
-- Give it a category: product bug, security, docs or spec, mockup,
-  repository rule, test, performance, code structure, dead code, UX
-  wording, or process.
+- Give it a category. The categories are product bug, security, docs or
+  spec, mockup, repository rule, test, performance, code structure, dead
+  code, UX wording, and process.
 - Include the relevant file path and line reference when possible.
 - Give the terms: each project term that the finding uses, with one
   sentence that explains it. The `decisions-and-findings` skill says what
@@ -164,8 +164,8 @@ the fixer to reproduce the flake and record pass counts before and after.
 Dead code is code that the product never runs. Code is dead only when all
 of these hold:
 
-- No product code, script, configuration, build file, or generated
-  artifact references it.
+- No product code, test of live code, script, configuration, build file,
+  or generated artifact references it.
 - No route table, registry, plugin loader, file-name convention, string
   key, dynamic import, or reflection names it.
 - No consumer outside the code reaches it. A command, a script, a
@@ -176,13 +176,16 @@ of these hold:
 
 Test code is not product code. A helper, a fixture, or a mock that a test
 of live code uses is functionality. Check each condition with a search of
-the repository and cite the searches in the finding. The option deletes
-the code, the tests that cover only it, and what the deletion leaves
-unused. It moves a test that reaches live behaviour through the dead code
-to the live path, with every assertion kept. Code that the product runs
-rarely is functionality: an error path, a fallback, or the off branch of
-a feature flag. Its deletion is blocked. When a condition is in doubt,
-give the finding the category code structure and tag it `Auto-fix: no`.
+the repository. Cite the searches in the finding. The option deletes the
+code, the tests that cover only it, and each item that the deletion
+leaves unused and that meets the conditions. It moves a test that reaches
+live behaviour through the dead code to the live path, with every
+assertion kept.
+
+Code that the product runs rarely is functionality: an error path, a
+fallback, or the off branch of a feature flag. Its deletion is blocked.
+When a condition is in doubt, give the finding the category code
+structure and tag it `Auto-fix: no`.
 
 `Auto-fix: no` for every finding that needs a decision:
 
