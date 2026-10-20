@@ -59,10 +59,10 @@ description: Use before you add, edit, or name a database migration or a seed mi
 - A unit test of a service mocks the store trait with `unimock`.
 - These tests run against the disposable test database that the
   repository `AGENTS.md` names:
-  - a workflow across many calls,
-  - stored state that a test reads back,
-  - a race,
-  - a constraint,
+  - a test of a workflow across many calls,
+  - a test that reads stored state back,
+  - a test of a race,
+  - a test of a constraint,
   - every store test.
 - An in-memory store that is useful in itself is not a fake. One example
   is a per-run output store that expires with the run. All of these hold:
