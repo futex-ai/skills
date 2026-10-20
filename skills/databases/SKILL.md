@@ -56,13 +56,17 @@ description: Use before you add, edit, or name a database migration or a seed mi
 - Such a store re-creates the database and drifts from it. Tests then pass
   against behaviour that the database does not have. Every store change
   also changes the fake.
-- A unit test of a service mocks the store trait with `unimock`.
+- A test that asserts only on the output of a service mocks the store
+  trait with `unimock`. Use `next_call` when the order of the calls is
+  the behaviour.
+- Each value or error that a mock returns is a claim about the store. A
+  store test on the database must show it. Add the store test when none
+  exists.
 - These tests run against the disposable test database that the
   repository `AGENTS.md` names:
-  - a test of a workflow across many calls,
-  - a test that reads stored state back,
+  - a test that asserts on stored state,
+  - a test of what the store accepts or rejects,
   - a test of a race,
-  - a test of a constraint,
   - every store test.
 - An in-memory store that is useful in itself is not a fake. One example
   is a per-run output store that expires with the run. All of these hold:
@@ -92,6 +96,7 @@ Red flags:
   trait,
 - a `Mutex<HashMap>` behind a store trait in a test support crate,
 - a `unimock` answer that keeps a table of rows,
+- a `next_call` script that returns the state that an earlier call wrote,
 - a README that says a store "mirrors" or "matches" the database,
 - a seed, a counter, or a failure injection that only the fake has,
 - a fake that grows with each store change.
