@@ -22,10 +22,10 @@ An option is blocked when:
 - It adds a new build error, rejection, gate, lint, or stricter validation.
   This holds for a wider fix too, whatever its effort. The always-on rules
   reserve that choice for the user.
-- It deletes or overrides functionality on `origin/main`: live code, an
-  API, a test of live code, a doc, a mockup, a plan, a migration, or
-  schema. Dead code under the predicate in the `git-commit` skill is not
-  functionality, so its deletion is not blocked.
+- It deletes or overrides functionality on `origin/main`. Functionality
+  is live code, its tests, an API, a doc, a mockup, a plan, a migration,
+  or schema. Dead code under the predicate in the `git-commit` skill is
+  not functionality, so its deletion is not blocked.
 - It deletes, skips, or weakens a test of live code or a gate, or raises
   a time limit.
 - It needs credentials or infrastructure.

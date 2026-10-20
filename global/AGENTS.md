@@ -76,11 +76,11 @@ at that moment instead of guessing the rule.
 
 ## Safety
 
-- Do not delete or override functionality already on `origin/main`,
-  including live code, APIs, tests, docs, mockups, plans, migrations, and
-  schema, without explicit user approval. Dead code needs no approval. The
-  `git-commit` skill says when code is dead and what to record. See also
-  the `git-merge` skill.
+- Do not delete or override functionality already on `origin/main`
+  without explicit user approval. Functionality includes live code, its
+  tests, APIs, docs, mockups, plans, migrations, and schema. Dead code
+  needs no approval. The `git-commit` skill says when code is dead and
+  what to record. See also the `git-merge` skill.
 - Prefer graceful handling. When input is recoverable, warn and continue.
   Fail only when the output would be wrong or unsafe.
 - Do not add a new build error, rejection, gate, lint, or stricter validation

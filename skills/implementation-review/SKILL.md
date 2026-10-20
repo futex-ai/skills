@@ -103,15 +103,18 @@ The full rule with every condition is in
   - It weakens a test of live code or a gate.
   - It needs credentials or infrastructure.
 - `Auto-fix: yes, apply <letter>` is allowed only when at least one option
-  is not blocked, for findings in these categories: product bugs (including
-  edge cases, races, and platform differences), security issues, docs or
-  spec drift, mockup mismatches that a protocol doc already settles, flaky
-  tests that the diff adds or changes under the flaky-test rule in the
-  `deterministic-tests` skill, dead code under the predicate in the
-  `git-commit` skill, and repository-rule violations such as file size,
-  lint, and layout. The letter names the best-ranked option that is not
-  blocked: a structural wider fix, then a detection wider fix, then the
-  direct fix. A blocked wider fix does not block the tag.
+  is not blocked, for findings in these categories:
+  - product bugs, including edge cases, races, and platform differences
+  - security issues
+  - docs or spec drift
+  - mockup mismatches that a protocol doc already settles
+  - flaky tests that the diff adds or changes under the flaky-test rule
+    in the `deterministic-tests` skill
+  - dead code under the predicate in the `git-commit` skill
+  - repository-rule violations such as file size, lint, and layout
+- The letter names the best-ranked option that is not blocked: a
+  structural wider fix, then a detection wider fix, then the direct fix.
+  A blocked wider fix does not block the tag.
 - Dead code is code that the product never runs, under the four
   conditions in the `git-commit` skill. The reviewer checks each condition
   with a search and cites the searches in the finding. Code that the
