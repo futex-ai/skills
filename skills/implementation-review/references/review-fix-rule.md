@@ -22,8 +22,14 @@ An option is blocked when:
 - It adds a new build error, rejection, gate, lint, or stricter validation.
   This holds for a wider fix too, whatever its effort. The always-on rules
   reserve that choice for the user.
-- It deletes, skips, or weakens a test or gate, or raises a time limit.
-- It needs an audit exception, credentials, or infrastructure.
+- It deletes or overrides functionality on `origin/main`. Functionality
+  is everything on `origin/main` that is not dead code under the
+  predicate in the `git-commit` skill. It includes live code, its tests,
+  an API, a doc, a mockup, a plan, a migration, and schema. A deletion of
+  dead code is not blocked.
+- It deletes, skips, or weakens a test of live code or a gate, or raises
+  a time limit.
+- It needs credentials or infrastructure.
 
 ## Auto-fix: yes
 
@@ -43,6 +49,12 @@ when at least one option is not blocked, for findings in these categories:
 - Mockup mismatches that a protocol doc already settles.
 - Flaky tests that the diff adds or changes, under the flaky-test rule in
   the `deterministic-tests` skill.
+- Dead code: code that the product never runs, under the predicate in
+  the `git-commit` skill. The reviewer checks each condition with a
+  search and cites the searches in the finding. The option deletes the
+  dead code with the steps under "When you delete dead code" in the
+  `git-commit` skill. Code that the product runs rarely, such as an error
+  path or a fallback, is functionality and waits for the user.
 - Repository-rule violations such as file size, lint, and layout.
 
 The letter names the best-ranked option that is not blocked: a structural
