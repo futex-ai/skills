@@ -136,8 +136,10 @@ An option is blocked when:
 - It adds a new build error, rejection, gate, lint, or stricter validation.
   This holds for a wider fix too, whatever its effort.
 - It deletes or overrides functionality on `origin/main`. Functionality
-  is live code, its tests, an API, a doc, a mockup, a plan, a migration,
-  or schema. Dead code is not functionality, under the conditions below.
+  is everything on `origin/main` that is not dead code under the
+  conditions below. It includes live code, its tests, an API, a doc, a
+  mockup, a plan, a migration, and schema. A deletion of dead code is not
+  blocked.
 - It deletes, skips, or weakens a test of live code or a gate, or raises
   a time limit.
 - It needs credentials or infrastructure.

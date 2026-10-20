@@ -126,6 +126,8 @@ body. The format enables automated changelogs and readable history.
   - each plan edit made for a rename or removal
   - each intentional merge decision with the paths it affects
   - the review finding that a fix commit resolves, by number
+- When a later commit changes what the pull request description says,
+  update the description.
 
 ## Examples
 
