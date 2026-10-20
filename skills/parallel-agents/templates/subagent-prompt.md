@@ -33,7 +33,7 @@ Constraints:
 - Do not change <production code | the tests>.
 - When the fix needs a change outside the scope, stop and report it.
 
-Return:
+Output:
 - The root cause, in two or three sentences.
 - The files that you changed, and what changed in each.
 - The checks that you ran and their results.

@@ -16,6 +16,10 @@ after the report.
   the diff whose behaviour the diff changes, such as a caller of a changed
   function, a test that covers changed code, or a doc that describes
   changed behaviour.
+- The base of the diff is `origin/main`. When the branch targets a
+  primary branch, as the `parallel-agents` skill describes, the orchestrator
+  names that branch as the base. Pass the base to `scripts/diff-summary.sh`
+  and replace `origin/main` with it in the prompt.
 - A finding must anchor to the scope.
 - The reviewer lists every other problem under `Outside the scope`, one
   line each, without a number or the finding layout. Nobody fixes these

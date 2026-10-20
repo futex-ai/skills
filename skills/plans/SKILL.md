@@ -70,6 +70,8 @@ change. [templates/plan.md](templates/plan.md) is the starting point.
 - When you discover a TODO that the PR needs, add it under the relevant
   milestone, then continue with the active TODO.
 - Break a complex TODO into sub-tasks.
+- When a delegated workspace owns a TODO, end the line with `Branch:` and
+  the branch name. The `parallel-agents` skill gives the workspace rules.
 - Every plan ends with a commit-and-push TODO followed by a review TODO. The
   review TODO directs a reviewer to use the `implementation-review` skill
   against `origin/main` after the push, report findings, and then apply the
@@ -87,6 +89,9 @@ change. [templates/plan.md](templates/plan.md) is the starting point.
   `Follow-up: guard port reuse in the test harness. Effort Large. Covers findings 2 and 5. Previous examples: 3f2c1ab.`
 - Add each problem that the review listed under `Outside the scope` as one
   line too: its path, one sentence, and `Separate branch.`
+- An open finding blocks a later milestone only when that milestone depends
+  on the affected code or contract. The `parallel-agents` skill gives the
+  rule.
 
 ## Completion boundary
 

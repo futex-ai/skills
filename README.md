@@ -42,7 +42,7 @@ Codex, and with any other agent that reads the
 | `finish-work` | Before you say work is complete, before you commit or push, and when you choose which tests or gates to run. |
 | `plans` | When the user asks for a plan, before you create, edit, or tick a plan, and when you find a TODO during implementation. |
 | `implementation-review` | After you push, before you run or apply a review, and when the user asks for a code review. |
-| `parallel-agents` | Before you start a subagent or write its prompt, when two or more independent tasks can run at the same time, and after the subagents return. |
+| `parallel-agents` | Before you start a subagent or write its prompt, when independent tasks can run at the same time, when you split a plan across workspaces or choose the model for delegated work, when a model blocks a request, and when a delegated branch comes back. |
 | `decisions-and-findings` | Before you send decisions, review findings, or a final report, also under a brief output style. |
 | `deterministic-tests` | A test flakes, would assert elapsed time, or tempts you to add a sleep, a retry, or a longer time limit. |
 | `git-commit` | Before and after you commit, when you write a commit or pull request message, and when a diff deletes or renames something. |
