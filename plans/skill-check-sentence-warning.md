@@ -168,6 +168,10 @@ the scan and the exit status of the check.
 - [ ] Run `scripts/check.sh` on macOS with BSD awk, through the user's Mac,
       and compare the warning lines with the Linux run. Save the diff under
       `.context/skill-check-sentence-warning/`.
+  - Blocked on 2026-10-20: the Mac did not answer two requests. Apple's
+    libc source shows that its C locale accepts every byte, so Apple awk
+    reads non-ASCII text there. Evidence: `portability/notes.md` under
+    `.context/skill-check-sentence-warning/`.
 - [x] Commit with Conventional Commits, for example
       `feat(check): warn about sentences over 20 words`, and push the
       branch. Say in the PR description that an installed clone gets the
@@ -176,7 +180,14 @@ the scan and the exit status of the check.
       `implementation-review` skill after the push. Report the findings,
       then apply the review-fix rule: fix the `Auto-fix: yes` findings,
       re-review once, and report the rest.
-  - Open findings go here by severity, High first, one line each.
+  - Round 1 fixed finding 3: the `tests/lib.sh` header. Report:
+    `.context/skill-check-sentence-warning/review/round-1.md`.
+  - 1. Marks inside a code span split sentences. Severity Low, effort
+    Small. Recommended: C, count each code span as one word.
+  - 2. Four stated scan rules have no test. Severity Low, effort Small.
+    Recommended: A, add cases to the two existing tests.
+  - `skills/decisions-and-findings/SKILL.md`: 206 lines, so the check
+    warns above 200. Separate branch.
 
 ## Post-merge follow-up (non-blocking)
 
