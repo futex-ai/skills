@@ -1,16 +1,16 @@
 ---
 name: parallel-agents
-description: Use when you have two or more independent tasks, such as failing tests in separate files, bugs in separate subsystems, or separate research questions, before you start a subagent or write its prompt, when you split a plan across workspaces or branches, when you choose the model for delegated work, when a model blocks or rejects a request, when a delegated branch comes back for a check or a merge, when agents would edit the same files, and when an open finding could block the next milestone.
+description: Use when you have two or more independent tasks, such as failing tests in separate files, bugs in separate subsystems, or separate research questions, before you start a subagent or write its prompt, when you split a plan across workspaces or choose the model for delegated work, when a model blocks or rejects a request, when a delegated branch comes back, when agents would edit the same files, and when an open finding could block the next milestone.
 ---
 
 # Parallel agents
 
 A subagent is an agent with a fresh context that you start for one task
-in your own session. A workspace agent is an agent on its own machine
-and its own branch, started by the orchestrator for one work item. The
+in your own session. A workspace agent works on its own machine and its
+own branch. The orchestrator starts it for one work item. The
 orchestrator is the session that owns the plan and the primary branch.
 Neither agent sees your session. You give each the exact context that it
-needs, and it returns a report. The same rules apply at both levels.
+needs, and it returns a report.
 
 ## Independence test
 
@@ -33,26 +33,25 @@ small change in an area that another agent edits stays with you.
 ## The prompt
 
 Each prompt has the fields Scope, Goal, Context, Steps, Constraints, and
-Output. [templates/subagent-prompt.md](templates/subagent-prompt.md) is
-the template for a subagent, and
-[templates/workspace-prompt.md](templates/workspace-prompt.md) for a
-workspace agent.
+Output. The templates are
+[templates/subagent-prompt.md](templates/subagent-prompt.md) and
+[templates/workspace-prompt.md](templates/workspace-prompt.md).
 
 - **Scope:** the one domain. Name the files, the tests, or the question.
 - **Goal:** the result that counts as done.
-- **Context:** everything that the agent needs, pasted in: the errors,
-  the test names, the paths, the commands from `AGENTS.md`, and the
-  skills to read. Point to the plan, and give its decisions and what the
-  earlier milestones established. Keep logs out of the plan, because a
-  delegated agent reads the whole plan on every turn.
+- **Context:** everything that the agent needs, pasted in. Give the
+  errors, the test names, the paths, the commands from `AGENTS.md`, and
+  the skills to read. Point to the plan, and give its decisions and what
+  the earlier milestones established. Keep logs out of the plan, because
+  a delegated agent reads the whole plan on every turn.
 - **Steps:** the procedure, the checks that the agent runs itself, and
   the TODOs that it ticks.
 - **Constraints:** the files that it may change, and what it must not
   do. Examples: change files outside the scope, merge `main`, increase a
   timeout, delete a test, or start the next item.
 - **Output:** the report to return. Ask for the result or the root
-  cause, the files changed, the checks with their results, who decided
-  what, and the open questions.
+  cause, the files changed, and the checks with their results. Ask who
+  decided what, and the open questions.
 
 A read-only agent, such as the reviewer in the `implementation-review`
 skill, gets "change nothing" as its constraint.
@@ -72,8 +71,8 @@ skill, gets "change nothing" as its constraint.
    proves the combined work. Spot check the changes, because agents make
    systematic errors, for example a longer timeout that hides a race.
 6. Commit with the `git-commit` skill. In the final report, say what
-   each agent did, which findings you re-checked in the code, and which
-   rest on the agent's evidence.
+   each agent did. Say which findings you re-checked in the code, and
+   which rest on the agent's evidence.
 
 Subagents share your working tree unless the tool gives each its own
 worktree. Two subagents that edit the same file overwrite each other, so
@@ -102,13 +101,16 @@ one combined gate.
 - The orchestrator plans, writes the prompts, delegates, and checks. It
   does not implement. A correction of a few lines found while you check
   is fine. Anything larger goes back to the delegate.
-- Name the workspace `<plan-name>: <item>` and the branch
-  `<plan-name>/<item>`. Add `Branch:` and the name to the TODO lines
-  that the workspace owns.
+- Name the workspace `<plan-name>: <item>`. Conductor creates the branch
+  from that name. Record the branch that the workspace reports in the
+  ledger and on its TODO lines after `Branch:`.
+- The plan file is the one shared file. A workspace ticks only the TODO
+  lines that carry its `Branch:`. You resolve a plan conflict path by
+  path at the merge.
 - Keep a ledger under `.context/<plan-name>/workspaces.md`. It lists
-  the item, the workspace id, the session id, the model, the branch, the
-  pull request, the review round, and the state. Keep the prompts and
-  the reports there too, never in the plan.
+  the item, the workspace id, the session id, the model, and the branch.
+  It lists the pull request, the review round, and the state. Keep the
+  prompts and the reports there too, never in the plan.
 - The workspace agent commits with the `git-commit` skill, pushes its
   branch, and opens a pull request into the primary branch. It never
   merges. When its push fails for a missing credential, it reports the
@@ -124,18 +126,20 @@ one combined gate.
 
 Ranking, highest first: Fable 5.1, then Opus 5.5 and Astra 6 as peers,
 then Sol 6.1. A block is a refusal, or a rejection that stays after one
-retry: a usage limit, an input limit, a missing or revoked credential, or
-a rejected model id. When a model blocks a request, send the same request
-to its peer. When the peer blocks it too, send it one rank down. When
-every model blocks it, stop and ask the user, with the refusal text
-verbatim. When a delegate's model blocks in the middle of an item, give
-the item to the peer in the same workspace, with the prompt and the diff
-so far. Do not rewrite the request to hide what it does, and do not skip
-the step.
+retry. Examples: a usage limit, an input limit, a missing or revoked
+credential, or a rejected model id. When a model blocks a request, send
+the same request to its peer. When the peer blocks it too, send it one
+rank down. Fable 5.1 has no peer. When it blocks, send the request one
+rank down: Opus 5.5 takes screens, components, mockups, and copy, and
+Astra 6 takes the rest. When every model blocks it, stop and ask the
+user, with the refusal text verbatim. When a delegate's model blocks
+mid-item, give the item to the peer in the same workspace, with the
+prompt and the diff so far. Do not rewrite the request to hide what it
+does, and do not skip the step.
 
 | The record says | The answer |
 | --- | --- |
-| "Codex rejected the generated review prompt ... so no review findings were emitted." | Send the same review to the peer model. A missing review is not a result. |
+| "Codex rejected the generated review prompt [...] so no review findings were emitted." | Send the same review to the peer model. A missing review is not a result. |
 | "retry this task when reviewer capacity resets." | The peer model reviews now. Record the retry time for the blocked model only. |
 | "the cloud Codex CLI is unauthenticated (HTTP 401), so no review findings were produced." | A Claude reviewer with the same prompt reviews now. The review is the step. The tool is not. |
 
@@ -143,8 +147,8 @@ the step.
 
 1. When a workspace reports, run the `implementation-review` skill on
    its branch against the primary branch, in a fresh read-only agent. A
-   large diff can split by area, one reviewer per area, with the same
-   routing as the table above. Then read the diff yourself and re-run
+   large diff can split by area, one reviewer per area, each on
+   Fable 5.1. Then read the diff yourself and re-run
    the checks. Confirm every ticked TODO and the push, and run the
    deletion audit from the `git-commit` skill. Never accept the report
    alone.
@@ -155,12 +159,12 @@ the step.
    plan's review TODO, as the `plans` skill says.
 3. Merge the branch into the primary branch with the `git-merge` skill.
    Run the complete gate from `AGENTS.md` on the merged tree, then push.
-   Each workspace ran only its own checks. The combined gate proves the
-   milestone. Then archive the workspace.
+   Each workspace ran the gate on its own tree only. The combined gate
+   proves the milestone. Then archive the workspace.
 
    | The record says | The answer |
    | --- | --- |
-   | "`cargo xtask check` passed in all ten phases on the tree before the last two merges. [...] The commits after that run change only Markdown." | The gate proves the tree that it ran on. Run it on the merged tree, or name the CI run that did. |
+   | "[...] passed in all ten phases on the tree before the last two merges. [...] The commits after that run change only Markdown." | The gate proves the tree that it ran on. Run it on the merged tree, or name the CI run that did. |
 
 4. Merge `main` into the primary branch before each delegation batch,
    before each branch merge, and before the final pull request. A
@@ -169,25 +173,28 @@ the step.
    contract. A Medium finding blocks only that dependent work. A Low
    finding never blocks. Every open finding closes before the final pull
    request merges, unless the user moves it to the post-merge follow-up
-   section. Fix open findings in their own workspaces.
-6. Ask the user only for blocking decisions:
+   section. Fix open findings in new workspaces.
+6. Ask the user at once for a blocking decision, and stop the dependent
+   work until the answer comes. Blocking decisions are:
    - a deletion against `origin/main`,
    - a requirement change in a protocol doc,
    - an irreversible or outward-facing action,
    - a High finding with `Auto-fix: no`,
    - a choice where any assumption wastes the work.
-   For the rest, apply the recommended option. Report it in the next
-   batch, in the layout of the `decisions-and-findings` skill.
+   Send the other decisions in one numbered message at the next batch
+   boundary, in the layout of the `decisions-and-findings` skill.
+   Continue the independent work meanwhile. Apply the recommended option
+   only when the user does not answer, and never a deletion. The
+   review-fix rule says which findings you fix without the user.
 
 ## Checklist
 
 - [ ] Every parallel task passed the independence test.
-- [ ] Every prompt has Scope, Goal, Context, Steps, Constraints, and
-      Output.
-- [ ] Every workspace branch starts from and merges from the primary
-      branch.
+- [ ] Every prompt has the six fields, from Scope to Output.
+- [ ] Every workspace branch starts from the primary branch and merges
+      from it.
 - [ ] A blocked request went to the peer model, then one rank down.
 - [ ] The combined gate ran on the primary branch after each merge.
 - [ ] The ledger and the reports are under `.context/`, not in the plan.
-- [ ] Open findings block only dependent work and close before the pull
-      request merges.
+- [ ] Open findings block only dependent work and close before the
+      final pull request.

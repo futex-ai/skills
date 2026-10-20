@@ -13,7 +13,9 @@ conductor workspace create --branch <primary-branch> \
 ```
 
 The workspace starts on the primary branch, and its first session gets
-the prompt. Record the workspace id from the output.
+the prompt. Record the workspace id from the output. Conductor creates
+the branch for the workspace from its name. Record the branch that the
+agent reports.
 `conductor workspace session <workspaceId>` gives the session id, and
 `conductor workspace status <workspaceId>` shows when the machine is
 ready. A new workspace gets the skills from the repository's setup
@@ -53,5 +55,5 @@ conductor workspace archive <workspaceId>
 ```
 
 Run the merge on the primary branch. Directly after the merge commit,
-run the merge audit from the `git-merge` skill. Archive the workspace
-after the merge is pushed.
+run the merge audit from the `git-merge` skill. Push the merge, then
+archive the workspace.

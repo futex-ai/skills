@@ -21,8 +21,8 @@ Context:
   gate>
 - Read these skills before the matching step: <`finish-work`,
   `git-commit`, `product-ui`, ...>.
-- The primary branch is `<primary-branch>`. Your branch is
-  `<plan-name>/<item>`, created from it.
+- The primary branch is `<primary-branch>`. Your branch is the branch
+  that Conductor created from it. Report its name in your first message.
 
 Steps:
 1. <the first step>

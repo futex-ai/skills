@@ -28,7 +28,8 @@ Steps:
 
 Constraints:
 - Change only <the files or the directory>.
-- Do not commit or push.
+- Do not commit or push. <Worktree only: commit on your branch with the
+  `git-commit` skill. Do not push.>
 - Do not increase a timeout, add a retry, or skip a test.
 - Do not change <production code | the tests>.
 - When the fix needs a change outside the scope, stop and report it.
