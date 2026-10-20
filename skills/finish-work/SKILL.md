@@ -90,7 +90,7 @@ and labels in the `decisions-and-findings` skill. Include:
 - [ ] Complete gate passed once, or the blocker is explained.
 - [ ] Docs, protocol docs, mockups, READMEs, and plan updated in the same
       change.
-- [ ] Preservation audit clean; no unapproved deletions.
+- [ ] Preservation audit clean: each deletion is dead code or approved.
 - [ ] Committed with Conventional Commits and pushed; new files tracked.
 - [ ] Post-push review run; `Auto-fix: yes` findings fixed; re-reviewed once.
 - [ ] Final report in STE with fixed and open findings.

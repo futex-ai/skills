@@ -78,9 +78,9 @@ number them in that order. Use the finding layout in the
 - Give it a severity. High: wrong output, lost data, a security problem, or
   blocked work. Medium: a visible defect, or a spec gap with a workaround.
   Low: wording, style, or a rare edge case.
-- Give it a category: product bug, security, docs or spec, mockup,
-  repository rule, test, performance, code structure, UX wording, or
-  process.
+- Give it a category. The categories are product bug, security, docs or
+  spec, mockup, repository rule, test, performance, code structure, dead
+  code, UX wording, and process.
 - Include the relevant file path and line reference when possible.
 - Give the terms: each project term that the finding uses, with one
   sentence that explains it. The `decisions-and-findings` skill says what
@@ -135,21 +135,59 @@ An option is blocked when:
 - It changes user-visible behaviour beyond the contract.
 - It adds a new build error, rejection, gate, lint, or stricter validation.
   This holds for a wider fix too, whatever its effort.
-- It deletes, skips, or weakens a test or gate, or raises a time limit.
-- It needs an audit exception, credentials, or infrastructure.
+- It deletes or overrides functionality on `origin/main`. Functionality
+  is everything on `origin/main` that is not dead code under the
+  conditions below. It includes live code, its tests, an API, a doc, a
+  mockup, a plan, a migration, and schema. A deletion of dead code is not
+  blocked.
+- It deletes, skips, or weakens a test of live code or a gate, or raises
+  a time limit.
+- It needs credentials or infrastructure.
 
 `Auto-fix: yes, apply <letter>` is allowed only when at least one option is
-not blocked, for a finding about: a product bug (including edge cases,
-races, and platform differences); a security issue; docs or spec drift; a
-mockup mismatch that a protocol doc already settles; a flaky test that the
-diff adds or changes; or a repository-rule violation such as file size,
-lint, or layout. The letter names the best-ranked option that is not
-blocked: a structural wider fix, then a detection wider fix, then the
-direct fix. A blocked wider fix does not block the tag. For a flaky test
-that the diff adds or changes, name the nondeterminism source and the
-deterministic fix (fake clock, event order, captured inputs, operation
-counts, explicit readiness signal, or isolated state), and require the
-fixer to reproduce the flake and record pass counts before and after.
+not blocked, for a finding about:
+
+- a product bug, including edge cases, races, and platform differences
+- a security issue
+- docs or spec drift
+- a mockup mismatch that a protocol doc already settles
+- a flaky test that the diff adds or changes
+- dead code
+- a repository-rule violation such as file size, lint, or layout
+
+The letter names the best-ranked option that is not blocked: a structural
+wider fix, then a detection wider fix, then the direct fix. A blocked wider
+fix does not block the tag. For a flaky test that the diff adds or
+changes, name the nondeterminism source and the deterministic fix. The
+deterministic fixes are a fake clock, event order, captured inputs,
+operation counts, an explicit readiness signal, or isolated state. Require
+the fixer to reproduce the flake and record pass counts before and after.
+
+Dead code is code that the product never runs. Code is dead only when all
+of these hold:
+
+- No product code, test of live code, script, configuration, build file,
+  or generated artifact references it.
+- No route table, registry, plugin loader, file-name convention, string
+  key, dynamic import, or reflection names it.
+- No consumer outside the code reaches it. A command, a script, a
+  migration, or an export of a published package is an entry point, not
+  dead code.
+- Nothing keeps it on purpose: no dead-code annotation, feature flag, open
+  plan TODO, or protocol doc.
+
+Test code is not product code. A helper, a fixture, or a mock that a test
+of live code uses is functionality. Check each condition with a search of
+the repository. Cite the searches in the finding. The option deletes the
+code, the tests that cover only it, and each item that the deletion
+leaves unused and that meets the conditions. It moves a test that reaches
+live behaviour through the dead code to the live path, with every
+assertion kept.
+
+Code that the product runs rarely is functionality: an error path, a
+fallback, or the off branch of a feature flag. Its deletion is blocked.
+When a condition is in doubt, give the finding the category code
+structure and tag it `Auto-fix: no`.
 
 `Auto-fix: no` for every finding that needs a decision:
 

@@ -1,14 +1,15 @@
 ---
 name: git-commit
-description: Use before you commit and directly after, when you write a commit message or a pull request title and description, when you squash, when the diff against origin/main deletes or renames a file, feature, test, fixture, or command, when you are not sure whether a plan or doc passage is live content or history, and when a link check fails on a link in history content.
+description: Use before you commit and directly after, when you write a commit message or a pull request title and description, when you squash, when the diff against origin/main deletes or renames a file, feature, test, fixture, or command, when you find dead code, an unused item, or a path that the product never runs, when you are not sure whether a plan or doc passage is live content or history, and when a link check fails on a link in history content.
 ---
 
 # Git commit
 
-Do not delete or override anything already on `origin/main`, including
-code, APIs, tests, docs, mockups, plans, migrations, and schema, without
-explicit user approval. Merges and rebases have their own procedure in the
-`git-merge` skill.
+Do not delete or override functionality already on `origin/main` without
+explicit user approval. Functionality includes live code, its tests, APIs,
+docs, mockups, plans, migrations, and schema. Dead code needs no approval.
+The section "Dead code" below says when code is dead. Merges and rebases
+have their own procedure in the `git-merge` skill.
 
 ## Before and after each commit
 
@@ -20,13 +21,69 @@ git diff --diff-filter=D --name-status origin/main
 git diff --name-status origin/main..HEAD   # after the commit
 ```
 
-Stop unless each deletion or feature-wide reduction is authorized. Record
-every approved removal and its related cleanup in the commit or PR
-description.
+Stop unless each deletion is dead code under the section below or has the
+user's explicit approval. A feature-wide reduction is functionality. Record
+every removal and its related cleanup in the commit or PR description. For
+dead code, record the search that proved it dead. For functionality,
+record the approval.
 
 Run `git add -A` before you commit so that newly created files are tracked
 and included in the commit, the push, and the review diff. Do not commit
 scratch output; it lives under the git-ignored `.context/`.
+
+## Dead code
+
+Dead code is code that the product never runs. Deleting it needs no
+approval. Code is dead only when all of these hold:
+
+1. No product code, test of live code, script, configuration, build
+   file, or generated artifact references it. Search the repository for
+   its name. An
+   unused-item warning from the compiler or the linter proves this for a
+   private item. The warning counts only when the build compiles every
+   feature, platform, and test target.
+2. No indirect path reaches it: no route table, registry, plugin loader,
+   file-name convention, string key, dynamic import, or reflection names
+   it. Search for each string that could name it.
+3. No consumer outside the code reaches it. An entry point is
+   functionality: a command, a script, a migration, or an export of a
+   published package. The package manifest says whether a package is
+   published.
+4. Nothing keeps it on purpose: no annotation such as
+   `#[expect(dead_code)]`, no feature flag, no open plan TODO, and no
+   protocol doc that requires it.
+
+Everything else is functionality, also when the product runs it rarely:
+
+- An error path, a fallback, the off branch of a feature flag, or a
+  platform branch.
+- An entry point.
+- A helper, a fixture, or a mock that a test of live code uses. Test code
+  is not product code, but a test of live code is functionality.
+
+Deleting or overriding functionality needs explicit user approval. When a
+condition is in doubt, the code is functionality. Ask.
+
+Example: a change deleted a backend, and a shell path that only that
+backend set stayed behind. No live code sets the path, so the path is
+dead. Delete the path and the tests that cover only it. Move the older
+tests that reach live behaviour through the path to the live path, with
+the same assertions.
+
+When you delete dead code:
+
+- Delete the dead code that your change touches or leaves unused. Report
+  other dead code that you find, for a separate branch.
+- The tests that cover only the dead code are dead code. Delete them.
+- A test that reaches live behaviour only through the dead code moves to
+  the live path. Keep every assertion.
+- Apply the conditions to each item that the deletion leaves unused.
+  Delete each item that meets them: imports, helpers, types, styles,
+  fixtures, and files.
+- Save the search commands and their output under `.context/`. Record
+  each deletion and the search that showed it dead in the commit or PR
+  description.
+- Update the stale references, as the next section says.
 
 ## Removals and renames
 
@@ -63,10 +120,14 @@ body. The format enables automated changelogs and readable history.
   Separate entries with a blank line. Order them by type priority: `feat`,
   `fix`, `perf`, `refactor`, `build`, `ci`, `test`, `docs`, `style`,
   `chore`.
-- Record in the commit or PR description: every approved removal and its
-  related cleanup, each plan edit made for a rename or removal, each
-  intentional merge decision with the paths it affects, and the review
-  finding that a fix commit resolves, by number.
+- Record in the commit or PR description:
+  - every removal and its related cleanup, with the search that proved
+    the code dead or the approval for the functionality
+  - each plan edit made for a rename or removal
+  - each intentional merge decision with the paths it affects
+  - the review finding that a fix commit resolves, by number
+- When a later commit changes what the pull request description says,
+  update the description.
 
 ## Examples
 
