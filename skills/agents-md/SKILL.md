@@ -74,6 +74,13 @@ when to read it. [templates/AGENTS.md](templates/AGENTS.md) is the template.
    tracked file in this repository before this checkpoint.
 5. Write the new `AGENTS.md` from the template with the decisions applied.
    Fill every section. Keep `CLAUDE.md` as a symlink to `AGENTS.md`.
+   - Some behaviour has an owner file in the repository, such as a test
+     helper, a configuration file, or a README section. For that
+     behaviour, state the rule and name the owner file. Do not restate its
+     details.
+   - Check each fact that you write or move against its source: the code,
+     a README, a plan, or a merged pull request. An old index or an old
+     rule file can be stale. Do not copy a fact from it without a check.
 6. Delete the approved files: the `docs/dev/*.md` files now covered by
    skills, and `docs/implementation-review-prompt.md` if the shared review
    prompt replaces it. Then search `docs/`, `plans/`, and every `README.md`
