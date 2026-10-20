@@ -86,7 +86,7 @@ side-effect boundaries.
   implementation of the store trait, and it drifts from the database. Do
   not write one for tests or as a fallback. Mock the trait with `unimock`,
   or test against the database. The `databases` skill gives the rule and
-  the case where an in-memory store is allowed.
+  the one allowed case.
 
 ## Diagnostics
 

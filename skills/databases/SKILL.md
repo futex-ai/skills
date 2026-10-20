@@ -53,25 +53,25 @@ description: Use before you add, edit, or name a database migration or a seed mi
   - not for tests,
   - not as a fallback when the database is not configured,
   - not as a development backend.
-  Such a store re-creates the database and drifts from it. Tests then pass
+- Such a store re-creates the database and drifts from it. Tests then pass
   against behaviour that the database does not have. Every store change
   also changes the fake.
 - A unit test of a service mocks the store trait with `unimock`.
-- These tests run against a disposable test database:
+- These tests run against the disposable test database that the
+  repository `AGENTS.md` names:
   - a workflow across many calls,
   - stored state that a test reads back,
   - a race,
   - a constraint,
   - every store test.
-  The repository `AGENTS.md` names the test database setup.
 - An in-memory store that is useful in itself is not a fake. One example
   is a per-run output store that expires with the run. All of these hold:
   1. Production constructs it.
   2. It has its own purpose and semantics, not a copy of a database
      store's.
   3. It has its own tests.
-  A store that exists so that tests avoid the database fails this test,
-  whatever its size.
+- A store that exists so that tests avoid the database is a fake, whatever
+  its size.
 - An existing fake store is legacy. It gets no new behaviour. When the
   store trait gains a method, the fake's version fails at once. Its
   message says to mock the method. Retire the fakes with a plan.
