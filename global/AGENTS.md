@@ -3,7 +3,8 @@
 These rules apply in every repository and every session. Repository-specific
 rules live in each repository's `AGENTS.md`. Detailed procedures live in the
 shared skills. Each skill's description says when to read it. Read the skill
-at that moment instead of guessing the rule.
+at that moment instead of guessing the rule. When a repository's `AGENTS.md`
+conflicts with a shared skill, the shared skill wins.
 
 ## Responses
 
