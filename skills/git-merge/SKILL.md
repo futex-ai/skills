@@ -6,11 +6,10 @@ description: Use before you merge or rebase a branch, when origin/main has moved
 # Git merge
 
 Do not delete or override functionality already on `origin/main` without
-explicit user approval. Functionality includes live code, its tests, APIs,
-docs, mockups, plans, migrations, and schema. Dead code needs no approval.
-The `git-commit` skill says when code is dead. Passing CI does not prove
-preservation. The checks around an ordinary commit are in the `git-commit`
-skill.
+explicit user approval. Dead code needs no approval. The `git-commit`
+skill says what is functionality and when code is dead. Passing CI does
+not prove preservation. The checks around an ordinary commit are in the
+`git-commit` skill.
 
 ## Before integration
 
