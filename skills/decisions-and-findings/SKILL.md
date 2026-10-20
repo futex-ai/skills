@@ -147,7 +147,7 @@ entry shape under a **Terms** heading.
   work. Medium: a visible defect, or a spec gap with a workaround. Low:
   wording, style, or a rare edge case.
 - Category. Product bug, security, docs or spec, mockup, repository rule,
-  test, performance, code structure, UX wording, or process.
+  test, performance, code structure, dead code, UX wording, or process.
 - Effort. The grade of one option, not of the problem. Count the code
   change only: product code, scripts, configuration, and infrastructure
   files. Do not count tests, README files, protocol docs, plans, or mockup

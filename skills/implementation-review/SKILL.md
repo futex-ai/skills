@@ -50,7 +50,7 @@ user.
 - A severity: High, Medium, or Low, as the `decisions-and-findings` skill
   defines them.
 - A category: product bug, security, docs or spec, mockup, repository rule,
-  test, performance, code structure, UX wording, or process.
+  test, performance, code structure, dead code, UX wording, or process.
 - The file path and line reference when possible.
 - The terms: each project term that the finding uses, with one sentence
   that explains it. The `decisions-and-findings` skill says what a term
@@ -98,17 +98,25 @@ The full rule with every condition is in
   - It decides between a mockup and the product.
   - It changes user-visible behaviour beyond the contract.
   - It adds a gate, lint, or stricter validation, also as a wider fix.
-  - It weakens a test or gate.
+  - It deletes or overrides functionality on `origin/main`. Dead code
+    under the `git-commit` skill is not functionality.
+  - It weakens a test of live code or a gate.
   - It needs credentials or infrastructure.
 - `Auto-fix: yes, apply <letter>` is allowed only when at least one option
   is not blocked, for findings in these categories: product bugs (including
   edge cases, races, and platform differences), security issues, docs or
   spec drift, mockup mismatches that a protocol doc already settles, flaky
   tests that the diff adds or changes under the flaky-test rule in the
-  `deterministic-tests` skill, and repository-rule violations such as file
-  size, lint, and layout. The letter names the best-ranked option that is
-  not blocked: a structural wider fix, then a detection wider fix, then
-  the direct fix. A blocked wider fix does not block the tag.
+  `deterministic-tests` skill, dead code under the predicate in the
+  `git-commit` skill, and repository-rule violations such as file size,
+  lint, and layout. The letter names the best-ranked option that is not
+  blocked: a structural wider fix, then a detection wider fix, then the
+  direct fix. A blocked wider fix does not block the tag.
+- Dead code is code that the product never runs, under the four
+  conditions in the `git-commit` skill. The reviewer checks each condition
+  with a search and cites the searches in the finding. Code that the
+  product runs rarely is functionality, and its deletion waits for the
+  user.
 - Docs or spec drift is a doc that contradicts the changed code. A doc that
   is silent on how the code works is not a finding. The wider fix for the
   class is already in force, the `documentation` skill, so the reviewer
