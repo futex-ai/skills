@@ -8,7 +8,9 @@ Rust task runner under `xtask/`.">
 This file holds the rules that are specific to this repository. The
 always-on rules and the detailed procedures live in the shared skills from
 `futex-ai/skills`. Each skill's description says when to read it. Read the
-skill at that moment instead of guessing the rule.
+skill at that moment instead of guessing the rule. Keep this file to
+repository-wide rules. Put a rule for one application, crate, or feature in
+the `README.md`, doc, or protocol doc next to that code.
 
 ## Communication
 
