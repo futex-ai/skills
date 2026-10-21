@@ -147,8 +147,8 @@ review.
   decisions for the work that follows; see the `plans` skill.
 - When a bug reaches a review or production, check whether a requirement
   was missing or unclear. Propose the missing or clearer requirement as a
-  decision with the other decisions of the task. Update the doc in the same
-  change as the fix.
+  decision with the other decisions of the task. After the user chooses the
+  requirement, update the doc in the same change as the fix.
 
 ## Protocol docs change with the behaviour
 

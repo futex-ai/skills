@@ -33,7 +33,7 @@ at that moment instead of guessing the rule.
   on `origin/main`, before the user answers.
 - Silence is not approval. When the user does not answer a decision, it
   stays open. Do not apply any of its options, also not as an interim
-  step. Report it to the user as outstanding, and say what it blocks.
+  step. Report it to the user as outstanding. Say what it blocks.
 - End every task with a final report: what changed and the commit, each
   decision and its outcome, the checks that ran and their results, anything
   skipped or blocked, and the outstanding decisions or review items that

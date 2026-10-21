@@ -198,9 +198,9 @@ keep the item order above. Use these labels:
   Name each unrelated flaky test with its failure text, rerun outcome, and
   suspected source.
 - **Open:** the decisions and review items that still need the user. For
-  each open decision, say what it blocks. Add the open plan TODOs, the
-  follow-ups, the problems outside the review scope for a separate branch,
-  and other skipped or blocked work. A follow-up for a wider fix that the
-  review did not apply is one line per class. The line gives the wider
-  fix, its effort, the finding numbers it covers, and the previous
+  each open decision, say what it blocks. Add the open plan TODOs and the
+  follow-ups. Add the problems outside the review scope for a separate
+  branch, and other skipped or blocked work. A follow-up for a wider fix
+  that the review did not apply is one line per class. The line gives the
+  wider fix, its effort, the finding numbers it covers, and the previous
   examples.
