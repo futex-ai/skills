@@ -84,9 +84,9 @@ change. [templates/plan.md](templates/plan.md) is the starting point.
   an older review TODO that says "without changing the implementation"
   under the same rule.
 - The pull request TODO is the last milestone TODO. Do it when every other
-  TODO is ticked, or when the user asks for the pull request. Then put
-  the link in the status paragraph. The `finish-work` skill gives the
-  steps. An older plan without this TODO follows the same rule.
+  milestone TODO is ticked, or when the user asks for the pull request.
+  Then put the link in the status paragraph. The `finish-work` skill
+  gives the steps. An older plan without this TODO follows the same rule.
 - Add each open review finding as one line under the review TODO so that it
   is not lost when the session ends. List the lines by severity, High
   first. Each line gives the number, title, severity, the effort of the

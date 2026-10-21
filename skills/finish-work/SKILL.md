@@ -71,13 +71,14 @@ run.
 ## 6. Pull request
 
 - The implementation is complete when steps 1 to 5 are done. When the
-  change implements a plan, the implementation is complete only when its
-  other milestone TODOs are also ticked. Open findings that wait for the
+  change has a plan, the implementation is complete only when the plan's
+  other milestone TODOs are also ticked. A new plan has unticked
+  milestone TODOs, so it is not complete. Open findings that wait for the
   user do not make the implementation incomplete.
 - Open the pull request when the implementation is complete, or when the
   user asks for it. Before that, report the branch. Write the title and
   the description with the `git-commit` skill.
-- When the change implements a plan, put the link in its status
+- When the change has an active plan, put the link in its status
   paragraph. Commit and push that edit. See the `plans` skill.
 
 ## 7. Report
@@ -108,6 +109,6 @@ and labels in the `decisions-and-findings` skill. Include:
 - [ ] Committed with Conventional Commits and pushed; new files tracked.
 - [ ] Post-push review run; `Auto-fix: yes` findings fixed; re-reviewed once.
 - [ ] Pull request opened once the implementation was complete or the user
-      asked. When the change implements a plan, its link is in the status
+      asked. When the change has an active plan, its link is in the status
       paragraph.
 - [ ] Final report in STE with fixed and open findings.
