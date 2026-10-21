@@ -198,7 +198,7 @@ In short:
   `scripts/check.sh` warns at 200 lines and fails at 500.
 - Write in Simplified Technical English. `scripts/check.sh` warns about each
   `SKILL.md` sentence of more than 20 words. It skips the frontmatter, the
-  headings, the tables, and the code.
+  headings, the tables, and the code blocks.
 - No repository-specific paths, commands, or crate names. Those belong in the
   repository's `AGENTS.md`; say "the gate named in `AGENTS.md`".
 - Ask for a real repository first. Write the skill from the cases in its

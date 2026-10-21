@@ -20,8 +20,8 @@ The change adds a warning to the skill check. The check lists each sentence
 of more than 20 words in the prose of a `SKILL.md` file. It skips the
 frontmatter, the headings, the table rows, and the fenced code. A warning
 does not fail the run. The change does not cover `references/`,
-`templates/`, `global/AGENTS.md`, or `README.md`. Decision 2 keeps that
-scope.
+`templates/`, `global/AGENTS.md`, or `README.md`. Open decision 2 asks
+about the first two.
 
 Decision of 2026-10-20: the user chose option B, a warning. Option A was no
 check, with the `writing-skills` checklist and the review as the only
@@ -34,6 +34,12 @@ the STE limits in skill prose" for a finding of its own review. That
 decision came at 10:47 UTC on 2026-10-20. The user asked for this plan at
 11:22 UTC and for its implementation at 11:46 UTC. So option B stands here.
 
+Decision of 2026-10-21, review finding 1: a `.`, `!`, or `?` inside a code
+span ends the sentence. The user chose option A: keep the rule, and state
+the limit in the code comment and in this plan. Option B ended no sentence
+inside a code span. Option C counted each code span as one word. The user
+gave no reason. Option A keeps the word rule and every current warning.
+
 The scan measured `main` at `69c40ed` on 2026-10-20. The 16 `SKILL.md`
 files hold 112 sentences of more than 20 words, from 1 to 19 per skill.
 They hold 37 sentences of more than 25 words. The `references/` files hold
@@ -43,20 +49,23 @@ paragraph of a file when it read more than one file. Evidence:
 `.context/skill-check-sentence-warning/`, files `check-output.txt` and
 `prototype-per-file-69c40ed.txt`.
 
-## Decisions
+## Open decisions
 
-The user asked on 2026-10-20 to implement the plan and did not answer
-decisions 1 and 2. The recommended options apply as defaults.
+On 2026-10-20 the user did not answer decisions 1 and 2. Their recommended
+options applied as defaults, under the always-on rules of that day. On
+2026-10-21, [PR #27](https://github.com/futex-ai/skills/pull/27) changed
+the rules: silence is not approval. So both decisions are open again. No
+option applies.
 
-1. The existing long sentences print on every run. Default: C, land the
-   check first, then split them on a separate branch. A: leave them, and
-   each skill loses its lines when it is next edited. B: split them in this
-   change, 16 files, effort Large. Reason: the check stays small to review,
-   and the noise ends with the next PR.
-2. The scan covers `SKILL.md` only. Default: A, keep that scope, as
-   decided. B: also scan `references/` and `templates/`, 82 more lines
-   today. Reason: it keeps the decided scope, and a later change can widen
-   the glob once the baseline is clean.
+1. The existing long sentences print on every run. A: leave them, and each
+   skill loses its lines when it is next edited. B: split them in this
+   change, 16 files, effort Large. C: land the check first, then split them
+   on a separate branch. Recommended: C. While it is open, it blocks the
+   follow-up split. It blocks the merge only if the user chooses B.
+2. The scan covers `SKILL.md` only, as the user decided on 2026-10-20. A:
+   keep that scope. B: also scan `references/` and `templates/`, 82 more
+   lines today. Recommended: A. While it is open, it blocks only a wider
+   scan.
 
 Contract owners:
 
@@ -84,6 +93,11 @@ Contract owners:
   A lead-in that ends with a colon counts as one sentence. A word is a
   whitespace-separated token, so a code span or a link counts as one word
   per token.
+- The scan does not parse code spans. A `.`, `!`, or `?` inside a code span
+  also ends the sentence. A long sentence with such a code span can then
+  give no warning. Example: on `69c40ed`, the `plans` skill holds a 30-word
+  sentence of this kind at line 101. The decision of 2026-10-21 keeps this
+  limit.
 - `check.sh` keeps `max_words=20`. It prints one warning for each listed
   sentence, in this shape:
 
@@ -168,10 +182,10 @@ the scan and the exit status of the check.
 - [ ] Run `scripts/check.sh` on macOS with BSD awk, through the user's Mac,
       and compare the warning lines with the Linux run. Save the diff under
       `.context/skill-check-sentence-warning/`.
-  - Blocked on 2026-10-20: the Mac did not answer two requests. Apple's
-    libc source shows that its C locale accepts every byte, so Apple awk
-    reads non-ASCII text there. Evidence: `portability/notes.md` under
-    `.context/skill-check-sentence-warning/`.
+  - Blocked on 2026-10-20 and 2026-10-21: the Mac did not answer two
+    requests on each day. Apple's libc source shows that its C locale
+    accepts every byte, so Apple awk reads non-ASCII text there. Evidence:
+    `portability/notes.md` under `.context/skill-check-sentence-warning/`.
 - [x] Commit with Conventional Commits, for example
       `feat(check): warn about sentences over 20 words`, and push the
       branch. Say in the PR description that an installed clone gets the
@@ -183,15 +197,22 @@ the scan and the exit status of the check.
   - Round 1 fixed finding 3: the `tests/lib.sh` header. Round 2 found no
     findings. Reports: `round-1.md` and `round-2.md` under
     `.context/skill-check-sentence-warning/review/`.
-  - 1. Marks inside a code span split sentences. Severity Low, effort
-    Small. Recommended: C, count each code span as one word.
+  - Finding 1 is closed. On 2026-10-21 the user chose A: keep the rule and
+    state its limit.
   - 2. Four stated scan rules have no test. Severity Low, effort Small.
     Recommended: A, add cases to the two existing tests.
   - `skills/decisions-and-findings/SKILL.md`: 206 lines, so the check
     warns above 200. Separate branch.
+- [x] Apply the user's decision of 2026-10-21 on finding 1, option A. State
+      the code-span limit in the header comment of
+      `scripts/lib/check-sentences.sh` and in the design above.
+- [ ] Commit and push the decision change.
+- [ ] Review the decision commit with the `implementation-review` skill.
+      Fix its `Auto-fix: yes` findings once, then report the rest.
 
 ## Post-merge follow-up (non-blocking)
 
-- [ ] Decision 1, option C: split the 112 long sentences of the 16
-      `SKILL.md` files on a separate branch. Use one commit per skill. Stop
-      when `scripts/check.sh` prints no sentence warning.
+- [ ] Blocked on open decision 1. When the user chooses C, split the 112
+      long sentences of the 16 `SKILL.md` files on a separate branch. Use
+      one commit per skill. Stop when `scripts/check.sh` prints no sentence
+      warning.

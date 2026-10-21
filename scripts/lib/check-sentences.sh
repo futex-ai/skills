@@ -6,11 +6,16 @@
 # scan lists each longer sentence in the prose of a Markdown file. It skips
 # the frontmatter, the fenced code blocks, the headings, and the table rows.
 # A blank line, one of those lines, or a list marker ends a paragraph. A
-# sentence can continue on the next line of its paragraph. It ends at a
+# word is a run of characters without white space.
+#
+# A sentence can continue on the next line of its paragraph. It ends at a
 # `.`, `!`, or `?` before a space or the end of the line. Closing quotes,
-# brackets, and backticks can stand between the mark and the space. A word
-# is a run of characters without white space. The awk program is POSIX, so
-# that BSD awk on macOS gives the same result.
+# brackets, and backticks can stand between the mark and the space. The
+# scan does not parse code spans. So a mark inside a code span also ends
+# the sentence. A long sentence with such a code span can therefore give no
+# warning.
+#
+# The awk program is POSIX, so that BSD awk on macOS gives the same result.
 # shellcheck shell=bash
 
 long_sentences() {  # long_sentences <file> <max>: the sentences of <file> over <max> words
