@@ -55,9 +55,9 @@ run.
   tracked, and write a Conventional Commits message. Then push the branch.
 - If the branch needs a merge or rebase first, follow the `git-merge`
   skill.
-- A plan-only change gets a pull request only when the user asks for it.
-  Without that request, push the branch and report it. See the `plans`
-  skill.
+- A new plan gets no pull request. Its work is not complete until its
+  milestone TODOs are ticked. Push the branch and report it. See the
+  `plans` skill.
 
 ## 5. Review
 
@@ -67,9 +67,20 @@ run.
   review.
 - Apply the review-fix rule: fix only the findings tagged `Auto-fix: yes`,
   with the option that each tag names, run the checks, commit, push,
-  re-review once, then stop and report.
+  re-review once, then stop. Go on to step 6.
 
-## 6. Report
+## 6. Pull request
+
+- The work is complete when steps 1 to 5 are done and the plan's other
+  milestone TODOs are ticked. Open findings that wait for the user do not
+  make the work incomplete.
+- Open the pull request when the work is complete, or when the user asks
+  for it. Before that, report the branch. Write the title and the
+  description with the `git-commit` skill.
+- When the change has a plan, put the link in its status paragraph.
+  Commit and push that edit. See the `plans` skill.
+
+## 7. Report
 
 Write the final message in Simplified Technical English, with the layout
 and labels in the `decisions-and-findings` skill. Include:
@@ -96,4 +107,6 @@ and labels in the `decisions-and-findings` skill. Include:
 - [ ] Preservation audit clean: each deletion is dead code or approved.
 - [ ] Committed with Conventional Commits and pushed; new files tracked.
 - [ ] Post-push review run; `Auto-fix: yes` findings fixed; re-reviewed once.
+- [ ] Pull request opened once the work was complete or the user asked.
+      Its link is in the plan's status paragraph.
 - [ ] Final report in STE with fixed and open findings.

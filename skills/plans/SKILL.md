@@ -17,8 +17,8 @@ change. [templates/plan.md](templates/plan.md) is the starting point.
   branch. Then report, as the `finish-work` skill says.
 - The status paragraph names the branch and says that no pull request
   exists yet. Do not open a pull request to fill the status paragraph.
-  Open a pull request for a plan alone only when the user asks for it.
-  The pull request holds the implementation together with the plan.
+  The pull request opens when the implementation is complete, or when
+  the user asks for it. See the `finish-work` skill.
 - One plan file per change, named after the change in concise kebab-case,
   for example `tool-request-error-contract-alignment.md`. Do not combine
   unrelated work in one plan.
@@ -76,12 +76,17 @@ change. [templates/plan.md](templates/plan.md) is the starting point.
 - When you discover a TODO that the PR needs, add it under the relevant
   milestone, then continue with the active TODO.
 - Break a complex TODO into sub-tasks.
-- Every plan ends with a commit-and-push TODO followed by a review TODO. The
-  review TODO directs a reviewer to use the `implementation-review` skill
-  against `origin/main` after the push, report findings, and then apply the
-  review-fix rule: fix the `Auto-fix: yes` findings, re-review once, and
-  report the rest. Read an older review TODO that says "without changing
-  the implementation" under the same rule.
+- Every plan ends with a commit-and-push TODO, a review TODO, and a pull
+  request TODO. The review TODO directs a reviewer to use the
+  `implementation-review` skill against `origin/main` after the push,
+  report findings, and then apply the review-fix rule: fix the
+  `Auto-fix: yes` findings, re-review once, and report the rest. Read an
+  older review TODO that says "without changing the implementation" under
+  the same rule.
+- The pull request TODO is the last TODO. Do it when every other milestone
+  TODO is ticked, or when the user asks for the pull request. Then put
+  the link in the status paragraph. The `finish-work` skill gives the
+  steps. An older plan without this TODO follows the same rule.
 - Add each open review finding as one line under the review TODO so that it
   is not lost when the session ends. List the lines by severity, High
   first. Each line gives the number, title, severity, the effort of the
@@ -109,6 +114,8 @@ change. [templates/plan.md](templates/plan.md) is the starting point.
 - When the PR merges, change the status paragraph to start with
   `Status: Completed. [PR #<number>](<url>) merged on <YYYY-MM-DD>.` and
   keep any open review findings or follow-up owners in that paragraph.
+- That status update is a complete change on its own. Put it on a
+  branch, push it, and open its pull request.
 
 ## Evidence
 

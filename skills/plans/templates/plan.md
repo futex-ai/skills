@@ -44,6 +44,8 @@ Tags: mockup <keep the tag line only for a mockup or ui milestone>
     title, severity, effort, and recommended option. Follow-ups for wider
     fixes that the review did not apply, and problems outside the scope, go
     here too, one line each.>
+- [ ] Open the pull request when every other milestone TODO is ticked.
+      Put its link in the status paragraph.
 
 ## Post-merge follow-up (non-blocking)
 
