@@ -33,7 +33,7 @@ change. [templates/plan.md](templates/plan.md) is the starting point.
 - Break the work into concrete units called milestones. At the end of each
   milestone the product works. Never leave the code base or feature broken.
 - Each milestone has a short summary and a TODO checklist.
-- Before you start a milestone, decide with the `parallel-agents` skill
+- Before you start a milestone, read the `parallel-agents` skill. Decide
   whether its work splits across workspaces, and which model does each
   item.
 - The first milestone updates the relevant documentation and protocol or

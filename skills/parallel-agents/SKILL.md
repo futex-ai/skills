@@ -1,6 +1,6 @@
 ---
 name: parallel-agents
-description: Use when you work on a plan, before you decide whether to split it across workspaces or which model does each item, when you have two or more independent tasks, such as failing tests in separate files, bugs in separate subsystems, or separate research questions, before you start a subagent or write its prompt, when a model blocks a request, when a delegated branch comes back, when agents would edit the same files, and when an open finding could block the next milestone.
+description: Use when you work on a plan, before you decide whether to split it across workspaces or which model does each item, when you have two or more independent tasks, such as failing tests in separate files, bugs in separate subsystems, or separate research questions, before you start a subagent or write its prompt, when a model blocks or rejects a request, when a delegated branch comes back, when agents would edit the same files, and when an open finding could block the next milestone.
 ---
 
 # Parallel agents
@@ -73,27 +73,28 @@ skill, gets "change nothing" as its constraint.
    which rest on the agent's evidence.
 
 Subagents share your working tree unless the tool gives each its own
-worktree. Two subagents that edit the same file overwrite each other, so
-keep the scopes disjoint. In the shared tree only you commit. In its own
+worktree. Keep the scopes disjoint, or two subagents that edit one file
+overwrite each other. In the shared tree only you commit. In its own
 worktree a subagent commits on its branch with the `git-commit` skill
-and does not push. Commit your own changes before you start a worktree
-subagent, because a worktree holds only committed content. You then
-integrate the branch with the `git-merge` skill.
+and does not push. Commit your own changes first. A worktree holds only
+committed content. Integrate the branch with the `git-merge` skill.
 
 ## Workspaces across machines
 
 The orchestrator splits a plan into work items and gives each item a
 workspace. Items that pass the independence test run at the same time.
 The others run one after the other. A plan with one work item needs no
-orchestrator. [references/workspaces.md](references/workspaces.md) gives
-the commands. One real example: milestones 6a, 7, and 7a of a plan ran
-in parallel Codex and Opus sessions. One combined gate verified them.
+orchestrator. The session that owns the plan does the item.
+[references/workspaces.md](references/workspaces.md) gives the commands.
+One real example: milestones 6a, 7, and 7a of a plan ran in parallel
+Codex and Opus sessions. One combined gate verified them.
 
 - The primary branch is the branch of the plan. Every workspace branch
   starts from it and merges from it, never from `main`. Only the primary
   branch merges `main`. Its pull request into `main` is the completion
-  boundary from the `plans` skill. After that merge, delete the primary
-  branch and archive its workspace.
+  boundary from the `plans` skill. After that merge, update the plan's
+  status as that skill says. Then delete the primary branch and archive
+  its workspace.
 - A work item is a milestone, or a group of TODOs in one milestone that
   touches its own files. Keep the milestone order of the plan: docs,
   then mockups, then backend, then UI. Fan out inside one level. Merge
@@ -128,11 +129,12 @@ retry. Examples: a usage limit, an input limit, a missing or revoked
 credential, or a rejected model id. When a model blocks a request, send
 the same request to its peer. When the peer blocks it too, send it one
 rank down. Fable 5.1 has no peer. When it blocks, send the request one
-rank down, to the model that the table gives for that work. When every
-model blocks it, stop and ask the user, with the refusal text verbatim.
-When a delegate's model blocks during an item, give the item to the peer
-in the same workspace. Give the peer the prompt and the diff so far. Do
-not rewrite the request to hide what it does, and do not skip the step.
+rank down. Opus 5.5 takes screens, components, mockups, and copy, and
+Astra 6 takes the rest. When every model blocks it, stop and ask the
+user, with the refusal text verbatim. When a delegate's model blocks
+during an item, give the item to the peer in the same workspace. Give the
+peer the prompt and the diff so far. Do not rewrite the request to hide
+what it does, and do not skip the step.
 
 | The record says | The answer |
 | --- | --- |
@@ -156,18 +158,17 @@ not rewrite the request to hide what it does, and do not skip the step.
 3. Merge the branch into the primary branch with the `git-merge` skill.
    Run the complete gate from `AGENTS.md` on the merged tree, then push.
    Each workspace ran the gate on its own tree only. The combined gate
-   proves the milestone. Then close the workspace. Confirm that its pull
-   request shows as merged, else close it. Delete its remote branch.
-   Archive it. Mark it closed in the ledger. Do the same for a workspace
-   that you abandon.
+   proves the milestone. Then close the workspace. Confirm the merge and
+   close its pull request as the reference says. Delete its remote
+   branch. Archive the workspace. Mark it closed in the ledger. Do the
+   same for a workspace that the user agrees to abandon.
 
    | The record says | The answer |
    | --- | --- |
    | "[...] passed in all ten phases on the tree before the last two merges. [...] The commits after that run change only Markdown." | The gate proves the tree that it ran on. Run it on the merged tree, or name the CI run that did. |
 
 4. Merge `main` into the primary branch before each delegation batch,
-   before each branch merge, and before the final pull request. A
-   workspace never merges `main`.
+   before each branch merge, and before the final pull request.
 5. A High finding blocks the work that depends on the affected code or
    contract. A Medium finding blocks only that dependent work. A Low
    finding never blocks. Every open finding closes before the final pull
@@ -192,7 +193,7 @@ not rewrite the request to hide what it does, and do not skip the step.
 - [ ] Every prompt has the six fields, from Scope to Output.
 - [ ] Each workspace branch starts and merges from the primary branch.
 - [ ] A blocked request went to the peer model, then one rank down.
-- [ ] Each merge ran the combined gate and closed the workspace.
+- [ ] You ran the combined gate and closed each merged workspace.
 - [ ] The ledger and the reports are under `.context/`, not in the plan.
 - [ ] Open findings block only dependent work and close before the
       final pull request.

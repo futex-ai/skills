@@ -52,15 +52,26 @@ and the option to apply for each.
 ```sh
 git fetch origin <branch>
 git merge --no-ff origin/<branch>
-gh pr view <number> --json state,mergedAt
-gh pr close <number>
+git push origin <primary-branch>
+gh pr view <number> --json state,headRefOid
+git merge-base --is-ancestor <headRefOid> HEAD
+gh pr close <number> --comment "merged into <primary-branch> at <sha>"
 git push origin --delete <branch>
 conductor workspace archive <workspaceId>
 ```
 
 Run the merge on the primary branch. Directly after the merge commit,
-run the merge audit from the `git-merge` skill. Push the merge. GitHub
-then shows the pull request as merged. When it does not, close it.
-Delete the branch on the remote. Archive the workspace. Mark it closed
-in the ledger. When the primary branch's pull request into `main`
-merges, delete the primary branch and archive the primary workspace.
+run the merge audit from the `git-merge` skill. Run the complete gate
+from `AGENTS.md`, then push. Confirm that the pull request's head commit
+is in the primary branch. When it is not, the branch moved after your
+fetch. Fetch and merge again. GitHub may not mark a pull request into a
+branch other than the default as merged. When the state stays open,
+close the pull request with a comment that names the merge commit.
+Delete the branch on the remote. Archive the workspace. Mark it closed in
+the ledger. The merge commit keeps the content of a merged branch, so
+its deletion needs no approval. The content of an abandoned branch is in
+no merge, so the abandon is a decision for the user.
+
+When the primary branch's pull request into `main` merges, update the
+plan's status as the `plans` skill says. Then delete the primary branch
+and archive the primary workspace.
