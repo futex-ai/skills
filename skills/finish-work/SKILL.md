@@ -59,7 +59,8 @@ run.
 ## 5. Review
 
 - After the push, review the complete local diff against `origin/main` with
-  the `implementation-review` skill. The review itself is read-only. Its
+  the `implementation-review` skill. Review a branch that targets a primary
+  branch against that branch instead. The review itself is read-only. Its
   findings stay in the diff unless the user explicitly asked for a wider
   review.
 - Apply the review-fix rule: fix only the findings tagged `Auto-fix: yes`,
