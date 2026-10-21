@@ -30,7 +30,7 @@ Tags: mockup <keep the tag line only for a mockup or ui milestone>
 - [ ] <TODO>
   - [ ] <sub-task>
 
-## Milestone N: Verification, commit, and review
+## Milestone N: Verification, commit, review, and pull request
 
 <Summary.>
 

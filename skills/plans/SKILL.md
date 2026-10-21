@@ -78,12 +78,12 @@ change. [templates/plan.md](templates/plan.md) is the starting point.
 - Break a complex TODO into sub-tasks.
 - Every plan ends with a commit-and-push TODO, a review TODO, and a pull
   request TODO. The review TODO directs a reviewer to use the
-  `implementation-review` skill against `origin/main` after the push,
-  report findings, and then apply the review-fix rule: fix the
-  `Auto-fix: yes` findings, re-review once, and report the rest. Read an
-  older review TODO that says "without changing the implementation" under
-  the same rule.
-- The pull request TODO is the last TODO. Do it when every other milestone
+  `implementation-review` skill against `origin/main` after the push. The
+  reviewer reports the findings. Then the review-fix rule applies: fix
+  the `Auto-fix: yes` findings, re-review once, and report the rest. Read
+  an older review TODO that says "without changing the implementation"
+  under the same rule.
+- The pull request TODO is the last milestone TODO. Do it when every other
   TODO is ticked, or when the user asks for the pull request. Then put
   the link in the status paragraph. The `finish-work` skill gives the
   steps. An older plan without this TODO follows the same rule.
@@ -109,7 +109,7 @@ change. [templates/plan.md](templates/plan.md) is the starting point.
   deployed change, in a `## Post-merge follow-up (non-blocking)` section
   outside the milestones. It does not affect completion.
 - Keep smoke tests that can run before merge as required milestone TODOs.
-- When a pull request opens for the branch, replace the branch sentence
+- When the plan's own pull request opens, replace the branch sentence
   with `[PR #<number>](<url>) is open.`
 - When the PR merges, change the status paragraph to start with
   `Status: Completed. [PR #<number>](<url>) merged on <YYYY-MM-DD>.` and

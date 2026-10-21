@@ -132,8 +132,9 @@ suspected source, as the `deterministic-tests` skill requires.
 - Keep the review itself read-only.
 - After it reports, apply the option that each `Auto-fix: yes` tag names,
   run the checks, commit, push, and re-run the review once on the fix.
-- Fix any new `Auto-fix: yes` findings once more, then stop and report. Do
-  not start a third fix round without the user.
+- Fix any new `Auto-fix: yes` findings once more, then stop. The
+  `finish-work` skill gives the next steps: the pull request and the
+  report. Do not start a third fix round without the user.
 
 ## Reporting
 
