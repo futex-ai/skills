@@ -40,6 +40,7 @@ skill at that moment instead of guessing the rule.
 - Format: `<command>`
 - Generate types: `<command>` <delete if none>
 - Mockup check: `<command>` <delete if none>
+- Test database: `<command or helper that gives a test a disposable database>` <delete if the repository has no database>
 
 ## Repository rules
 
