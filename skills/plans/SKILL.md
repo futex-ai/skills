@@ -13,12 +13,12 @@ change. [templates/plan.md](templates/plan.md) is the starting point.
 
 - Create a plan only with the user's consent, and only after the relevant
   spec or protocol docs give enough context to plan the work safely.
-- A new plan is a plan-only change. Write the plan, commit, and push the
-  branch. Then report, as the `finish-work` skill says. The status
-  paragraph names the branch and says that no pull request exists yet.
-  Do not open a pull request to fill the status paragraph. Open a pull
-  request for a plan alone only when the user asks for it. The pull
-  request holds the implementation together with the plan.
+- A new plan is a plan-only change. Write the plan. Commit it. Push the
+  branch. Then report, as the `finish-work` skill says.
+- The status paragraph names the branch and says that no pull request
+  exists yet. Do not open a pull request to fill the status paragraph.
+  Open a pull request for a plan alone only when the user asks for it.
+  The pull request holds the implementation together with the plan.
 - One plan file per change, named after the change in concise kebab-case,
   for example `tool-request-error-contract-alignment.md`. Do not combine
   unrelated work in one plan.

@@ -55,8 +55,9 @@ run.
   tracked, and write a Conventional Commits message. Then push the branch.
 - If the branch needs a merge or rebase first, follow the `git-merge`
   skill.
-- A plan-only change gets no pull request of its own. Push the branch and
-  report it. See the `plans` skill.
+- A plan-only change gets a pull request only when the user asks for it.
+  Without that request, push the branch and report it. See the `plans`
+  skill.
 
 ## 5. Review
 
