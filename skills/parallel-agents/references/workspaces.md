@@ -1,46 +1,27 @@
-# Workspaces in Conductor
+# Workspaces
 
-The orchestrator runs these commands from the primary workspace. The
-syntax comes from `conductor --help`. Record every id in the ledger under
+A workspace is a checkout on its own branch, on its own machine or in
+its own worktree, where one agent does one work item. Conductor is one
+tool for it, and [conductor.md](conductor.md) gives its commands. A
+worktree agent, a second machine, or a cloud session follows the same
+procedure. The orchestrator runs it from the primary workspace, on the
+primary branch, and records every step in the ledger under
 `.context/<plan-name>/workspaces.md`.
 
-## Create a workspace for one work item
+## Start a work item
 
-```sh
-conductor workspace create --branch <primary-branch> \
-  --name "<plan-name>: <item>" --agent <agent> --model <model> \
-  --effort max --message-file .context/<plan-name>/prompts/<item>.md
-```
+1. Write the prompt from the workspace prompt template and save it under
+   `.context/<plan-name>/prompts/<item>.md`.
+2. Create the workspace on the primary branch, with the model from the
+   table in the skill, and give it the prompt as its first message.
+3. Record the workspace, its session, the model, and the branch that the
+   agent reports in the ledger.
 
-The workspace starts on the primary branch, and its first session gets
-the prompt. Record the workspace id from the output. Conductor creates
-the branch for the workspace from its name. Record the branch that the
-agent reports.
-`conductor workspace session <workspaceId>` gives the session id, and
-`conductor workspace status <workspaceId>` shows when the machine is
-ready. A new workspace gets the skills from the repository's setup
-script. Codex has no update hook, so that script runs the update script
-before the install script.
-
-## Agents and models
-
-| Model | Agent | Model id |
-| --- | --- | --- |
-| Fable 5.1 | `claude` | `fable-5-1` |
-| Opus 5.5 | `claude` | `opus-5-5-1m` |
-| Astra 6 | `codex` | `gpt-6-astra` |
-| Sol 6.1 | `codex` | `gpt-6.1-sol` |
-
-`conductor model` lists the current ids and the favourites. Both agents
-take `--effort max`.
+A new workspace gets the skills from the repository's setup script.
+Codex has no update hook, so that script runs the update script before
+the install script.
 
 ## Read the result and request changes
-
-```sh
-conductor session status <sessionId>
-conductor session message <sessionId> --after <messageId>
-conductor message create --session <sessionId> --message-file <path>
-```
 
 The agent reports in its session. Read its first message for the
 branch, then its final report and its pull request, not the whole
@@ -59,7 +40,6 @@ git merge-base --is-ancestor <headRefOid> HEAD
 # only when the state is OPEN
 gh pr close <number> --comment "merged into <primary-branch> at <sha>"
 git push origin --delete <branch>
-conductor workspace archive <workspaceId>
 ```
 
 Run the merge on the primary branch. Directly after the merge commit,
@@ -72,10 +52,11 @@ your fetch. Fetch and merge again. GitHub may not mark a pull request
 into a branch other than the default as merged. When the state stays
 open, close the pull request with a comment that names the merge commit.
 
-Delete the branch on the remote. Archive the workspace. Mark it closed in
-the ledger. The merge commit keeps the content of a merged branch, so
-its deletion needs no approval. The content of an abandoned branch is in
-no merge, so the abandon is a decision for the user.
+Delete the branch on the remote. Archive the workspace with its tool.
+Mark it closed in the ledger. The merge commit keeps the content of a
+merged branch, so its deletion needs no approval. The content of an
+abandoned branch is in no merge, so the abandon is a decision for the
+user.
 
 When the primary branch's pull request into `main` merges, update the
 plan's status as the `plans` skill says. Commit that update on `main` or

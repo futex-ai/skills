@@ -43,8 +43,7 @@ Output. The templates are
   the skills to read. Point to the plan, and give its decisions and what
   the earlier milestones established. Keep logs out of the plan, because
   a delegated agent reads the whole plan on every turn.
-- **Steps:** the procedure, the checks that the agent runs itself, and
-  the TODOs that it ticks.
+- **Steps:** the procedure, with the agent's own checks and TODO ticks.
 - **Constraints:** the files that it may change, and what it must not
   do. Examples: change files outside the scope, merge `main`, increase a
   timeout, delete a test, or start the next item.
@@ -85,9 +84,10 @@ The orchestrator splits a plan into work items and gives each item a
 workspace. Items that pass the independence test run at the same time.
 The others run one after the other. A plan with one work item needs no
 orchestrator. The session that owns the plan does the item.
-[references/workspaces.md](references/workspaces.md) gives the commands.
-One real example: milestones 6a, 7, and 7a of a plan ran in parallel
-Codex and Opus sessions. One combined gate verified them.
+[references/workspaces.md](references/workspaces.md) gives the procedure,
+and [references/conductor.md](references/conductor.md) the Conductor
+commands. One real example: milestones 6a, 7, and 7a of a plan ran in
+parallel Codex and Opus sessions. One combined gate verified them.
 
 - The primary branch is the branch of the plan. Every workspace branch
   starts from it and merges from it, never from `main`. Only the primary
@@ -102,8 +102,8 @@ Codex and Opus sessions. One combined gate verified them.
 - The orchestrator plans, writes the prompts, delegates, and checks. It
   does not implement. A correction of a few lines found while you check
   is fine. Anything larger goes back to the delegate.
-- Name the workspace `<plan-name>: <item>`. Conductor creates the branch
-  from that name. Record the reported branch in the ledger.
+- Name the workspace `<plan-name>: <item>`. The tool creates the branch.
+  Record the reported branch in the ledger.
 - The plan file is the one shared file. A workspace adds `Branch:` and
   its branch name to the TODO lines that it owns, and it ticks only those
   lines. You resolve a plan conflict path by path at the merge.
@@ -159,9 +159,9 @@ what it does, and do not skip the step.
    Run the complete gate from `AGENTS.md` on the merged tree, then push.
    Each workspace ran the gate on its own tree only. The combined gate
    proves the milestone. Then close the workspace. Confirm the merge and
-   close its pull request as the reference says. Delete its remote
-   branch. Archive the workspace. Mark it closed in the ledger. Do the
-   same for a workspace that the user agrees to abandon.
+   close its pull request as the workspace reference says. Delete its
+   remote branch. Archive the workspace. Mark it closed in the ledger. Do
+   the same for a workspace that the user agrees to abandon.
 
    | The record says | The answer |
    | --- | --- |
