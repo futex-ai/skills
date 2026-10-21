@@ -22,7 +22,8 @@ Context:
 - Read these skills before the matching step: <`finish-work`,
   `git-commit`, `product-ui`, ...>.
 - The primary branch is `<primary-branch>`. Start your branch from it,
-  or confirm that the tool did. Report its name in your first message.
+  or confirm that the tool did. Report your branch name in your first
+  message.
 
 Steps:
 1. <the first step>
