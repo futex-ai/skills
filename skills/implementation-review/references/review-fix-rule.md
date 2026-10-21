@@ -130,6 +130,9 @@ suspected source, as the `deterministic-tests` skill requires.
 ## Fix rounds
 
 - Keep the review itself read-only.
+- Run the second pass over the `Auto-fix: no` findings at the same time as
+  the first fix round. It adds options and can change a recommendation. It
+  does not change an `Auto-fix` tag, and an open finding stays open.
 - After it reports, apply the option that each `Auto-fix: yes` tag names,
   run the checks, commit, push, and re-run the review once on the fix.
 - Fix any new `Auto-fix: yes` findings once more, then stop and report. Do
@@ -142,6 +145,9 @@ suspected source, as the `deterministic-tests` skill requires.
   need a decision, each with a clear recommendation. Order both lists by
   severity, High first. Use the `decisions-and-findings` skill.
 - Name the fixed finding in its commit message.
+- Give each open finding with the second pass merged in: its new options
+  under their letters, and the recommendation of each pass when they
+  differ.
 - Add each open finding as one line under the plan's review TODO so that it
   is not lost when the session ends. Use the shape that the `plans` skill
   gives.
