@@ -65,6 +65,9 @@ run.
 - Apply the review-fix rule: fix only the findings tagged `Auto-fix: yes`,
   with the option that each tag names, run the checks, commit, push,
   re-review once, then stop and report.
+- Run the second pass of the `implementation-review` skill over the
+  findings tagged `Auto-fix: no`. It runs beside the fix round, in its own
+  checkout. Merge its options into the findings before you report them.
 
 ## 6. Report
 
@@ -93,4 +96,5 @@ and labels in the `decisions-and-findings` skill. Include:
 - [ ] Preservation audit clean: each deletion is dead code or approved.
 - [ ] Committed with Conventional Commits and pushed; new files tracked.
 - [ ] Post-push review run; `Auto-fix: yes` findings fixed; re-reviewed once.
+- [ ] Second pass run over the open findings and merged into the report.
 - [ ] Final report in STE with fixed and open findings.

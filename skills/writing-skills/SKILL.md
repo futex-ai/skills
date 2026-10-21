@@ -70,6 +70,8 @@ between a real and a fake clock."
   `scripts/`. Link each file by its relative path. The check confirms that
   it exists.
 - Write in Simplified Technical English, as the always-on rules say.
+- In a list, each item names its subject. A pronoun points to the lead-in
+  sentence of the list only, never to another item.
 - Name another skill in backticks, as in "the `git-commit` skill". Do not
   use an `@` link. It loads the file at once, before the moment.
 - Give no repository-specific paths, commands, or crate names. Say "the
