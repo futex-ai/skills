@@ -66,8 +66,8 @@ run.
   with the option that each tag names, run the checks, commit, push,
   re-review once, then stop and report.
 - Run the second pass of the `implementation-review` skill over the
-  findings tagged `Auto-fix: no`, at the same time as the fix round. Merge
-  its options into the findings before you report them.
+  findings tagged `Auto-fix: no`. It runs beside the fix round, in its own
+  checkout. Merge its options into the findings before you report them.
 
 ## 6. Report
 

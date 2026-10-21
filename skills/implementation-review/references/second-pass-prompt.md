@@ -2,13 +2,22 @@
 
 Give this prompt to a fresh read-only context after the review returns,
 together with the findings tagged `Auto-fix: no`. The second pass checks
-that the options of each open finding are complete and that the
-recommendation is the best one. It changes nothing. Run it at the same time
-as the fix round, because the two touch different findings.
+that the options of each open finding are complete. It checks that the
+recommendation is the best one. It changes nothing.
+
+Run it beside the fix round, because the two touch different findings.
+Give it its own checkout of the reviewed commit, for example a git
+worktree. Then it does not read a file while the fix round writes it. When
+a second checkout is not possible, run the second pass before the fix
+round.
 
 The second pass does not change an `Auto-fix` tag. An open finding stays
 open, also when the second pass finds an option that is not blocked. The
 user sees both passes and decides.
+
+The scope of the prompt is the diff. When the user asked for a wider
+review, replace the second sentence of the prompt with that scope. The
+review prompt has the same rule.
 
 ---
 
@@ -25,12 +34,12 @@ For each finding:
    plan and the protocol doc that the finding names.
 2. Ask two questions. Are these the only options? What would you build if
    the current code did not exist? Give an option at each place that the
-   current options do not cover, or say in one sentence why that place is
-   not a real choice.
+   current options do not cover. When a place is not a real choice, say
+   why in one sentence.
 3. Name each condition that every option keeps. Say where it comes from: a
-   protocol doc, a recorded user decision, the text of an earlier option,
-   or the code. Say whether its reason still holds. When it is not a
-   requirement, or its reason is gone, give the option that drops it.
+   protocol doc, a user decision, the text of an earlier option, or the
+   code. Say whether its reason still holds. When it is not a requirement,
+   or its reason is gone, give the option that drops it.
 4. Check the wider fix and the recommendation. A wider fix still prevents
    the class when the detail that failed changes shape. An option that
    must know that detail is a direct fix. Say when the recommendation
@@ -51,11 +60,14 @@ Return one block for each finding, in the order given:
 ```markdown
 ### <number>. <title as given>
 
+- **Places not covered:** <Each place with the letter of its new option, or the one sentence that says why it is not a real choice. Or "None".>
+- **Conditions:** <Each condition that every option keeps: its source, whether its reason holds, and the letter of the option that drops it. Or "None".>
 - **New options:** <Each new option with the next free letter, the change, its cost or risk, and its effort grade. Or "None".>
 - **Recommendation:** <The letter you recommend and one sentence of reasoning. When it differs from the review's, say so.>
 - **Wider fix:** <The letter, or "No change".>
 ```
 
 Keep the number, the title, the severity, the recorded letters, and the
-`Auto-fix` tag of each finding. Do not add a finding. Put a new problem in
-one line under `Outside the scope` at the end.
+`Auto-fix` tag of each finding. Do not add a finding. Put each new problem
+in one line under `New problems` at the end. Give its path, one sentence,
+and whether it is inside the scope.

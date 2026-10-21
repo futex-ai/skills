@@ -43,14 +43,21 @@ after the report.
    findings tagged `Auto-fix: no` and the prompt in
    [references/second-pass-prompt.md](references/second-pass-prompt.md).
    It checks that the options are complete and that the recommendation is
-   the best one. Run it at the same time as the fix round, because the two
-   touch different findings.
+   the best one. Run it beside the fix round, because the two touch
+   different findings. Give it its own checkout of the reviewed commit,
+   for example a git worktree. When that is not possible, run it before
+   the fix round.
 6. Merge the second pass into the findings. A new option keeps the letter
-   that the second pass gave it. When the recommendation changed, the
-   **Recommendation** line gives the new letter and its reason, then says
-   what the first pass recommended. The `Auto-fix` tag does not change,
-   and an open finding stays open. Save the second-pass report beside the
-   review report.
+   that the second pass gave it. The source of a dropped condition goes
+   into the text of the option that drops it. When the recommendation
+   changed, the **Recommendation** line gives the new letter and its
+   reason. It then names the letter that the first pass recommended. The
+   **Wider fix** line takes the new letter in the same way. The `Auto-fix`
+   tag does not change, and an open finding stays open. A new problem
+   inside the scope goes into the review focus of the re-review. When no
+   re-review runs, it goes under **Open**. A new problem outside the scope
+   joins the `Outside the scope` list. Save the second-pass report beside
+   the review report.
 
 ## Finding format
 
@@ -160,11 +167,12 @@ The full rule with every condition is in
    Name each fixed finding in its commit message.
 3. Fix any new `Auto-fix: yes` findings once more, then stop. Do not start a
    third fix round without the user.
-4. In the final message, list the auto-fixed findings (number, severity,
-   plain explanation, the applied option, what changed, commit) separately
-   from the findings that need a decision, each with a clear
-   recommendation and with the second pass merged in. Order both lists by
-   severity, High first. Use the `decisions-and-findings` skill.
+4. In the final message, list the auto-fixed findings separately from the
+   findings that need a decision. Give each auto-fixed finding its number,
+   its severity, a plain explanation, the applied option, what changed,
+   and the commit. Give each open finding a clear recommendation, with the
+   second pass merged in. Order both lists by severity, High first. Use
+   the `decisions-and-findings` skill.
 5. List each blocked wider fix of a fixed finding as a follow-up under
    **Open**, one line per class: the wider fix, its effort, the finding
    numbers it covers, and the previous examples. An open finding keeps its
