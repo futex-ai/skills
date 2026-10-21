@@ -134,8 +134,9 @@ suspected source, as the `deterministic-tests` skill requires.
   fix round. Give it its own checkout of the reviewed commit. It adds
   options and can change a recommendation. It does not change an
   `Auto-fix` tag, and an open finding stays open.
-- After it reports, apply the option that each `Auto-fix: yes` tag names,
-  run the checks, commit, push, and re-run the review once on the fix.
+- After the review reports, apply the option that each `Auto-fix: yes` tag
+  names. Run the checks, commit, and push. Then re-run the review once on
+  the fix.
 - Fix any new `Auto-fix: yes` findings once more, then stop and report. Do
   not start a third fix round without the user.
 

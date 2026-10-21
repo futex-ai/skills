@@ -7,9 +7,9 @@ recommendation is the best one. It changes nothing.
 
 Run it beside the fix round, because the two touch different findings.
 Give it its own checkout of the reviewed commit, for example a git
-worktree. Then it does not read a file while the fix round writes it. When
-a second checkout is not possible, run the second pass before the fix
-round.
+worktree. Then the second pass does not read a file while the fix round
+writes it. When a second checkout is not possible, run the second pass
+before the fix round.
 
 The second pass does not change an `Auto-fix` tag. An open finding stays
 open, also when the second pass finds an option that is not blocked. The
@@ -61,7 +61,7 @@ Return one block for each finding, in the order given:
 ### <number>. <title as given>
 
 - **Places not covered:** <Each place with the letter of its new option, or the one sentence that says why it is not a real choice. Or "None".>
-- **Conditions:** <Each condition that every option keeps: its source, whether its reason holds, and the letter of the option that drops it. Or "None".>
+- **Conditions:** <Each condition that every option keeps: its source, whether its reason holds, and the letter of the option that drops it, or "kept" when step 3 gives none. Or "None".>
 - **New options:** <Each new option with the next free letter, the change, its cost or risk, and its effort grade. Or "None".>
 - **Recommendation:** <The letter you recommend and one sentence of reasoning. When it differs from the review's, say so.>
 - **Wider fix:** <The letter, or "No change".>
