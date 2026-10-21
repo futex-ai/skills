@@ -167,9 +167,10 @@ what it does, and do not skip the step.
 
 4. Merge `main` into the primary branch before each delegation batch,
    before each branch merge, and before the final pull request.
-5. An open finding never blocks the merge of a branch. Merge the branch.
-   List the finding under the plan's review TODO. Fix it in a new
-   workspace. A branch that waits diverges, and its conflicts grow.
+5. Merge each branch as it finishes. An open finding never blocks the
+   merge of a workspace branch. List the finding under the plan's review
+   TODO. Fix it in a new workspace after the user answers. A branch that
+   waits diverges. Its conflicts grow.
 6. A High or Medium finding blocks only the work that depends on the
    affected code or contract. A Low finding never blocks. Every open
    finding closes before the final pull request merges, unless the user
@@ -183,9 +184,9 @@ what it does, and do not skip the step.
    - a choice where any assumption wastes the work.
    Send the other decisions in one numbered message at the next batch
    boundary, in the layout of the `decisions-and-findings` skill.
-   Continue the independent work meanwhile. Apply the recommended option
-   only when the user does not answer, and never a deletion. The
-   review-fix rule says which findings you fix without the user.
+   Continue the independent work meanwhile. An unanswered decision stays
+   open, as the always-on rules say. The review-fix rule says which
+   findings you fix without the user.
 
 ## Checklist
 
@@ -195,5 +196,5 @@ what it does, and do not skip the step.
 - [ ] A blocked request went to the peer model, then one rank down.
 - [ ] You ran the combined gate and closed each merged workspace.
 - [ ] The ledger and the reports are under `.context/`, not in the plan.
-- [ ] Open findings never block a merge. They block dependent work only
-      and close before the final pull request.
+- [ ] Open findings never block a workspace merge. They block dependent
+      work only and close before the final pull request.
