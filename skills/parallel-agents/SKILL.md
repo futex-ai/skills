@@ -97,8 +97,7 @@ parallel Codex and Opus sessions. One combined gate verified them.
   its workspace.
 - A work item is a milestone, or a group of TODOs in one milestone that
   touches its own files. Keep the milestone order of the plan: docs,
-  then mockups, then backend, then UI. Fan out inside one level. Merge
-  each branch as it finishes. Do not let branches pile up.
+  then mockups, then backend, then UI. Fan out inside one level.
 - The orchestrator plans, writes the prompts, delegates, and checks. It
   does not implement. A correction of a few lines found while you check
   is fine. Anything larger goes back to the delegate.
@@ -153,8 +152,7 @@ what it does, and do not skip the step.
 2. Send the findings back to the same workspace session as one fix
    request. Give the numbers, the option that the review-fix rule or the
    user chose for each, and "do not start the next item". The review-fix
-   rule allows two fix rounds. Then you decide, or you ask the user. List
-   every open finding under the plan's review TODO.
+   rule allows two fix rounds. Then stop and merge.
 3. Merge the branch into the primary branch with the `git-merge` skill.
    Run the complete gate from `AGENTS.md` on the merged tree, then push.
    Each workspace ran the gate on its own tree only. The combined gate
@@ -169,12 +167,14 @@ what it does, and do not skip the step.
 
 4. Merge `main` into the primary branch before each delegation batch,
    before each branch merge, and before the final pull request.
-5. A High finding blocks the work that depends on the affected code or
-   contract. A Medium finding blocks only that dependent work. A Low
-   finding never blocks. Every open finding closes before the final pull
-   request merges, unless the user moves it to the post-merge follow-up
-   section. Fix open findings in new workspaces.
-6. Ask the user at once for a blocking decision, and stop the dependent
+5. An open finding never blocks the merge of a branch. Merge the branch.
+   List the finding under the plan's review TODO. Fix it in a new
+   workspace. A branch that waits diverges, and its conflicts grow.
+6. A High or Medium finding blocks only the work that depends on the
+   affected code or contract. A Low finding never blocks. Every open
+   finding closes before the final pull request merges, unless the user
+   moves it to the post-merge follow-up section.
+7. Ask the user at once for a blocking decision, and stop the dependent
    work until the answer comes. Blocking decisions are:
    - a deletion against `origin/main`,
    - a requirement change in a protocol doc,
@@ -195,5 +195,5 @@ what it does, and do not skip the step.
 - [ ] A blocked request went to the peer model, then one rank down.
 - [ ] You ran the combined gate and closed each merged workspace.
 - [ ] The ledger and the reports are under `.context/`, not in the plan.
-- [ ] Open findings block only dependent work and close before the
-      final pull request.
+- [ ] Open findings never block a merge. They block dependent work only
+      and close before the final pull request.

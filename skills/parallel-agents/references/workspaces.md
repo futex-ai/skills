@@ -47,9 +47,10 @@ gh pr close <number> --comment "merged into <primary-branch> at <sha>"
 git push origin --delete <branch>
 ```
 
-Run the merge on the primary branch. Directly after the merge commit,
-run the merge audit from the `git-merge` skill. Run the complete gate
-from `AGENTS.md`, then push.
+Run the merge on the primary branch after the fix rounds, also when
+findings stay open. Directly after the merge commit, run the merge
+audit from the `git-merge` skill. Run the complete gate from
+`AGENTS.md`, then push.
 
 Confirm that the pull request's head commit is in the primary branch.
 When it is not, or git reports an unknown commit, the branch moved after
