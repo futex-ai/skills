@@ -57,15 +57,20 @@ options applied as defaults, under the always-on rules of that day. On
 the rules: silence is not approval. So both decisions are open again. No
 option applies.
 
-1. The existing long sentences print on every run. A: leave them, and each
-   skill loses its lines when it is next edited. B: split them in this
-   change, 16 files, effort Large. C: land the check first, then split them
-   on a separate branch. Recommended: C. While it is open, it blocks the
-   follow-up split. It blocks the merge only if the user chooses B.
-2. The scan covers `SKILL.md` only, as the user decided on 2026-10-20. A:
-   keep that scope. B: also scan `references/` and `templates/`, 82 more
-   lines today. Recommended: A. While it is open, it blocks only a wider
-   scan.
+1. The existing long sentences print on every run.
+   - A: leave them. Each skill loses its lines when it is next edited.
+   - B: split them in this change, 16 files, effort Large.
+   - C: land the check first, then split them on a separate branch.
+   - Recommended: C. The check stays small to review, and the noise ends
+     with the next PR.
+   - While it is open, it blocks the follow-up split. It blocks the merge
+     only if the user chooses B.
+2. The scan covers `SKILL.md` only, as the user decided on 2026-10-20.
+   - A: keep that scope.
+   - B: also scan `references/` and `templates/`, 82 more lines today.
+   - Recommended: A. It keeps the decided scope, and a later change can
+     widen the glob once the baseline is clean.
+   - While it is open, it blocks only a wider scan.
 
 Contract owners:
 
@@ -206,9 +211,21 @@ the scan and the exit status of the check.
 - [x] Apply the user's decision of 2026-10-21 on finding 1, option A. State
       the code-span limit in the header comment of
       `scripts/lib/check-sentences.sh` and in the design above.
-- [ ] Commit and push the decision change.
-- [ ] Review the decision commit with the `implementation-review` skill.
+- [x] Commit and push the decision change.
+- [x] Review the decision commit with the `implementation-review` skill.
       Fix its `Auto-fix: yes` findings once, then report the rest.
+  - Round 3 found four Low findings. The fix round fixed findings 3 and 4.
+    The docs now say "fenced code blocks". Each open decision is now a list
+    with a reason. Report: `round-3.md` under
+    `.context/skill-check-sentence-warning/review/`.
+  - Round 3, finding 1. No test pins the kept code-span rule. Severity Low,
+    effort Small. Recommended: A, add one line to the closing-marks test.
+  - Round 3, finding 2. Decision 1 does not say that it blocks the merge.
+    Severity Low, effort Small. Recommended: A, reword the item in the plan
+    and in the PR description.
+  - `README.md` and the `writing-skills` skill promise a warning for each
+    sentence over 20 words. The code-span limit hides some. Separate
+    branch.
 
 ## Post-merge follow-up (non-blocking)
 

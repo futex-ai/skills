@@ -71,7 +71,8 @@ between a real and a fake clock."
   it exists.
 - Write in Simplified Technical English, as the always-on rules say. The
   repository check warns about each sentence of more than 20 words, the
-  limit for an instruction. It skips headings, tables, and code blocks.
+  limit for an instruction. It skips headings, tables, and fenced code
+  blocks.
 - Name another skill in backticks, as in "the `git-commit` skill". Do not
   use an `@` link. It loads the file at once, before the moment.
 - Give no repository-specific paths, commands, or crate names. Say "the
