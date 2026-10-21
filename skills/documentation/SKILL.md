@@ -162,9 +162,8 @@ Protocol docs describe the current requirements. They are not fixed rules.
   finds that a requirement is wrong, incomplete, or worse than an
   alternative, propose the change as a decision in the layout of the
   `decisions-and-findings` skill, with the other decisions of the task. Do
-  everything that does not depend on it first. When the user does not
-  answer, apply the recommended option, update the doc, and name the
-  default in the final report.
+  everything that does not depend on it first. Until the user answers,
+  change neither the behaviour nor the doc.
 - When the code and a protocol doc disagree, do not assume that the doc is
   right. Decide on the merits which side is right, then change the other
   side to match it.
