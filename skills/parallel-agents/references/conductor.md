@@ -1,8 +1,9 @@
 # Conductor
 
-Conductor runs each workspace on its own cloud machine, with the branch
-and the first session that the orchestrator asks for. The syntax below
-comes from `conductor --help`. The procedure around these commands is in
+Conductor runs each workspace on its own cloud machine. It creates the
+workspace branch from the base branch that the orchestrator names, and
+it starts the first session with the prompt. The syntax below comes
+from `conductor --help`. The procedure around these commands is in
 [workspaces.md](workspaces.md).
 
 ## Create a workspace
@@ -15,11 +16,12 @@ conductor workspace session <workspaceId>
 conductor workspace status <workspaceId>
 ```
 
-The workspace starts on the primary branch, and its first session gets
-the prompt. Conductor creates the branch for the workspace from its
-name. The output gives the workspace id. `workspace session` gives the
-session id, and `workspace status` shows when the machine is ready.
-Inside a workspace, the command defaults to the current project.
+Conductor names the workspace branch from the workspace name. Record
+the workspace id from the output, or from `workspace list --mine`.
+`workspace session` gives the session id, and `workspace status` shows
+when the machine is ready. Inside a Conductor workspace,
+`workspace create` defaults to the current project. Outside one, add
+`--project-id <id>`.
 
 ## Agents and models
 
@@ -44,7 +46,5 @@ conductor workspace archive <workspaceId>
 
 `session status` says whether the agent still runs. `session message`
 lists the transcript after a message id. `message create` sends the fix
-request. `workspace archive` closes the machine after the merge is
-pushed, or after the user agrees to abandon the item. Archive the
-primary workspace with the same command after the primary pull request
-merges.
+request. `workspace archive` closes the machine at the close step of
+the procedure, also for the primary workspace.

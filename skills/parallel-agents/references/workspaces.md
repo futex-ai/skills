@@ -4,16 +4,21 @@ A workspace is a checkout on its own branch, on its own machine or in
 its own worktree, where one agent does one work item. Conductor is one
 tool for it, and [conductor.md](conductor.md) gives its commands. A
 worktree agent, a second machine, or a cloud session follows the same
-procedure. The orchestrator runs it from the primary workspace, on the
-primary branch, and records every step in the ledger under
-`.context/<plan-name>/workspaces.md`.
+procedure. A worktree agent here is a workspace agent in a worktree. It
+pushes its branch and opens a pull request, unlike a worktree subagent.
+
+The orchestrator runs the procedure from the primary workspace, on the
+primary branch. It keeps the ledger under
+`.context/<plan-name>/workspaces.md`, as the skill defines it.
 
 ## Start a work item
 
-1. Write the prompt from the workspace prompt template and save it under
+1. Write the prompt from the workspace prompt template. Save it under
    `.context/<plan-name>/prompts/<item>.md`.
 2. Create the workspace on the primary branch, with the model from the
-   table in the skill, and give it the prompt as its first message.
+   table in the skill. Give it the prompt as its first message. When the
+   tool does not create the branch, create it from the primary branch
+   and name it for the item.
 3. Record the workspace, its session, the model, and the branch that the
    agent reports in the ledger.
 

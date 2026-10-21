@@ -21,8 +21,8 @@ Context:
   gate>
 - Read these skills before the matching step: <`finish-work`,
   `git-commit`, `product-ui`, ...>.
-- The primary branch is `<primary-branch>`. Your workspace branch starts
-  from it. Report its name in your first message.
+- The primary branch is `<primary-branch>`. Start your branch from it,
+  or confirm that the tool did. Report its name in your first message.
 
 Steps:
 1. <the first step>
