@@ -1,6 +1,6 @@
 ---
 name: parallel-agents
-description: Use when you have two or more independent tasks, such as failing tests in separate files, bugs in separate subsystems, or separate research questions, before you start a subagent or write its prompt, when you split a plan across workspaces or choose the model for delegated work, when a model blocks or rejects a request, when a delegated branch comes back, when agents would edit the same files, and when an open finding could block the next milestone.
+description: Use when you work on a plan, before you decide whether to split it across workspaces or which model does each item, when you have two or more independent tasks, such as failing tests in separate files, bugs in separate subsystems, or separate research questions, before you start a subagent or write its prompt, when a model blocks a request, when a delegated branch comes back, when agents would edit the same files, and when an open finding could block the next milestone.
 ---
 
 # Parallel agents
@@ -20,9 +20,8 @@ Start agents in parallel only when all of these hold:
   is not a task yet.
 - Each task is clear without the context of the other tasks.
 - No task needs the result of another task.
-- The tasks change different files and use different resources, such as
-  ports, databases, fixtures, and build output. No test runs beside the
-  gate.
+- The tasks change different files and share no port, database, fixture,
+  or build output. No test runs beside the gate.
 - No task needs a view of the whole system.
 
 When one condition fails, do not split the work. Investigate the tasks
@@ -61,9 +60,8 @@ skill, gets "change nothing" as its constraint.
 1. Group the work into domains. A domain is one test file, one
    subsystem, one bug, or one research question.
 2. Write one prompt for each domain.
-3. Start every subagent in the same response. Several dispatch calls in
-   one response run in parallel. One call per response runs them one
-   after the other.
+3. Start every subagent in the same response, so that they run in
+   parallel. One call per response runs them one after the other.
 4. Wait for every subagent. Do not integrate partial results.
 5. Read each report and save it under `.context/<plan-name>/`. Check
    whether two agents changed the same code. Run the checks from the
@@ -85,15 +83,17 @@ integrate the branch with the `git-merge` skill.
 ## Workspaces across machines
 
 The orchestrator splits a plan into work items and gives each item a
-workspace. [references/workspaces.md](references/workspaces.md) gives
+workspace. Items that pass the independence test run at the same time.
+The others run one after the other. A plan with one work item needs no
+orchestrator. [references/workspaces.md](references/workspaces.md) gives
 the commands. One real example: milestones 6a, 7, and 7a of a plan ran
-in parallel Codex and Opus sessions. The orchestrator verified them with
-one combined gate.
+in parallel Codex and Opus sessions. One combined gate verified them.
 
 - The primary branch is the branch of the plan. Every workspace branch
   starts from it and merges from it, never from `main`. Only the primary
   branch merges `main`. Its pull request into `main` is the completion
-  boundary from the `plans` skill.
+  boundary from the `plans` skill. After that merge, delete the primary
+  branch and archive its workspace.
 - A work item is a milestone, or a group of TODOs in one milestone that
   touches its own files. Keep the milestone order of the plan: docs,
   then mockups, then backend, then UI. Fan out inside one level. Merge
@@ -102,8 +102,7 @@ one combined gate.
   does not implement. A correction of a few lines found while you check
   is fine. Anything larger goes back to the delegate.
 - Name the workspace `<plan-name>: <item>`. Conductor creates the branch
-  from that name. Record the branch that the workspace reports in the
-  ledger.
+  from that name. Record the reported branch in the ledger.
 - The plan file is the one shared file. A workspace adds `Branch:` and
   its branch name to the TODO lines that it owns, and it ticks only those
   lines. You resolve a plan conflict path by path at the merge.
@@ -129,12 +128,11 @@ retry. Examples: a usage limit, an input limit, a missing or revoked
 credential, or a rejected model id. When a model blocks a request, send
 the same request to its peer. When the peer blocks it too, send it one
 rank down. Fable 5.1 has no peer. When it blocks, send the request one
-rank down. Opus 5.5 takes screens, components, mockups, and copy. Astra 6
-takes the rest. When every model blocks it, stop and ask the user, with
-the refusal text verbatim. When a delegate's model blocks during an item,
-give the item to the peer in the same workspace. Give the peer the prompt
-and the diff so far. Do not rewrite the request to hide what it does, and
-do not skip the step.
+rank down, to the model that the table gives for that work. When every
+model blocks it, stop and ask the user, with the refusal text verbatim.
+When a delegate's model blocks during an item, give the item to the peer
+in the same workspace. Give the peer the prompt and the diff so far. Do
+not rewrite the request to hide what it does, and do not skip the step.
 
 | The record says | The answer |
 | --- | --- |
@@ -154,12 +152,14 @@ do not skip the step.
    request. Give the numbers, the option that the review-fix rule or the
    user chose for each, and "do not start the next item". The review-fix
    rule allows two fix rounds. Then you decide, or you ask the user. List
-   every open finding under the plan's review TODO, as the `plans` skill
-   says.
+   every open finding under the plan's review TODO.
 3. Merge the branch into the primary branch with the `git-merge` skill.
    Run the complete gate from `AGENTS.md` on the merged tree, then push.
    Each workspace ran the gate on its own tree only. The combined gate
-   proves the milestone. Then archive the workspace.
+   proves the milestone. Then close the workspace. Confirm that its pull
+   request shows as merged, else close it. Delete its remote branch.
+   Archive it. Mark it closed in the ledger. Do the same for a workspace
+   that you abandon.
 
    | The record says | The answer |
    | --- | --- |
@@ -190,10 +190,9 @@ do not skip the step.
 
 - [ ] Every parallel task passed the independence test.
 - [ ] Every prompt has the six fields, from Scope to Output.
-- [ ] Every workspace branch starts from the primary branch and merges
-      from it.
+- [ ] Each workspace branch starts and merges from the primary branch.
 - [ ] A blocked request went to the peer model, then one rank down.
-- [ ] The combined gate ran on the primary branch after each merge.
+- [ ] Each merge ran the combined gate and closed the workspace.
 - [ ] The ledger and the reports are under `.context/`, not in the plan.
 - [ ] Open findings block only dependent work and close before the
       final pull request.

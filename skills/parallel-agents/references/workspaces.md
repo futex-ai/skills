@@ -52,9 +52,15 @@ and the option to apply for each.
 ```sh
 git fetch origin <branch>
 git merge --no-ff origin/<branch>
+gh pr view <number> --json state,mergedAt
+gh pr close <number>
+git push origin --delete <branch>
 conductor workspace archive <workspaceId>
 ```
 
 Run the merge on the primary branch. Directly after the merge commit,
-run the merge audit from the `git-merge` skill. Push the merge, then
-archive the workspace.
+run the merge audit from the `git-merge` skill. Push the merge. GitHub
+then shows the pull request as merged. When it does not, close it.
+Delete the branch on the remote. Archive the workspace. Mark it closed
+in the ledger. When the primary branch's pull request into `main`
+merges, delete the primary branch and archive the primary workspace.
