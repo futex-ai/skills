@@ -1,6 +1,6 @@
 ---
 name: finish-work
-description: Use before you say that work is complete or done, before you commit or push, when you decide which tests, checks, or gates to run, when a gate or a test suite fails or a run was partial, when you add a feature that needs a smoke test, and when the change that you finish is documentation-only or plan-only.
+description: Use before you say that work is complete or done, before you commit, push, or open a pull request, when you decide which tests, checks, or gates to run, when a gate or a test suite fails or a run was partial, when you add a feature that needs a smoke test, and when the change that you finish is documentation-only or plan-only.
 ---
 
 # Finish work
@@ -55,6 +55,8 @@ run.
   tracked, and write a Conventional Commits message. Then push the branch.
 - If the branch needs a merge or rebase first, follow the `git-merge`
   skill.
+- A plan-only change gets no pull request of its own. Push the branch and
+  report it. See the `plans` skill.
 
 ## 5. Review
 
@@ -71,7 +73,7 @@ run.
 Write the final message in Simplified Technical English, with the layout
 and labels in the `decisions-and-findings` skill. Include:
 
-- What changed, and the commit or PR.
+- What changed, the commit, and the branch or the pull request.
 - The checks that ran and their results. Name any check that was skipped or
   could not run, and why.
 - Auto-fixed review findings, separately from the findings that need a

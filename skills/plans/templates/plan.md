@@ -1,6 +1,6 @@
 # <Change title>
 
-Status: Active. <One sentence on the branch or PR, for example "[PR #123](<url>) is open. The plan closes when its PR merges.">
+Status: Active. On branch `<branch>`, no pull request yet. The plan closes when its PR merges. <When a pull request opens, the branch sentence becomes "[PR #123](<url>) is open.">
 
 <One or two short paragraphs: the problem, the chosen approach, and what the
 change does not cover. Record each user decision with its date, the
