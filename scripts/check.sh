@@ -1,9 +1,14 @@
 #!/usr/bin/env bash
 # Validate every skill under skills/: frontmatter, name, description, size,
-# relative file references, and scripts. Exits 1 on any error.
+# relative file references, and scripts. Exits 1 on any error. Also warn
+# about each SKILL.md sentence of more than 20 words. A warning does not
+# fail the run.
 set -euo pipefail
 
 repo="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+# shellcheck source=scripts/lib/check-sentences.sh
+source "$repo/scripts/lib/check-sentences.sh"
+max_words=20
 errors=0
 err() { echo "error: $*" >&2; errors=$((errors + 1)); }
 
@@ -30,6 +35,13 @@ for dir in "$repo"/skills/*/; do
   lines="$(wc -l < "$file")"
   (( lines <= 500 )) || err "$name: SKILL.md has $lines lines (max 500)"
   (( lines <= 200 )) || echo "warning: $name: SKILL.md has $lines lines; move detail to references/"
+
+  sentences="$(long_sentences "$file" "$max_words")" \
+    || echo "warning: $name: the sentence scan failed"
+  while IFS=$'\t' read -r line_no count opening; do
+    [[ -n "$line_no" ]] || continue
+    echo "warning: $name: SKILL.md:$line_no: sentence has $count words (max $max_words): $opening ..."
+  done <<< "$sentences"
 
   # The backticks in the grep and sed patterns are literal regex characters.
   # shellcheck disable=SC2016

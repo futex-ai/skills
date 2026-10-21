@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 # Shared helpers for the shell tests under tests/. Source this file; do not
-# run it. Each test gets a fresh fixture: a bare remote, a work clone that
-# plays upstream, the clone under test, and an empty HOME for the links.
+# run it. run_test gives each test a fresh temporary directory. In it,
+# make_fixture builds a bare remote, a work clone that plays upstream, the
+# clone under test, and an empty HOME for the links.
 # shellcheck shell=bash
 set -euo pipefail
 
