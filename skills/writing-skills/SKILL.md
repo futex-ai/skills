@@ -23,13 +23,13 @@ written from an imagined failure answers the wrong one.
 
 ## Kinds of skill
 
-- **Discipline**: a rule that the agent knows and is tempted to skip, for
-  example the complete gate or the deletion audit. The evidence is a
+- **Discipline**: a rule that the agent knows and is tempted to skip.
+  Examples are the complete gate and the deletion audit. The evidence is a
   commit or a pull request where the rule was skipped.
-- **Procedure**: steps and a layout that give an output of a fixed shape,
-  for example a commit message or a final report. The evidence is a past
+- **Procedure**: steps and a layout that give an output of a fixed shape.
+  Examples are a commit message and a final report. The evidence is a past
   output with the wrong shape.
-- **Reference**: facts to look up, for example the sections of a crate
+- **Reference**: facts to look up. Examples are the sections of a crate
   README. The evidence is a place where the fact was guessed wrong.
 
 ## The description
@@ -55,9 +55,11 @@ decides whether the agent loads the skill.
 - An existing description can start with a noun phrase or end with a
   `Covers` summary. It moves to this form when the skill is next edited.
 
-Example: "Use when a test fails and then passes on a rerun, when a test
-would assert elapsed time, timeouts, or performance, or when you choose
-between a real and a fake clock."
+Example:
+
+```yaml
+description: Use when a test fails and then passes on a rerun, when a test would assert elapsed time, timeouts, or performance, or when you choose between a real and a fake clock.
+```
 
 ## The SKILL.md file
 
@@ -69,7 +71,15 @@ between a real and a fake clock."
   Put a skeleton under `templates/` and an executable script under
   `scripts/`. Link each file by its relative path. The check confirms that
   it exists.
-- Write in Simplified Technical English, as the always-on rules say.
+- Write in Simplified Technical English, as the always-on rules say. The
+  repository check warns about each sentence of more than 20 words, the
+  limit for an instruction. It skips headings, tables, and fenced code
+  blocks.
+  - When you split a long sentence, repeat a condition, such as only or
+    never, in each sentence that it limits. Do not point back to it with
+    words such as "for the same reason". Example: "Do not drop an option
+    or rank it lower only because it conflicts with a protocol doc. Do not
+    recommend a different option only because of that conflict."
 - Name another skill in backticks, as in "the `git-commit` skill". Do not
   use an `@` link. It loads the file at once, before the moment.
 - Give no repository-specific paths, commands, or crate names. Say "the
@@ -111,8 +121,8 @@ needs one to check against.
    `.context/`, and the docs. For a commit rule, read the last twenty
    commit messages. For a deletion rule, list the deletions in the
    history. For a review rule, read the saved review reports.
-2. Record each case under `.context/`: where it is, what the agent did,
-   and its words verbatim when the record has them.
+2. Record each case under `.context/`. Write where it is and what the
+   agent did. Add its words verbatim when the record has them.
 3. Write the smallest text that answers the recorded cases, in the form
    from the table above.
 4. Walk each case again with the text. Ask whether the text, read at that
@@ -123,7 +133,7 @@ needs one to check against.
 
 1. Create `skills/<name>/SKILL.md` and the files that it links. A skill
    for work in the skills repository only also gets an `opt-in` file in
-   its directory, so that the install script links it only on request.
+   its directory. The install script then links it only on request.
 2. Add the row to the skills table in the repository `README.md`.
 3. Run the repository check, `shellcheck` on new scripts, and
    `tests/run.sh`.

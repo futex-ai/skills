@@ -56,13 +56,16 @@ when to read it. [templates/AGENTS.md](templates/AGENTS.md) is the template.
 3. Walk every rule and classify it:
    - **Covered**: the shared skill or the global file says the same thing.
      Drop it.
-   - **Repository-specific**: commands, paths, suite names, size caps and
-     the lint that enforces them, link checks, generated directories,
-     product locations and the shared UI library, review focus areas,
-     production status. Keep it in the matching template section.
+   - **Repository-specific**: a rule on one of the topics below. Keep it in
+     the matching template section.
+     - commands, paths, and suite names
+     - size caps and the lint that enforces them
+     - link checks and generated directories
+     - product locations and the shared UI library
+     - review focus areas and production status
    - **Conflicting**: the repository says something different from the
-     shared skill, for example an older plan index rule or an older review
-     rule. The user decides.
+     shared skill. For example, it has an older plan index rule or an older
+     review rule. The user decides.
    - **Uncovered general rule**: a rule that belongs in a shared skill but
      is not there yet. The user decides. Never drop it silently.
 4. Send the checkpoint message described below and wait for the answers.
@@ -96,14 +99,21 @@ This task has one checkpoint message and one final report.
 - The numbered decisions. Every conflict, every uncovered rule, and every
   file deletion is one decision. Give the repository's wording and the
   shared skill's wording when there is one.
-  - A conflict offers: A, use the shared rule; B, keep the repository's rule
-    as an override under `## Repository rules`; C, change the shared skill
-    and apply it everywhere.
-  - An uncovered rule offers: A, add it to a named shared skill with the
-    proposed text; B, keep it as a repository rule; C, drop it.
-  - A deletion offers: A, delete and update links; B, keep the file.
-- A short list of what happens after the answers: write the file, delete
-  the approved files, update links, run checks, commit, push.
+  - A conflict offers three options:
+    - A: use the shared rule.
+    - B: keep the repository's rule as an override under
+      `## Repository rules`.
+    - C: change the shared skill and apply it everywhere.
+  - An uncovered rule offers three options:
+    - A: add it to a named shared skill with the proposed text.
+    - B: keep it as a repository rule.
+    - C: drop it.
+  - A deletion offers two options:
+    - A: delete and update links.
+    - B: keep the file.
+- A short list of what happens after the answers. The list names the
+  steps: write the file, delete the approved files, update links, run
+  checks, commit, push.
 
 **The final report**, after the commit, adds to the standard report:
 

@@ -14,8 +14,11 @@ Codex, and with any other agent that reads the
 - `scripts/install.sh`: links everything into the agent directories.
 - `scripts/update.sh`: brings an installed clone to the latest `main`. Its
   lock, loop, and hook functions live in `scripts/lib/`.
-- `scripts/check.sh`: validates every skill.
+- `scripts/check.sh`: validates every skill. Its sentence scan lives in
+  `scripts/lib/`.
 - `tests/`: shell tests for the scripts. `tests/run.sh` runs them all.
+- [`plans/`](plans/): one plan file per change. The `plans` skill gives
+  the rules.
 
 ## How the pieces fit
 
@@ -193,6 +196,9 @@ In short:
   load. Target 300 characters. `scripts/check.sh` warns above 500.
 - Keep `SKILL.md` under about 150 lines. Put long contracts in `references/`.
   `scripts/check.sh` warns at 200 lines and fails at 500.
+- Write in Simplified Technical English. `scripts/check.sh` warns about each
+  `SKILL.md` sentence of more than 20 words. It skips the frontmatter, the
+  headings, the tables, and the fenced code blocks.
 - No repository-specific paths, commands, or crate names. Those belong in the
   repository's `AGENTS.md`; say "the gate named in `AGENTS.md`".
 - Ask for a real repository first. Write the skill from the cases in its

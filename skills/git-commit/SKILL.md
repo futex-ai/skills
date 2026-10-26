@@ -27,9 +27,9 @@ every removal and its related cleanup in the commit or PR description. For
 dead code, record the search that proved it dead. For functionality,
 record the approval.
 
-Run `git add -A` before you commit so that newly created files are tracked
-and included in the commit, the push, and the review diff. Do not commit
-scratch output; it lives under the git-ignored `.context/`.
+Run `git add -A` before you commit, so that Git tracks the newly created
+files. The commit, the push, and the review diff then include them. Do not
+commit scratch output. It lives under the git-ignored `.context/`.
 
 ## Dead code
 
@@ -42,16 +42,18 @@ approval. Code is dead only when all of these hold:
    unused-item warning from the compiler or the linter proves this for a
    private item. The warning counts only when the build compiles every
    feature, platform, and test target.
-2. No indirect path reaches it: no route table, registry, plugin loader,
+2. No indirect path reaches it. No route table, registry, plugin loader,
    file-name convention, string key, dynamic import, or reflection names
    it. Search for each string that could name it.
 3. No consumer outside the code reaches it. An entry point is
    functionality: a command, a script, a migration, or an export of a
    published package. The package manifest says whether a package is
    published.
-4. Nothing keeps it on purpose: no annotation such as
-   `#[expect(dead_code)]`, no feature flag, no open plan TODO, and no
-   protocol doc that requires it.
+4. Nothing keeps it on purpose:
+   - no annotation such as `#[expect(dead_code)]`
+   - no feature flag
+   - no open plan TODO
+   - no protocol doc that requires it
 
 Everything else is functionality, also when the product runs it rarely:
 
@@ -88,8 +90,8 @@ When you delete dead code:
 ## Removals and renames
 
 When a change removes or renames a feature, test, fixture, scenario,
-command, or file, search `docs/`, `plans/`, and every `README.md` for its
-name. Update each stale reference in live content in the same change.
+command, or file, search for its name. Look in `docs/`, `plans/`, and every
+`README.md`. Update each stale reference in live content in the same change.
 Record each plan edit in the commit or PR description.
 
 ## Live and history
@@ -101,7 +103,7 @@ Record each plan edit in the commit or PR description.
   follow-ups are live; all other content is history.
 - Do not change the words of history.
 - When the repository's link check fails on a link inside history content,
-  replace the link with a GitHub permalink at a commit where the target
+  replace the link. Use a GitHub permalink at a commit where the target
   still matches the text. Start with the commit that wrote the link. For a
   squash-merged PR, look for that commit in `refs/pull/<number>/head`. For
   a line in a Markdown file, put `?plain=1` before `#L<number>`.
@@ -109,8 +111,9 @@ Record each plan edit in the commit or PR description.
 ## Message format
 
 Every commit message and pull request title uses the Conventional Commits
-format: `<type>(<optional scope>): <description>`, a blank line, then the
-body. The format enables automated changelogs and readable history.
+format. The format is `<type>(<optional scope>): <description>`, a blank
+line, then the body. The format enables automated changelogs and readable
+history.
 
 - Commit titles use at most 50 characters. Pull request titles and their
   squash commit titles use at most 72 Unicode code points.

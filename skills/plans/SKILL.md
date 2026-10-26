@@ -11,8 +11,9 @@ change. [templates/plan.md](templates/plan.md) is the starting point.
 
 ## Creating a plan
 
-- Create a plan only with the user's consent, and only after the relevant
-  spec or protocol docs give enough context to plan the work safely.
+- Create a plan only with the user's consent. Create it only after the
+  relevant spec or protocol docs give enough context to plan the work
+  safely.
 - A new plan is a plan-only change. Write the plan. Commit it. Push the
   branch. Then report, as the `finish-work` skill says.
 - The status paragraph names the branch and says that no pull request
@@ -40,32 +41,35 @@ change. [templates/plan.md](templates/plan.md) is the starting point.
   milestone the product works. Never leave the code base or feature broken.
 - Each milestone has a short summary and a TODO checklist.
 - The first milestone updates the relevant documentation and protocol or
-  spec docs so that they state the requirements and the decisions for the
+  spec docs. The docs then state the requirements and the decisions for the
   work that follows. The plan itself holds the design: the approach, the
   components, and the mechanics. See the `documentation` skill for what
   belongs in a protocol doc.
 - The documentation milestone does not freeze the protocol docs. A later
   milestone that keeps the behaviour needs no protocol doc change. A later
-  milestone that changes a requirement proposes the change as a decision
-  and updates the protocol doc in the milestone that changes the code. See
+  milestone that changes a requirement proposes the change as a decision.
+  It updates the protocol doc in the milestone that changes the code. See
   the `documentation` skill.
 - When a product area needs mockup work, its initial mockup milestone comes
   directly after the documentation milestone for that area. It also comes
   before any UI milestone for that area. Milestones for repository
-  bootstrap work, such as the workspace skeleton, checks, CI, and the
-  mockup catalogue tooling, can come before the first mockup milestone.
-- Put all mockup work for an area that is known at planning time in the
-  initial mockup milestone for that area. Add another mockup milestone only
-  when implementation finds a genuine mockup gap.
+  bootstrap work can come before the first mockup milestone. Examples of
+  such work are the workspace skeleton, checks, CI, and the mockup
+  catalogue tooling.
+- Put all of an area's mockup work that is known at planning time in its
+  initial mockup milestone. Add another mockup milestone only when
+  implementation finds a genuine mockup gap.
 - Keep backend changes, mockup or design updates, and UI implementation in
   separate milestones. Mockups complete before UI implementation begins.
 - A milestone with UI or mockup work has a tag line directly below its
   heading: `Tags: ui` or `Tags: mockup`. A tagged milestone has no backend
-  work. If backend work is missing while you implement a tagged milestone,
-  do not add it to the current or an existing milestone, and do not move the
-  blocked TODOs into an existing milestone. Create a new backend milestone
-  directly after the current one. Then create a new tagged milestone after
-  that backend milestone and move the blocked TODOs there, still unchecked.
+  work.
+- If backend work is missing while you implement a tagged milestone, do
+  not add it to an existing milestone. That includes the current one. Do
+  not move the blocked TODOs into an existing milestone either. Create a
+  new backend milestone directly after the current one. Then create a new
+  tagged milestone after that backend milestone and move the blocked TODOs
+  there, still unchecked.
 - Mark a milestone completed when all of its tasks are completed. Do not
   reopen a milestone. Create a new milestone for new tasks that do not fit
   an existing open one.
@@ -74,7 +78,7 @@ change. [templates/plan.md](templates/plan.md) is the starting point.
 
 - Tick TODOs as you complete them.
 - When you discover a TODO that the PR needs, add it under the relevant
-  milestone, then continue with the active TODO.
+  milestone. Then continue with the active TODO.
 - Break a complex TODO into sub-tasks.
 - Every plan ends with a commit-and-push TODO, a review TODO, and a pull
   request TODO. The review TODO directs a reviewer to use the
@@ -87,17 +91,18 @@ change. [templates/plan.md](templates/plan.md) is the starting point.
   milestone TODO is ticked, or when the user asks for the pull request.
   Then put the link in the status paragraph. The `finish-work` skill
   gives the steps. An older plan without this TODO follows the same rule.
-- Add each open review finding as one line under the review TODO so that it
-  is not lost when the session ends. List the lines by severity, High
-  first. Each line gives the number, title, severity, the effort of the
-  recommended option, and the recommended option, for example:
+- Add each open review finding as one line under the review TODO. The line
+  keeps the finding after the session ends. List the lines by severity,
+  High first. Each line gives the number, title, severity, the effort of
+  the recommended option, and the recommended option. For example:
   `3. Retry loop has no limit. Severity High, effort Small. Recommended: A, cap the retries.`
-- Add each follow-up, the blocked wider fix of a fixed finding, as one
-  line too, one per class: the wider fix, its effort, the finding numbers
-  it covers, and the previous examples, for example:
+- Add each follow-up as one line too, one per class. A follow-up is the
+  blocked wider fix of a fixed finding. The line gives the wider fix, its
+  effort, the finding numbers it covers, and the previous examples. For
+  example:
   `Follow-up: guard port reuse in the test harness. Effort Large. Covers findings 2 and 5. Previous examples: 3f2c1ab.`
 - Add each problem that the review listed under `Outside the scope` as one
-  line too: its path, one sentence, and `Separate branch.`
+  line too. The line gives its path, one sentence, and `Separate branch.`
 
 ## Completion boundary
 
@@ -105,25 +110,26 @@ change. [templates/plan.md](templates/plan.md) is the starting point.
   must be completable on the branch before the PR merges, or by the merge
   itself. Never add a required TODO that depends on the PR already being
   merged.
-- Put post-merge work, including smoke tests that need the merged or
-  deployed change, in a `## Post-merge follow-up (non-blocking)` section
-  outside the milestones. It does not affect completion.
+- Put post-merge work in a `## Post-merge follow-up (non-blocking)`
+  section outside the milestones. Post-merge work includes smoke tests
+  that need the merged or deployed change. It does not affect completion.
 - Keep smoke tests that can run before merge as required milestone TODOs.
 - When the plan's own pull request opens, replace the branch sentence
   with `[PR #<number>](<url>) is open.`
 - When the PR merges, change the status paragraph to start with
-  `Status: Completed. [PR #<number>](<url>) merged on <YYYY-MM-DD>.` and
-  keep any open review findings or follow-up owners in that paragraph.
+  `Status: Completed. [PR #<number>](<url>) merged on <YYYY-MM-DD>.` Keep
+  any open review findings or follow-up owners in that paragraph.
 - That status update is a complete change on its own. Put it on a
   branch, push it, and open its pull request.
 
 ## Evidence
 
-- Do not put evidence logs in plan files: command output, test and gate
-  results or timings, smoke-test output, search results, audit records,
-  test-title inventories, and full reviewer reports. Save them under
-  `.context/<plan-name>/`, which Git ignores. Under the related milestone,
-  add one line that names the file.
+- Do not put evidence logs in plan files. Evidence logs include command
+  output, test and gate results or timings, smoke-test output, and search
+  results. They also include audit records, test-title inventories, and
+  full reviewer reports. Save them under `.context/<plan-name>/`, which
+  Git ignores. Under the related milestone, add one line that names the
+  file.
 - A plan keeps only its summary, milestones, TODOs, contracts, decisions,
   user approvals, and short review summaries. Agents read the whole plan, so
   logs in a plan slow every session.

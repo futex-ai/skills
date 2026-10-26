@@ -28,11 +28,11 @@ run.
   complete gate.
 - Any selected test run, filtered run, or single suite is partial
   verification. Only the complete gate proves the work.
-- If a test that the diff does not touch fails and then passes on a rerun,
-  it is an unrelated flaky test. Do not fix it in this branch. Report it
-  under the rules in the `deterministic-tests` skill.
-- A flaky test that the diff adds or changes may be fixed without asking
-  only under the flaky-test rule in the `deterministic-tests` skill.
+- A test that the diff does not touch can fail and then pass on a rerun.
+  Such a test is an unrelated flaky test. Do not fix it in this branch.
+  Report it under the rules in the `deterministic-tests` skill.
+- Only the flaky-test rule lets you fix a flaky test that the diff adds or
+  changes without asking. The `deterministic-tests` skill gives that rule.
 - Documentation-only or plan-only changes, including initial plan creation,
   do not require the gate. Validate the changed Markdown and review the diff
   instead.
@@ -50,9 +50,9 @@ run.
 
 ## 4. Commit and push
 
-- Commit with the `git-commit` skill: run its deletion audit before and
-  after the commit, run `git add -A` so that newly created files are
-  tracked, and write a Conventional Commits message. Then push the branch.
+- Commit with the `git-commit` skill. Run its deletion audit before and
+  after the commit. Run `git add -A` so that Git tracks the newly created
+  files. Write a Conventional Commits message. Then push the branch.
 - If the branch needs a merge or rebase first, follow the `git-merge`
   skill.
 - A new plan gets no pull request in this step. Step 6 says when it

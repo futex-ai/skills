@@ -24,16 +24,17 @@ that passes on a fast machine and fails on a slow one is a bug in the test.
 Use these instead of elapsed-time assertions.
 
 - **Operation counts** for scale. Run the same operation at two input sizes
-  in a 1:4 ratio and count the calls (file system reads, path resolution,
-  sorts, glob compilation). Every asserted count at the smaller size must be
-  greater than zero, so that a missed interception fails. Counts for
-  once-per-run work must be equal at both sizes. Each scaled total at the
-  larger size must be at most 4.5 times the smaller total: linear work grows
-  about 4 times, quadratic about 16. Keep the result assertions beside the
-  count assertions.
+  in a 1:4 ratio. Count the calls, such as file system reads, path
+  resolution, sorts, and glob compilation.
+  - Every asserted count at the smaller size must be greater than zero, so
+    that a missed interception fails.
+  - Counts for once-per-run work must be equal at both sizes.
+  - Each scaled total at the larger size must be at most 4.5 times the
+    smaller total. Linear work grows about 4 times, quadratic about 16.
+  - Keep the result assertions beside the count assertions.
 - **Captured inputs** for watch targets and similar. Capture what the code
-  passes to its collaborator and assert on it: the required targets are
-  present and the excluded ones are absent.
+  passes to its collaborator. Assert that the required targets are present
+  and the excluded ones are absent.
 - **Event order** for non-blocking behaviour. Assert that the fast response
   settles while the slow job is still pending, and check the response's
   result. Do not infer the order from a short time limit.
@@ -64,12 +65,17 @@ when all of these hold:
 
 1. Reproduce the flake by repeating the test. Record the pass counts before
    and after the fix under `.context/`.
-2. Name the nondeterminism source: real timers, real signals, watcher
-   readiness, port or path reuse, async ordering, shared fixture state, or
-   locale and platform differences.
-3. Make the test deterministic with the methods above: a fake clock, event
-   order, captured inputs, operation counts, an explicit readiness signal,
-   or isolated state.
+2. Name the nondeterminism source:
+   - real timers
+   - real signals
+   - watcher readiness
+   - port or path reuse
+   - async ordering
+   - shared fixture state
+   - locale and platform differences
+3. Make the test deterministic with the methods above. Use a fake clock,
+   event order, captured inputs, operation counts, an explicit readiness
+   signal, or isolated state.
 4. Keep every existing assertion.
 5. Add no retry, sleep, repeat, skip, quarantine, or longer time limit.
 
@@ -82,10 +88,12 @@ proposed removal stays `Auto-fix: no`.
 A flaky test that the diff does not touch is an unrelated flaky test. Do not
 fix it in this branch, so that one fix in a separate branch reaches every
 open branch quickly. The implementation review lists it under
-`Outside the scope`, not as a finding. Report it in the final message and,
-when a plan exists, as one line under the plan's review TODO, in the shape
-that the `plans` skill gives. Add the test name, the failure text, the
-rerun outcome, and the suspected source.
+`Outside the scope`, not as a finding.
+
+Report it in the final message. When a plan exists, also add it as one line
+under the plan's review TODO. Use the shape that the `plans` skill gives.
+Add the test name, the failure text, the rerun outcome, and the suspected
+source.
 
 ## Slow and low-value tests
 
