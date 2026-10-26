@@ -229,16 +229,26 @@ with the same meaning.
 
 - [x] Merge `origin/main` into the branch, because PR #27 changed two of
       the skills. Run the merge audit.
-- [ ] Split the long sentences of each skill in its own commit, with the
+- [x] Split the long sentences of each skill in its own commit, with the
       type `style`. Keep the meaning, the terms, and the line width of the
       file. Do not change a paragraph that has no long sentence.
-  - [ ] Compare the content words of each file before and after the split.
-        Evidence: `.context/skill-check-sentence-warning/split/`.
-  - [ ] Keep each paragraph at six sentences or fewer. Two paragraphs
-        already hold ten. Split them at a natural break.
-  - [ ] Keep the line count of each `SKILL.md` close to its current count.
-        No skill crosses 200 lines because of the split.
-- [ ] Run `scripts/check.sh`: it prints no sentence warning. Run the
+  - Two sibling list items changed too, so that their lists stay alike:
+    the deletion options in `agents-md` and the reference kind in
+    `writing-skills`. Each edited paragraph also lost its semicolons and
+    its clauses in parentheses.
+  - The example description in `writing-skills` is a fenced YAML line, not
+    a split quote. A description is one sentence.
+  - [x] Compare the content words of each file before and after the split.
+        Only inflections and joining words changed. Evidence:
+        `.context/skill-check-sentence-warning/split/`.
+  - [x] Keep each paragraph at six sentences or fewer. Two paragraphs
+        already hold ten. Split them at a natural break. Both are nested
+        lists now.
+  - [x] Keep the line count of each `SKILL.md` close to its current count.
+        No skill crosses 200 lines because of the split. The
+        `decisions-and-findings` skill grows from 206 to 209 lines, and
+        `implementation-review` from 164 to 175.
+- [x] Run `scripts/check.sh`: it prints no sentence warning. Run the
       complete gate.
 - [ ] Commit and push. Update the PR description.
 - [ ] Review the split with the `implementation-review` skill after the
