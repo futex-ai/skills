@@ -7,8 +7,8 @@ description: Use when a Rust backend and a TypeScript or JavaScript frontend exc
 
 These rules apply when a repository has a Rust backend and a TypeScript or
 JavaScript frontend that exchange data. The repository's `AGENTS.md` names
-the generator, the regenerate command, the generated directory, and the
-wire form of large numbers and dates.
+the generator, the regenerate command, and the generated directory. It also
+names the wire form of large numbers and dates.
 [references/generators.md](references/generators.md) holds the setup and
 the commands for each generator.
 
@@ -23,26 +23,27 @@ the commands for each generator.
   Rust type.
 - A type that the generator cannot express is a design problem on the Rust
   side. Change the Rust type. Do not patch the TypeScript.
-- Boundary types live in one crate, the `-interface` or `-api` crate that
-  the `rust` skill describes, so that one command generates all of them.
+- Boundary types live in one crate: the `-interface` or `-api` crate that
+  the `rust` skill describes. One command then generates all of them.
 
 ## Generators
 
 - For an HTTP API, derive the OpenAPI document from the Rust types with
-  `utoipa`, and generate the TypeScript types from that document with
+  `utoipa`. Then generate the TypeScript types from that document with
   `openapi-typescript`. The frontend gets the paths and the schemas, and
   the document doubles as the API reference.
-- For every other boundary, for example RPC, WebSocket messages, or types
-  that a desktop shell shares, export the TypeScript types with `ts-rs`.
+- For every other boundary, export the TypeScript types with `ts-rs`.
+  Examples of such a boundary are RPC, WebSocket messages, and types that a
+  desktop shell shares.
 - A repository can name a different generator in `AGENTS.md` when it has a
   reason, for example a WebAssembly boundary. The rule does not change:
   Rust is the source, and the frontend consumes generated output.
 
 ## Shapes
 
-- Prefer shapes that the generator expresses exactly: structs, internally
-  tagged enums for discriminated unions, string-keyed maps, and `Option`
-  for a value that can be null or absent.
+- Prefer shapes that the generator expresses exactly. Such shapes are
+  structs, internally tagged enums for discriminated unions, string-keyed
+  maps, and `Option`. Use `Option` for a value that can be null or absent.
 - Do not use `serde_json::Value` or other untyped JSON in a boundary type.
   See the `rust` skill.
 - Decide the wire form of 64-bit integers, decimals, and dates once per
@@ -72,5 +73,5 @@ the commands for each generator.
   legacy to migrate, not precedent for new code.
 - Generate every new boundary type from the start.
 - When you change a hand-written type, move that type to the generated
-  set in the same change, and point its importers at the generated file.
+  set in the same change. Point its importers at the generated file.
 - Track the rest of the migration in a plan; see the `plans` skill.
