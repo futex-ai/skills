@@ -126,11 +126,11 @@ each item.
 
 ## Terms
 
-A term is a name from the codebase, the product, or the toolchain that an
-engineer new to the repository would look up. A general programming word
-is not a term. When an item uses a term that the shared list does not
-define, add **Terms** before **Background**. Define the term there.
-Otherwise leave **Terms** out.
+A term is a name that an engineer new to the repository would look up. It
+comes from the codebase, the product, or the toolchain. A general
+programming word is not a term. When an item uses a term that the shared
+list does not define, add **Terms** before **Background**. Define the term
+there. Otherwise leave **Terms** out.
 
 Each entry is one sentence of 25 words or fewer. Say what the thing is.
 Add where it lives when that helps the reader find it.
@@ -148,18 +148,21 @@ entry shape under a **Terms** heading.
   wording, style, or a rare edge case.
 - Category. Product bug, security, docs or spec, mockup, repository rule,
   test, performance, code structure, dead code, UX wording, or process.
-- Effort. The grade of one option, not of the problem. Count the code
-  change only: product code, scripts, configuration, and infrastructure
-  files. Do not count tests, README files, protocol docs, plans, or mockup
-  output, because the repository rules require them with each code change.
-  Small: two code files or fewer, 30 code lines or fewer, and no new code
-  or test file. Medium: five code files or fewer in one package, and 150
-  code lines or fewer. A new test file or a new helper module in the same
-  package is Medium. Large: every option that is not Small or Medium. A
-  new dependency, a migration, a change on both sides of the backend and
-  frontend boundary, a new mockup, or a new protocol section is Large
-  whatever its size. The effort of an item is the grade of its
-  recommended option.
+- Effort. The grade of one option, not of the problem.
+  - Count the code change only: product code, scripts, configuration, and
+    infrastructure files. Do not count tests, README files, protocol docs,
+    plans, or mockup output. The repository rules require them with each
+    code change.
+  - Small: two code files or fewer, 30 code lines or fewer, and no new code
+    or test file.
+  - Medium: five code files or fewer in one package, and 150 code lines or
+    fewer. A new test file or a new helper module in the same package is
+    Medium.
+  - Large: every option that is not Small or Medium. A new dependency, a
+    migration, or a new mockup is Large whatever its size. So is a new
+    protocol section, or a change on both sides of the backend and frontend
+    boundary.
+  - The effort of an item is the grade of its recommended option.
 
 ## Explaining items again
 
