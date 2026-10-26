@@ -56,10 +56,13 @@ when to read it. [templates/AGENTS.md](templates/AGENTS.md) is the template.
 3. Walk every rule and classify it:
    - **Covered**: the shared skill or the global file says the same thing.
      Drop it.
-   - **Repository-specific**: commands, paths, suite names, size caps and
-     the lint that enforces them, and link checks. Also generated
-     directories, product locations and the shared UI library, review focus
-     areas, and production status. Keep it in the matching template section.
+   - **Repository-specific**: a rule on one of the topics below. Keep it in
+     the matching template section.
+     - commands, paths, and suite names
+     - size caps and the lint that enforces them
+     - link checks and generated directories
+     - product locations and the shared UI library
+     - review focus areas and production status
    - **Conflicting**: the repository says something different from the
      shared skill. For example, it has an older plan index rule or an older
      review rule. The user decides.

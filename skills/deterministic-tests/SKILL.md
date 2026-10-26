@@ -65,9 +65,14 @@ when all of these hold:
 
 1. Reproduce the flake by repeating the test. Record the pass counts before
    and after the fix under `.context/`.
-2. Name the nondeterminism source: real timers, real signals, watcher
-   readiness, or port or path reuse. It can also be async ordering, shared
-   fixture state, or locale and platform differences.
+2. Name the nondeterminism source:
+   - real timers
+   - real signals
+   - watcher readiness
+   - port or path reuse
+   - async ordering
+   - shared fixture state
+   - locale and platform differences
 3. Make the test deterministic with the methods above. Use a fake clock,
    event order, captured inputs, operation counts, an explicit readiness
    signal, or isolated state.

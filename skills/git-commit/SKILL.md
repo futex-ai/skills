@@ -49,9 +49,11 @@ approval. Code is dead only when all of these hold:
    functionality: a command, a script, a migration, or an export of a
    published package. The package manifest says whether a package is
    published.
-4. Nothing keeps it on purpose: no annotation such as
-   `#[expect(dead_code)]`, and no feature flag. No open plan TODO and no
-   protocol doc requires it.
+4. Nothing keeps it on purpose:
+   - no annotation such as `#[expect(dead_code)]`
+   - no feature flag
+   - no open plan TODO
+   - no protocol doc that requires it
 
 Everything else is functionality, also when the product runs it rarely:
 

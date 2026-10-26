@@ -12,11 +12,12 @@ after the report.
 
 ## Scope
 
-- The scope is the diff: each changed or added hunk. It also covers the
-  code outside the diff whose behaviour the diff changes, such as:
-  - a caller of a changed function
-  - a test that covers changed code
-  - a doc that describes changed behaviour
+- The scope is the diff, which covers:
+  - each changed or added hunk
+  - the code outside the diff whose behaviour the diff changes, such as:
+    - a caller of a changed function
+    - a test that covers changed code
+    - a doc that describes changed behaviour
 - A finding must anchor to the scope.
 - The reviewer lists every other problem under `Outside the scope`, one
   line each, without a number or the finding layout. Nobody fixes these
@@ -52,9 +53,9 @@ user.
 
 - A severity: High, Medium, or Low, as the `decisions-and-findings` skill
   defines them.
-- A category: product bug, security, docs or spec, mockup, repository rule,
-  or test. It can also be performance, code structure, dead code, UX
-  wording, or process.
+- A category. Product bug, security, docs or spec, mockup, repository
+  rule, test, performance, code structure, dead code, UX wording, or
+  process.
 - The file path and line reference when possible.
 - The terms: each project term that the finding uses, with one sentence
   that explains it. The `decisions-and-findings` skill says what a term
