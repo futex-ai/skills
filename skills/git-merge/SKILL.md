@@ -55,8 +55,8 @@ After a push, use a follow-up commit.
 
 Justify each intentional decision in the PR description and name every path
 it affects. If no PR exists yet, save the justifications under
-`.context/<plan-name>/`, name that file in the active plan milestone, and
-copy them into the PR description when it opens.
+`.context/<plan-name>/`. Name that file in the active plan milestone. Copy
+the justifications into the PR description when it opens.
 
 ## Before the push
 
