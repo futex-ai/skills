@@ -271,7 +271,8 @@ with the same meaning.
   - Open decision: a split rule in the `writing-skills` skill. Effort
     Small. It is the wider fix of round-4 findings 1 and 2. Round 5 found
     three more splits of that shape, in `implementation-review` and
-    `deterministic-tests`.
+    `deterministic-tests`. It blocks the merge, because one option rewords
+    those splits in this change.
   - Round 5 reviewed the fix commit and found two Low findings. The fix
     round fixed both. The PR description now lists round 4 and its open
     items, and this line records round 5. Report: `round-5.md` under
