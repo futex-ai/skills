@@ -31,9 +31,9 @@ at that moment instead of guessing the rule.
 - Do everything that does not depend on the answers first. Then stop and
   wait. Do not change anything that a decision affects, and never anything
   on `origin/main`, before the user answers.
-- When the user does not answer a decision, apply the recommended option.
-  The exception is a deletion of functionality, which you skip. Name every
-  default you applied in the final report.
+- Silence is not approval. When the user does not answer a decision, it
+  stays open. Do not apply any of its options, also not as an interim
+  step. Report it to the user as outstanding. Say what it blocks.
 - End every task with a final report: what changed and the commit, each
   decision and its outcome, the checks that ran and their results, anything
   skipped or blocked, and the outstanding decisions or review items that

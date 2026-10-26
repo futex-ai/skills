@@ -192,15 +192,15 @@ keep the item order above. Use these labels:
 - **Changed:** what changed, the commit, and the pull request.
 - **Fixed:** each auto-fixed finding. Give its number, its severity, a
   plain explanation, the applied option, what changed, and the commit.
-- **Decisions:** each decision and its outcome. Name each default that you
-  applied.
+- **Decisions:** each decision that the user answered, and its outcome.
 - **Checks:** each check and its result. Give the output of a failed
   check. Name each check that was skipped or blocked, and give the reason.
   Name each unrelated flaky test with its failure text, rerun outcome, and
   suspected source.
-- **Open:** the decisions and review items that still need the user. Add
-  the open plan TODOs, the follow-ups, the problems outside the review
-  scope for a separate branch, and other skipped or blocked work. A
-  follow-up for a wider fix that the review did not apply is one line per
-  class. The line gives the wider fix, its effort, the finding numbers it
-  covers, and the previous examples.
+- **Open:** the decisions and review items that still need the user. For
+  each open decision, say what it blocks. Add the open plan TODOs and the
+  follow-ups. Add the problems outside the review scope for a separate
+  branch, and other skipped or blocked work. A follow-up for a wider fix
+  that the review did not apply is one line per class. The line gives the
+  wider fix, its effort, the finding numbers it covers, and the previous
+  examples.
