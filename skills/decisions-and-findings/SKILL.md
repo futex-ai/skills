@@ -189,7 +189,8 @@ entry shape under a **Terms** heading.
 End every task with a final report. Under **Fixed** and under **Open**,
 keep the item order above. Use these labels:
 
-- **Changed:** what changed, the commit, and the pull request.
+- **Changed:** what changed, the commit, and the branch or the pull
+  request.
 - **Fixed:** each auto-fixed finding. Give its number, its severity, a
   plain explanation, the applied option, what changed, and the commit.
 - **Decisions:** each decision that the user answered, and its outcome.
