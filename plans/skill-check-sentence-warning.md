@@ -177,13 +177,17 @@ the scan and the exit status of the check.
         Also run it with Apple's awk 20200816, built from its source. Use
         bash 5.2 and bash 3.2.57. Evidence:
         `.context/skill-check-sentence-warning/portability/`.
-- [ ] Run `scripts/check.sh` on macOS with BSD awk, through the user's Mac,
+- [x] Run `scripts/check.sh` on macOS with BSD awk, through the user's Mac,
       and compare the warning lines with the Linux run. Save the diff under
       `.context/skill-check-sentence-warning/`.
   - Blocked on 2026-10-20 and 2026-10-21: the Mac did not answer two
     requests on each day. Apple's libc source shows that its C locale
     accepts every byte, so Apple awk reads non-ASCII text there. Evidence:
     `portability/notes.md` under `.context/skill-check-sentence-warning/`.
+  - Done on 2026-10-26 with macOS 15.7.3, BSD awk 20200816, and bash
+    3.2.57. The output matches Linux byte for byte at `79352941` and at
+    `ce4cf6c`, in three locales. The tests pass 7 of 7. Evidence: the same
+    `portability/notes.md`.
 - [x] Commit with Conventional Commits, for example
       `feat(check): warn about sentences over 20 words`, and push the
       branch. Say in the PR description that an installed clone gets the
@@ -229,6 +233,9 @@ with the same meaning.
 
 - [x] Merge `origin/main` into the branch, because PR #27 changed two of
       the skills. Run the merge audit.
+- [x] Merge `origin/main` again at `414ddd5`, because PR #28 conflicted
+      with the split in three skills. Keep every line of PR #28. The check
+      still prints no sentence warning.
 - [x] Split the long sentences of each skill in its own commit, with the
       type `style`. Keep the meaning, the terms, and the line width of the
       file. Do not change a paragraph that has no long sentence.
@@ -262,7 +269,15 @@ with the same meaning.
     effort Small. Recommended: A, keep them and keep later titles within
     50.
   - Open decision: a split rule in the `writing-skills` skill. Effort
-    Small. It is the wider fix of round-4 findings 1 and 2.
+    Small. It is the wider fix of round-4 findings 1 and 2. Round 5 found
+    three more splits of that shape, in `implementation-review` and
+    `deterministic-tests`.
+  - Round 5 reviewed the fix commit and found two Low findings. The fix
+    round fixed both. The PR description now lists round 4 and its open
+    items, and this line records round 5. Report: `round-5.md` under
+    `.context/skill-check-sentence-warning/review/`.
+  - `scripts/check.sh`: on macOS, `wc -l` pads the count in the 200-line
+    warning with spaces. Separate branch.
   - `plans/skill-check-sentence-warning.md`: the opening paragraph holds
     12 sentences. Separate branch.
   - `skills/*/SKILL.md`: 18 semicolons stay in paragraphs that the split
