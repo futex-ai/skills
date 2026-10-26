@@ -154,8 +154,9 @@ The full rule with every condition is in
    problems alone.
 2. Run the checks, commit, push, and run the review once more on the fix.
    Name each fixed finding in its commit message.
-3. Fix any new `Auto-fix: yes` findings once more, then stop. Do not start a
-   third fix round without the user.
+3. Fix any new `Auto-fix: yes` findings once more, then stop. The
+   `finish-work` skill gives the next steps: the pull request and the
+   report. Do not start a third fix round without the user.
 4. In the final message, list the auto-fixed findings separately from the
    findings that need a decision. For each auto-fixed finding, give the
    number, severity, plain explanation, applied option, what changed, and

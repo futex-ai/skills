@@ -1,6 +1,6 @@
 # <Change title>
 
-Status: Active. <One sentence on the branch or PR, for example "[PR #123](<url>) is open. The plan closes when its PR merges.">
+Status: Active. On branch `<branch>`, no pull request yet. The plan closes when its PR merges. <When a pull request opens, the branch sentence becomes "[PR #123](<url>) is open.">
 
 <One or two short paragraphs: the problem, the chosen approach, and what the
 change does not cover. Record each user decision with its date, the
@@ -30,7 +30,7 @@ Tags: mockup <keep the tag line only for a mockup or ui milestone>
 - [ ] <TODO>
   - [ ] <sub-task>
 
-## Milestone N: Verification, commit, and review
+## Milestone N: Verification, commit, review, and pull request
 
 <Summary.>
 
@@ -44,6 +44,8 @@ Tags: mockup <keep the tag line only for a mockup or ui milestone>
     title, severity, effort, and recommended option. Follow-ups for wider
     fixes that the review did not apply, and problems outside the scope, go
     here too, one line each.>
+- [ ] Open the pull request when every other milestone TODO is ticked.
+      Put its link in the status paragraph.
 
 ## Post-merge follow-up (non-blocking)
 
