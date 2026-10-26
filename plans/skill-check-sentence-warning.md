@@ -19,9 +19,10 @@ so that each holds one instruction of 20 words or fewer".
 The change adds a warning to the skill check. The check lists each sentence
 of more than 20 words in the prose of a `SKILL.md` file. It skips the
 frontmatter, the headings, the table rows, and the fenced code. A warning
-does not fail the run. The change does not cover `references/`,
-`templates/`, `global/AGENTS.md`, or `README.md`. Open decision 2 asks
-about the first two.
+does not fail the run. The change also splits each such sentence in the 16
+`SKILL.md` files, so that the check prints no sentence warning. The change
+does not cover `references/`, `templates/`, `global/AGENTS.md`, or
+`README.md`.
 
 Decision of 2026-10-20: the user chose option B, a warning. Option A was no
 check, with the `writing-skills` checklist and the review as the only
@@ -40,6 +41,21 @@ the limit in the code comment and in this plan. Option B ended no sentence
 inside a code span. Option C counted each code span as one word. The user
 gave no reason. Option A keeps the word rule and every current warning.
 
+Decisions of 2026-10-26. On 2026-10-20 decisions 1 and 2 had no answer.
+Their recommended options applied as defaults.
+[PR #27](https://github.com/futex-ai/skills/pull/27) reopened them on
+2026-10-21: silence is not approval. The user then answered them:
+
+- Decision 1, the existing long sentences: option B, split them in this
+  change. Option A left them. Option C, the recommendation, split them on
+  a separate branch after the merge. The user gave no reason. The merge
+  now waits for the split.
+- Decision 2, the scope of the scan: option A, `SKILL.md` only. Option B
+  also scanned `references/` and `templates/`. The user gave no reason.
+- Review round 3, finding 2: option A. The plan states what decision 1
+  blocks. With decision 1 answered, the split is part of this change. So
+  the merge waits for it.
+
 The scan measured `main` at `69c40ed` on 2026-10-20. The 16 `SKILL.md`
 files hold 112 sentences of more than 20 words, from 1 to 19 per skill.
 They hold 37 sentences of more than 25 words. The `references/` files hold
@@ -48,29 +64,6 @@ They hold 37 sentences of more than 25 words. The `references/` files hold
 paragraph of a file when it read more than one file. Evidence:
 `.context/skill-check-sentence-warning/`, files `check-output.txt` and
 `prototype-per-file-69c40ed.txt`.
-
-## Open decisions
-
-On 2026-10-20 the user did not answer decisions 1 and 2. Their recommended
-options applied as defaults, under the always-on rules of that day. On
-2026-10-21, [PR #27](https://github.com/futex-ai/skills/pull/27) changed
-the rules: silence is not approval. So both decisions are open again. No
-option applies.
-
-1. The existing long sentences print on every run.
-   - A: leave them. Each skill loses its lines when it is next edited.
-   - B: split them in this change, 16 files, effort Large.
-   - C: land the check first, then split them on a separate branch.
-   - Recommended: C. The check stays small to review, and the noise ends
-     with the next PR.
-   - While it is open, it blocks the follow-up split. It blocks the merge
-     only if the user chooses B.
-2. The scan covers `SKILL.md` only, as the user decided on 2026-10-20.
-   - A: keep that scope.
-   - B: also scan `references/` and `templates/`, 82 more lines today.
-   - Recommended: A. It keeps the decided scope, and a later change can
-     widen the glob once the baseline is clean.
-   - While it is open, it blocks only a wider scan.
 
 Contract owners:
 
@@ -220,16 +213,34 @@ the scan and the exit status of the check.
     `.context/skill-check-sentence-warning/review/`.
   - Round 3, finding 1. No test pins the kept code-span rule. Severity Low,
     effort Small. Recommended: A, add one line to the closing-marks test.
-  - Round 3, finding 2. Decision 1 does not say that it blocks the merge.
-    Severity Low, effort Small. Recommended: A, reword the item in the plan
-    and in the PR description.
+  - Round 3, finding 2 is closed. On 2026-10-26 the user chose A, and
+    decision 1 has an answer.
   - `README.md` and the `writing-skills` skill promise a warning for each
     sentence over 20 words. The code-span limit hides some. Separate
     branch.
 
-## Post-merge follow-up (non-blocking)
+## Milestone 4: Split the long sentences
 
-- [ ] Blocked on open decision 1. When the user chooses C, split the 112
-      long sentences of the 16 `SKILL.md` files on a separate branch. Use
-      one commit per skill. Stop when `scripts/check.sh` prints no sentence
-      warning.
+Decision 1 of 2026-10-26 moves the split into this change. After the merge
+of `main` at `ae1a2c2`, the 16 `SKILL.md` files hold 110 sentences of more
+than 20 words. The code-span limit hides one more, at line 101 of the
+`plans` skill. Each one becomes shorter sentences of 20 words or fewer,
+with the same meaning.
+
+- [x] Merge `origin/main` into the branch, because PR #27 changed two of
+      the skills. Run the merge audit.
+- [ ] Split the long sentences of each skill in its own commit, with the
+      type `style`. Keep the meaning, the terms, and the line width of the
+      file. Do not change a paragraph that has no long sentence.
+  - [ ] Compare the content words of each file before and after the split.
+        Evidence: `.context/skill-check-sentence-warning/split/`.
+  - [ ] Keep each paragraph at six sentences or fewer. Two paragraphs
+        already hold ten. Split them at a natural break.
+  - [ ] Keep the line count of each `SKILL.md` close to its current count.
+        No skill crosses 200 lines because of the split.
+- [ ] Run `scripts/check.sh`: it prints no sentence warning. Run the
+      complete gate.
+- [ ] Commit and push. Update the PR description.
+- [ ] Review the split with the `implementation-review` skill after the
+      push. Report the findings, then apply the review-fix rule: fix the
+      `Auto-fix: yes` findings, re-review once, and report the rest.
