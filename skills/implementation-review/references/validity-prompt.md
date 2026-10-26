@@ -9,14 +9,14 @@ commit, as for the options check. The fix round waits for its verdicts.
 Run it again on the findings of the re-review, before the second fix
 round.
 
-A finding that fails a check is removed from the report. Keep the
-validity report beside the review report. Name each removed finding in
-one line under **Checks** in the final message. Give its number, its
-title, and the check that failed. A finding outside the scope is removed
-too, and its line says that the problem went to the `Outside the scope`
-list. A corrected severity or category replaces the finding's line, and
-the finding keeps its number. When the corrected category always waits
-for the user, the tag becomes `Auto-fix: no`.
+A finding that fails one of checks 1 to 4 is removed from the report.
+Keep the validity report beside the review report. Name each removed
+finding in one line under **Checks** in the final message. Give its
+number, its title, and the check that failed. A finding outside the scope
+is removed too, and its line says that the problem went to the
+`Outside the scope` list. A corrected severity or category replaces the
+finding's line, and the finding keeps its number. When the corrected
+category always waits for the user, the tag becomes `Auto-fix: no`.
 
 The scope of the prompt is the diff. When the user asked for a wider
 review, replace the second sentence of the prompt with that scope. The

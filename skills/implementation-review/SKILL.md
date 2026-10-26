@@ -51,9 +51,8 @@ after the report.
    waits for the user, the tag becomes `Auto-fix: no`. Name each removed
    finding in one line under **Checks** in the final message. Give its
    number, its title, and the check that failed.
-6. Run the options check, the second part. It is a fresh read-only
-   context. Give it the confirmed findings tagged `Auto-fix: no` and the
-   prompt in
+6. Run the options check, the second part. It is a fresh read-only context.
+   Give it the confirmed findings tagged `Auto-fix: no` and the prompt in
    [references/second-pass-prompt.md](references/second-pass-prompt.md).
    It checks that the options are complete and that the recommendation is
    the best one. Run it beside the fix round, in the same checkout. When a
@@ -67,8 +66,9 @@ after the report.
    way. The `Auto-fix` tag does not change, and an open finding stays
    open. A new problem inside the scope goes into the review focus of the
    re-review. When no re-review runs, it goes under **Open**. A new
-   problem outside the scope joins the `Outside the scope` list. Save
-   both second-pass reports beside the review report.
+   problem outside the scope joins the `Outside the scope` list. A kept
+   condition and a place that is not a real choice stay in the saved
+   options report. Save both second-pass reports beside the review report.
 
 ## Finding format
 

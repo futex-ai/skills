@@ -65,7 +65,9 @@ run.
   findings stay in the diff unless the user explicitly asked for a wider
   review.
 - Run the validity check of the `implementation-review` skill over every
-  finding before each fix round. A finding that fails a check is removed.
+  finding before each fix round. A finding that is not real or not in the
+  scope is removed. The check corrects a wrong severity or category in
+  place.
 - Apply the review-fix rule. Fix only the confirmed findings tagged
   `Auto-fix: yes`, with the option that each tag names. Run the checks.
   Commit and push. Re-review once. Then stop the fix rounds and go on to

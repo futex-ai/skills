@@ -131,8 +131,9 @@ suspected source, as the `deterministic-tests` skill requires.
 
 - Keep the review itself read-only.
 - Run the validity check over every finding before each fix round, in its
-  own checkout of the reviewed commit. A finding that fails a check is
-  removed. A real problem outside the scope joins the `Outside the scope`
+  own checkout of the reviewed commit. A finding that is not real or not
+  in the scope is removed. The check corrects a wrong severity or category
+  in place. A real problem outside the scope joins the `Outside the scope`
   list. The fix round applies confirmed findings only.
 - Run the options check over the confirmed `Auto-fix: no` findings beside
   the first fix round, in the same checkout. It adds options and can
