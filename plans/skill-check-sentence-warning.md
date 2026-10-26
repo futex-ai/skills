@@ -232,8 +232,8 @@ with the same meaning.
 - [x] Split the long sentences of each skill in its own commit, with the
       type `style`. Keep the meaning, the terms, and the line width of the
       file. Do not change a paragraph that has no long sentence.
-  - Two sibling list items changed too, so that their lists stay alike:
-    the deletion options in `agents-md` and the reference kind in
+  - Two sibling list items changed too, so that their lists stay alike.
+    They are the deletion options in `agents-md` and the reference kind in
     `writing-skills`. Each edited paragraph also lost its semicolons and
     its clauses in parentheses.
   - The example description in `writing-skills` is a fenced YAML line, not
