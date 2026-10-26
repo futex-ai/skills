@@ -12,22 +12,23 @@ repository's `AGENTS.md` under `## Product`.
 
 - Before you build UI, check the shared UI library named in `AGENTS.md`
   first, then the app's reusable base components. Use them where possible.
-- If a component or pattern is used many times across the app, extract it
-  or add it to the shared components instead of duplicating the
-  implementation.
+- If the app uses a component or pattern many times, extract it or add it
+  to the shared components. Do not duplicate the implementation.
 
 ## Forbidden visual patterns
 
-- Never use a left-edge accent border or vertical accent rail to emphasize,
-  select, categorize, decorate, or communicate the status of content. This
-  includes a contrasting stroke attached to the left side of a card, panel,
-  callout, banner, toast, quote, list row, navigation item, or any other
-  content surface, including strokes with rounded ends or corners.
+- Never use a left-edge accent border or vertical accent rail to emphasize
+  or select content. Do not use one to categorize or decorate content, or
+  to communicate its status. This includes a contrasting stroke attached to
+  the left side of any content surface. Examples of such a surface are a
+  card, panel, callout, banner, toast, quote, list row, and navigation
+  item. It also includes strokes with rounded ends or corners.
 - Do not recreate the pattern with a pseudo-element, inset shadow,
   gradient, outline, or separate adjacent bar.
 - Use the component system's typography, spacing, icons, full-surface
-  treatments (a full-perimeter border, a tinted fill, a leading icon), or
-  standard selection controls instead.
+  treatments, or standard selection controls instead. Examples of a
+  full-surface treatment are a full-perimeter border, a tinted fill, and a
+  leading icon.
 - Neutral structural borders such as column dividers and nesting indent
   guides are layout, not emphasis, and remain fine.
 - This applies to product code and to mockups.
@@ -43,17 +44,18 @@ environment configuration.
 
 - Dynamic user, business, and domain data displayed to the user is never
   faked, stubbed, hardcoded, or mocked in product code. Metrics, entities,
-  statuses, rows, and calculated values come from a real source: an API, a
-  database, a store, or live computation.
-- Do not ship placeholder numbers, dummy rows, lorem-ipsum content, or
-  "TODO: wire up real data" values in screens users can reach.
+  statuses, rows, and calculated values come from a real source. The
+  source is an API, a database, a store, or live computation.
+- Do not ship placeholder numbers, dummy rows, or lorem-ipsum content in
+  screens users can reach. Do not ship "TODO: wire up real data" values
+  there either.
 - Static product copy, navigation labels, accessibility text, form
-  placeholders, design constants, and explicit loading, empty, error, or
-  unavailable-data states are not dynamic data and may live in product
-  code.
+  placeholders, and design constants are not dynamic data. Neither are
+  explicit loading, empty, error, or unavailable-data states. All of these
+  may live in product code.
 - If the real source is not available yet, render an explicit unavailable,
-  empty, loading, or error state, and wire the view to the real source
-  before the feature is complete.
+  empty, loading, or error state. Wire the view to the real source before
+  the feature is complete.
 - Faked or stubbed data is acceptable only in tests, mocks, fixtures, and
   mockups.
 
@@ -70,13 +72,15 @@ environment configuration.
   exists.
 - Remove any sentence whose absence would not change what the user
   understands, decides, or does next.
-- Never leak internal implementation detail into text users read:
-  validation-artefact, schema, or pipeline names, internal flags, message
-  classes, file formats, environment names, or code identifiers.
+- Never leak internal implementation detail into text users read. Such
+  detail includes validation-artefact, schema, or pipeline names, internal
+  flags, and message classes. It also includes file formats, environment
+  names, and code identifiers.
 - When technical detail has genuine product value, surface it in a clearly
-  secondary place such as a details or profile panel, not in headline copy.
+  secondary place. A details or profile panel is such a place. Do not put
+  it in headline copy.
 - Keep a positive frame. Say what the product does, where it is, and what
   the reader can do. Answer a question with the positive fact, not with
-  "No". State a real limit only when the reader needs it, pair it with
-  what they can do instead, and keep it out of headlines.
+  "No". State a real limit only when the reader needs it. Pair it with
+  what they can do instead. Keep it out of headlines.
 - This applies to mockups and to product implementation alike.
