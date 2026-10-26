@@ -112,8 +112,8 @@ Every commit message and pull request title uses the Conventional Commits
 format: `<type>(<optional scope>): <description>`, a blank line, then the
 body. The format enables automated changelogs and readable history.
 
-- Commit titles use at most 50 characters. Pull request titles and their
-  squash commit titles use at most 72 Unicode code points.
+- Pull request titles and their squash commit titles use at most 72
+  Unicode code points.
 - The body has no strict length limit. Always include a body that explains
   what changed and why, not only a title.
 - A commit may hold multiple entries when it has distinct change types.
