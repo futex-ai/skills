@@ -128,10 +128,11 @@ The full rule with every condition is in
 - A copy defect is user-facing text that has a typo or breaks a rule
   under `## Copy` in the `product-ui` skill. Its category is UX wording,
   not repository rule. The fix keeps the meaning when it adds no fact or
-  action and removes no fact or action that the user needs. Such a fix
-  changes no user-visible behaviour. The direct fix changes only the words
-  that carry the defect. When the meaning is in doubt, the reviewer tags
-  the finding `Auto-fix: no`.
+  action and removes no fact or action that the end user needs. When no
+  protocol doc states the text, a fix that keeps the meaning stays within
+  the contract. The direct fix changes only the words that carry the
+  defect. When the meaning is in doubt, the reviewer tags the finding
+  `Auto-fix: no`.
 - `Auto-fix: no` when every option is blocked, when the best option on
   the merits is blocked and is not a wider fix, when the options have real
   trade-offs and no option is clearly best, or when the finding is a slow,

@@ -60,10 +60,10 @@ when at least one option is not blocked, for findings in these categories:
   typo or breaks a rule under `## Copy` in the `product-ui` skill. The
   reviewer gives the finding the category UX wording, not repository rule.
   The fix keeps the meaning when it adds no fact or action and removes no
-  fact or action that the user needs. Such a fix changes no user-visible
-  behaviour. The direct fix changes only the words that carry the defect.
-  When the meaning is in doubt, the reviewer tags the finding
-  `Auto-fix: no`.
+  fact or action that the end user needs. When no protocol doc states the
+  text, a fix that keeps the meaning stays within the contract. The direct
+  fix changes only the words that carry the defect. When the meaning is in
+  doubt, the reviewer tags the finding `Auto-fix: no`.
 
 The letter names the best-ranked option that is not blocked: a structural
 wider fix, then a detection wider fix, then the direct fix. The ranking is
