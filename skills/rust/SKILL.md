@@ -30,16 +30,17 @@ with examples and take precedence when the two differ in detail:
 ## Architecture
 
 - Model all non-pure behaviour behind traits and consume it through
-  `dyn Trait`, with `Arc<dyn Trait + Send + Sync>` for shared runtime
+  `dyn Trait`. Use `Arc<dyn Trait + Send + Sync>` for shared runtime
   dependencies. Prefer `dyn` dispatch over parametric generics. Only small
   pure free functions and pure value types are exempt.
 - Use `unimock` to mock trait boundaries in unit tests, including same-crate
   traits with one implementation. Unit tests must not use real disk IO,
   databases, Docker, subprocesses, clocks, or network calls.
-- Use `tracing` for diagnostics in libraries, servers, and workers; never
-  `println!`, `eprintln!`, or `dbg!` there. Direct terminal output is only
-  for CLI results, prompts, raw data output, REPL messages, build-script
-  directives, tests, examples, and developer task output.
+- Use `tracing` for diagnostics in libraries, servers, and workers. Never
+  use `println!`, `eprintln!`, or `dbg!` there. Direct terminal output is
+  only for CLI results, prompts, raw data output, and REPL messages.
+  Build-script directives, tests, examples, and developer task output may
+  also use it.
 - Prefer enums and structs over raw strings and `serde_json::Value`. Fully
   type domain, service, and interface code.
 - Types that cross to a TypeScript or JavaScript frontend are generated
@@ -72,8 +73,8 @@ with examples and take precedence when the two differ in detail:
   code may use them.
 - Avoid `unsafe` except for FFI. Keep it minimal, isolate it, and add a
   safety comment.
-- Define errors as `thiserror` enums per crate or module with `[crate/mod]`
-  message prefixes, typed variants that callers branch on, and
-  `Internal(#[from] InternalError)` as the fallback. Propagate with `?`.
+- Define errors as `thiserror` enums per crate or module. Give them
+  `[crate/mod]` message prefixes and typed variants that callers branch on.
+  Use `Internal(#[from] InternalError)` as the fallback. Propagate with `?`.
   Never use `anyhow`, `eyre`, `#[error(transparent)]`, `Other(String)`,
   string matching on errors, or `map_err` in production code.
