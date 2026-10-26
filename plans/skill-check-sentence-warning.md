@@ -265,9 +265,9 @@ with the same meaning.
     2: two splits had weakened an "only" condition. It also fixed one more
     case of that class in the `plans` skill. Report: `round-4.md` under
     `.context/skill-check-sentence-warning/review/`.
-  - Round 4, finding 3. Two commit titles have 51 characters. Severity Low,
-    effort Small. Recommended: A, keep them and keep later titles within
-    50.
+  - Round 4, finding 3. Four commit titles have 51 or 52 characters, and
+    two merge titles have 66. Severity Low, effort Small. Recommended: A,
+    keep them and keep later titles within 50.
   - Open decision: a split rule in the `writing-skills` skill. Effort
     Small. It is the wider fix of round-4 findings 1 and 2. Round 5 found
     three more splits of that shape, in `implementation-review` and
