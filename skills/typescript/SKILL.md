@@ -20,7 +20,7 @@ layout.
   `AGENTS.md` after every change, and the formatter before you commit.
 - A package that lacks ESLint or Prettier gets them in their own change.
   Fix the existing findings, or list them in a baseline that only
-  shrinks, as the repository does for its other lints.
+  shrinks. The repository does the same for its other lints.
 - Add a dependency with `npm install` in its workspace package, so that
   the manifest and the lockfile change together.
 
@@ -28,9 +28,9 @@ layout.
 
 - Fully type domain, API, state, and script code. Do not use `any`. Do
   not use a cast to silence a type error; fix the type.
-- Data from outside the program, for example a response body, a file, a
-  query string, or storage, enters as `unknown` and passes through a
-  parser that narrows it before use.
+- Data from outside the program enters as `unknown`. Examples are a
+  response body, a file, a query string, or storage. The data passes
+  through a parser that narrows it before use.
 - Types for backend data are generated from the Rust types. See the
   `shared-types` skill. Shared data transfer objects and API clients live
   in one package, and a screen never redefines them.
