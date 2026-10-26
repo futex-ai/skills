@@ -31,17 +31,20 @@ description: Use before you add, edit, or name a database migration or a seed mi
 
 ## Postgres store crates
 
-- A crate named `*-store-pg` contains only database query implementations,
-  Diesel row mappings, migration and schema integration, and mappings to
-  its store-interface DTOs and errors.
-- It may depend on its store-interface crate, the shared schema and
-  migrations crate, and the external database, serialization, and error
-  crates it needs.
+- A crate named `*-store-pg` contains only:
+  - database query implementations
+  - Diesel row mappings
+  - migration and schema integration
+  - mappings to its store-interface DTOs and errors
+- It may depend on its store-interface crate and on the shared schema and
+  migrations crate. It may also depend on the external database,
+  serialization, and error crates it needs.
 - It does not hold business logic, service orchestration, runtime wiring,
-  agent turn runners, model or tool providers, queue scheduling, HTTP or
-  gRPC clients, KMS composition, or other side-effecting service adapters.
+  agent turn runners, or model or tool providers. It also does not hold
+  queue scheduling, HTTP or gRPC clients, KMS composition, or other
+  side-effecting service adapters.
 - If a Postgres-backed service needs more than query execution and
-  interface mapping, keep the query code in the `*-store-pg` crate and put
-  the service and composition logic in a separate non-store crate.
+  interface mapping, keep the query code in the `*-store-pg` crate. Put its
+  service and composition logic in a separate non-store crate.
 - Existing `*-store-pg` code that violates this rule is legacy structure to
   extract, not precedent for new code.
