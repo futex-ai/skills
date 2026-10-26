@@ -75,6 +75,11 @@ description: Use when a test fails and then passes on a rerun, when a test would
   repository check warns about each sentence of more than 20 words, the
   limit for an instruction. It skips headings, tables, and fenced code
   blocks.
+  - When you split a long sentence, repeat a condition, such as only or
+    never, in each sentence that it limits. Do not point back to it with
+    words such as "for the same reason". Example: "Do not drop an option
+    or rank it lower only because it conflicts with a protocol doc. Do not
+    recommend a different option only because of that conflict."
 - Name another skill in backticks, as in "the `git-commit` skill". Do not
   use an `@` link. It loads the file at once, before the moment.
 - Give no repository-specific paths, commands, or crate names. Say "the
