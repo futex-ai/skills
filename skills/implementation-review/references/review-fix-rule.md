@@ -142,7 +142,8 @@ suspected source, as the `deterministic-tests` skill requires.
   `Auto-fix: yes` tag names. Run the checks, commit, and push. Then re-run
   the review once on the fix.
 - Run the validity check on the new findings. Fix any confirmed new
-  `Auto-fix: yes` findings once more, then stop and report. Do not start a
+  `Auto-fix: yes` findings once more, then stop. The `finish-work` skill
+  gives the next steps: the pull request and the report. Do not start a
   third fix round without the user.
 
 ## Reporting
