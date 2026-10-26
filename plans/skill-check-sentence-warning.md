@@ -55,6 +55,11 @@ Their recommended options applied as defaults.
 - Review round 3, finding 2: option A. The plan states what decision 1
   blocks. With decision 1 answered, the split is part of this change. So
   the merge waits for it.
+- The split rule, the wider fix of review round 4, findings 1 and 2:
+  option C. A rule in the `writing-skills` skill keeps each condition in a
+  split. This change rewords the splits of the same shape. Option A had no
+  rule. Option B was the rule alone. The user gave no reason. Option C was
+  the recommendation.
 
 The scan measured `main` at `69c40ed` on 2026-10-20. The 16 `SKILL.md`
 files hold 112 sentences of more than 20 words, from 1 to 19 per skill.
@@ -268,11 +273,8 @@ with the same meaning.
   - Round 4, finding 3. Four commit titles have 51 or 52 characters, and
     two merge titles have 66. Severity Low, effort Small. Recommended: A,
     keep them and keep later titles within 50.
-  - Open decision: a split rule in the `writing-skills` skill. Effort
-    Small. It is the wider fix of round-4 findings 1 and 2. Round 5 found
-    three more splits of that shape, in `implementation-review` and
-    `deterministic-tests`. It blocks the merge, because one option rewords
-    those splits in this change.
+  - The split-rule decision is closed. On 2026-10-26 the user chose C.
+    Milestone 5 holds the work.
   - Round 5 reviewed the fix commit and found two Low findings. The fix
     round fixed both. The PR description now lists round 4 and its open
     items, and this line records round 5. Report: `round-5.md` under
@@ -283,3 +285,27 @@ with the same meaning.
     12 sentences. Separate branch.
   - `skills/*/SKILL.md`: 18 semicolons stay in paragraphs that the split
     did not edit. Separate branch.
+
+## Milestone 5: The split rule
+
+The user's decision of 2026-10-26 on the split rule, option C. A rule in
+the `writing-skills` skill keeps each condition in a split. The splits
+that break the rule, or that close a list and then extend it, are
+reworded. Evidence: `.context/skill-check-sentence-warning/split-rule/`.
+
+- [x] Add the rule to the STE bullet of the `writing-skills` skill, with a
+      real example.
+- [x] Reword the three splits that review round 5 found, in
+      `implementation-review` and `deterministic-tests`.
+- [x] Reword two more splits of that shape, found by a search: in
+      `agents-md` and in `git-commit`.
+- [x] Apply the rule to the split. Five sentences pointed back to a
+      condition or lost it, in `decisions-and-findings`, `documentation`,
+      `plans`, and `product-ui`.
+- [x] Run `scripts/check.sh` and the complete gate.
+- [ ] Commit and push. Update the PR description.
+- [ ] Review the change with the `implementation-review` skill after the
+      push. Report the findings, then apply the review-fix rule: fix the
+      `Auto-fix: yes` findings, re-review once, and report the rest.
+- [x] Open the pull request. [PR #26](https://github.com/futex-ai/skills/pull/26)
+      opened on 2026-10-20, under the rules of that day.
