@@ -37,25 +37,26 @@ Each fact lives in one place. Other docs link to it.
 - Links to the architecture doc, the protocol docs, and the `plans/`
   directory.
 
-Read the `README.md` for the area you work on before you change it, and
-update it with any new useful context in the same change.
+Read the `README.md` for the area you work on before you change it. Update
+the README with any new useful context in the same change.
 
 ## Rust crate READMEs
 
 - Treat every crate `README.md` as user-facing documentation good enough to
   publish on crates.io.
-- Start with a short statement of what the crate is for, where it fits in
-  the workspace, and when a caller should depend on it.
+- Start with a short statement of what the crate is for. The statement also
+  says where it fits in the workspace, and when a caller should depend on it.
 - Document the public behaviour and integration boundary, not only internal
   implementation details.
 - Include these sections, in this order: `## Responsibilities`,
-  `## What This Crate Does`, `## Quick Start`, `## Development`,
-  `### Key Code`, `### Related Docs`.
+  `## What This Crate Does`, `## Quick Start`, `## Development`. End with
+  `### Key Code` and `### Related Docs`.
 - `## Quick Start` includes example code or runnable commands, not only
   prose.
 - `### Key Code` names the entry points: the files, types, and functions
-  that a reader opens first, each with one sentence on what it does. This
-  is the home of code references, so that protocol docs do not need them.
+  that a reader opens first. Give each entry point one sentence on what it
+  does. This is the home of code references, so that protocol docs do not
+  need them.
   Update it when an entry point moves or changes.
 - `### Related Docs` links to the protocol docs and the architecture doc
   that the crate implements.
@@ -80,15 +81,15 @@ update it with any new useful context in the same change.
 ## Architecture docs
 
 An architecture doc describes the structure that no single piece of code
-shows: the components of the system, the responsibility of each, the
-boundaries between them, and the flow of data across the boundaries. It
-lives under `docs/`, for example `docs/architecture.md` or
-`docs/architecture/<area>.md`.
+shows. It describes the components of the system and the responsibility of
+each. It also describes the boundaries between them, and the flow of data
+across the boundaries. It lives under `docs/`, for example
+`docs/architecture.md` or `docs/architecture/<area>.md`.
 
 - Describe components and their responsibilities, not modules, files, or
   functions. Code-level structure goes stale on every refactor. A component
   boundary does not.
-- Keep few architecture docs: one for the system, and one for a large area
+- Keep few architecture docs: one for the system. Add one for a large area
   when the system doc passes the length target.
 - Update an architecture doc when a component, a responsibility, or a
   boundary changes. A change inside a component needs no update.
@@ -101,8 +102,8 @@ a command list. Hand-written reference drifts on every addition.
 
 - When a generator exists, generate the reference from the code and commit
   the output. The `shared-types` skill gives the generators for types that
-  cross between Rust and TypeScript, and utoipa gives the OpenAPI document
-  for an HTTP API.
+  cross between Rust and TypeScript. For an HTTP API, utoipa gives the
+  OpenAPI document.
 - Keep in prose only the semantics that a generator cannot express, such as
   idempotency, authorization, and ordering rules. These are requirements and
   belong in the protocol doc.
@@ -114,12 +115,12 @@ a command list. Hand-written reference drifts on every addition.
 A protocol doc holds the requirements and the decisions in force for one
 area. A human reviews it before implementation starts. The post-push review
 checks the behaviour of the code against it. Every change to a protocol doc
-is therefore a change to a requirement or to a decision, and is worth a
-review.
+is therefore a change to a requirement or to a decision. Each one is worth
+a review.
 
-- A requirement states observable behaviour at a boundary: an interface, a
-  wire format, a state transition, an error, a limit, or what a user sees.
-  Write one requirement in each sentence.
+- A requirement states observable behaviour at a boundary. It covers an
+  interface, a wire format, a state transition, an error, a limit, or what
+  a user sees. Write one requirement in each sentence.
 - Apply this test to every sentence: could a different implementation
   satisfy the sentence? If yes, the sentence is a requirement and stays. If
   no, the sentence describes the implementation. Move it to the home that
@@ -130,21 +131,21 @@ review.
   alternative again.
 - Do not keep a dated decision log in a protocol doc. The plan holds the
   dated record of each decision. When a later decision supersedes an
-  earlier one, the plan that made it holds the history, and the protocol
-  doc shows only the decision in force.
+  earlier one, the plan that made it holds the history. The protocol doc
+  shows only the decision in force.
 - Do not name source files, functions, hooks, modules, or internal call
   order. Do not record history, such as what the code did before a change.
   Do not give implementation tips. Do not list every case: state the rule
   once and let the tests hold the cases.
-- A protocol doc is complete when a reader can tell, for every behaviour at
-  the boundary, whether the code meets the requirements. It does not say
-  how the code meets them.
+- A protocol doc is complete when a reader can tell, for each boundary
+  behaviour, whether the code meets the requirements. It does not say how
+  the code meets them.
 - Keep each doc short, about 250 lines. When you touch a doc that passes
   the target, split it into linked pages in the same change.
-- When a protocol doc that you touch still names code or describes
-  mechanics, move that content to its home in the same change.
+- If a protocol doc that you touch still names code, move that content to
+  its home in the same change. Do the same when it describes mechanics.
 - The first milestone of every plan writes the requirements and the
-  decisions for the work that follows; see the `plans` skill.
+  decisions for the work that follows. See the `plans` skill.
 - When a bug reaches a review or production, check whether a requirement
   was missing or unclear. Propose the missing or clearer requirement as a
   decision with the other decisions of the task. After the user chooses the
@@ -158,19 +159,19 @@ Protocol docs describe the current requirements. They are not fixed rules.
   change, however much the code changes.
 - A change to the behaviour changes a requirement. Update the protocol doc
   in the same change.
-- A requirement change is a decision for the user. When the implementation
-  finds that a requirement is wrong, incomplete, or worse than an
-  alternative, propose the change as a decision in the layout of the
-  `decisions-and-findings` skill, with the other decisions of the task. Do
-  everything that does not depend on it first. Until the user answers,
-  change neither the behaviour nor the doc.
+- A requirement change is a decision for the user. If the implementation
+  finds a requirement wrong, incomplete, or worse than an alternative,
+  propose the change as a decision. Use the layout of the
+  `decisions-and-findings` skill. Send it with the other decisions of the
+  task. Do everything that does not depend on it first. Until the user
+  answers, change neither the behaviour nor the doc.
 - When the code and a protocol doc disagree, do not assume that the doc is
   right. Decide on the merits which side is right, then change the other
   side to match it.
-- Do not drop an option, rank it lower, or recommend a different option
-  only because it conflicts with a protocol doc. Include the doc update in
-  that option and in its effort.
+- Do not drop an option or rank it lower only because it conflicts with a
+  protocol doc. For the same reason, do not recommend a different option.
+  Include the doc update in that option and in its effort.
 - The decision and safety rules still apply. The review-fix rule in the
-  `implementation-review` skill and the deletion audit in the `git-commit`
-  skill send some options to the user. Recommend such an option on its
+  `implementation-review` skill sends some options to the user. So does the
+  deletion audit in the `git-commit` skill. Recommend such an option on its
   merits, and let the user decide.
