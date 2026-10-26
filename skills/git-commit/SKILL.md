@@ -109,13 +109,13 @@ Record each plan edit in the commit or PR description.
 
 ## False facts in history
 
-A false fact in history is an error, not history. Correct it without
-approval when all of these hold:
+A false fact in history is an error. Correct it without approval when
+all of these hold:
 
 1. The branch wrote it.
 2. It is a count, a name, a path, a link, a commit, or a date.
-3. It was false when it was written. A fact that a later change made
-   stale was true, so it keeps its words.
+3. It was false when the branch wrote it. A fact that a later change
+   made stale was true, so it keeps its words.
 4. The record gives the true value, for example the evidence file, the
    commit, or the command output.
 
@@ -124,8 +124,8 @@ message. When the true value means that a checked TODO is not done, ask
 the user.
 
 Example: a checked smoke-test TODO said "25 checks passed", but the log of
-that run showed 22 checks. The count was false when it was written. The
-fix corrects the count and names both values in the commit message.
+that run showed 22 checks. The count was false when the branch wrote it.
+The fix corrects the count and names both values in the commit message.
 
 ## Message format
 

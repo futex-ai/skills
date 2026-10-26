@@ -192,16 +192,18 @@ structure and tag it `Auto-fix: no`.
 
 A false fact in a plan is a count, name, path, link, commit, or date that
 the record contradicts. The record is the evidence file, the commit, or
-the command output. Give the finding the category process. The fix
-corrects only the false words. Its commit message names the old and the
-new value.
+the command output. Give the finding the category process. The direct
+fix corrects only the false words. Its commit message names the old and
+the new value.
 
-In an active plan, completed milestones and checked TODOs are history.
-Their words stay, also when a later change makes them stale. A fact in
-history that was false when the diff wrote it is an error. The fix
-corrects it. A correction of this kind that the diff already made is not
-a finding. When the true value means that a checked TODO is not done, tag
-the finding `Auto-fix: no`.
+History is the part of a plan whose words stay, also when a later change
+makes them stale. In an active plan, completed milestones and checked
+TODOs are history. In a completed plan, everything except the open review
+findings and the unchecked post-merge follow-ups is history. In history, a
+fact is false only when it was false when the diff wrote it. A correction
+of such a fact that the diff already made is not a finding. When the true
+value means that a checked TODO is not done, tag the finding
+`Auto-fix: no`.
 
 `Auto-fix: no` for every finding that needs a decision:
 
