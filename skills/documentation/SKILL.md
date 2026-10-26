@@ -169,8 +169,9 @@ Protocol docs describe the current requirements. They are not fixed rules.
   right. Decide on the merits which side is right, then change the other
   side to match it.
 - Do not drop an option or rank it lower only because it conflicts with a
-  protocol doc. For the same reason, do not recommend a different option.
-  Include the doc update in that option and in its effort.
+  protocol doc. Do not recommend a different option only because of that
+  conflict. Include the doc update in the option that conflicts, and in its
+  effort.
 - The decision and safety rules still apply. The review-fix rule in the
   `implementation-review` skill sends some options to the user. So does the
   deletion audit in the `git-commit` skill. Recommend such an option on its

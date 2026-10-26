@@ -250,7 +250,20 @@ with the same meaning.
         `implementation-review` from 164 to 175.
 - [x] Run `scripts/check.sh`: it prints no sentence warning. Run the
       complete gate.
-- [ ] Commit and push. Update the PR description.
-- [ ] Review the split with the `implementation-review` skill after the
+- [x] Commit and push. Update the PR description.
+- [x] Review the split with the `implementation-review` skill after the
       push. Report the findings, then apply the review-fix rule: fix the
       `Auto-fix: yes` findings, re-review once, and report the rest.
+  - Round 4 found three Low findings. The fix round fixed findings 1 and
+    2: two splits had weakened an "only" condition. It also fixed one more
+    case of that class in the `plans` skill. Report: `round-4.md` under
+    `.context/skill-check-sentence-warning/review/`.
+  - Round 4, finding 3. Two commit titles have 51 characters. Severity Low,
+    effort Small. Recommended: A, keep them and keep later titles within
+    50.
+  - Open decision: a split rule in the `writing-skills` skill. Effort
+    Small. It is the wider fix of round-4 findings 1 and 2.
+  - `plans/skill-check-sentence-warning.md`: the opening paragraph holds
+    12 sentences. Separate branch.
+  - `skills/*/SKILL.md`: 18 semicolons stay in paragraphs that the split
+    did not edit. Separate branch.

@@ -89,10 +89,11 @@ user.
 - A clear recommended option. For a finding that the review-fix rule
   applies without the user, recommend the option that the tag names.
 - Options judged on their merits. Do not drop an option or rank it lower
-  only because it conflicts with a protocol doc. For the same reason, do
-  not recommend a different option. Protocol docs record the current
-  requirements and change with the behaviour. So the doc update is part of
-  that option and of its effort. See the `documentation` skill.
+  only because it conflicts with a protocol doc. Do not recommend a
+  different option only because of that conflict. Protocol docs record the
+  current requirements and change with the behaviour. So the doc update is
+  part of the option that conflicts, and of its effort. See the
+  `documentation` skill.
 - A final line: `Auto-fix: yes, apply <letter>` or `Auto-fix: no,
   because …`, following the review-fix rule below.
 

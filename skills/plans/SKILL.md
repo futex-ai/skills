@@ -111,7 +111,7 @@ change. [templates/plan.md](templates/plan.md) is the starting point.
 
 ## Evidence
 
-- Do not put evidence logs in plan files. Evidence logs are command
+- Do not put evidence logs in plan files. Evidence logs include command
   output, test and gate results or timings, smoke-test output, and search
   results. They also include audit records, test-title inventories, and
   full reviewer reports. Save them under `.context/<plan-name>/`, which
