@@ -34,6 +34,7 @@ when to read it. [templates/AGENTS.md](templates/AGENTS.md) is the template.
 | Rust and its subsections | `rust` |
 | Databases | `databases` |
 | Git: format, limits, examples, deletion audit, dead code, stale references, live and history | `git-commit` |
+| Git: commit title length limit | nowhere; the user removed it, drop it |
 | Git: mainline preservation during merge and rebase | `git-merge` |
 | Bash Tool Timeout Configuration | nowhere; obsolete, drop it |
 
