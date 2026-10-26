@@ -1,19 +1,22 @@
-# Second-pass prompt
+# Second-pass prompt: the options check
 
-Give this prompt to a fresh read-only context after the review returns,
-together with the findings tagged `Auto-fix: no`. The second pass checks
-that the options of each open finding are complete. It checks that the
-recommendation is the best one. It changes nothing.
+The second pass has two parts. The validity check in
+[validity-prompt.md](validity-prompt.md) runs first, over every finding.
+This options check runs second. Give this prompt to a fresh read-only
+context, together with the confirmed findings tagged `Auto-fix: no`. The
+options check confirms that the options of each open finding are
+complete. It checks that the recommendation is the best one. It changes
+nothing.
 
 Run it beside the fix round, because the two touch different findings.
 Give it its own checkout of the reviewed commit, for example a git
-worktree. Then the second pass does not read a file while the fix round
-writes it. When a second checkout is not possible, run the second pass
+worktree. Then the options check does not read a file while the fix round
+writes it. When a second checkout is not possible, run the options check
 before the fix round.
 
-The second pass does not change an `Auto-fix` tag. An open finding stays
-open, also when the second pass finds an option that is not blocked. The
-user sees both passes and decides.
+The options check does not change an `Auto-fix` tag. An open finding
+stays open, also when the options check finds an option that is not
+blocked. The user sees both passes and decides.
 
 The scope of the prompt is the diff. When the user asked for a wider
 review, replace the second sentence of the prompt with that scope. The

@@ -130,15 +130,19 @@ suspected source, as the `deterministic-tests` skill requires.
 ## Fix rounds
 
 - Keep the review itself read-only.
-- Run the second pass over the `Auto-fix: no` findings beside the first
-  fix round. Give it its own checkout of the reviewed commit. It adds
-  options and can change a recommendation. It does not change an
-  `Auto-fix` tag, and an open finding stays open.
-- After the review reports, apply the option that each `Auto-fix: yes` tag
-  names. Run the checks, commit, and push. Then re-run the review once on
-  the fix.
-- Fix any new `Auto-fix: yes` findings once more, then stop and report. Do
-  not start a third fix round without the user.
+- Run the validity check over every finding before each fix round, in its
+  own checkout of the reviewed commit. A finding that fails a check is
+  removed. The fix round applies confirmed findings only.
+- Run the options check over the confirmed `Auto-fix: no` findings beside
+  the first fix round, in the same checkout. It adds options and can
+  change a recommendation. It does not change an `Auto-fix` tag, and an
+  open finding stays open.
+- After the validity check reports, apply the option that each confirmed
+  `Auto-fix: yes` tag names. Run the checks, commit, and push. Then re-run
+  the review once on the fix.
+- Run the validity check on the new findings. Fix any confirmed new
+  `Auto-fix: yes` findings once more, then stop and report. Do not start a
+  third fix round without the user.
 
 ## Reporting
 
@@ -147,8 +151,10 @@ suspected source, as the `deterministic-tests` skill requires.
   need a decision, each with a clear recommendation. Order both lists by
   severity, High first. Use the `decisions-and-findings` skill.
 - Name the fixed finding in its commit message.
-- Give each open finding with the second pass merged in. Its new options
-  keep their letters. When the recommendations differ, give both.
+- Give each open finding with the options check merged in. Its new
+  options keep their letters. When the recommendations differ, give both.
+- Name each finding that the validity check removed in one line under
+  **Checks**: its number, its title, and the check that failed.
 - Add each open finding as one line under the plan's review TODO so that it
   is not lost when the session ends. Use the shape that the `plans` skill
   gives.
