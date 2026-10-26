@@ -39,19 +39,21 @@ after the report.
    risk.
 4. Save the full report under `.context/<plan-name>/`, not in the
    repository.
-5. Run the validity check, the first part of the second pass: a fresh
-   read-only context that receives every finding and the prompt in
+5. Run the validity check, the first part of the second pass. It is a
+   fresh read-only context. Give it every finding and the prompt in
    [references/validity-prompt.md](references/validity-prompt.md). It
    confirms that each finding is real. Give it its own checkout of the
    reviewed commit, for example a git worktree. The fix round waits for
-   its verdicts. Remove each finding that it removes. A finding that the
-   diff did not cause or change goes to the `Outside the scope` list.
-   When it corrects a category to one that always waits for the user, the
-   tag becomes `Auto-fix: no`. Name each removed finding in one line under
-   **Checks** in the final message: its number, its title, and the check
-   that failed.
-6. Run the options check, the second part: a fresh read-only context that
-   receives the confirmed findings tagged `Auto-fix: no` and the prompt in
+   its verdicts. Remove each finding with a Removed verdict from the
+   report. A finding outside the scope goes to the `Outside the scope`
+   list. A corrected severity or category replaces the finding's line,
+   and the finding keeps its number. When the corrected category always
+   waits for the user, the tag becomes `Auto-fix: no`. Name each removed
+   finding in one line under **Checks** in the final message. Give its
+   number, its title, and the check that failed.
+6. Run the options check, the second part. It is a fresh read-only
+   context. Give it the confirmed findings tagged `Auto-fix: no` and the
+   prompt in
    [references/second-pass-prompt.md](references/second-pass-prompt.md).
    It checks that the options are complete and that the recommendation is
    the best one. Run it beside the fix round, in the same checkout. When a
@@ -61,13 +63,12 @@ after the report.
    condition goes into the text of the option that drops it. When the
    recommendation changed, the **Recommendation** line gives the new
    letter and its reason. It then names the letter that the first pass
-   recommended. The
-   **Wider fix** line takes the new letter in the same way. The `Auto-fix`
-   tag does not change, and an open finding stays open. A new problem
-   inside the scope goes into the review focus of the re-review. When no
-   re-review runs, it goes under **Open**. A new problem outside the scope
-   joins the `Outside the scope` list. Save both second-pass reports
-   beside the review report.
+   recommended. The **Wider fix** line takes the new letter in the same
+   way. The `Auto-fix` tag does not change, and an open finding stays
+   open. A new problem inside the scope goes into the review focus of the
+   re-review. When no re-review runs, it goes under **Open**. A new
+   problem outside the scope joins the `Outside the scope` list. Save
+   both second-pass reports beside the review report.
 
 ## Finding format
 
@@ -168,11 +169,11 @@ The full rule with every condition is in
 ## After the review
 
 1. Fix the confirmed `Auto-fix: yes` findings without waiting for the
-   user. Apply the option that the tag names. If the change grows past twice the Medium
-   band while you work, or needs a Large trigger such as a dependency or a
-   migration, revert it. Apply the next smaller option that is not
-   blocked, or leave the finding open. Leave the `Outside the scope`
-   problems alone.
+   user. Apply the option that the tag names. If the change grows past
+   twice the Medium band while you work, or needs a Large trigger such as
+   a dependency or a migration, revert it. Apply the next smaller option
+   that is not blocked, or leave the finding open. Leave the
+   `Outside the scope` problems alone.
 2. Run the checks, commit, push, and run the review once more on the fix.
    Name each fixed finding in its commit message.
 3. Run the validity check on the new findings. Fix any confirmed new

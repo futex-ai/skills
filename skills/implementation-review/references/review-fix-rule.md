@@ -132,7 +132,8 @@ suspected source, as the `deterministic-tests` skill requires.
 - Keep the review itself read-only.
 - Run the validity check over every finding before each fix round, in its
   own checkout of the reviewed commit. A finding that fails a check is
-  removed. The fix round applies confirmed findings only.
+  removed. A real problem outside the scope joins the `Outside the scope`
+  list. The fix round applies confirmed findings only.
 - Run the options check over the confirmed `Auto-fix: no` findings beside
   the first fix round, in the same checkout. It adds options and can
   change a recommendation. It does not change an `Auto-fix` tag, and an
@@ -154,7 +155,7 @@ suspected source, as the `deterministic-tests` skill requires.
 - Give each open finding with the options check merged in. Its new
   options keep their letters. When the recommendations differ, give both.
 - Name each finding that the validity check removed in one line under
-  **Checks**: its number, its title, and the check that failed.
+  **Checks**. Give its number, its title, and the check that failed.
 - Add each open finding as one line under the plan's review TODO so that it
   is not lost when the session ends. Use the shape that the `plans` skill
   gives.
