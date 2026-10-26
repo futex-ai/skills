@@ -14,8 +14,8 @@ skill apply to mockups too.
 - Any work that needs design implementation updates an existing mockup or
   creates a new one first, before the implementation lands. In a plan, the
   initial mockup milestone for a product area comes directly after the
-  documentation milestone for that area and before any UI milestone for
-  that area; see the `plans` skill.
+  area's documentation milestone. It also comes before any UI milestone for
+  that area. See the `plans` skill.
 - Consider where each screen sits in the wider app. Do not build an
   isolated mockup that cannot be reached from another relevant screen,
   flow, or navigation surface. Keep new mockups visually and structurally
@@ -27,14 +27,14 @@ skill apply to mockups too.
   variant.
 - A generated screen-spec page renders no more than five screen mockups. If
   a product area needs more states, screens, or flows, split it into linked
-  nested sub-pages instead of adding a sixth mockup. User-flow sequence
-  pages are exempt because they reuse screens from the owning screen-spec
-  pages.
-- A non-terminal page (one with child pages) renders one canonical "best
-  representation" screen, then lists links to its child sub-pages. Put each
-  child page in its own matching directory so that the generated output and
-  the page source tree mirror the visible page hierarchy. Pure gallery or
-  catalogue index pages are exempt from the canonical-screen requirement.
+  nested sub-pages. Do not add a sixth mockup. User-flow sequence pages are
+  exempt because they reuse screens from the owning screen-spec pages.
+- A non-terminal page is a page with child pages. It renders one canonical
+  "best representation" screen, then lists links to its child sub-pages.
+  Put each child page in its own matching directory. The generated output
+  and the page source tree then mirror the visible page hierarchy. Pure
+  gallery or catalogue index pages are exempt from the canonical-screen
+  requirement.
 - Mockup screens contain no implementation hints, engineering notes, or
   explanatory annotations inside the rendered screen area. Put hints below
   the screen or in a separate non-screen section.
@@ -47,11 +47,11 @@ skill apply to mockups too.
   into a flow.
 - A user flow shows a sequence of screens across a scenario, not a single
   standalone screen.
-- User flows use only existing screen components, and each screen in a flow
+- User flows use only existing screen components. Each screen in a flow
   links back to its original standalone screen mockup. If a flow needs a
   screen that does not exist, first add the screen component to the owning
-  screen-spec page so that it renders standalone there, then import it into
-  the flow. A user flow is never the original home of a screen.
+  screen-spec page. There it renders standalone. Then import it into the
+  flow. A user flow is never the original home of a screen.
 
 ## Mokly-generated output
 
@@ -64,6 +64,6 @@ skill apply to mockups too.
   then regenerate.
 - Never commit the generated directory. Commit authored files normally:
   specs, configuration, CSS, and components.
-- After changing entries, the renderer, configuration, or styles, rebuild,
-  run the mockup check command named in `AGENTS.md`, and visually
+- After you change entries, the renderer, configuration, or styles,
+  rebuild. Then run the mockup check command named in `AGENTS.md`. Visually
   smoke-test the changed pages.
