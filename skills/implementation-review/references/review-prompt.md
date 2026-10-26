@@ -208,8 +208,8 @@ the defect. When the meaning is in doubt, tag the finding `Auto-fix: no`.
   and how long it runs.
 - The finding is about missing tests, performance, code structure, or
   process.
-- The finding is any other UX wording, such as a choice of tone or voice
-  that no copy rule settles, or a choice between two correct texts.
+- The finding is any other UX wording. Examples are a choice of tone or
+  voice that no copy rule settles, and a choice between two correct texts.
 
 Protocol docs hold the requirements and the decisions in force for an area:
 observable behaviour at a boundary, and the reason for each choice. They do
