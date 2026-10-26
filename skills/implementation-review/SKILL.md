@@ -126,11 +126,11 @@ The full rule with every condition is in
   proposes no other wider fix for it. The review-fix rule says when the doc
   side changes without the user.
 - A false fact in a plan is a count, name, path, link, commit, or date
-  that the record contradicts. The record is the evidence file, the
-  commit, or the command output. Its category is process. The direct fix
-  corrects only the false words. In history, the `git-commit` skill says
-  when a fact is false. A correction that the diff made under that skill
-  is not a finding.
+  where the record gives a different value. The record is the evidence
+  file, the commit, or the command output. Its category is process. The
+  direct fix corrects only the false words. In history, the `git-commit`
+  skill says when a fact is false. A correction that the branch made
+  under that skill is not a finding.
 - `Auto-fix: no` when every option is blocked, when the best option on
   the merits is blocked and is not a wider fix, when the options have real
   trade-offs and no option is clearly best, or when the finding is a slow,
