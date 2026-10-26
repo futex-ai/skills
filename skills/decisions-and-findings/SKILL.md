@@ -159,9 +159,9 @@ entry shape under a **Terms** heading.
     fewer. A new test file or a new helper module in the same package is
     Medium.
   - Large: every option that is not Small or Medium. A new dependency, a
-    migration, or a new mockup is Large whatever its size. So is a new
-    protocol section, or a change on both sides of the backend and frontend
-    boundary.
+    migration, a new mockup, or a new protocol section is Large whatever
+    its size. A change on both sides of the backend and frontend boundary
+    is also Large whatever its size.
   - The effort of an item is the grade of its recommended option.
 
 ## Explaining items again

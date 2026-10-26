@@ -56,10 +56,9 @@ change. [templates/plan.md](templates/plan.md) is the starting point.
   bootstrap work can come before the first mockup milestone. Examples of
   such work are the workspace skeleton, checks, CI, and the mockup
   catalogue tooling.
-- Put all mockup work for an area in the initial mockup milestone for that
-  area. This applies to the work that is known at planning time. Add
-  another mockup milestone only when implementation finds a genuine mockup
-  gap.
+- Put all of an area's mockup work that is known at planning time in its
+  initial mockup milestone. Add another mockup milestone only when
+  implementation finds a genuine mockup gap.
 - Keep backend changes, mockup or design updates, and UI implementation in
   separate milestones. Mockups complete before UI implementation begins.
 - A milestone with UI or mockup work has a tag line directly below its

@@ -47,12 +47,12 @@ environment configuration.
   statuses, rows, and calculated values come from a real source. The
   source is an API, a database, a store, or live computation.
 - Do not ship placeholder numbers, dummy rows, or lorem-ipsum content in
-  screens users can reach. Do not ship "TODO: wire up real data" values
-  there either.
+  screens users can reach. Do not ship "TODO: wire up real data" values in
+  screens users can reach.
 - Static product copy, navigation labels, accessibility text, form
-  placeholders, and design constants are not dynamic data. Neither are
-  explicit loading, empty, error, or unavailable-data states. All of these
-  may live in product code.
+  placeholders, and design constants are not dynamic data. Explicit
+  loading, empty, error, or unavailable-data states are not dynamic data
+  either. All of these may live in product code.
 - If the real source is not available yet, render an explicit unavailable,
   empty, loading, or error state. Wire the view to the real source before
   the feature is complete.

@@ -143,7 +143,8 @@ a review.
 - Keep each doc short, about 250 lines. When you touch a doc that passes
   the target, split it into linked pages in the same change.
 - If a protocol doc that you touch still names code, move that content to
-  its home in the same change. Do the same when it describes mechanics.
+  its home in the same change. When it describes mechanics, also move that
+  content to its home in the same change.
 - The first milestone of every plan writes the requirements and the
   decisions for the work that follows. See the `plans` skill.
 - When a bug reaches a review or production, check whether a requirement
