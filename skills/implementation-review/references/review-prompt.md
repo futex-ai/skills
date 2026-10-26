@@ -154,6 +154,7 @@ not blocked, for a finding about:
 - a flaky test that the diff adds or changes
 - dead code
 - a repository-rule violation such as file size, lint, or layout
+- a copy defect whose fix keeps the meaning
 
 The letter names the best-ranked option that is not blocked: a structural
 wider fix, then a detection wider fix, then the direct fix. A blocked wider
@@ -189,6 +190,13 @@ fallback, or the off branch of a feature flag. Its deletion is blocked.
 When a condition is in doubt, give the finding the category code
 structure and tag it `Auto-fix: no`.
 
+A copy defect is user-facing text that has a typo or breaks a rule under
+`## Copy` in the `product-ui` skill. Give it the category UX wording, not
+repository rule. The fix keeps the meaning when it adds no fact or action
+and removes no fact or action that the user needs. Such a fix changes no
+user-visible behaviour. The direct fix changes only the words that carry
+the defect. When the meaning is in doubt, tag the finding `Auto-fix: no`.
+
 `Auto-fix: no` for every finding that needs a decision:
 
 - Every option is blocked.
@@ -198,8 +206,10 @@ structure and tag it `Auto-fix: no`.
 - The finding is a slow, custom, or low-value test, gate, lint, or check in
   the scope. Ask whether to fix it or remove it, and state what it protects
   and how long it runs.
-- The finding is about missing tests, performance, code structure, UX
-  wording, or process.
+- The finding is about missing tests, performance, code structure, or
+  process.
+- The finding is any other UX wording, such as a choice of tone or voice
+  that no copy rule settles, or a choice between two correct texts.
 
 Protocol docs hold the requirements and the decisions in force for an area:
 observable behaviour at a boundary, and the reason for each choice. They do

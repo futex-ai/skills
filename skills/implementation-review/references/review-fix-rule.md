@@ -56,6 +56,13 @@ when at least one option is not blocked, for findings in these categories:
   `git-commit` skill. Code that the product runs rarely, such as an error
   path or a fallback, is functionality and waits for the user.
 - Repository-rule violations such as file size, lint, and layout.
+- Copy defects: user-facing text that has a typo or breaks a rule under
+  `## Copy` in the `product-ui` skill. The reviewer gives the finding the
+  category UX wording, not repository rule. The option must keep the
+  meaning: it adds no fact or action, and it removes no fact or action
+  that the user needs. Such an option changes no user-visible behaviour.
+  The direct fix changes only the words that carry the defect. When the
+  meaning is in doubt, the reviewer tags the finding `Auto-fix: no`.
 
 The letter names the best-ranked option that is not blocked: a structural
 wider fix, then a detection wider fix, then the direct fix. The ranking is
@@ -76,8 +83,10 @@ when:
 - The finding is a slow, custom, or low-value test, gate, lint, or check.
   Ask whether to fix or remove it, and state what it protects and how long
   it runs.
-- The finding is about missing tests, performance, code structure, UX
-  wording, or process.
+- The finding is about missing tests, performance, code structure, or
+  process.
+- The finding is any other UX wording, such as a choice of tone or voice
+  that no copy rule settles, or a choice between two correct texts.
 
 ## Wider fixes and follow-ups
 

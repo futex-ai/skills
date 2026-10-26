@@ -112,6 +112,7 @@ The full rule with every condition is in
     in the `deterministic-tests` skill
   - dead code under the predicate in the `git-commit` skill
   - repository-rule violations such as file size, lint, and layout
+  - copy defects whose fix keeps the meaning
 - The letter names the best-ranked option that is not blocked: a
   structural wider fix, then a detection wider fix, then the direct fix.
   A blocked wider fix does not block the tag.
@@ -124,12 +125,20 @@ The full rule with every condition is in
   class is already in force, the `documentation` skill, so the reviewer
   proposes no other wider fix for it. The review-fix rule says when the doc
   side changes without the user.
+- A copy defect is user-facing text that has a typo or breaks a rule
+  under `## Copy` in the `product-ui` skill. Its category is UX wording,
+  not repository rule. The fix keeps the meaning when it adds no fact or
+  action and removes no fact or action that the user needs. Such a fix
+  changes no user-visible behaviour. The direct fix changes only the words
+  that carry the defect. When the meaning is in doubt, the reviewer tags
+  the finding `Auto-fix: no`.
 - `Auto-fix: no` when every option is blocked, when the best option on
   the merits is blocked and is not a wider fix, when the options have real
   trade-offs and no option is clearly best, or when the finding is a slow,
   custom, or low-value test, gate, lint, or check. Findings about missing
-  tests, performance, code structure, UX wording, and process always wait
-  for the user.
+  tests, performance, code structure, and process always wait for the
+  user. Any other UX wording waits too, such as a choice of tone or voice
+  that no copy rule settles.
 - An `Outside the scope` problem is not a finding. Do not fix it in this
   branch. Report it for a separate branch.
 
