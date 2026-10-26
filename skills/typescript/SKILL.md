@@ -20,7 +20,8 @@ layout.
   `AGENTS.md` after every change, and the formatter before you commit.
 - A package that lacks ESLint or Prettier gets them in their own change.
   Fix the existing findings, or list them in a baseline that only
-  shrinks. The repository does the same for its other lints.
+  shrinks. For its other lints, the repository also fixes the existing
+  findings or lists them in a baseline that only shrinks.
 - Add a dependency with `npm install` in its workspace package, so that
   the manifest and the lockfile change together.
 

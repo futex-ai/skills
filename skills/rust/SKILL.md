@@ -37,8 +37,8 @@ with examples and take precedence when the two differ in detail:
   traits with one implementation. Unit tests must not use real disk IO,
   databases, Docker, subprocesses, clocks, or network calls.
 - Use `tracing` for diagnostics in libraries, servers, and workers. Never
-  use `println!`, `eprintln!`, or `dbg!` there. Direct terminal output is
-  only for these uses:
+  use `println!`, `eprintln!`, or `dbg!` in libraries, servers, and
+  workers. Direct terminal output is only for these uses:
   - CLI results, prompts, raw data output, and REPL messages
   - build-script directives, tests, examples, and developer task output
 - Prefer enums and structs over raw strings and `serde_json::Value`. Fully

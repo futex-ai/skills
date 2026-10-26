@@ -56,10 +56,10 @@ Their recommended options applied as defaults.
   blocks. With decision 1 answered, the split is part of this change. So
   the merge waits for it.
 - The split rule, the wider fix of review round 4, findings 1 and 2:
-  option C. A rule in the `writing-skills` skill keeps each condition in a
-  split. This change rewords the splits of the same shape. Option A had no
-  rule. Option B was the rule alone. The user gave no reason. Option C was
-  the recommendation.
+  option C, the recommendation. A rule in the `writing-skills` skill keeps
+  each condition in a split. This change rewords the splits of the same
+  shape. Option A had no rule. Option B was the rule alone. The user gave
+  no reason.
 
 The scan measured `main` at `69c40ed` on 2026-10-20. The 16 `SKILL.md`
 files hold 112 sentences of more than 20 words, from 1 to 19 per skill.
@@ -289,9 +289,9 @@ with the same meaning.
 ## Milestone 5: The split rule
 
 The user's decision of 2026-10-26 on the split rule, option C. A rule in
-the `writing-skills` skill keeps each condition in a split. The splits
-that break the rule, or that close a list and then extend it, are
-reworded. Evidence: `.context/skill-check-sentence-warning/split-rule/`.
+the `writing-skills` skill keeps each condition in a split. This change
+rewords the splits that break the rule, or that close a list and then
+extend it. Evidence: `.context/skill-check-sentence-warning/split-rule/`.
 
 - [x] Add the rule to the STE bullet of the `writing-skills` skill, with a
       real example.
@@ -303,9 +303,16 @@ reworded. Evidence: `.context/skill-check-sentence-warning/split-rule/`.
       condition or lost it, in `decisions-and-findings`, `documentation`,
       `plans`, and `product-ui`.
 - [x] Run `scripts/check.sh` and the complete gate.
-- [ ] Commit and push. Update the PR description.
+- [x] Commit and push. Update the PR description.
 - [ ] Review the change with the `implementation-review` skill after the
       push. Report the findings, then apply the review-fix rule: fix the
       `Auto-fix: yes` findings, re-review once, and report the rest.
+  - Round 6 found four Low findings. The fix round fixed findings 1, 3,
+    and 4. Finding 1 applied the rule to two more splits, in `rust` and
+    `typescript`. Report: `round-6.md` under
+    `.context/skill-check-sentence-warning/review/`.
+  - Round 6, finding 2. The split rule does not cover a closed list.
+    Severity Low, effort Small. Recommended: B, add one sentence to the
+    rule.
 - [x] Open the pull request. [PR #26](https://github.com/futex-ai/skills/pull/26)
       opened on 2026-10-20, under the rules of that day.
