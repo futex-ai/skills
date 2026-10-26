@@ -99,12 +99,33 @@ Record each plan edit in the commit or PR description.
   other content is live.
 - In a completed plan, open review findings and unchecked post-merge
   follow-ups are live; all other content is history.
-- Do not change the words of history.
+- Do not change the words of history, also when a later change makes them
+  stale. The next section says when to correct a false fact in history.
 - When the repository's link check fails on a link inside history content,
   replace the link with a GitHub permalink at a commit where the target
   still matches the text. Start with the commit that wrote the link. For a
   squash-merged PR, look for that commit in `refs/pull/<number>/head`. For
   a line in a Markdown file, put `?plain=1` before `#L<number>`.
+
+## False facts in history
+
+A false fact in history is an error, not history. Correct it without
+approval when all of these hold:
+
+1. The branch wrote it.
+2. It is a count, a name, a path, a link, a commit, or a date.
+3. It was false when it was written. A fact that a later change made
+   stale was true, so it keeps its words.
+4. The record gives the true value, for example the evidence file, the
+   commit, or the command output.
+
+Change only the false words. Name the old and the new value in the commit
+message. When the true value means that a checked TODO is not done, ask
+the user.
+
+Example: a checked smoke-test TODO said "25 checks passed", but the log of
+that run showed 22 checks. The count was false when it was written. The
+fix corrects the count and names both values in the commit message.
 
 ## Message format
 
@@ -124,6 +145,7 @@ body. The format enables automated changelogs and readable history.
   - every removal and its related cleanup, with the search that proved
     the code dead or the approval for the functionality
   - each plan edit made for a rename or removal
+  - each corrected false fact in history, with the old and the new value
   - each intentional merge decision with the paths it affects
   - the review finding that a fix commit resolves, by number
 - When a later commit changes what the pull request description says,

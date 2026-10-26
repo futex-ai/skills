@@ -56,6 +56,12 @@ when at least one option is not blocked, for findings in these categories:
   `git-commit` skill. Code that the product runs rarely, such as an error
   path or a fallback, is functionality and waits for the user.
 - Repository-rule violations such as file size, lint, and layout.
+- False facts in a plan: a count, name, path, link, commit, or date that
+  the record contradicts. The record is the evidence file, the commit, or
+  the command output. Give the finding the category process. The direct
+  fix corrects only the false words. In history, the section "False facts
+  in history" in the `git-commit` skill applies. A correction that the
+  diff made under that section is not a finding.
 
 The letter names the best-ranked option that is not blocked: a structural
 wider fix, then a detection wider fix, then the direct fix. The ranking is
@@ -76,8 +82,10 @@ when:
 - The finding is a slow, custom, or low-value test, gate, lint, or check.
   Ask whether to fix or remove it, and state what it protects and how long
   it runs.
-- The finding is about missing tests, performance, code structure, UX
-  wording, or process.
+- The finding is about missing tests, performance, code structure, or UX
+  wording.
+- The finding is any other process finding. An example is a change to the
+  words of history that corrects no false fact.
 
 ## Wider fixes and follow-ups
 
