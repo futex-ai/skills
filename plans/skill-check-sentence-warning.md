@@ -304,7 +304,7 @@ extend it. Evidence: `.context/skill-check-sentence-warning/split-rule/`.
       `plans`, and `product-ui`.
 - [x] Run `scripts/check.sh` and the complete gate.
 - [x] Commit and push. Update the PR description.
-- [ ] Review the change with the `implementation-review` skill after the
+- [x] Review the change with the `implementation-review` skill after the
       push. Report the findings, then apply the review-fix rule: fix the
       `Auto-fix: yes` findings, re-review once, and report the rest.
   - Round 6 found four Low findings. The fix round fixed findings 1, 3,
@@ -314,5 +314,8 @@ extend it. Evidence: `.context/skill-check-sentence-warning/split-rule/`.
   - Round 6, finding 2. The split rule does not cover a closed list.
     Severity Low, effort Small. Recommended: B, add one sentence to the
     rule.
+  - Round 7 reviewed the fix and found one Low finding in the PR
+    description. The fix round fixed it. Report: `round-7.md` under
+    `.context/skill-check-sentence-warning/review/`.
 - [x] Open the pull request. [PR #26](https://github.com/futex-ai/skills/pull/26)
       opened on 2026-10-20, under the rules of that day.
