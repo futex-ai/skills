@@ -1,6 +1,6 @@
 ---
 name: decisions-and-findings
-description: Use before you send a message that asks the user for a decision, presents review findings or review items, or gives a final report, when the user asks for more detail, a shorter answer, or an explanation of earlier decisions or findings, when you list open findings from a plan or a saved review report, when you order or number the decisions and the findings of a message, and when an output style asks for brevity while you write such a message.
+description: Use before you send a message that asks the user for a decision, presents review findings or review items, or gives a final report, when the user asks for more detail, a shorter answer, or an explanation of earlier decisions or findings, when you list open findings from a plan, a saved review report, or an earlier message, when you order or number the decisions and the findings of a message, and when an output style asks for brevity while you write such a message.
 ---
 
 # Decisions and findings
@@ -15,7 +15,8 @@ field and answer by number and letter.
 These rules are specific rules. They apply also when an output style or a
 system prompt asks for brevity or plain prose. The layout is real
 structure, not decoration. Brevity means fewer words. It does not mean
-fewer fields or longer sentences.
+fewer items, fewer fields, or longer sentences. An instruction not to
+restate the plan or to recap earlier messages does not apply to the items.
 
 A skill or a prompt for one task can set its own message order. Then use
 that order, but keep the layouts, the labels, and the item order of this
@@ -61,6 +62,39 @@ first, then Medium, then Low. Keep the relative order of items with the
 same severity. Put the review findings first and the decisions second.
 Number the items once across the whole message, in that order. The summary
 table and the final report keep the same lists and the same order.
+
+## The complete list
+
+A message with decisions, findings, or a final report gives every open
+item. The user must not need an earlier message to act.
+
+- An open item is a decision or a finding that has no answer from the
+  user and no fix.
+- Give every open item in its full layout. This includes an item from an
+  earlier message, an earlier review round, the plan, or a review report.
+  It also includes an item that did not change.
+- Give each item its own number, heading, and layout. Do not merge items
+  under one heading or into a range, such as "4 to 7".
+- Do not replace an item, a field, or an option with a pointer. A pointer
+  sends the user to an earlier message, the plan, or a report.
+- Use the rules in **Repeating items** below to rebuild an item from an
+  earlier record.
+
+| The excuse | The answer |
+| --- | --- |
+| "Findings 3 to 6 of the first review, unchanged." | An unchanged item is still open. The user needs it in this message to answer it. |
+| "I gave their full layout in my message of this morning" | The user does not go back through old messages. Give the full layout again. |
+| "the plan records them with the recommended options" | The plan has one line for each item. The user needs every field to decide. |
+
+Red flags:
+
+- You write "unchanged", "stays open", "as before", "as recorded", or "my
+  earlier message" about an item that has no layout in this message.
+- A heading holds a range of numbers, such as "4 to 7".
+- The summary table has more rows than the message has item layouts.
+
+A short summary under the heading of each item keeps the numbers and
+loses the layout. It breaks this rule.
 
 ## Decision layout
 
@@ -111,9 +145,8 @@ what each field must contain.
 ```
 
 Give one lettered option for each real choice. Order the options from the
-smallest effort to the largest, and give each its own grade. When you
-explain an item again, keep the recorded letters and their order. The
-wider fix is one of these options.
+smallest effort to the largest, and give each its own grade. The wider
+fix is one of these options.
 
 A problem outside the review scope is not a finding. The
 `implementation-review` skill gives its one-line shape. The final report
@@ -161,16 +194,31 @@ entry shape under a **Terms** heading.
   whatever its size. The effort of an item is the grade of its
   recommended option.
 
-## Explaining items again
+## Repeating items
+
+These rules apply to each item that an earlier message, the plan, or a
+review report gave. They apply when you list an open item again, and when
+the user asks you to explain an item again.
 
 - Read the saved review report first, when it exists.
+- Check the item against the current code. Update each field that changed.
 - Restate every field. Do not point to an earlier message for a field.
-- Keep the recorded option letters of each item.
+- Keep the recorded option letters of each item and their order, also
+  when an effort grade changed.
 - When the record gives no wider fix, look for one. Add the wider fix that
   you find as a new option with the next free letter.
-- Keep the recorded number when no other item in the message has it.
-  Otherwise, give the next free number. Then add a **Source:** line under
-  the title with the record and the old number.
+- The recorded number of an item is its number in the last message that
+  showed it to the user. Keep that number.
+- When two items have the same recorded number, the item that the user
+  saw first keeps it.
+- Give a new number to the other item and to each item that the user did
+  not see. A new number is one above the highest number that the user
+  saw. Never reuse a number, also not the number of an answered item.
+- When you cannot see the earlier messages, read the recorded numbers
+  from the plan. Its highest number is then the highest number that the
+  user saw.
+- When a new number differs from the number in the record, add a
+  **Source:** line under the title. Name the record and the old number.
 - List the items by severity, also when the recorded numbers are then out
   of sequence. Do not renumber them for this.
 - Always write **Background**, **Problem**, **Impact if no action**, and
@@ -191,17 +239,22 @@ keep the item order above. Use these labels:
 
 - **Changed:** what changed, the commit, and the branch or the pull
   request.
-- **Fixed:** each auto-fixed finding. Give its number, its severity, a
-  plain explanation, the applied option, what changed, and the commit.
-- **Decisions:** each decision that the user answered, and its outcome.
+- **Fixed:** each auto-fixed finding. Name it by its review and its
+  number there, such as "review 1, finding 2". Give its severity, a plain
+  explanation, the applied option, what changed, and the commit.
+- **Decisions:** each decision that the user answered, one line each. Give
+  the number, the chosen letter, what that option does, and the outcome.
 - **Checks:** each check and its result. Give the output of a failed
   check. Name each check that was skipped or blocked, and give the reason.
   Name each unrelated flaky test with its failure text, rerun outcome, and
   suspected source.
-- **Open:** the decisions and review items that still need the user. For
-  each open decision, say what it blocks. Add the open plan TODOs and the
-  follow-ups. Add the problems outside the review scope for a separate
-  branch, and other skipped or blocked work. A follow-up for a wider fix
-  that the review did not apply is one line per class. The line gives the
-  wider fix, its effort, the finding numbers it covers, and the previous
-  examples.
+- **Open:** list each of these entries, also when an earlier message gave
+  it:
+  - The decisions and review items that still need the user. For each
+    open decision, say what it blocks.
+  - The open plan TODOs and the follow-ups. A follow-up for a wider fix
+    that the review did not apply is one line per class. The line gives
+    the wider fix, its effort, the findings it covers by review and
+    number, and the previous examples.
+  - The problems outside the review scope, for a separate branch.
+  - Other skipped or blocked work.

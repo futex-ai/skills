@@ -146,18 +146,20 @@ The full rule with every condition is in
 3. Fix any new `Auto-fix: yes` findings once more, then stop. The
    `finish-work` skill gives the next steps: the pull request and the
    report. Do not start a third fix round without the user.
-4. In the final message, list the auto-fixed findings (number, severity,
-   plain explanation, the applied option, what changed, commit) separately
-   from the findings that need a decision, each with a clear
-   recommendation. Order both lists by severity, High first. Use the
-   `decisions-and-findings` skill.
+4. In the final message, list the auto-fixed findings (review and number,
+   severity, plain explanation, the applied option, what changed, commit)
+   separately from the findings that need a decision, each with a clear
+   recommendation. The findings that need a decision include each open
+   finding of an earlier round, in its full layout. Order both lists by
+   severity, High first. Use the `decisions-and-findings` skill.
 5. List each blocked wider fix of a fixed finding as a follow-up under
-   **Open**, one line per class: the wider fix, its effort, the finding
-   numbers it covers, and the previous examples. An open finding keeps its
-   wider fix as one of its options. Count the occurrences of the class:
-   the findings of this review that share the wider fix, plus the previous
-   examples. When the count is two or more, raise the wider fix as a
-   numbered decision in the decision layout instead.
+   **Open**, one line per class: the wider fix, its effort, the findings
+   it covers by review and number, and the previous examples. An open
+   finding keeps its wider fix as one of its options. Count the
+   occurrences of the class: the findings of this review that share the
+   wider fix, plus the previous examples. When the count is two or more,
+   raise the wider fix as a numbered decision in the decision layout
+   instead.
 6. List the `Outside the scope` problems under **Open**, for a separate
    branch.
 7. Add each open finding, each follow-up, and each `Outside the scope`

@@ -28,6 +28,9 @@ at that moment instead of guessing the rule.
   prior knowledge needs, the problem, the impact if no action is taken,
   lettered options, and the recommended option with one sentence of
   reasoning.
+- Each message with decisions or review findings gives every open item in
+  full, also one from an earlier message. Never replace an item with a
+  pointer to an earlier message or the plan.
 - Do everything that does not depend on the answers first. Then stop and
   wait. Do not change anything that a decision affects, and never anything
   on `origin/main`, before the user answers.

@@ -103,9 +103,9 @@ when:
   applied when it is not blocked. When the finding is fixed, the agent
   lists the blocked wider fix as a follow-up: one line per class under
   **Open** in the final message and under the plan's review TODO. The line
-  gives the wider fix, its effort, the finding numbers it covers, and the
-  previous examples. When the finding stays open, its wider fix stays one
-  of its options, and it gets no follow-up line.
+  gives the wider fix, its effort, the findings it covers by review and
+  number, and the previous examples. When the finding stays open, its
+  wider fix stays one of its options, and it gets no follow-up line.
 - Count the occurrences of the class: the findings of this review that
   share the wider fix, plus the previous examples that the reviewer cited.
   When the count is two or more, the agent raises the wider fix as a
@@ -138,10 +138,12 @@ suspected source, as the `deterministic-tests` skill requires.
 
 ## Reporting
 
-- List the auto-fixed findings (number, severity, plain explanation, the
-  applied option, what changed, commit) separately from the findings that
-  need a decision, each with a clear recommendation. Order both lists by
-  severity, High first. Use the `decisions-and-findings` skill.
+- List the auto-fixed findings (review and number, severity, plain
+  explanation, the applied option, what changed, commit) separately from
+  the findings that need a decision, each with a clear recommendation. The
+  findings that need a decision include each open finding of an earlier
+  round, in its full layout. Order both lists by severity, High first. Use the
+  `decisions-and-findings` skill.
 - Name the fixed finding in its commit message.
 - Add each open finding as one line under the plan's review TODO so that it
   is not lost when the session ends. Use the shape that the `plans` skill
