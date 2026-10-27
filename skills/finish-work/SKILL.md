@@ -64,9 +64,18 @@ run.
   the `implementation-review` skill. The review itself is read-only. Its
   findings stay in the diff unless the user explicitly asked for a wider
   review.
-- Apply the review-fix rule. Fix only the findings tagged `Auto-fix: yes`,
-  with the option that each tag names. Run the checks. Commit and push.
-  Re-review once. Then stop the fix rounds and go on to step 6.
+- Run the validity check of the `implementation-review` skill over every
+  finding before each fix round. A finding that is not real or not in the
+  scope is removed. The check corrects a wrong severity or category in
+  place.
+- Apply the review-fix rule. Fix only the confirmed findings tagged
+  `Auto-fix: yes`, with the option that each tag names. Run the checks.
+  Commit and push. Re-review once. Then stop the fix rounds and go on to
+  step 6.
+- Run the options check of the `implementation-review` skill over the
+  confirmed findings tagged `Auto-fix: no`. It runs beside the fix round,
+  in its own checkout. Merge its options into the findings before you
+  report them.
 
 ## 6. Pull request
 
@@ -108,6 +117,9 @@ and labels in the `decisions-and-findings` skill. Include:
 - [ ] Preservation audit clean: each deletion is dead code or approved.
 - [ ] Committed with Conventional Commits and pushed; new files tracked.
 - [ ] Post-push review run; `Auto-fix: yes` findings fixed; re-reviewed once.
+- [ ] Validity check run before each fix round. Removed findings named
+      under **Checks**.
+- [ ] Options check run over the open findings and merged into the report.
 - [ ] Pull request opened once the implementation was complete or the user
       asked. When the change has an active plan, its link is in the status
       paragraph.

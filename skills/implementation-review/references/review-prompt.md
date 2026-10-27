@@ -91,8 +91,11 @@ number them in that order. Use the finding layout in the
 - State the problem: what is wrong, in plain words and defined terms.
 - State the impact of making no change.
 - Give solution options labelled A, B, and so on, from the smallest effort
-  to the largest. Always consider a wider fix: a rule, test, lint, guard,
-  abstraction, or architectural change that prevents the class of issue.
+  to the largest. Before you write them, ask two questions. Are these the
+  only options? What would you build if the current code did not exist?
+  Add each new option that the questions give. Always consider a wider
+  fix: a rule, test, lint, guard, abstraction, or architectural change
+  that prevents the class of issue.
   Prefer a structural fix that removes the wrong case, such as a helper or
   an abstraction that every call site uses, a default that is right, a
   marker that shared code honours, or a type that cannot hold the wrong
