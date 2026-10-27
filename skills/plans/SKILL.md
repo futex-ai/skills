@@ -89,13 +89,15 @@ change. [templates/plan.md](templates/plan.md) is the starting point.
   gives the steps. An older plan without this TODO follows the same rule.
 - Add each open review finding as one line under the review TODO so that it
   is not lost when the session ends. List the lines by severity, High
-  first. Each line gives the number, title, severity, the effort of the
-  recommended option, and the recommended option, for example:
-  `3. Retry loop has no limit. Severity High, effort Small. Recommended: A, cap the retries.`
+  first. Each line gives the number that the user sees, the title, and
+  the severity. It also gives the recommended option and its effort. When
+  that number differs from the review number, the line also names the
+  review and the review number, for example:
+  `7. Retry loop has no limit. Source: review 2, finding 1. Severity High, effort Small. Recommended: A, cap the retries.`
 - Add each follow-up, the blocked wider fix of a fixed finding, as one
-  line too, one per class: the wider fix, its effort, the finding numbers
-  it covers, and the previous examples, for example:
-  `Follow-up: guard port reuse in the test harness. Effort Large. Covers findings 2 and 5. Previous examples: 3f2c1ab.`
+  line too, one per class: the wider fix, its effort, the findings it
+  covers by review and number, and the previous examples, for example:
+  `Follow-up: guard port reuse in the test harness. Effort Large. Covers review 1, findings 2 and 5. Previous examples: 3f2c1ab.`
 - Add each problem that the review listed under `Outside the scope` as one
   line too: its path, one sentence, and `Separate branch.`
 

@@ -214,6 +214,9 @@ the user asks you to explain an item again.
 - Give a new number to the other item and to each item that the user did
   not see. A new number is one above the highest number that the user
   saw. Never reuse a number, also not the number of an answered item.
+- When you cannot see the earlier messages, read the recorded numbers
+  from the plan. Its highest number is then the highest number that the
+  user saw.
 - When a new number differs from the number in the record, add a
   **Source:** line under the title. Name the record and the old number.
 - List the items by severity, also when the recorded numbers are then out
@@ -236,8 +239,9 @@ keep the item order above. Use these labels:
 
 - **Changed:** what changed, the commit, and the branch or the pull
   request.
-- **Fixed:** each auto-fixed finding. Give its number, its severity, a
-  plain explanation, the applied option, what changed, and the commit.
+- **Fixed:** each auto-fixed finding. Name it by its review and its
+  number there, such as "review 1, finding 2". Give its severity, a plain
+  explanation, the applied option, what changed, and the commit.
 - **Decisions:** each decision that the user answered, one line each. Give
   the number, the chosen letter, what that option does, and the outcome.
 - **Checks:** each check and its result. Give the output of a failed
@@ -250,7 +254,7 @@ keep the item order above. Use these labels:
     open decision, say what it blocks.
   - The open plan TODOs and the follow-ups. A follow-up for a wider fix
     that the review did not apply is one line per class. The line gives
-    the wider fix, its effort, the finding numbers it covers, and the
-    previous examples.
+    the wider fix, its effort, the findings it covers by review and
+    number, and the previous examples.
   - The problems outside the review scope, for a separate branch.
   - Other skipped or blocked work.
