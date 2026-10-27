@@ -149,8 +149,9 @@ The full rule with every condition is in
 4. In the final message, list the auto-fixed findings (number, severity,
    plain explanation, the applied option, what changed, commit) separately
    from the findings that need a decision, each with a clear
-   recommendation. Order both lists by severity, High first. Use the
-   `decisions-and-findings` skill.
+   recommendation. The findings that need a decision include each open
+   finding of an earlier round, in its full layout. Order both lists by
+   severity, High first. Use the `decisions-and-findings` skill.
 5. List each blocked wider fix of a fixed finding as a follow-up under
    **Open**, one line per class: the wider fix, its effort, the finding
    numbers it covers, and the previous examples. An open finding keeps its

@@ -1,6 +1,6 @@
 ---
 name: decisions-and-findings
-description: Use before you send a message that asks the user for a decision, presents review findings or review items, or gives a final report, when the user asks for more detail, a shorter answer, or an explanation of earlier decisions or findings, when you list open findings from a plan or a saved review report, when you order or number the decisions and the findings of a message, and when an output style asks for brevity while you write such a message.
+description: Use before you send a message that asks the user for a decision, presents review findings or review items, or gives a final report, when the user asks for more detail, a shorter answer, or an explanation of earlier decisions or findings, when you list open findings from a plan, a saved review report, or an earlier message, when you order or number the decisions and the findings of a message, and when an output style asks for brevity while you write such a message.
 ---
 
 # Decisions and findings
@@ -15,7 +15,8 @@ field and answer by number and letter.
 These rules are specific rules. They apply also when an output style or a
 system prompt asks for brevity or plain prose. The layout is real
 structure, not decoration. Brevity means fewer words. It does not mean
-fewer fields or longer sentences.
+fewer items, fewer fields, or longer sentences. An instruction not to
+restate the plan or to recap earlier messages does not apply to the items.
 
 A skill or a prompt for one task can set its own message order. Then use
 that order, but keep the layouts, the labels, and the item order of this
@@ -61,6 +62,39 @@ first, then Medium, then Low. Keep the relative order of items with the
 same severity. Put the review findings first and the decisions second.
 Number the items once across the whole message, in that order. The summary
 table and the final report keep the same lists and the same order.
+
+## The complete list
+
+A message with decisions, findings, or a final report gives every open
+item. The user must not need an earlier message to act.
+
+- An open item is a decision or a finding that has no answer from the
+  user and no fix.
+- Give every open item in its full layout. This includes an item from an
+  earlier message, an earlier review round, the plan, or a review report.
+  It also includes an item that did not change.
+- Give each item its own number, heading, and layout. Do not merge items
+  under one heading or into a range, such as "4 to 7".
+- Do not replace an item, a field, or an option with a pointer. A pointer
+  sends the user to an earlier message, the plan, or a report.
+- Use the rules in **Repeating items** below to rebuild an item from an
+  earlier record.
+
+| The excuse | The answer |
+| --- | --- |
+| "Findings 3 to 6 of the first review, unchanged." | An unchanged item is still open. The user needs it in this message to answer it. |
+| "I gave their full layout in my message of this morning" | The user does not go back through old messages. Give the full layout again. |
+| "the plan records them with the recommended options" | The plan has one line for each item. The user needs every field to decide. |
+
+Red flags:
+
+- You write "unchanged", "as before", "as recorded", or "my earlier
+  message" for an item.
+- A heading holds a range of numbers, such as "4 to 7".
+- The summary table has more rows than the message has item layouts.
+
+A short summary under the heading of each item keeps the numbers and
+loses the layout. It breaks this rule.
 
 ## Decision layout
 
@@ -161,9 +195,14 @@ entry shape under a **Terms** heading.
   whatever its size. The effort of an item is the grade of its
   recommended option.
 
-## Explaining items again
+## Repeating items
+
+These rules apply to each item that an earlier message, the plan, or a
+review report gave. They apply when you list an open item again, and when
+the user asks you to explain an item again.
 
 - Read the saved review report first, when it exists.
+- Check the item against the current code. Update each field that changed.
 - Restate every field. Do not point to an earlier message for a field.
 - Keep the recorded option letters of each item.
 - When the record gives no wider fix, look for one. Add the wider fix that
@@ -193,7 +232,8 @@ keep the item order above. Use these labels:
   request.
 - **Fixed:** each auto-fixed finding. Give its number, its severity, a
   plain explanation, the applied option, what changed, and the commit.
-- **Decisions:** each decision that the user answered, and its outcome.
+- **Decisions:** each decision that the user answered, one line each. Give
+  the number, the chosen letter, what that option does, and the outcome.
 - **Checks:** each check and its result. Give the output of a failed
   check. Name each check that was skipped or blocked, and give the reason.
   Name each unrelated flaky test with its failure text, rerun outcome, and
@@ -201,7 +241,7 @@ keep the item order above. Use these labels:
 - **Open:** the decisions and review items that still need the user. For
   each open decision, say what it blocks. Add the open plan TODOs and the
   follow-ups. Add the problems outside the review scope for a separate
-  branch, and other skipped or blocked work. A follow-up for a wider fix
-  that the review did not apply is one line per class. The line gives the
-  wider fix, its effort, the finding numbers it covers, and the previous
-  examples.
+  branch, and other skipped or blocked work. List each of these also when
+  an earlier message gave it. A follow-up for a wider fix that the review
+  did not apply is one line per class. The line gives the wider fix, its
+  effort, the finding numbers it covers, and the previous examples.

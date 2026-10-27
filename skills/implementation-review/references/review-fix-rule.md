@@ -140,8 +140,10 @@ suspected source, as the `deterministic-tests` skill requires.
 
 - List the auto-fixed findings (number, severity, plain explanation, the
   applied option, what changed, commit) separately from the findings that
-  need a decision, each with a clear recommendation. Order both lists by
-  severity, High first. Use the `decisions-and-findings` skill.
+  need a decision, each with a clear recommendation. The findings that
+  need a decision include each open finding of an earlier round, in its
+  full layout. Order both lists by severity, High first. Use the
+  `decisions-and-findings` skill.
 - Name the fixed finding in its commit message.
 - Add each open finding as one line under the plan's review TODO so that it
   is not lost when the session ends. Use the shape that the `plans` skill

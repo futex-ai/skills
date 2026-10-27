@@ -25,6 +25,9 @@ skill at that moment instead of guessing the rule.
   and effort, the terms, the background, the problem, the impact if no
   action is taken, lettered options, and a recommended option. Do the
   independent work first, then stop and wait.
+- Each message with decisions or review findings gives every open item in
+  full, also one from an earlier message. Never replace an item with a
+  pointer to an earlier message or the plan.
 - End every task with a final report: what changed and the commit, each
   decision and its outcome, the checks that ran, anything skipped, and the
   outstanding decisions or review items that still need the user.
