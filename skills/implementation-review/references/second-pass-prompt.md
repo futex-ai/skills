@@ -26,7 +26,7 @@ prompt with the path of the plan.
 
 The options check does not change an `Auto-fix` tag. An open item stays
 open, also when the options check finds an option that is not blocked.
-The user sees both passes and decides.
+The user sees the result of each pass and decides.
 
 ---
 
