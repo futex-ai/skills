@@ -18,19 +18,20 @@ repository's `AGENTS.md` under `## Product`.
 
 ## Forbidden visual patterns
 
-- Never put a left-edge accent border on a box to emphasize, select,
-  categorize, decorate, or communicate the status of its content. The
-  typical case is a white card with rounded corners and a 2px solid
-  accent border on its left edge.
+- Never put a left-edge accent border on a box. This holds when the
+  border emphasizes, selects, categorizes, decorates, or shows the status
+  of the content. An accent border is a contrasting left-edge stroke in
+  any colour, such as the accent colour or a status colour. The typical
+  case is a white card with rounded corners and a 2px solid accent
+  border on its left edge.
 - A box is an element with its own fill, a border on its other sides,
   rounded corners, or a shadow. Cards, callouts, banners, toasts, and
   filled rows are boxes. A hover or focus fill does not make a box.
 - Do not recreate the pattern on a box with a pseudo-element, inset
   shadow, gradient, outline, or separate adjacent bar. A bar with
   rounded ends is the same pattern.
-- A left-edge border on an element that is not a box is fine, also in
-  the accent colour. Examples are a pull quote and a release timeline
-  rail.
+- A left-edge border on an element that is not a box is fine, in any
+  colour. Examples are a pull quote and a release timeline rail.
 - On a box, use the component system's typography, spacing, icons, or
   standard selection controls instead. A full-perimeter border or a
   tinted fill also works.
