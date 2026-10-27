@@ -130,12 +130,13 @@ Before you write the options, ask two questions. Are these the only
 options? What would you build if the current code did not exist? Add each
 new option that the questions give.
 
-Then name the condition that every option keeps. Name its source: a
-protocol doc, a user decision, the task message, an earlier option's
-text, or the code. When it is not a requirement, or its reason is gone,
-add the option that drops it. A user decision covers the choice
+For a decision, then name each condition that every option keeps. Name
+its source: a protocol doc, a user decision, the task message, an earlier
+option's text, or the code. When it is not a requirement, or its reason
+is gone, add the option that drops it. A user decision covers the choice
 that the user made, not each sentence of the text that describes the
-chosen option.
+chosen option. For a finding, the options check of the
+`implementation-review` skill asks this in a fresh context.
 
 Example: a plan gave each entry detail file a content id, so that an
 unchanged file keeps its bytes between deployments. Every option changed

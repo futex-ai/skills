@@ -38,7 +38,7 @@ change. [templates/plan.md](templates/plan.md) is the starting point.
 ## Decisions
 
 - Write each decision in the layout of the `decisions-and-findings`
-  skill. Its options rule applies. Ask the two questions. Then name the
+  skill. Its options rule applies. Ask the two questions. Then name each
   condition that every option keeps.
 - When you add a decision to a plan, run the options check of the
   `implementation-review` skill over it. Do this before you report the
