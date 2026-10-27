@@ -130,10 +130,10 @@ Before you write the options, ask two questions. Are these the only
 options? What would you build if the current code did not exist? Add each
 new option that the questions give.
 
-Then name the condition that every option keeps. Say where it comes
-from: a protocol doc, a user decision, the task message, the text of an
-earlier option, or the code. When it is not a requirement, or its reason
-is gone, add the option that drops it. A user decision covers the choice
+Then name the condition that every option keeps. Name its source: a
+protocol doc, a user decision, the task message, an earlier option's
+text, or the code. When it is not a requirement, or its reason is gone,
+add the option that drops it. A user decision covers the choice
 that the user made, not each sentence of the text that describes the
 chosen option.
 

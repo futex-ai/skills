@@ -1,51 +1,58 @@
 # Second-pass prompt: the options check
 
-The second pass has two parts. The validity check in
+The options check confirms that the options of each open item are
+complete. It checks that the recommendation is the best one. It changes
+nothing. An item is a review finding or a decision. Give this prompt to a
+fresh read-only context, together with the items.
+
+In the review flow, the second pass has two parts. The validity check in
 [validity-prompt.md](validity-prompt.md) runs first, over every finding.
-This options check runs second. Give this prompt to a fresh read-only
-context, together with the confirmed findings tagged `Auto-fix: no`. The
-options check confirms that the options of each open item are complete.
-It checks that the recommendation is the best one. It changes nothing.
-An item is a review finding or a decision. The `plans` skill runs the
-check over the decisions of a plan.
+This options check runs second, over the confirmed findings tagged
+`Auto-fix: no`. Run it beside the fix round, because the two touch
+different findings. Give it its own checkout of the reviewed commit, for
+example a git worktree. Then the options check does not read a file while
+the fix round writes it.
 
-Run it beside the fix round, because the two touch different findings.
-Give it its own checkout of the reviewed commit, for example a git
-worktree. Then the options check does not read a file while the fix round
-writes it. When a second checkout is not possible, run the options check
-before the fix round.
+When a second checkout is not possible, run the options check before the
+fix round. The scope of the prompt is the diff. When the user asked for a
+wider review, replace the second sentence of the prompt with that scope.
+The review prompt has the same rule.
 
-The options check does not change an `Auto-fix` tag. An open finding
-stays open, also when the options check finds an option that is not
-blocked. The user sees both passes and decides.
+In the plan flow, the check runs over the decisions of a plan. The
+`plans` skill says when. Run it in the working tree that holds the plan,
+before you commit the plan. No fix round runs beside it. Give it the
+decisions and the path of the plan. Replace the second sentence of the
+prompt with the path of the plan.
 
-The scope of the prompt is the diff. When the user asked for a wider
-review, replace the second sentence of the prompt with that scope. The
-review prompt has the same rule. For the decisions of a plan, replace the
-second sentence with the path of the plan.
+The options check does not change an `Auto-fix` tag. An open item stays
+open, also when the options check finds an option that is not blocked.
+The user sees both passes and decides.
 
 ---
 
 You are checking the open items of a code review or a plan in this
 repository. The review ran on the local diff against `origin/main`. Each
 item below is a review finding or a decision. It waits for the user, who
-will choose one lettered option. Your task is to check that the options
-are complete and that the recommendation is the best one. You may inspect
-the repository read-only. Do not modify files.
+will choose one lettered option.
+
+Your task is to check that the options are complete and that the
+recommendation is the best one. You may inspect the repository read-only.
+Do not modify files.
 
 For each item:
 
-1. Read the code that the item is about: the code at the location of a
-   finding, or the code that a decision names. Read the code that causes
-   the problem, and the code that owns the thing that the item is about.
-   Read the plan and the protocol doc that the item names.
+1. Read the code that the item is about. For a finding, that is the code
+   at the location. For a decision, it is the code that the decision
+   names. Read the code that causes the problem, and the code that owns
+   the thing that the item is about. Read the plan and the protocol doc
+   that the item names.
 2. Ask two questions. Are these the only options? What would you build if
    the current code did not exist? Give an option at each place that the
    current options do not cover. When a place is not a real choice, say
    why in one sentence.
-3. Name each condition that every option keeps. Say where it comes from: a
-   protocol doc, a user decision, the task message, the text of an earlier
-   option, or the code. Say whether its reason still holds. When it is not
+3. Name each condition that every option keeps. Name its source: a
+   protocol doc, a user decision, the task message, an earlier option's
+   text, or the code. Say whether its reason still holds. When it is not
    a requirement, or its reason is gone, give the option that drops it. A
    user decision covers the choice that the user made, not each sentence
    of the text that describes the chosen option.
