@@ -88,8 +88,8 @@ item. The user must not need an earlier message to act.
 
 Red flags:
 
-- You write "unchanged", "as before", "as recorded", or "my earlier
-  message" for an item.
+- You write "unchanged", "stays open", "as before", "as recorded", or "my
+  earlier message" about an item that has no layout in this message.
 - A heading holds a range of numbers, such as "4 to 7".
 - The summary table has more rows than the message has item layouts.
 
@@ -145,9 +145,8 @@ what each field must contain.
 ```
 
 Give one lettered option for each real choice. Order the options from the
-smallest effort to the largest, and give each its own grade. When you
-explain an item again, keep the recorded letters and their order. The
-wider fix is one of these options.
+smallest effort to the largest, and give each its own grade. The wider
+fix is one of these options.
 
 A problem outside the review scope is not a finding. The
 `implementation-review` skill gives its one-line shape. The final report
@@ -204,12 +203,19 @@ the user asks you to explain an item again.
 - Read the saved review report first, when it exists.
 - Check the item against the current code. Update each field that changed.
 - Restate every field. Do not point to an earlier message for a field.
-- Keep the recorded option letters of each item.
+- Keep the recorded option letters of each item and their order, also
+  when an effort grade changed.
 - When the record gives no wider fix, look for one. Add the wider fix that
   you find as a new option with the next free letter.
-- Keep the recorded number when no other item in the message has it.
-  Otherwise, give the next free number. Then add a **Source:** line under
-  the title with the record and the old number.
+- The recorded number of an item is its number in the last message that
+  showed it to the user. Keep that number.
+- When two items have the same recorded number, the item that the user
+  saw first keeps it.
+- Give a new number to the other item and to each item that the user did
+  not see. A new number is one above the highest number that the user
+  saw. Never reuse a number, also not the number of an answered item.
+- When a new number differs from the number in the record, add a
+  **Source:** line under the title. Name the record and the old number.
 - List the items by severity, also when the recorded numbers are then out
   of sequence. Do not renumber them for this.
 - Always write **Background**, **Problem**, **Impact if no action**, and
@@ -238,10 +244,13 @@ keep the item order above. Use these labels:
   check. Name each check that was skipped or blocked, and give the reason.
   Name each unrelated flaky test with its failure text, rerun outcome, and
   suspected source.
-- **Open:** the decisions and review items that still need the user. For
-  each open decision, say what it blocks. Add the open plan TODOs and the
-  follow-ups. Add the problems outside the review scope for a separate
-  branch, and other skipped or blocked work. List each of these also when
-  an earlier message gave it. A follow-up for a wider fix that the review
-  did not apply is one line per class. The line gives the wider fix, its
-  effort, the finding numbers it covers, and the previous examples.
+- **Open:** list each of these entries, also when an earlier message gave
+  it:
+  - The decisions and review items that still need the user. For each
+    open decision, say what it blocks.
+  - The open plan TODOs and the follow-ups. A follow-up for a wider fix
+    that the review did not apply is one line per class. The line gives
+    the wider fix, its effort, the finding numbers it covers, and the
+    previous examples.
+  - The problems outside the review scope, for a separate branch.
+  - Other skipped or blocked work.
