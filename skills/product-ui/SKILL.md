@@ -18,16 +18,22 @@ repository's `AGENTS.md` under `## Product`.
 
 ## Forbidden visual patterns
 
-- Never use a left-edge accent border or vertical accent rail to emphasize,
-  select, categorize, decorate, or communicate the status of content. This
-  includes a contrasting stroke attached to the left side of a card, panel,
-  callout, banner, toast, quote, list row, navigation item, or any other
-  content surface, including strokes with rounded ends or corners.
-- Do not recreate the pattern with a pseudo-element, inset shadow,
-  gradient, outline, or separate adjacent bar.
-- Use the component system's typography, spacing, icons, full-surface
-  treatments (a full-perimeter border, a tinted fill, a leading icon), or
-  standard selection controls instead.
+- Never put a left-edge accent border on a box to emphasize, select,
+  categorize, decorate, or communicate the status of its content. The
+  typical case is a white card with rounded corners and a 2px solid
+  accent border on its left edge.
+- A box is an element with its own fill, a border on its other sides,
+  rounded corners, or a shadow. Cards, callouts, banners, toasts, and
+  filled rows are boxes. A hover or focus fill does not make a box.
+- Do not recreate the pattern on a box with a pseudo-element, inset
+  shadow, gradient, outline, or separate adjacent bar. A bar with
+  rounded ends is the same pattern.
+- A left-edge border on an element that is not a box is fine, also in
+  the accent colour. Examples are a pull quote and a release timeline
+  rail.
+- On a box, use the component system's typography, spacing, icons, or
+  standard selection controls instead. A full-perimeter border or a
+  tinted fill also works.
 - Neutral structural borders such as column dividers and nesting indent
   guides are layout, not emphasis, and remain fine.
 - This applies to product code and to mockups.
