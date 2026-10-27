@@ -1,6 +1,6 @@
 ---
 name: decisions-and-findings
-description: Use before you send a message that asks the user for a decision, presents review findings or review items, or gives a final report, when the user asks for more detail, a shorter answer, or an explanation of earlier decisions or findings, when you list open findings from a plan or a saved review report, when you order or number the decisions and the findings of a message, and when an output style asks for brevity while you write such a message.
+description: Use before you send a message that asks the user for a decision, presents review findings or review items, or gives a final report, when you write the options of a decision or a finding, when the user asks for more detail, a shorter answer, or an explanation of earlier decisions or findings, when you list open findings from a plan or a saved review report, when you order or number the decisions and the findings of a message, and when an output style asks for brevity while you write one.
 ---
 
 # Decisions and findings
@@ -110,11 +110,6 @@ what each field must contain.
 - **Auto-fix:** <`yes, apply` and the letter of the option to apply, or `no, because` and the condition that stops the fix.>
 ```
 
-Give one lettered option for each real choice. Order the options from the
-smallest effort to the largest, and give each its own grade. When you
-explain an item again, keep the recorded letters and their order. The
-wider fix is one of these options.
-
 A problem outside the review scope is not a finding. The
 `implementation-review` skill gives its one-line shape. The final report
 lists it under **Open**, for a separate branch.
@@ -123,6 +118,32 @@ In both layouts, keep every label, also when the user asks for more detail
 or for a shorter answer. An item leaves out **Terms** only under the rule
 below. For more detail, write **Background** as a list with one fact in
 each item.
+
+## Options
+
+Give one lettered option for each real choice. Order the options from the
+smallest effort to the largest, and give each its own grade. When you
+explain an item again, keep the recorded letters and their order. The
+wider fix of a finding is one of these options.
+
+Before you write the options, ask two questions. Are these the only
+options? What would you build if the current code did not exist? Add each
+new option that the questions give.
+
+Then name the condition that every option keeps. Say where it comes
+from: a protocol doc, a user decision, the task message, the text of an
+earlier option, or the code. When it is not a requirement, or its reason
+is gone, add the option that drops it. A user decision covers the choice
+that the user made, not each sentence of the text that describes the
+chosen option.
+
+Example: a plan gave each entry detail file a content id, so that an
+unchanged file keeps its bytes between deployments. Every option changed
+only what the id covers. So every option kept one condition: the check
+for a new deployment lives inside the detail file. The task message's
+option text gave that condition, and no protocol doc requires it. The
+option that drops it writes the deployment id to one small file, which
+the shell fetches on each page change.
 
 ## Terms
 
