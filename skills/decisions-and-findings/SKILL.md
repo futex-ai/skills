@@ -138,14 +138,6 @@ that the user made, not each sentence of the text that describes the
 chosen option. For a finding, the options check of the
 `implementation-review` skill asks this in a fresh context.
 
-Example: a plan gave each entry detail file a content id, so that an
-unchanged file keeps its bytes between deployments. Every option changed
-only what the id covers. So every option kept one condition: the check
-for a new deployment lives inside the detail file. The task message's
-option text gave that condition, and no protocol doc requires it. The
-option that drops it writes the deployment id to one small file, which
-the shell fetches on each page change.
-
 ## Terms
 
 A term is a name from the codebase, the product, or the toolchain that an
