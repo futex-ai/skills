@@ -55,6 +55,7 @@ Codex, and with any other agent that reads the
 | `product-ui` | Before you change a user-facing screen, state, or copy, or hardcode data in a screen. |
 | `agents-md` | A repository has no `AGENTS.md`, still has a monolithic one, or needs its rules aligned with the shared skills. |
 | `writing-skills` | Before you create or edit a skill or its description. Opt-in: linked only with `install.sh --opt-in`. |
+| `conductor-section-workspace-coordinator` | Only in a Conductor cloud workspace: when the user invokes it or names you the coordinator of a Conductor section, or when a continue, status, or `[coordinator wake]` message arrives in a workspace named `coordinator: <section>`. |
 
 ## Install
 

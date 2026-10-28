@@ -1,0 +1,124 @@
+# Messages to children and to other coordinators
+
+Fill each `<slot>`. Keep the sentences short. Send a message only to an
+idle session, and put everything for that session into it. The children
+follow the shared skills, so name the skill that governs each step.
+
+## Plan request
+
+The first message of a new workspace.
+
+    You work in the Conductor section "<section>" under its coordinator.
+    The coordinator answers your decisions and merges your pull request.
+    Never merge yourself.
+
+    Goal: <the change, the metric it serves, and the result, in two or
+    three sentences>.
+    Constraints: <files or areas to avoid, and why. The repository rules
+    in AGENTS.md apply.>
+
+    Write a plan with the `plans` skill, and nothing more. Keep each
+    milestone small enough that its pull request merges within a day.
+    <When the milestones depend on each other: plan one pull request per
+    milestone as a stack with `gh stack`.> Commit the plan, push the
+    branch, and open no pull request. End with the final report of the
+    `decisions-and-findings` skill: the branch, the plan file, the
+    milestones, the files or areas that each milestone touches, and every
+    decision that you need, numbered, with lettered options.
+
+## Status request
+
+For a workspace that the user added, or for a session whose last message
+is not a final report.
+
+    The coordinator of the section "<section>" now coordinates this
+    workspace. Report, in the final-report layout of the
+    `decisions-and-findings` skill: the branch, the plan file, the pull
+    request, what is done, what is open, every decision that you need
+    with lettered options, and every blocker. Change nothing.
+
+## Plan amendments
+
+    Amend the plan: <numbered list of changes, one sentence each, with
+    the reason>. Then commit, push, and report again in the same layout.
+
+## Implement
+
+The first message of the implementation session.
+
+    The plan on branch `<branch>` is approved. Implement it with the
+    `finish-work` skill: milestone by milestone, with the targeted tests,
+    the complete gate, the review, and the pull request when every
+    milestone TODO is ticked. <When a stack was agreed: one pull request
+    per milestone with `gh stack`.> When the branch is behind
+    `origin/main`, merge it first with the `git-merge` skill. Decisions:
+    <number: letter and one sentence, for each decision of the plan
+    report>. Report when the pull request opens, or when you need a
+    decision, in the final-report layout. Never merge yourself.
+
+## Answers to decisions and review items
+
+    Answers to your report of <date>:
+    1. <letter>. <one sentence>.
+    2. <letter>. <one sentence>.
+    Item <n> waits for the user. Continue with the other items. Apply the
+    answers, run the checks, commit, push, re-review once, and report
+    again in the final-report layout.
+
+## Investigation
+
+A new session in the child's workspace, with the `default` role.
+
+    Investigate item <n> of the last report in this workspace: <title>.
+    <The question that the answer must settle.> Read only. Change no
+    file. Report the evidence, with file paths and lines, and recommend
+    one of the lettered options, or a new option with its effort.
+
+## Plan review
+
+A new session in the child's workspace, with the `default` role.
+
+    Review the plan `<plan file>` on this branch. Read only. Check that
+    the scope matches this goal: <goal>. Check that each milestone leaves
+    the product working, that the first milestone updates the docs, and
+    that each milestone can merge within a day. Name the files or areas
+    that each milestone touches. Report the amendments that you
+    recommend, numbered, with the reason.
+
+## Merge main
+
+    `main` moved under your branch: <the merged pull request and the
+    files>. Merge `origin/main` into the branch with the `git-merge`
+    skill, run the checks, push, and report.
+
+## After merge
+
+    Pull request #<n> merged as <commit>. Update the plan status as the
+    `plans` skill says, on a new branch, and open its pull request. Report
+    its number. <For a stack: run `gh stack sync` and report the next
+    pull request.> Do no other work.
+
+## Goal review
+
+The first message of a workspace named `review: <goal>`, with the
+`default` role.
+
+    Goal of the section "<section>": <goal, with the metric, its current
+    value, and the target>. Measure the metric now and record how. Find
+    the opportunities to move it toward the target. Propose up to five
+    candidate changes. For each give the expected effect on the metric,
+    the effort as the `decisions-and-findings` skill grades it, the files
+    or areas, and the risks. Order them by effect per effort. Change no
+    code. Report in the final-report layout.
+
+## Coordination with another section
+
+To the session named `coordinator` of a workspace named
+`coordinator: <other section>`.
+
+    From the coordinator of "<section>". I plan to change <areas or
+    files> for <goal>, starting <when>. Your section has <the workspace
+    or pull request> in the same area. Proposed order: <who goes first,
+    and what the other avoids>. Reply with your agreement or another
+    order. Without a reply by my next cycle, I start and avoid the shared
+    files.
