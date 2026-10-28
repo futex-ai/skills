@@ -156,8 +156,9 @@ review findings with lettered options. You answer in place of the user.
 Merge a pull request only when all of these hold:
 
 1. The child's final report says that the implementation is complete
-   under the `finish-work` skill, with the complete gate passed and the
-   review done.
+   under the `finish-work` skill. The checks that the skill requires
+   passed: the complete gate, or the Markdown validation of a
+   documentation-only or plan-only change. The review is done.
 2. `gh pr checks <number>` passes, and the pull request is not a draft.
 3. `gh pr view <number> --json mergeable,mergeStateStatus` shows no
    conflict. When `main` moved under the branch, send the merge-main

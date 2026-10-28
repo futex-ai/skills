@@ -24,13 +24,13 @@ the last change.
 
 | Stage | The child is | When its session is idle |
 | --- | --- | --- |
-| `new` | just added to the section | Read the last report. A workspace that you created has its plan request already, so set `planning`. For a workspace that the user added, set the stage that the report shows: a pushed plan is `planning`, a pull request is `review`. When the report shows neither, send the status request. When the workspace has no task, its name is the goal: send the plan request. |
-| `planning` | writing the plan | The report names a branch with a pushed plan and no pull request, as the `plans` skill says. Review the plan against the checks below. Send the amendments message and keep the stage, or approve: send the implement message to the same session and set `implementing`. The orchestrator then delegates the milestones inside its workspace. |
+| `new` | just added to the section | Read the last report. A workspace that you created has its plan request already, so set `planning`. A workspace that the user added gets the stage that its report shows. A pushed plan is `planning`. A pull request is `review`. When the report shows neither, send the status request. When the workspace has no task, its name is the goal: send the plan request. |
+| `planning` | writing the plan | The report names a branch with a pushed plan and no pull request, as the `plans` skill says. Review the plan against the checks below. To amend the plan, send the amendments message and keep the stage. To approve it, send the implement message to the same session and set `implementing`. The orchestrator then delegates the milestones inside its workspace. |
 | `implementing` | implementing the plan | Read the report. Answer the decisions and the review items. A report with an open pull request, every milestone ticked, and no open item goes to `review`. A blocked report goes to `blocked` with the blocker on the board. When the report says that the branch conflicts with `main`, send the merge-main message. |
 | `review` | done, pull request open | Check the merge conditions in `SKILL.md`. When they hold, set `merge`. When a condition fails because of the child, send the message that names the gap and set `implementing`. When it fails because of an escalation, set `blocked`. |
 | `merge` | waiting for the merge | Merge as `SKILL.md` says. Send the after-merge message. When the plan status pull request is merged, set `done`. |
 | `done` | finished | Archive the workspace, as the section below says. Keep the line for one week, then drop it. |
-| `blocked` | waiting for the user or another section | Check each cycle whether the blocker is gone: an answered escalation, a merged pull request of another section, or a user message. Then set the stage that the work needs. |
+| `blocked` | waiting for the user or another section | In each cycle, check whether the blocker is gone. Examples: an answered escalation, a merged pull request of another section, or a user message. Then set the stage that the work needs. |
 
 ## Plan checks
 
@@ -44,9 +44,9 @@ the last change.
 - Milestones that depend on each other become a stack, one pull request
   per milestone with `gh stack`. Independent milestones can become
   separate workspaces when their areas do not overlap.
-- For a plan with three or more milestones, or a complex area, delegate a
-  plan review with the `first-pass review agent` action before you
-  approve.
+- Before you approve a large plan, delegate a plan review with the
+  `first-pass review agent` action. A large plan has three or more
+  milestones, or a complex area.
 
 ## Messages
 
@@ -67,8 +67,8 @@ restorable. A workspace is finished when:
 - its work was dropped, or another workspace took it over,
 - the user says that it is no longer needed.
 
-Archive a session that you created for a goal review, a plan review, or
-an investigation after you read its report. The command is
+After you read the report of a goal review, a plan review, or an
+investigation, archive its session. The command is
 `conductor session archive <id>`. Do not archive a workspace at stage
 `blocked`. Record each archive in the log.
 

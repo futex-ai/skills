@@ -52,9 +52,9 @@ To the workspace's orchestrator session, after the plan is approved.
     goes to the `docs implementor`, the UI work to the `ui implementor`,
     and the other work to the `non-ui implementor`. The `models` skill
     names the model of each action. Check the delegated work and request
-    changes as needed. Follow the `finish-work` skill: the targeted
-    tests, the complete gate, and the review. Open the pull request when
-    every milestone TODO is ticked.
+    changes as needed. Run the checks and the review that the
+    `finish-work` skill requires. Open the pull request when every
+    milestone TODO is ticked.
     <When a stack was agreed: one pull request per milestone with
     `gh stack`.> When the branch is behind `origin/main`, merge it first
     with the `git-merge` skill. Decisions: <number: letter and one

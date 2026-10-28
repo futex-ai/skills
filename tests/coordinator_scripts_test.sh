@@ -109,6 +109,16 @@ test_last_report_prints_nothing_without_agent_text() {
   assert_eq "" "$("$scripts/last-report.sh" s3)" "empty report"
 }
 
+test_last_report_reads_a_page_larger_than_one_argument() {
+  fake_conductor "$1"
+  # Linux caps one command argument at 128 KiB. A real transcript page had 574 KB.
+  local big out
+  big="$(head -c 200000 /dev/zero | tr '\0' x)"
+  page "session_message_s4_--limit_100_--offset_0" false "[{\"type\":\"agent\",\"content\":{\"rawPayload\":{\"type\":\"result\",\"is_error\":false,\"result\":\"$big\"}}}]"
+  out="$("$scripts/last-report.sh" s4)"
+  assert_eq 200000 "${#out}" "report length"
+}
+
 test_last_report_needs_a_session_id() {
   fake_conductor "$1"
   local status=0
