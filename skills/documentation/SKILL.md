@@ -167,9 +167,8 @@ Protocol docs describe the current requirements. They are not fixed rules.
   everything that does not depend on it first. Until the user answers,
   change neither the behaviour nor the doc.
 - A detail that a requirement settles but does not spell out is not a
-  gap. It is a design call under the decision test in the
-  `decisions-and-findings` skill. Make the call. Record it in the plan
-  with its reason.
+  gap. Apply the decision test in the `decisions-and-findings` skill.
+  Make and record the call as the test says.
 - When the code and a protocol doc disagree, do not assume that the doc is
   right. Decide on the merits which side is right, then change the other
   side to match it.

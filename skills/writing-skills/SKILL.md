@@ -149,4 +149,6 @@ needs one to check against.
 - [ ] `SKILL.md` is near 150 lines. Detail is under `references/`.
 - [ ] When the text adds a kind of record, every list that says what an
       artifact holds names it.
+- [ ] A rule restated from another skill says what the source says, or
+      points to the source.
 - [ ] The README row exists. The repository check and `tests/run.sh` pass.
