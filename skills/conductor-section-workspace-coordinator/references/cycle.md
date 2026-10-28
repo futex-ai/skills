@@ -3,8 +3,8 @@
 This reference gives the action for each stage on the board. The stages
 are `new`, `planning`, `implementing`, `review`, `merge`, `done`, and
 `blocked`. A workspace moves forward one stage at a time. The board
-records the stage, the active session, the next action, and the date of
-the last change.
+records the stage, the orchestrator session, the next action, and the
+date of the last change.
 
 ## Read a report
 

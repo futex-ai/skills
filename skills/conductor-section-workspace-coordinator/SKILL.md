@@ -67,7 +67,8 @@ actions, or the board. Apply it before the steps below.
    with `scripts/last-report.sh` and its session id. Act by stage, as
    [references/cycle.md](references/cycle.md) says. The action is the plan
    request, the plan review, the implement message, the answers to the
-   items, or the next stage.
+   items, or the next stage. A workspace without an orchestrator gets one
+   first, as that reference says.
 4. Schedule new work, as [references/scheduling.md](references/scheduling.md)
    says. Check the conflicts before each new workspace. Start every new
    workspace with the plan request from
