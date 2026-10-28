@@ -74,8 +74,9 @@ update it with any new useful context in the same change.
   that contradicts the code in the same change.
 - Docs are consistent with themselves: no conflicting statements.
 - Docs may be nested in multiple directories.
-- A gap in the requirements found during implementation is a decision. See
-  "Protocol docs change with the behaviour" below.
+- A gap in the requirements found during implementation is a decision
+  when it passes the decision test in the `decisions-and-findings` skill.
+  See "Protocol docs change with the behaviour" below.
 
 ## Architecture docs
 
@@ -158,12 +159,17 @@ Protocol docs describe the current requirements. They are not fixed rules.
   change, however much the code changes.
 - A change to the behaviour changes a requirement. Update the protocol doc
   in the same change.
-- A requirement change is a decision for the user. When the implementation
-  finds that a requirement is wrong, incomplete, or worse than an
-  alternative, propose the change as a decision in the layout of the
+- A requirement change is a decision for the user. Propose it when the
+  implementation finds that a requirement is wrong or worse than an
+  alternative that you recommend. Propose it also when a requirement is
+  silent on a behaviour at the boundary. Use the layout of the
   `decisions-and-findings` skill, with the other decisions of the task. Do
   everything that does not depend on it first. Until the user answers,
   change neither the behaviour nor the doc.
+- A detail that a requirement settles but does not spell out is not a
+  gap. It is a design call under the decision test in the
+  `decisions-and-findings` skill. Make the call. Record it in the plan
+  with its reason.
 - When the code and a protocol doc disagree, do not assume that the doc is
   right. Decide on the merits which side is right, then change the other
   side to match it.

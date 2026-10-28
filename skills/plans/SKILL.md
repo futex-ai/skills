@@ -33,6 +33,10 @@ change. [templates/plan.md](templates/plan.md) is the starting point.
   alternatives, the reason, and the date. The protocol doc keeps only the
   decision in force. History, such as what the code did before the change,
   belongs in the plan, not in a protocol doc.
+- The plan also records each design call that you make yourself: the
+  choice, the reason, and the date. The `decisions-and-findings` skill
+  says which questions are design calls. Put each call in the design of
+  the change, marked as your call.
 
 ## Milestones
 

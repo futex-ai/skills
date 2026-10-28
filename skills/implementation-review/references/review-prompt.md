@@ -224,7 +224,9 @@ Apply these rules to a docs or spec finding:
   side is right.
 - A behaviour at the boundary that the diff adds and no requirement covers
   is a spec gap. Report it as one finding with `Auto-fix: no`, because the
-  user reviews each new requirement.
+  user reviews each new requirement. A detail that an existing requirement
+  settles is not a gap, also when the requirement does not spell the
+  detail out.
 - When a protocol doc in the scope names source files, functions, or
   internal mechanics, or records history, the fix moves that content to
   its home: the crate README for entry points, the plan for history, the
