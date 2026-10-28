@@ -47,13 +47,13 @@ is not a final report.
 To the workspace's orchestrator session, after the plan is approved.
 
     The plan on branch `<branch>` is approved. Implement all plan
-    milestones. Delegate the docs implementation to the `docs implementor`
-    action and the UI implementation to the `ui implementor` action.
-    Delegate the non-UI implementation to the `non-ui implementor`
-    action. The `models` skill names the model of each action. Check the
-    delegated work and request changes as needed. Follow the
-    `finish-work` skill: the targeted tests, the complete gate, the
-    review, and the pull request when every milestone TODO is ticked.
+    milestones by delegation, as the `plans` skill says: the docs work to
+    the `docs implementor`, the UI work to the `ui implementor`, and the
+    other work to the `non-ui implementor`. The `models` skill names the
+    model of each action. Check the delegated work and request changes
+    as needed. Follow the `finish-work` skill: the targeted tests, the
+    complete gate, the review, and the pull request when every milestone
+    TODO is ticked.
     <When a stack was agreed: one pull request per milestone with
     `gh stack`.> When the branch is behind `origin/main`, merge it first
     with the `git-merge` skill. Decisions: <number: letter and one

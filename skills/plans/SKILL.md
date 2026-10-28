@@ -99,6 +99,20 @@ change. [templates/plan.md](templates/plan.md) is the starting point.
 - Add each problem that the review listed under `Outside the scope` as one
   line too: its path, one sentence, and `Separate branch.`
 
+## Implementing a plan
+
+When the plan is approved, the orchestrator session of the workspace
+implements all milestones by delegation. The `models` skill defines each
+action and its route.
+
+- Delegate the docs work of a milestone to the `docs implementor`, the
+  UI work to the `ui implementor`, and the other work to the `non-ui
+  implementor`.
+- Check each delegated result against the milestone's TODOs and the
+  repository rules. Request changes until it passes. Then tick the TODO.
+- Keep the gate, the review, and the pull request with the orchestrator,
+  as the `finish-work` skill says.
+
 ## Completion boundary
 
 - The PR merge is the completion boundary. Every milestone and required TODO
