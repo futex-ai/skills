@@ -4,8 +4,9 @@ Status: Active. On branch `<branch>`, no pull request yet. The plan closes when 
 
 <One or two short paragraphs: the problem, the chosen approach, and what the
 change does not cover. Record each user decision with its date, the
-alternatives, and the reason. The design and the history of the change live
-here, not in the protocol docs.>
+alternatives, and the reason. Record each design call that you made yourself
+with its date and reason, marked as your call. The design and the history of
+the change live here, not in the protocol docs.>
 
 Contract owners:
 
