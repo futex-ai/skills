@@ -20,7 +20,7 @@ else does.
 | `non-ui implementor` | codex | `gpt-6.1-sol` | `max` | Code that is not UI: backend, scripts, tests, and tooling. |
 | `ui implementor` | claude | `opus-5-5-1m` | `max` | Screens, components, styles, and mockups. |
 | `docs implementor` | claude | `opus-5-5-1m` | `max` | Docs, protocol docs, READMEs, and plans. |
-| `first-pass review agent` | codex | `gpt-6-astra` | `max` | The implementation review and plan reviews. |
+| `first-pass review agent` | codex | `gpt-6.1-sol` | `max` | The implementation review and plan reviews. |
 | `second-pass review agent` | claude | `fable-5-1` | `max` | The validity check, the options check, and investigations of a decision or a review item. |
 | `wake routine` | claude | `haiku-5-5-1m` | `low` | The hourly routine that wakes a section coordinator. It runs a few commands. |
 
