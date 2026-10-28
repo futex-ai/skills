@@ -129,8 +129,8 @@ change. [templates/plan.md](templates/plan.md) is the starting point.
   `.context/<plan-name>/`, which Git ignores. Under the related milestone,
   add one line that names the file.
 - A plan keeps only its summary, milestones, TODOs, contracts, decisions,
-  user approvals, and short review summaries. Agents read the whole plan, so
-  logs in a plan slow every session.
+  design calls, user approvals, and short review summaries. Agents read the
+  whole plan, so logs in a plan slow every session.
 
 ## Live and history
 

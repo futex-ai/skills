@@ -147,4 +147,6 @@ needs one to check against.
 - [ ] Every excuse table row quotes a recorded case.
 - [ ] Every recorded case was walked through with the final text.
 - [ ] `SKILL.md` is near 150 lines. Detail is under `references/`.
+- [ ] When the text adds a kind of record, every list that says what an
+      artifact holds names it.
 - [ ] The README row exists. The repository check and `tests/run.sh` pass.

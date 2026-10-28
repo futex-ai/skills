@@ -46,8 +46,8 @@ recommend that option.
 When no condition holds, the question is a design call. Apply the
 recommended option. Record the call, its reason, and the date in the
 plan, in the design of the change. When the change has no plan, record
-it in the pull request description. Do not ask the user. Give each
-design call one line in the final report.
+it in the commit or the pull request description. Do not ask the user.
+Give each design call one line in the final report.
 
 Three signs that a question fails the test:
 
