@@ -60,9 +60,25 @@ change. [templates/plan.md](templates/plan.md) is the starting point.
 - Break the work into concrete units called milestones. At the end of each
   milestone the product works. Never leave the code base or feature broken.
 - Each milestone has a short summary and a TODO checklist.
-- The first milestone updates the relevant documentation and protocol or
-  spec docs so that they state the requirements and the decisions for the
-  work that follows. The plan itself holds the design: the approach, the
+- When the plan has mockup work, Milestone 1 is the mockup milestone. It
+  comes before every other milestone. That includes the documentation
+  milestone and repository bootstrap work, such as the workspace skeleton,
+  checks, and CI. Mockups find problems in a design better than any other
+  step. A plan has mockup work when it changes anything that a mockup
+  shows.
+- Put all mockup work that is known at planning time in the mockup
+  milestone, for every product area of the plan. When the repository has
+  no mockup catalogue tooling yet, the mockup milestone also sets up that
+  tooling.
+- When the mockup milestone is complete, update the design and the TODOs
+  of the plan for each problem that the mockups show. Do this before the
+  next milestone starts. Add a decision when the decision test of the
+  `decisions-and-findings` skill says so.
+- The documentation milestone comes directly after the mockup milestone.
+  When the plan has no mockup work, the documentation milestone is
+  Milestone 1. It updates the relevant documentation and protocol or spec
+  docs so that they state the requirements and the decisions for the work
+  that follows. The plan itself holds the design: the approach, the
   components, and the mechanics. See the `documentation` skill for what
   belongs in a protocol doc.
 - The documentation milestone does not freeze the protocol docs. A later
@@ -70,16 +86,12 @@ change. [templates/plan.md](templates/plan.md) is the starting point.
   milestone that changes a requirement proposes the change as a decision
   and updates the protocol doc in the milestone that changes the code. See
   the `documentation` skill.
-- When a product area needs mockup work, its initial mockup milestone comes
-  directly after the documentation milestone for that area. It also comes
-  before any UI milestone for that area. Milestones for repository
-  bootstrap work, such as the workspace skeleton, checks, CI, and the
-  mockup catalogue tooling, can come before the first mockup milestone.
-- Put all mockup work for an area that is known at planning time in the
-  initial mockup milestone for that area. Add another mockup milestone only
-  when implementation finds a genuine mockup gap.
-- Keep backend changes, mockup or design updates, and UI implementation in
-  separate milestones. Mockups complete before UI implementation begins.
+- A mockup milestone holds only mockup work, and no other milestone holds
+  mockup work. Keep backend changes and UI implementation in separate
+  milestones too. Mockups complete before UI implementation begins.
+- Add another mockup milestone only when implementation finds a genuine
+  mockup gap. When you add milestones for review fixes or for a mockup
+  gap, put the new mockup milestone first among them.
 - A milestone with UI or mockup work has a tag line directly below its
   heading: `Tags: ui` or `Tags: mockup`. A tagged milestone has no backend
   work. If backend work is missing while you implement a tagged milestone,

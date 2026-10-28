@@ -144,8 +144,10 @@ review.
   the target, split it into linked pages in the same change.
 - When a protocol doc that you touch still names code or describes
   mechanics, move that content to its home in the same change.
-- The first milestone of every plan writes the requirements and the
-  decisions for the work that follows; see the `plans` skill.
+- The documentation milestone of every plan writes the requirements and
+  the decisions for the work that follows. It comes directly after the
+  mockup milestone, or first when the plan has no mockup work. See the
+  `plans` skill.
 - When a bug reaches a review or production, check whether a requirement
   was missing or unclear. Propose the missing or clearer requirement as a
   decision with the other decisions of the task. After the user chooses the
