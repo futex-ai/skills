@@ -40,9 +40,9 @@ Codex, and with any other agent that reads the
 | Skill | Read when |
 | --- | --- |
 | `finish-work` | Before you say work is complete, before you commit, push, or open a pull request, and when you choose which tests or gates to run. |
-| `plans` | When the user asks for a plan, before you create, edit, or tick a plan, when you find a TODO during implementation, and before you open a pull request for a plan. |
+| `plans` | When the user asks for a plan, before you create, edit, or tick a plan, when you add a decision to a plan, when you find a TODO during implementation, and before you open a pull request for a plan. |
 | `implementation-review` | After you push, before you run or apply a review, and when the user asks for a code review. |
-| `decisions-and-findings` | Before you raise a question as a decision, and before you send decisions, review findings, or a final report, also under a brief output style. |
+| `decisions-and-findings` | Before you raise a question as a decision, and before you send decisions, review findings, or a final report, when you write the options of a decision, also under a brief output style. |
 | `deterministic-tests` | A test flakes, would assert elapsed time, or tempts you to add a sleep, a retry, or a longer time limit. |
 | `git-commit` | Before and after you commit, and when you write a commit or pull request message. When a diff deletes or renames something, or when you find dead code. |
 | `git-merge` | Before you merge or rebase, when you resolve conflicts, and after each merge commit. |
