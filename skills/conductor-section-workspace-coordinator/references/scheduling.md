@@ -37,7 +37,7 @@ within a day or two of its plan.
 | Touch different areas | Parallel: one workspace each, started in the same cycle. |
 | Touch the same files | Sequence: the second starts after the first merges. |
 | Depend on each other, and each leaves the product working | One workspace, one plan, and one pull request per milestone as a stack with `gh stack`. |
-| One large change with an unclear design | One workspace with the `complex` role. Plan first. Split by the plan review when it can be. |
+| One large change with an unclear design | One workspace. Plan first. Split by the plan review when it can be. |
 
 ## Keep branches close to main
 
@@ -54,7 +54,8 @@ A board with no active work has every stage at `done`, or at `blocked`
 on the user. Then:
 
 1. When the state records goals or metrics, create a workspace
-   `review: <goal>` with the `default` role and the goal-review message.
+   `review: <goal>` with the `brainstorming` action and the goal-review
+   message.
    The reviewer measures the metric, finds the opportunities, and
    proposes up to five candidate changes with the expected effect, the
    effort, the areas, and the risks. It changes nothing.
@@ -63,7 +64,8 @@ on the user. Then:
    choice blocks. Start a plan workspace for each candidate that can run
    in parallel, and sequence the rest.
 3. Record the candidates that you did not start under **Backlog** in the
-   state file, so that a later cycle can start them. Start from the
+   state file, so that a later cycle can start them. The backlog also
+   holds the larger fixes that a decision deferred. Start from the
    backlog before you start a new goal review.
 4. Without a goal, end the cycle. Say in the status report that the
    section has no work and no goal.

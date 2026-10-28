@@ -44,17 +44,22 @@ is not a final report.
 
 ## Implement
 
-The first message of the implementation session.
+To the workspace's orchestrator session, after the plan is approved.
 
-    The plan on branch `<branch>` is approved. Implement it with the
-    `finish-work` skill: milestone by milestone, with the targeted tests,
-    the complete gate, the review, and the pull request when every
-    milestone TODO is ticked. <When a stack was agreed: one pull request
-    per milestone with `gh stack`.> When the branch is behind
-    `origin/main`, merge it first with the `git-merge` skill. Decisions:
-    <number: letter and one sentence, for each decision of the plan
-    report>. Report when the pull request opens, or when you need a
-    decision, in the final-report layout. Never merge yourself.
+    The plan on branch `<branch>` is approved. Implement all plan
+    milestones. Delegate the docs implementation to the `docs implementor`
+    action and the UI implementation to the `ui implementor` action.
+    Delegate the non-UI implementation to the `non-ui implementor`
+    action. The `models` skill names the model of each action. Check the
+    delegated work and request changes as needed. Follow the
+    `finish-work` skill: the targeted tests, the complete gate, the
+    review, and the pull request when every milestone TODO is ticked.
+    <When a stack was agreed: one pull request per milestone with
+    `gh stack`.> When the branch is behind `origin/main`, merge it first
+    with the `git-merge` skill. Decisions: <number: letter and one
+    sentence, for each decision of the plan report>. Report when the pull
+    request opens, or when you need a decision, in the final-report
+    layout. Never merge yourself.
 
 ## Answers to decisions and review items
 
@@ -67,7 +72,8 @@ The first message of the implementation session.
 
 ## Investigation
 
-A new session in the child's workspace, with the `default` role.
+A new session in the child's workspace, with the `second-pass review
+agent` action.
 
     Investigate item <n> of the last report in this workspace: <title>.
     <The question that the answer must settle.> Read only. Change no
@@ -76,7 +82,8 @@ A new session in the child's workspace, with the `default` role.
 
 ## Plan review
 
-A new session in the child's workspace, with the `default` role.
+A new session in the child's workspace, with the `first-pass review
+agent` action.
 
     Review the plan `<plan file>` on this branch. Read only. Check that
     the scope matches this goal: <goal>. Check that each milestone leaves
@@ -101,7 +108,7 @@ A new session in the child's workspace, with the `default` role.
 ## Goal review
 
 The first message of a workspace named `review: <goal>`, with the
-`default` role.
+`brainstorming` action.
 
     Goal of the section "<section>": <goal, with the metric, its current
     value, and the target>. Measure the metric now and record how. Find

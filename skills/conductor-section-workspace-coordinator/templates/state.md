@@ -13,14 +13,12 @@ Routine: <not checked | waiting for the user since <date> | created on
   and the target when the user gave them.>
 - None. <Keep this line only when the user gave no goal.>
 
-## Models
+## Actions
 
-| Role | Agent | Model | Effort |
-| --- | --- | --- | --- |
-| default | <agent> | <id from the favourites> | max |
-| implementation | <agent> | <id> | max |
-| complex | <agent> | <id> | max |
-| routine | <agent> | <id> | low |
+The `models` skill defines the model of each action. Overrides for this
+section, as the user gave them:
+
+- None. <Or: <date>: <action>: <agent, model, effort>.>
 
 ## Board
 
@@ -39,6 +37,8 @@ Stages: new, planning, implementing, review, merge, done, blocked.
 
 - <candidate change from a goal review: title, expected effect, effort,
   areas, and why it waits>.
+- <follow-up: the larger fix that a decision deferred, the workspace and
+  the item number, and its effort>.
 
 ## Log
 
