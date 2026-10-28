@@ -30,6 +30,11 @@ the coordinator waits.
   `CONDUCTOR_WORKSPACE_NAME` starts with `coordinator: `, or when
   `.context/coordinator/state.md` exists. Without the state file, do the
   first cycle first.
+- This session lives for days, and `main` moves under it. At the start
+  of every cycle run `git fetch origin main` and then
+  `git merge --ff-only origin/main`. You make no commits here, so the
+  fast-forward always succeeds. Then every file, plan, and rule that you
+  read is current. Fetch a child's branch before you read it.
 
 ## First cycle: set up
 
@@ -54,9 +59,9 @@ the coordinator waits.
 
 ## Each cycle
 
-Read `.context/coordinator/state.md` first. A user message that arrived
-with the cycle can change the goals, the actions, or the board. Apply it
-before the steps below.
+Fetch and fast-forward `main`, then read `.context/coordinator/state.md`.
+A user message that arrived with the cycle can change the goals, the
+actions, or the board. Apply it before the steps below.
 
 1. Scan the section with `scripts/section-workspaces.sh`. Add each
    workspace that the board does not list, at stage `new`. A workspace
@@ -89,21 +94,24 @@ before the steps below.
 - Name an action, never a model. The `models` skill defines the agent,
   the model, and the effort of each action. The state file records the
   overrides that the user gave for this section.
-- A new change gets a new workspace. Run `conductor workspace create` with
-  `--name "<change>"`, the `default orchestrator` action, and
-  `--message-file` with the plan request. Then move the workspace into
-  the section with `conductor workspace move <id> --section <section id>`.
-  The first session is the workspace's orchestrator. It writes the plan.
-  After the approval it implements every milestone by delegation inside
-  its workspace, as the implement message says, and it stays the session
-  that you talk to.
+- Every change that becomes an implementation or a pull request gets its
+  own workspace, as the `models` skill says. Run `conductor workspace
+  create` with `--name "<change>"`, the `default orchestrator` action,
+  and `--message-file` with the plan request. Then move the workspace
+  into the section with `conductor workspace move <id> --section <section
+  id>`. The first session is the workspace's orchestrator. It writes the
+  plan. After the approval it implements every milestone by delegation
+  inside its workspace, as the implement message says, and it stays the
+  session that you talk to.
 - A plan review gets a new session in the child's workspace with the
   `first-pass review agent` action. An investigation of a decision or a
   review item gets one with the `second-pass review agent` action. Run
   `conductor session create --workspace <id>` with a name and
   `--message-file`. The session shares the files and the branch. Read its
   report, then archive it with `conductor session archive <id>`.
-- A goal review gets a new workspace with the `brainstorming` action.
+- A goal review gets a new session in this workspace with the
+  `brainstorming` action. It produces a report, not a change, so it
+  needs no workspace of its own.
 - Write every message from the templates in `templates/messages.md`. Each
   message names the goal, the constraints, the files to avoid, and the
   report that you expect. Send a message only to an idle session, and put
@@ -161,6 +169,7 @@ skill says and opens that pull request. Merge it too. Then set the stage
 
 - [ ] The guard passed: a Conductor cloud workspace, and no edit outside
       `.context/coordinator/`.
+- [ ] `main` was fetched and fast-forwarded at the start of the cycle.
 - [ ] The section is known. The workspace is named `coordinator:
       <section>` and the session `coordinator`.
 - [ ] The state file has the goals, the action overrides, the routine

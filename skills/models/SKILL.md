@@ -36,20 +36,25 @@ table.
 
 ## Routes
 
+Work that becomes an implementation or a pull request gets its own
+Conductor workspace. Its first session is the orchestrator of that work.
+Everything else, such as a review, an investigation, or a brainstorm,
+runs where the orchestrator chooses: an in-session subagent, or a
+session in the same workspace. A Codex action always needs a session or
+a workspace, because a subagent runs Claude models only.
+
 - A Conductor workspace: `conductor workspace create --agent <agent>
   --model <model> --effort <effort>`, with `--name` and `--message-file`.
-  Use it when the work needs its own branch and environment.
 - A Conductor session in an existing workspace: `conductor session create
   --workspace <id> --agent <agent> --model <model> --effort <effort>`,
   with `--name` and `--message-file`. It shares the files and the branch
-  of that workspace. A Codex action always takes this route or a
-  workspace. The report of the session is its last message:
+  of that workspace. The report of the session is its last message:
   `conductor --json session message <id>`.
-- A Conductor routine: `conductor routine create --agent <agent> --model
-  <model> --effort <effort>`. Routine commands need a user API key.
 - An in-session subagent, the Agent tool of Claude Code: Claude actions
   only. Name the model by its family, `fable`, `opus`, or `haiku`, and
-  pass the effort. A Codex action cannot run as a subagent.
+  pass the effort. It ends with its parent session.
+- A Conductor routine: `conductor routine create --agent <agent> --model
+  <model> --effort <effort>`. Routine commands need a user API key.
 
 Give each delegation the goal, the constraints, the files to avoid, and
 the report that you expect. Read the report and check the work before

@@ -53,16 +53,17 @@ within a day or two of its plan.
 A board with no active work has every stage at `done`, or at `blocked`
 on the user. Then:
 
-1. When the state records goals or metrics, create a workspace
-   `review: <goal>` with the `brainstorming` action and the goal-review
-   message.
+1. When the state records goals or metrics, start a session
+   `review: <goal>` in this workspace with the `brainstorming` action and
+   the goal-review message. Fetch and fast-forward `main` first, so that
+   the review measures the current code.
    The reviewer measures the metric, finds the opportunities, and
    proposes up to five candidate changes with the expected effect, the
    effort, the areas, and the risks. It changes nothing.
-2. Read its report. Order the candidates by expected effect per effort.
-   Drop a candidate that conflicts with active work or that a reserved
-   choice blocks. Start a plan workspace for each candidate that can run
-   in parallel, and sequence the rest.
+2. Read its report, then archive the session. Order the candidates by
+   expected effect per effort. Drop a candidate that conflicts with
+   active work or that a reserved choice blocks. Start a plan workspace
+   for each candidate that can run in parallel, and sequence the rest.
 3. Record the candidates that you did not start under **Backlog** in the
    state file, so that a later cycle can start them. The backlog also
    holds the larger fixes that a decision deferred. Start from the

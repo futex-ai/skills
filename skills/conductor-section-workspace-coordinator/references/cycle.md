@@ -64,14 +64,13 @@ Archive a workspace that the section no longer needs, with
 restorable. A workspace is finished when:
 
 - its pull request merged, and its plan status pull request merged,
-- it was a goal review, an investigation, or a plan review whose report
-  you read,
 - its work was dropped, or another workspace took it over,
 - the user says that it is no longer needed.
 
-Archive a session that you created for a review or an investigation
-after you read its report, with `conductor session archive <id>`. Do not
-archive a workspace at stage `blocked`. Record each archive in the log.
+Archive a session that you created for a goal review, a plan review, or
+an investigation after you read its report, with
+`conductor session archive <id>`. Do not archive a workspace at stage
+`blocked`. Record each archive in the log.
 
 ## Stacks
 

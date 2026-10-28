@@ -107,8 +107,8 @@ agent` action.
 
 ## Goal review
 
-The first message of a workspace named `review: <goal>`, with the
-`brainstorming` action.
+The first message of a session named `review: <goal>` in the
+coordinator's workspace, with the `brainstorming` action.
 
     Goal of the section "<section>": <goal, with the metric, its current
     value, and the target>. Measure the metric now and record how. Find
@@ -116,7 +116,7 @@ The first message of a workspace named `review: <goal>`, with the
     candidate changes. For each give the expected effect on the metric,
     the effort as the `decisions-and-findings` skill grades it, the files
     or areas, and the risks. Order them by effect per effort. Change no
-    code. Report in the final-report layout.
+    tracked file. Report in the final-report layout.
 
 ## Coordination with another section
 
