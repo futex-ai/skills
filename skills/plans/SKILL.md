@@ -137,5 +137,5 @@ change. [templates/plan.md](templates/plan.md) is the starting point.
 In an active plan, completed milestones and checked TODOs are history; all
 other content is live. In a completed plan, open review findings and
 unchecked post-merge follow-ups are live; all other content is history. Do
-not change the words of history. See the `git-commit` skill for stale
-references and history links.
+not change the words of history. See the `git-commit` skill for false
+facts in history, stale references, and history links.

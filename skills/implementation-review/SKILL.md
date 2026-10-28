@@ -145,6 +145,7 @@ The full rule with every condition is in
     in the `deterministic-tests` skill
   - dead code under the predicate in the `git-commit` skill
   - repository-rule violations such as file size, lint, and layout
+  - false facts in a plan, also in history under the `git-commit` skill
 - The letter names the best-ranked option that is not blocked: a
   structural wider fix, then a detection wider fix, then the direct fix.
   A blocked wider fix does not block the tag.
@@ -157,12 +158,18 @@ The full rule with every condition is in
   class is already in force, the `documentation` skill, so the reviewer
   proposes no other wider fix for it. The review-fix rule says when the doc
   side changes without the user.
+- A false fact in a plan is a count, name, path, link, commit, or date
+  where the record gives a different value. The record is the evidence
+  file, the commit, or the command output. Its category is process. The
+  direct fix corrects only the false words. In history, the `git-commit`
+  skill says when a fact is false. A correction that the branch made
+  under that skill is not a finding.
 - `Auto-fix: no` when every option is blocked, when the best option on
   the merits is blocked and is not a wider fix, when the options have real
   trade-offs and no option is clearly best, or when the finding is a slow,
   custom, or low-value test, gate, lint, or check. Findings about missing
-  tests, performance, code structure, UX wording, and process always wait
-  for the user.
+  tests, performance, code structure, and UX wording always wait for the
+  user. Any other process finding waits too.
 - An `Outside the scope` problem is not a finding. Do not fix it in this
   branch. Report it for a separate branch.
 

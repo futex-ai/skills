@@ -157,6 +157,7 @@ not blocked, for a finding about:
 - a flaky test that the diff adds or changes
 - dead code
 - a repository-rule violation such as file size, lint, or layout
+- a false fact in a plan
 
 The letter names the best-ranked option that is not blocked: a structural
 wider fix, then a detection wider fix, then the direct fix. A blocked wider
@@ -192,6 +193,21 @@ fallback, or the off branch of a feature flag. Its deletion is blocked.
 When a condition is in doubt, give the finding the category code
 structure and tag it `Auto-fix: no`.
 
+A false fact in a plan is a count, name, path, link, commit, or date where
+the record gives a different value. The record is the evidence file, the
+commit, or the command output. Give the finding the category process. The
+direct fix corrects only the false words. Its commit message names the old
+and the new value.
+
+History is the part of a plan whose words stay, also when a later change
+makes them stale. In an active plan, completed milestones and checked
+TODOs are history. In a completed plan, everything except the open review
+findings and the unchecked post-merge follow-ups is history. In history, a
+fact is false only when it was false when the branch wrote it. A
+correction of such a fact that the branch already made is not a finding.
+When the true value means that a checked TODO is not done, tag the finding
+`Auto-fix: no`.
+
 `Auto-fix: no` for every finding that needs a decision:
 
 - Every option is blocked.
@@ -201,8 +217,10 @@ structure and tag it `Auto-fix: no`.
 - The finding is a slow, custom, or low-value test, gate, lint, or check in
   the scope. Ask whether to fix it or remove it, and state what it protects
   and how long it runs.
-- The finding is about missing tests, performance, code structure, UX
-  wording, or process.
+- The finding is about missing tests, performance, code structure, or UX
+  wording.
+- The finding is any other process finding. An example is a change to the
+  words of history that corrects no false fact.
 
 Protocol docs hold the requirements and the decisions in force for an area:
 observable behaviour at a boundary, and the reason for each choice. They do
