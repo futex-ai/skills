@@ -19,8 +19,8 @@ at that moment instead of guessing the rule.
 ## Decisions
 
 - Before you send a message with decisions, review findings, or a final
-  report, read the `decisions-and-findings` skill. It gives the layout and
-  the writing limits.
+  report, read the `decisions-and-findings` skill. It says which questions
+  are decisions. It gives the layout and the writing limits.
 - When a task needs decisions from the user, ask for all of them in one
   message, not one at a time. Number each decision. List the decisions and
   the review findings by severity, highest first. For each give its

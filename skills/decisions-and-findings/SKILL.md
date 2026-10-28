@@ -1,6 +1,6 @@
 ---
 name: decisions-and-findings
-description: Use before you send a message that asks the user for a decision, presents review findings or review items, or gives a final report, when the user asks for more detail, a shorter answer, or an explanation of earlier decisions or findings, when you list open findings from a plan or a saved review report, when you order or number the decisions and the findings of a message, and when an output style asks for brevity while you write such a message.
+description: Use before you send a message that asks the user for a decision, presents review findings or items, or gives a final report, before you raise a question as a decision, when you write the options of a decision or a finding, when the user asks for more detail, a shorter answer, or an explanation of earlier decisions or findings, when you list open findings from a plan or a review report, when you order or number the decisions and findings of a message, and when an output style asks for brevity.
 ---
 
 # Decisions and findings
@@ -20,6 +20,41 @@ fewer fields or longer sentences.
 A skill or a prompt for one task can set its own message order. Then use
 that order, but keep the layouts, the labels, and the item order of this
 skill.
+
+## The decision test
+
+Apply this test to each question before you write it as a decision. Look
+at the option that you recommend. The question is a decision for the
+user only when one of these conditions holds:
+
+1. The recommended option changes a requirement or a decision in force.
+2. The recommended option adds behaviour at a boundary that no
+   requirement covers.
+3. The recommended option is blocked under the review-fix rule in the
+   `implementation-review` skill. It is Large, deletes functionality,
+   adds a gate or stricter validation, weakens a test, or needs
+   credentials or infrastructure.
+4. Two or more options have real trade-offs, and no option is clearly
+   best.
+5. The user asked you to bring this choice to them.
+
+A detail that an existing requirement settles is not a gap, also when the
+requirement does not spell the detail out. An option that drops the
+requirement does not make the question a decision when you do not
+recommend that option.
+
+When no condition holds, the question is a design call. Apply the
+recommended option. Record the call, its reason, and the date in the
+plan, in the design of the change. When the change has no plan, record
+it in the commit or the pull request description. Do not ask the user.
+Give each design call one line in the final report.
+
+Three signs that a question fails the test:
+
+- The recommendation says that the option costs nothing.
+- The severity is Low, and the impact is only that the work waits for the
+  answer.
+- The **Auto-fix** reason says only that the item is a decision.
 
 ## Simplified Technical English
 
@@ -64,7 +99,8 @@ table and the final report keep the same lists and the same order.
 
 ## Decision layout
 
-Use this layout for each decision that is not a review finding.
+Use this layout for each question that passes the decision test and is
+not a review finding.
 
 ```markdown
 ### 1. <The problem, in eight words or fewer>
@@ -80,7 +116,7 @@ Use this layout for each decision that is not a review finding.
   - **B.** <The change.> <Its cost or risk.> Effort: <Small, Medium, or Large>.
   - <More options as C, D, and so on, when the problem has them.>
 - **Recommendation:** <Letter>. <One sentence of reasoning.>
-- **Auto-fix:** no, because <the reason that you cannot choose alone.>
+- **Auto-fix:** no, because <the number of the condition of the decision test that holds, and one sentence of evidence.>
 ```
 
 ## Finding layout
@@ -110,11 +146,6 @@ what each field must contain.
 - **Auto-fix:** <`yes, apply` and the letter of the option to apply, or `no, because` and the condition that stops the fix.>
 ```
 
-Give one lettered option for each real choice. Order the options from the
-smallest effort to the largest, and give each its own grade. When you
-explain an item again, keep the recorded letters and their order. The
-wider fix is one of these options.
-
 A problem outside the review scope is not a finding. The
 `implementation-review` skill gives its one-line shape. The final report
 lists it under **Open**, for a separate branch.
@@ -123,6 +154,25 @@ In both layouts, keep every label, also when the user asks for more detail
 or for a shorter answer. An item leaves out **Terms** only under the rule
 below. For more detail, write **Background** as a list with one fact in
 each item.
+
+## Options
+
+Give one lettered option for each real choice. Order the options from the
+smallest effort to the largest, and give each its own grade. When you
+explain an item again, keep the recorded letters and their order. The
+wider fix of a finding is one of these options.
+
+Before you write the options, ask two questions. Are these the only
+options? What would you build if the current code did not exist? Add each
+new option that the questions give.
+
+For a decision, then name each condition that every option keeps. Name
+its source: a protocol doc, a user decision, the task message, an earlier
+option's text, or the code. When it is not a requirement, or its reason
+is gone, add the option that drops it. A user decision covers the choice
+that the user made, not each sentence of the text that describes the
+chosen option. For a finding, the options check of the
+`implementation-review` skill asks this in a fresh context.
 
 ## Terms
 
@@ -194,6 +244,8 @@ keep the item order above. Use these labels:
 - **Fixed:** each auto-fixed finding. Give its number, its severity, a
   plain explanation, the applied option, what changed, and the commit.
 - **Decisions:** each decision that the user answered, and its outcome.
+  Then each design call that you made under the decision test, in one
+  line: the call and its reason.
 - **Checks:** each check and its result. Give the output of a failed
   check. Name each check that was skipped or blocked, and give the reason.
   Name each unrelated flaky test with its failure text, rerun outcome, and

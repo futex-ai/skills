@@ -35,7 +35,8 @@ run.
   only under the flaky-test rule in the `deterministic-tests` skill.
 - Documentation-only or plan-only changes, including initial plan creation,
   do not require the gate. Validate the changed Markdown and review the diff
-  instead.
+  instead. For a plan with a new decision, run the options check over it,
+  as the `plans` skill says.
 
 ## 3. Keep the spec aligned
 
@@ -119,7 +120,8 @@ and labels in the `decisions-and-findings` skill. Include:
 - [ ] Post-push review run; `Auto-fix: yes` findings fixed; re-reviewed once.
 - [ ] Validity check run before each fix round. Removed findings named
       under **Checks**.
-- [ ] Options check run over the open findings and merged into the report.
+- [ ] Options check run over the open findings and the new plan decisions,
+      and merged into the report.
 - [ ] Pull request opened once the implementation was complete or the user
       asked. When the change has an active plan, its link is in the status
       paragraph.
