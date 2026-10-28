@@ -105,9 +105,9 @@ When the plan is approved, the orchestrator session of the workspace
 implements all milestones by delegation. The `models` skill defines each
 action and its route.
 
-- Delegate the docs work of a milestone to the `docs implementor`, the
-  UI work to the `ui implementor`, and the other work to the `non-ui
-  implementor`.
+- Delegate the docs work of a milestone to the `docs implementor`.
+  Delegate the UI work to the `ui implementor`. Delegate the other work
+  to the `non-ui implementor`.
 - Check each delegated result against the milestone's TODOs and the
   repository rules. Request changes until it passes. Then tick the TODO.
 - Keep the gate, the review, and the pull request with the orchestrator,

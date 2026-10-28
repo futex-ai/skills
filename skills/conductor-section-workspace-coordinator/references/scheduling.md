@@ -1,7 +1,7 @@
 # Scheduling and conflicts
 
 The coordinator schedules the work so that independent changes run in
-parallel, dependent changes run in order, and no two active branches edit
+parallel and dependent changes run in order. No two active branches edit
 the same files. A pull request that drifts far from `main` costs a merge
 with conflicts and a second review. So each change stays small and merges
 within a day or two of its plan.
@@ -9,7 +9,7 @@ within a day or two of its plan.
 ## Before a new workspace
 
 1. Name the areas that the change will touch: packages, directories, or
-   files, from the goal and a read of the repository.
+   files. Take them from the goal and a read of the repository.
 2. List the open pull requests of the repository with their files:
    `gh pr list --state open --json number,title,headRefName,files,updatedAt`.
    An open pull request that touches the same files is a conflict.
@@ -21,10 +21,10 @@ within a day or two of its plan.
 4. For each possible conflict in another section, send its coordinator
    the coordination message from `templates/messages.md`. Coordinator
    workspaces are named `coordinator: <section>`. Send to their session
-   named `coordinator`. Agree on an order: one goes first, and the other
+   named `coordinator`. Agree on an order. One goes first. The other
    starts after that pull request merges, or starts now and avoids the
    shared files.
-5. For a conflict inside this section, sequence the work: start the
+5. For a conflict inside this section, sequence the work. Start the
    second change after the first merges, or make it a milestone of the
    first plan.
 6. Record the areas and the agreed order on the board line of the new
@@ -58,18 +58,18 @@ A board with no active work has every stage at `done`, or at `blocked`
 on the user. Then:
 
 1. When the state records goals or metrics, start a session
-   `review: <goal>` in this workspace with the `brainstorming` action and
-   the goal-review message. Fetch and fast-forward `main` first, so that
-   the review measures the current code.
-   The reviewer measures the metric, finds the opportunities, and
-   proposes up to five candidate changes with the expected effect, the
-   effort, the areas, and the risks. It changes nothing.
+   `review: <goal>` in this workspace. Give it the `brainstorming` action
+   and the goal-review message. Fetch and fast-forward `main` first, so
+   that the review measures the current code. The reviewer measures the
+   metric and finds the opportunities. It proposes up to five candidate
+   changes with the expected effect, the effort, the areas, and the
+   risks. It changes nothing.
 2. Read its report, then archive the session. Order the candidates by
    expected effect per effort. Drop a candidate that conflicts with
    active work or that a reserved choice blocks. Start a plan workspace
    for each candidate that can run in parallel, and sequence the rest.
 3. Record the candidates that you did not start under **Backlog** in the
-   state file, so that a later cycle can start them. The backlog also
+   state file. A later cycle can start them. The backlog also
    holds the larger fixes that a decision deferred. Start from the
    backlog before you start a new goal review.
 4. Without a goal, end the cycle. Say in the status report that the

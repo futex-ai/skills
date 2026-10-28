@@ -14,8 +14,8 @@ the last change.
   **Open**.
 - When the session is `working`, do not read it and do not send to it.
   Wait for `idle`.
-- When the last message is not a final report, for example a question or
-  an error, answer the question or send the status request.
+- When the last message is a question, answer it. When it is an error,
+  or not a final report, send the status request.
 - Keep what the next cycle needs in the board line: the branch, the pull
   request number, and the open items. Do not copy reports into the state
   file.
@@ -54,8 +54,8 @@ the last change.
 - Never send code. Describe the change in words. A child that needs a
   design decision gets the decision, not the implementation.
 - When the child asks a question that the goals answer, answer it. When
-  the goals do not answer it and the choice is not reserved for the user,
-  decide, and record the decision in the log. Otherwise escalate.
+  the goals do not answer it and the choice is not reserved, decide.
+  Record the decision in the log. Escalate a reserved choice.
 
 ## Archive
 
@@ -68,7 +68,7 @@ restorable. A workspace is finished when:
 - the user says that it is no longer needed.
 
 Archive a session that you created for a goal review, a plan review, or
-an investigation after you read its report, with
+an investigation after you read its report. The command is
 `conductor session archive <id>`. Do not archive a workspace at stage
 `blocked`. Record each archive in the log.
 
@@ -81,5 +81,5 @@ child to run `gh stack sync` and to report the next pull request.
 ## Restart
 
 When this session grows too long or stops, start a new session in this
-workspace, invoke the skill, archive the old session, and rename the new
+workspace and invoke the skill. Archive the old session. Rename the new
 one `coordinator`. The state file holds everything that a cycle needs.

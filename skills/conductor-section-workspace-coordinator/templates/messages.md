@@ -22,9 +22,9 @@ The first message of a new workspace.
     <When the milestones depend on each other: plan one pull request per
     milestone as a stack with `gh stack`.> Commit the plan, push the
     branch, and open no pull request. End with the final report of the
-    `decisions-and-findings` skill: the branch, the plan file, the
-    milestones, the files or areas that each milestone touches, and every
-    decision that you need, numbered, with lettered options.
+    `decisions-and-findings` skill. Give the branch, the plan file, and
+    the milestones. Give the files or areas that each milestone touches.
+    Number every decision that you need, with lettered options.
 
 ## Status request
 
@@ -32,10 +32,11 @@ For a workspace that the user added, or for a session whose last message
 is not a final report.
 
     The coordinator of the section "<section>" now coordinates this
-    workspace. Report, in the final-report layout of the
-    `decisions-and-findings` skill: the branch, the plan file, the pull
-    request, what is done, what is open, every decision that you need
-    with lettered options, and every blocker. Change nothing.
+    workspace. Report in the final-report layout of the
+    `decisions-and-findings` skill. Give the branch, the plan file, and
+    the pull request. Say what is done and what is open. Number every
+    decision that you need, with lettered options. Name every blocker.
+    Change nothing.
 
 ## Plan amendments
 
@@ -47,13 +48,13 @@ is not a final report.
 To the workspace's orchestrator session, after the plan is approved.
 
     The plan on branch `<branch>` is approved. Implement all plan
-    milestones by delegation, as the `plans` skill says: the docs work to
-    the `docs implementor`, the UI work to the `ui implementor`, and the
-    other work to the `non-ui implementor`. The `models` skill names the
-    model of each action. Check the delegated work and request changes
-    as needed. Follow the `finish-work` skill: the targeted tests, the
-    complete gate, the review, and the pull request when every milestone
-    TODO is ticked.
+    milestones by delegation, as the `plans` skill says. The docs work
+    goes to the `docs implementor`, the UI work to the `ui implementor`,
+    and the other work to the `non-ui implementor`. The `models` skill
+    names the model of each action. Check the delegated work and request
+    changes as needed. Follow the `finish-work` skill: the targeted
+    tests, the complete gate, and the review. Open the pull request when
+    every milestone TODO is ticked.
     <When a stack was agreed: one pull request per milestone with
     `gh stack`.> When the branch is behind `origin/main`, merge it first
     with the `git-merge` skill. Decisions: <number: letter and one
@@ -77,8 +78,8 @@ agent` action.
 
     Investigate item <n> of the last report in this workspace: <title>.
     <The question that the answer must settle.> Read only. Change no
-    file. Report the evidence, with file paths and lines, and recommend
-    one of the lettered options, or a new option with its effort.
+    file. Report the evidence, with file paths and lines. Recommend one
+    of the lettered options, or a new option with its effort.
 
 ## Plan review
 
@@ -87,9 +88,9 @@ agent` action.
 
     Review the plan `<plan file>` on this branch. Read only. Check that
     the scope matches this goal: <goal>. Check that each milestone leaves
-    the product working, that the first milestone updates the docs, and
-    that each milestone can merge within a day. Name the files or areas
-    that each milestone touches. Report the amendments that you
+    the product working. Check that the first milestone updates the docs,
+    and that each milestone can merge within a day. Name the files or
+    areas that each milestone touches. Report the amendments that you
     recommend, numbered, with the reason.
 
 ## Merge main
@@ -113,10 +114,10 @@ coordinator's workspace, with the `brainstorming` action.
     Goal of the section "<section>": <goal, with the metric, its current
     value, and the target>. Measure the metric now and record how. Find
     the opportunities to move it toward the target. Propose up to five
-    candidate changes. For each give the expected effect on the metric,
-    the effort as the `decisions-and-findings` skill grades it, the files
-    or areas, and the risks. Order them by effect per effort. Change no
-    tracked file. Report in the final-report layout.
+    candidate changes. For each give the expected effect on the metric
+    and the effort, as the `decisions-and-findings` skill grades it. Give
+    the files or areas, and the risks. Order them by effect per effort.
+    Change no tracked file. Report in the final-report layout.
 
 ## Coordination with another section
 

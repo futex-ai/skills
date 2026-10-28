@@ -26,13 +26,14 @@ the session is idle. The prompt is
 
 ## Ensure the routine
 
-1. Run `conductor --json routine list --limit 100`.
-2. When the command fails for the key: ask the user once, in the status
-   report, to create the routine in the app from the prompt template, with
-   the model of the `wake routine` action and an hourly trigger, or to
-   give this workspace a user API key. Set `Routine: waiting for the user since
-   <date>` in the state file. Repeat the request in each status report
-   while it waits.
+1. Run `conductor --json routine list --limit 100`. Page with `--offset`
+   while `hasMore` is true.
+2. When the command fails for the key, ask the user once in the status
+   report. Ask for one of two things. The user creates the routine in the
+   app from the prompt template, with the model of the `wake routine`
+   action and an hourly trigger. Or the user gives this workspace a user
+   API key. Set `Routine: waiting for the user since <date>` in the state
+   file. Repeat the request in each status report while it waits.
 3. When the list holds `coordinator wake` for this project: set
    `Routine: confirmed on <date>`.
 4. When it does not: create it with `conductor --json routine create
@@ -40,9 +41,9 @@ the session is idle. The prompt is
    --model <id> --effort <level> --prompt-file <template path>`, with the
    agent, the model, and the effort of the `wake routine` action.
    Save the webhook URL under `.context/coordinator/routine-webhook-url`.
-   Ask the user, in the status report, to add an hourly trigger in the
-   app, or to post to the URL every hour from a scheduler. Set `Routine:
-   created on <date>, trigger waiting for the user`.
+   Ask the user in the status report to add an hourly trigger in the
+   app. A scheduler that posts to the URL every hour is the other way.
+   Set `Routine: created on <date>, trigger waiting for the user`.
 5. A cycle that starts with a message that begins with `[coordinator
    wake]` proves that the routine runs. Set `Routine: confirmed on
    <date>`.

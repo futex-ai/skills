@@ -1,6 +1,6 @@
 ---
 name: conductor-section-workspace-coordinator
-description: Use only in a Conductor cloud workspace, when the user invokes /conductor-section-workspace-coordinator, says that you are the workspace section coordinator of a Conductor section, or when a continue or status message, or one that starts with [coordinator wake], arrives in a workspace named coordinator: <section>. Not for other work.
+description: Use when you run in a Conductor cloud workspace and the user invokes /conductor-section-workspace-coordinator or names you the coordinator of a Conductor section. Use also when a continue, status, or [coordinator wake] message arrives in a workspace named coordinator: <section> or holding .context/coordinator/state.md. Not for other work.
 ---
 
 # Conductor section workspace coordinator
@@ -8,22 +8,25 @@ description: Use only in a Conductor cloud workspace, when the user invokes /con
 A Conductor section is a sidebar group of workspaces with one focus, for
 example performance, testing, or CI. One coordinator workspace per section
 schedules the work of the other workspaces in the section. It asks each
-one for a plan, answers its decisions and review items, keeps its branch
-close to `main`, merges its pull request, and archives it. It never does
-the work itself. Each child workspace has its own orchestrator session,
-which plans, implements by delegation inside its workspace, and reports.
-The coordinator runs in cycles. A cycle starts with a user message, with
-the wake message of the hourly routine, or when a child finishes while
-the coordinator waits.
+one for a plan and answers its decisions and review items. It keeps each
+branch close to `main`, merges the pull request, and archives the
+workspace. It never does the work itself.
+
+Each child workspace has its own orchestrator session, which plans,
+implements by delegation inside its workspace, and reports. The
+coordinator runs in cycles. A cycle starts with a user message, with the
+wake message of the hourly routine, or when a child finishes while the
+coordinator waits.
 
 ## Before you start
 
 - Run this skill only in a Conductor cloud workspace: `CONDUCTOR_WORKSPACE_ID`
   is set and `CONDUCTOR_IS_LOCAL` is `0`. Anywhere else, say that the
   skill needs a Conductor cloud workspace, and stop.
-- Do not change the repository checkout of this workspace. Write only
-  under `.context/coordinator/`. Do not commit, push, run tests, or fix a
-  finding here. Delegate every change to a child workspace or session.
+- Do not edit, commit, or push in this checkout. Write only under
+  `.context/coordinator/`. Do not run tests or fix a finding here.
+  Delegate every change to a child workspace or session. The fetch and
+  the fast-forward below are the only changes to the checkout.
 - Reading is allowed: `git fetch`, `git diff`, `gh pr view`, and the
   transcripts of the children.
 - A `continue` or `status` message asks for a cycle when
@@ -38,18 +41,20 @@ the coordinator waits.
 
 ## First cycle: set up
 
-1. Find the section with `conductor --json section list --limit 100`. The
-   section is the one whose `workspaceIds` holds `CONDUCTOR_WORKSPACE_ID`.
-   When none does and the user named a section, move this workspace into
-   it with `conductor workspace move --section <id>`. Create the section
-   with `conductor section create <name>` when it does not exist. When no
+1. Find the section with `scripts/section-workspaces.sh`. It reads every
+   page of the section list and prints the section whose `workspaceIds`
+   holds `CONDUCTOR_WORKSPACE_ID`. When it finds none and the user named
+   a section, move this workspace into it with
+   `conductor workspace move --section <id>`. Create the section with
+   `conductor section create <name>` when it does not exist. When no
    section is known, ask the user and stop.
 2. When another workspace in the section is named `coordinator: …`, stop
    and report it. A section has one coordinator.
-3. Rename this workspace to `coordinator: <section name>` with
-   `conductor workspace rename --name`. Rename this session to
-   `coordinator` with `conductor session rename`. The routine looks for
-   both names.
+3. Rename this workspace with
+   `conductor workspace rename --name "coordinator: <section name>"`.
+   Rename this session with
+   `conductor session rename $CONDUCTOR_SESSION_ID --name coordinator`.
+   The routine looks for both names.
 4. Create `.context/coordinator/state.md` from
    [templates/state.md](templates/state.md). Record the goals and the
    metrics from the user's message, or `None`.
@@ -72,15 +77,15 @@ actions, or the board. Apply it before the steps below.
    reference says.
 3. For each workspace whose session is idle, read its last report with
    `scripts/last-report.sh` and the session id. Act by stage, as
-   [references/cycle.md](references/cycle.md) says: send the plan request,
-   review the plan, start the implementation, answer the decisions and the
-   review items, or move the stage forward.
+   [references/cycle.md](references/cycle.md) says. The action is the plan
+   request, the plan review, the implement message, the answers to the
+   items, or the next stage.
 4. Schedule new work, as [references/scheduling.md](references/scheduling.md)
    says. Check the conflicts before each new workspace. Start every new
    workspace with the plan request from
    [templates/messages.md](templates/messages.md).
 5. When the board has no active work and the state records a goal, start
-   a goal review, as the scheduling reference says. Without a goal, end
+   a goal review. The scheduling reference says how. Without a goal, end
    the cycle.
 6. Wait while a child works. Poll `conductor --json session status <id>`
    every few minutes. Act on each child that becomes idle. Stop waiting
@@ -101,7 +106,7 @@ actions, or the board. Apply it before the steps below.
   into the section with `conductor workspace move <id> --section <section
   id>`. The first session is the workspace's orchestrator. It writes the
   plan. After the approval it implements every milestone by delegation
-  inside its workspace, as the implement message says, and it stays the
+  inside its workspace, as the implement message says. It stays the
   session that you talk to.
 - A plan review gets a new session in the child's workspace with the
   `first-pass review agent` action. An investigation of a decision or a
@@ -128,11 +133,11 @@ review findings with lettered options. You answer in place of the user.
   does not give enough evidence, delegate an investigation, wait for its
   report, and then answer.
 - When a larger option is better than the recommended one, weigh two
-  schedules. The larger fix now is right when it is not much larger, when
-  it removes the class of problem, or when it would undo the smaller fix.
-  Otherwise choose the smaller fix now, and put the larger fix under
-  **Backlog** in the state file as a follow-up workspace. Say which
-  schedule you chose and why.
+  schedules. Take the larger fix now when it is not much larger. Take it
+  too when it removes the class of problem, or when it would undo the
+  smaller fix. Otherwise choose the smaller fix now, and put the larger
+  fix under **Backlog** in the state file as a follow-up workspace. Say
+  which schedule you chose and why.
 - The always-on rules reserve some choices for the user. Do not choose
   a reserved option. When the best option is reserved, escalate the item
   to the user. Otherwise choose the best option that is not reserved. The

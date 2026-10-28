@@ -10,9 +10,9 @@ coordinator.
    `repoUrl` is this project's repository.
 3. For each coordinator, list its sessions:
    `conductor --json workspace session <workspace id> --limit 100`.
-   Take the last session named `coordinator`. When none has that name,
-   take the last session. Skip a coordinator without a session, and say
-   so.
+   Page with `--offset` while `hasMore` is true. Take the last session
+   named `coordinator`. When none has that name, take the last session.
+   Skip a coordinator without a session, and say so.
 4. Read the session status: `conductor --json session status <session id>`.
    When the status is `working`, skip it and say so.
 5. Send the wake message:
