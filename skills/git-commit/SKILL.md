@@ -125,6 +125,8 @@ body. The format enables automated changelogs and readable history.
     the code dead or the approval for the functionality
   - each plan edit made for a rename or removal
   - each intentional merge decision with the paths it affects
+  - each design call under the decision test in the
+    `decisions-and-findings` skill, when the change has no plan
   - the review finding that a fix commit resolves, by number
 - When a later commit changes what the pull request description says,
   update the description.
