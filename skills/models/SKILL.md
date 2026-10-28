@@ -43,6 +43,10 @@ runs where the orchestrator chooses: an in-session subagent, or a
 session in the same workspace. A Codex action always needs a session or
 a workspace, because a subagent runs Claude models only.
 
+Each workspace runs on its own machine with eight CPUs, so a second
+workspace adds compute. Split work into workspaces to run more of it in
+parallel, or when it needs that compute. Do not split for its own sake.
+
 - A Conductor workspace: `conductor workspace create --agent <agent>
   --model <model> --effort <effort>`, with `--name` and `--message-file`.
 - A Conductor session in an existing workspace: `conductor session create

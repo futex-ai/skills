@@ -32,6 +32,10 @@ within a day or two of its plan.
 
 ## Parallel, sequence, or stack
 
+Each workspace has its own machine, so parallel workspaces add compute.
+Split work to run more of it in parallel, not for its own sake. See the
+`models` skill.
+
 | The changes | Schedule |
 | --- | --- |
 | Touch different areas | Parallel: one workspace each, started in the same cycle. |
