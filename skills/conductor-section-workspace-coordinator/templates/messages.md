@@ -6,11 +6,12 @@ follow the shared skills, so name the skill that governs each step.
 
 ## Plan request
 
-The first message of a new workspace.
+The first message of a new workspace, to its orchestrator.
 
-    You work in the Conductor section "<section>" under its coordinator.
-    The coordinator answers your decisions and merges your pull request.
-    Never merge yourself.
+    You are the orchestrator of this workspace, in the Conductor section
+    "<section>". You manage the work here. The section coordinator sends
+    its messages to you and reads your reports. It answers your decisions
+    and merges your pull request. Never merge yourself.
 
     Goal: <the change, the metric it serves, and the result, in two or
     three sentences>.
@@ -28,15 +29,18 @@ The first message of a new workspace.
 
 ## Status request
 
-For a workspace that the user added, or for a session whose last message
-is not a final report.
+For the orchestrator of a workspace that the user added, or for an
+orchestrator whose last message is not a final report.
 
     The coordinator of the section "<section>" now coordinates this
-    workspace. Report in the final-report layout of the
-    `decisions-and-findings` skill. Give the branch, the plan file, and
-    the pull request. Say what is done and what is open. Number every
-    decision that you need, with lettered options. Name every blocker.
-    Change nothing.
+    workspace. You are its orchestrator. You manage the work here. The
+    coordinator sends its messages to you and reads your reports.
+    <For a new orchestrator session: The session <id> worked here before
+    you. Its last report follows: <report>.> Report in the final-report
+    layout of the `decisions-and-findings` skill. Give the branch, the
+    plan file, and the pull request. Say what is done and what is open.
+    Number every decision that you need, with lettered options. Name
+    every blocker. Change nothing.
 
 ## Plan amendments
 

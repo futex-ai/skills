@@ -22,9 +22,9 @@ section, as the user gave them:
 
 ## Board
 
-| Workspace | Name | Session | Branch or PR | Stage | Next action | Updated |
+| Workspace | Name | Orchestrator | Branch or PR | Stage | Next action | Updated |
 | --- | --- | --- | --- | --- | --- | --- |
-| <id> | <name> | <active session id> | <branch, or PR #n> | <stage> | <what the next cycle does, and what it waits for> | <date> |
+| <id> | <name> | <orchestrator session id> | <branch, or PR #n> | <stage> | <what the next cycle does, and what it waits for> | <date> |
 
 Stages: new, planning, implementing, review, merge, done, blocked.
 

@@ -12,11 +12,15 @@ one for a plan and answers its decisions and review items. It keeps each
 branch close to `main`, merges the pull request, and archives the
 workspace. It never does the work itself.
 
-Each child workspace has its own orchestrator session, which plans,
-implements by delegation inside its workspace, and reports. The
-coordinator runs in cycles. A cycle starts with a user message, with the
-wake message of the hourly routine, or when a child finishes while the
-coordinator waits.
+Each child workspace has one orchestrator: a session named
+`orchestrator` that runs the `default orchestrator` action. It manages
+its workspace. It plans, delegates the work inside the workspace, checks
+the delegated work, and reports. The coordinator sends every message for
+a workspace to its orchestrator, never to a helper session.
+
+The coordinator runs in cycles. A cycle starts with a user message, with
+the wake message of the hourly routine, or when a child finishes while
+the coordinator waits.
 
 ## Before you start
 
@@ -39,28 +43,11 @@ coordinator waits.
   fast-forward always succeeds. Then every file, plan, and rule that you
   read is current. Fetch a child's branch before you read it.
 
-## First cycle: set up
+## First cycle
 
-1. Find the section with `scripts/section-workspaces.sh`. It reads every
-   page of the section list and prints the section whose `workspaceIds`
-   holds `CONDUCTOR_WORKSPACE_ID`. When it finds none and the user named
-   a section, move this workspace into it with
-   `conductor workspace move --section <id>`. Create the section with
-   `conductor section create <name>` when it does not exist. When no
-   section is known, ask the user and stop.
-2. When another workspace in the section is named `coordinator: …`, stop
-   and report it. A section has one coordinator.
-3. Rename this workspace with
-   `conductor workspace rename --name "coordinator: <section name>"`.
-   Rename this session with
-   `conductor session rename $CONDUCTOR_SESSION_ID --name coordinator`.
-   The routine looks for both names.
-4. Create `.context/coordinator/state.md` from
-   [templates/state.md](templates/state.md). Record the goals and the
-   metrics from the user's message, or `None`.
-5. Ensure the wake routine, as
-   [references/routine.md](references/routine.md) says.
-6. Run a cycle.
+Without `.context/coordinator/state.md`, set up first, as
+[references/setup.md](references/setup.md) says: the section, the names,
+the state file, and the wake routine. Then run a cycle.
 
 ## Each cycle
 
@@ -68,15 +55,16 @@ Fetch and fast-forward `main`, then read `.context/coordinator/state.md`.
 A user message that arrived with the cycle can change the goals, the
 actions, or the board. Apply it before the steps below.
 
-1. Scan the section with `scripts/section-workspaces.sh`. Add each
-   workspace that the board does not list, at stage `new`. A workspace
-   that left the section becomes `done` with a note.
+1. Scan the section with `scripts/section-workspaces.sh`. It gives the
+   orchestrator of each workspace, or the newest session when there is
+   none. Add each workspace that the board does not list, at stage `new`.
+   A workspace that left the section becomes `done` with a note.
 2. Merge first. For each workspace at stage `merge`, apply the merge
    conditions below. A merge moves `main`, so do this before you read the
    other reports. Then archive each finished workspace, as the cycle
    reference says.
-3. For each workspace whose session is idle, read its last report with
-   `scripts/last-report.sh` and the session id. Act by stage, as
+3. For each workspace whose orchestrator is idle, read its last report
+   with `scripts/last-report.sh` and its session id. Act by stage, as
    [references/cycle.md](references/cycle.md) says. The action is the plan
    request, the plan review, the implement message, the answers to the
    items, or the next stage.
@@ -101,13 +89,16 @@ actions, or the board. Apply it before the steps below.
   overrides that the user gave for this section.
 - Every change that becomes an implementation or a pull request gets its
   own workspace, as the `models` skill says. Run `conductor workspace
-  create` with `--name "<change>"`, the `default orchestrator` action,
-  and `--message-file` with the plan request. Then move the workspace
-  into the section with `conductor workspace move <id> --section <section
-  id>`. The first session is the workspace's orchestrator. It writes the
-  plan. After the approval it implements every milestone by delegation
-  inside its workspace, as the implement message says. It stays the
-  session that you talk to.
+  create` with `--name "<change>"`, `--session-name orchestrator`, the
+  `default orchestrator` action, and `--message-file` with the plan
+  request. Then move the workspace into the section with
+  `conductor workspace move <id> --section <section id>`. The first
+  session is the workspace's orchestrator. It writes the plan. After the
+  approval it implements every milestone by delegation inside its
+  workspace, as the implement message says. It stays the session that
+  you talk to.
+- A workspace that the user adds gets an orchestrator first, as the
+  cycle reference says.
 - A plan review gets a new session in the child's workspace with the
   `first-pass review agent` action. An investigation of a decision or a
   review item gets one with the `second-pass review agent` action. Run
@@ -183,7 +174,8 @@ skill says and opens that pull request. Merge it too. Then set the stage
 - [ ] The wake routine is confirmed, or the user was asked and the state
       says so.
 - [ ] Every section workspace is on the board with a stage and a next
-      action.
+      action. It has a session named `orchestrator`, and every message
+      went to it.
 - [ ] Ready pull requests were merged before new work started, and the
       finished workspaces were archived.
 - [ ] Every delegation named an action from the `models` skill.

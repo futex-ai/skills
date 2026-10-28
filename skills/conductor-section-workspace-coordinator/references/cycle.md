@@ -8,10 +8,10 @@ the last change.
 
 ## Read a report
 
-- `scripts/last-report.sh`, with the session id, prints the last message
-  that the child's agent wrote. A complete task ends with the
-  final-report layout: **Changed**, **Fixed**, **Decisions**, **Checks**,
-  **Open**.
+- `scripts/last-report.sh`, with the orchestrator's session id, prints
+  the last message that the orchestrator wrote. A complete task ends with
+  the final-report layout: **Changed**, **Fixed**, **Decisions**,
+  **Checks**, **Open**.
 - When the session is `working`, do not read it and do not send to it.
   Wait for `idle`.
 - When the last message is a question, answer it. When it is an error,
@@ -22,15 +22,37 @@ the last change.
 
 ## Stages
 
-| Stage | The child is | When its session is idle |
+| Stage | The child is | When its orchestrator is idle |
 | --- | --- | --- |
-| `new` | just added to the section | Read the last report. A workspace that you created has its plan request already, so set `planning`. A workspace that the user added gets the stage that its report shows. A pushed plan is `planning`. A pull request is `review`. When the report shows neither, send the status request. When the workspace has no task, its name is the goal: send the plan request. |
-| `planning` | writing the plan | The report names a branch with a pushed plan and no pull request, as the `plans` skill says. Review the plan against the checks below. To amend the plan, send the amendments message and keep the stage. To approve it, send the implement message to the same session and set `implementing`. The orchestrator then delegates the milestones inside its workspace. |
+| `new` | just added to the section | A workspace that you created has its orchestrator and its plan request, so set `planning`. A workspace that the user added gets an orchestrator first, as the section below says. Then set the stage that the orchestrator's report shows. A pushed plan is `planning`. A pull request is `review`. With neither, send the plan request. Its goal is the task in the report, or else the workspace name. |
+| `planning` | writing the plan | The report names a branch with a pushed plan and no pull request, as the `plans` skill says. Review the plan against the checks below. To amend the plan, send the amendments message and keep the stage. To approve it, send the implement message to the orchestrator and set `implementing`. The orchestrator then delegates the milestones inside its workspace. |
 | `implementing` | implementing the plan | Read the report. Answer the decisions and the review items. A report with an open pull request, every milestone ticked, and no open item goes to `review`. A blocked report goes to `blocked` with the blocker on the board. When the report says that the branch conflicts with `main`, send the merge-main message. |
 | `review` | done, pull request open | Check the merge conditions in `SKILL.md`. When they hold, set `merge`. When a condition fails because of the child, send the message that names the gap and set `implementing`. When it fails because of an escalation, set `blocked`. |
 | `merge` | waiting for the merge | Merge as `SKILL.md` says. Send the after-merge message. When the plan status pull request is merged, set `done`. |
 | `done` | finished | Archive the workspace, as the section below says. Keep the line for one week, then drop it. |
 | `blocked` | waiting for the user or another section | In each cycle, check whether the blocker is gone. Examples: an answered escalation, a merged pull request of another section, or a user message. Then set the stage that the work needs. |
+
+## Give a workspace an orchestrator
+
+Every child workspace has one session named `orchestrator` with the
+`default orchestrator` action. A workspace that you create gets it at
+creation. A workspace that the user added gets it in its `new` stage:
+
+1. Wait until the newest session of the workspace is idle. The scan
+   gives its id, name, model, and effort. Read its last report.
+2. When that session runs the model and the effort of the
+   `default orchestrator` action, adopt it. Rename it with
+   `conductor session rename <id> --name orchestrator`. Send it the
+   status request.
+3. Otherwise, start a new session with the `default orchestrator`
+   action. Run `conductor session create --workspace <id> --name
+   orchestrator`, with the status request as `--message-file`. Put the
+   last report of the newest session into that message.
+4. Leave the other sessions of the workspace as they are. Record the
+   orchestrator's session id on the board.
+
+A workspace without a session gets a new orchestrator session too. Its
+first message is the plan request, with the workspace name as the goal.
 
 ## Plan checks
 

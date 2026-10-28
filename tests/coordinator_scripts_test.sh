@@ -37,29 +37,61 @@ page() {  # page <key> <hasMore> <items json>: one page of a list answer
 test_section_scan_lists_the_section_and_its_workspaces() {
   fake_conductor "$1"
   page "section_list_--limit_100_--offset_0" false '[{"id":"s-other","name":"Other","kind":"custom","workspaceIds":["w9"]},{"id":"s-perf","name":"Performance","kind":"custom","workspaceIds":["w-self","w-child","w-empty"]}]'
-  page "workspace_session_w-self_--limit_100_--offset_0" false '[{"id":"ses-self","name":"coordinator"}]'
-  page "workspace_session_w-child_--limit_100_--offset_0" false '[{"id":"ses-plan","name":"plan"},{"id":"ses-impl","name":"implement"}]'
+  page "workspace_session_w-self_--limit_100_--offset_0" false '[{"id":"ses-self","name":"coordinator","model":"opus-5-5-1m","effort":"max"}]'
+  page "workspace_session_w-child_--limit_100_--offset_0" false '[{"id":"ses-orch","name":"orchestrator","model":"opus-5-5-1m","effort":"max"}]'
   page "workspace_session_w-empty_--limit_100_--offset_0" false '[]'
   answer "session_status_ses-self" '{"status":"working"}'
-  answer "session_status_ses-impl" '{"status":"idle"}'
+  answer "session_status_ses-orch" '{"status":"idle"}'
   answer "workspace_get_w-self" '{"id":"w-self","name":"coordinator: Performance","state":"ready"}'
   answer "workspace_get_w-child" '{"id":"w-child","name":"Cache the index","state":"sleeping"}'
   answer "workspace_get_w-empty" '{"id":"w-empty","name":"Fresh","state":"initializing"}'
   local expected
-  expected="$(printf 'section\ts-perf\tPerformance\nself\tw-self\tready\tses-self\tworking\tcoordinator: Performance\nmember\tw-child\tsleeping\tses-impl\tidle\tCache the index\nmember\tw-empty\tinitializing\t\t\tFresh')"
+  expected="$(printf 'section\ts-perf\tPerformance\nself\tw-self\tready\tses-self\tworking\tcoordinator\topus-5-5-1m\tmax\tcoordinator: Performance\nmember\tw-child\tsleeping\tses-orch\tidle\torchestrator\topus-5-5-1m\tmax\tCache the index\nmember\tw-empty\tinitializing\t\t\t\t\t\tFresh')"
   assert_eq "$expected" "$("$scripts/section-workspaces.sh" w-self)" "scan output"
+}
+
+test_section_scan_prefers_the_named_session_over_a_newer_one() {
+  fake_conductor "$1"
+  page "section_list_--limit_100_--offset_0" false '[{"id":"s1","name":"One","kind":"custom","workspaceIds":["w-self","w-child"]}]'
+  page "workspace_session_w-self_--limit_100_--offset_0" false '[{"id":"ses-self","name":"coordinator","model":"opus-5-5-1m","effort":"max"},{"id":"ses-goal","name":"review: latency","model":"fable-5-1","effort":"max"}]'
+  page "workspace_session_w-child_--limit_100_--offset_0" false '[{"id":"ses-orch","name":"orchestrator","model":"opus-5-5-1m","effort":"max"},{"id":"ses-impl","name":"milestone 2","model":"gpt-6.1-sol","effort":"max"}]'
+  answer "session_status_ses-self" '{"status":"working"}'
+  answer "session_status_ses-orch" '{"status":"idle"}'
+  answer "workspace_get_w-self" '{"id":"w-self","name":"coordinator: One","state":"ready"}'
+  answer "workspace_get_w-child" '{"id":"w-child","name":"Cache the index","state":"ready"}'
+  local expected
+  expected="$(printf 'section\ts1\tOne\nself\tw-self\tready\tses-self\tworking\tcoordinator\topus-5-5-1m\tmax\tcoordinator: One\nmember\tw-child\tready\tses-orch\tidle\torchestrator\topus-5-5-1m\tmax\tCache the index')"
+  assert_eq "$expected" "$("$scripts/section-workspaces.sh" w-self)" "named sessions"
+}
+
+test_section_scan_gives_the_newest_session_without_an_orchestrator() {
+  fake_conductor "$1"
+  page "section_list_--limit_100_--offset_0" false '[{"id":"s1","name":"One","kind":"custom","workspaceIds":["w-self","w-user"]}]'
+  page "workspace_session_w-self_--limit_100_--offset_0" false '[{"id":"ses-self","name":"coordinator","model":"opus-5-5-1m","effort":"max"}]'
+  page "workspace_session_w-user_--limit_100_--offset_0" false '[{"id":"ses-a","name":"Fix login","model":"gpt-6.1-sol","effort":"high"},{"id":"ses-b","name":"Follow up","model":"opus-5-5-1m","effort":"high"}]'
+  answer "session_status_ses-self" '{"status":"working"}'
+  answer "session_status_ses-b" '{"status":"idle"}'
+  answer "workspace_get_w-self" '{"id":"w-self","name":"coordinator: One","state":"ready"}'
+  answer "workspace_get_w-user" '{"id":"w-user","name":"Fix login","state":"ready"}'
+  local out
+  out="$("$scripts/section-workspaces.sh" w-self)"
+  assert_contains "$out" "$(printf 'member\tw-user\tready\tses-b\tidle\tFollow up\topus-5-5-1m\thigh\tFix login')" "newest session"
 }
 
 test_section_scan_reads_every_page_of_sections_and_sessions() {
   fake_conductor "$1"
   page "section_list_--limit_100_--offset_0" true '[{"id":"s-other","name":"Other","kind":"custom","workspaceIds":["w9"]}]'
-  page "section_list_--limit_100_--offset_1" false '[{"id":"s-late","name":"Late","kind":"custom","workspaceIds":["w-self"]}]'
-  page "workspace_session_w-self_--limit_100_--offset_0" true '[{"id":"ses-old","name":"old"},{"id":"ses-mid","name":"mid"}]'
-  page "workspace_session_w-self_--limit_100_--offset_2" false '[{"id":"ses-new","name":"coordinator"}]'
+  page "section_list_--limit_100_--offset_1" false '[{"id":"s-late","name":"Late","kind":"custom","workspaceIds":["w-self","w-child"]}]'
+  page "workspace_session_w-self_--limit_100_--offset_0" true '[{"id":"ses-old","name":"old","model":"opus-5-5-1m","effort":"max"},{"id":"ses-mid","name":"mid","model":"opus-5-5-1m","effort":"max"}]'
+  page "workspace_session_w-self_--limit_100_--offset_2" false '[{"id":"ses-new","name":"coordinator","model":"opus-5-5-1m","effort":"max"}]'
+  page "workspace_session_w-child_--limit_100_--offset_0" true '[{"id":"ses-orch","name":"orchestrator","model":"opus-5-5-1m","effort":"max"}]'
+  page "workspace_session_w-child_--limit_100_--offset_1" false '[{"id":"ses-help","name":"milestone 1","model":"gpt-6.1-sol","effort":"max"}]'
   answer "session_status_ses-new" '{"status":"idle"}'
+  answer "session_status_ses-orch" '{"status":"working"}'
   answer "workspace_get_w-self" '{"id":"w-self","name":"coordinator: Late","state":"ready"}'
+  answer "workspace_get_w-child" '{"id":"w-child","name":"Child","state":"ready"}'
   local expected
-  expected="$(printf 'section\ts-late\tLate\nself\tw-self\tready\tses-new\tidle\tcoordinator: Late')"
+  expected="$(printf 'section\ts-late\tLate\nself\tw-self\tready\tses-new\tidle\tcoordinator\topus-5-5-1m\tmax\tcoordinator: Late\nmember\tw-child\tready\tses-orch\tworking\torchestrator\topus-5-5-1m\tmax\tChild')"
   assert_eq "$expected" "$("$scripts/section-workspaces.sh" w-self)" "scan across pages"
 }
 

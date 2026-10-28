@@ -16,7 +16,7 @@ else does.
 | Action | Agent | Model | Effort | Use |
 | --- | --- | --- | --- | --- |
 | `brainstorming` | claude | `fable-5-1` | `max` | Goal reviews, design options, and candidate changes before a plan exists. |
-| `default orchestrator` | claude | `opus-5-5-1m` | `max` | The first session of a workspace. It plans, delegates the milestones, checks the delegated work, and reports. |
+| `default orchestrator` | claude | `opus-5-5-1m` | `max` | The session that manages a workspace. It plans, delegates the milestones, checks the delegated work, and reports. |
 | `non-ui implementor` | codex | `gpt-6.1-sol` | `max` | Code that is not UI: backend, scripts, tests, and tooling. |
 | `ui implementor` | claude | `opus-5-5-1m` | `max` | Screens, components, styles, and mockups. |
 | `docs implementor` | claude | `opus-5-5-1m` | `max` | Docs, protocol docs, READMEs, and plans. |
