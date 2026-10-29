@@ -1,6 +1,6 @@
 ---
 name: implementation-review
-description: Use after you push a branch and the work needs a review, before you run a review or apply its findings, when a plan's review TODO is reached, when the user asks for a code review of a branch, a pull request, the whole repository, or a named area, when a review finds a problem outside the diff, when you order or number the findings of a review, when you grade effort or weigh a wider fix, and when you decide whether a finding is Auto-fix yes or no or which option to apply.
+description: Use after you push a branch and the work needs a review, before you run a review or apply its findings, when a plan's review TODO is reached, when the user asks for a code review of a branch, a pull request, the whole repository, or a named area, when a review finds a problem outside the diff, when you order or number the findings of a review, when you grade effort or weigh a wider fix, and when you decide whether to fix a finding now or after the merge, or ask the user.
 ---
 
 # Implementation review
@@ -51,12 +51,13 @@ after the report.
    finding outside the scope goes to the `Outside the scope` list. A
    corrected severity or category replaces the finding's line, and the
    finding keeps its number. When the corrected category always waits for the
-   user, the tag becomes `Auto-fix: no`. Name each removed finding in one
-   line under **Checks** in the final message. Give its number, its title,
-   and the check that failed.
+   user, the outcome becomes `ask the user`. When the corrected severity is
+   High, a `fix after merge` outcome becomes `fix now`. Name each removed
+   finding in one line under **Checks** in the final message. Give its
+   number, its title, and the check that failed.
 6. Run the options check, the second part. It is a fresh read-only
-   `second-pass review agent`. Give it the confirmed findings tagged
-   `Auto-fix: no` and the prompt in
+   `second-pass review agent`. Give it the confirmed findings with
+   `Action: ask the user` and the prompt in
    [references/second-pass-prompt.md](references/second-pass-prompt.md).
    It checks that the options are complete and that the recommendation is
    the best one. Run it beside the fix round, in the same checkout. When a
@@ -67,7 +68,7 @@ after the report.
    recommendation changed, the **Recommendation** line gives the new
    letter and its reason. It then names the letter that the first pass
    recommended. The **Wider fix** line takes the new letter in the same
-   way. The `Auto-fix` tag does not change, and an open finding stays
+   way. The `Action` line does not change, and an open finding stays
    open. A new problem inside the scope goes into the review focus of the
    re-review. When no re-review runs, it goes under **Open**. A new
    problem outside the scope joins the `Outside the scope` list. A kept
@@ -114,21 +115,30 @@ user.
   `decisions-and-findings` skill. Effort grades the code change of one
   option, not the problem. The finding's effort is the grade of the
   recommended option.
-- A clear recommended option. For a finding that the review-fix rule
-  applies without the user, recommend the option that the tag names.
+- A clear recommended option. For a finding that the agent may fix
+  without the user, recommend the option that the `Action` line names.
 - Options judged on their merits. Do not drop an option, rank it lower, or
   recommend a different option only because it conflicts with a protocol
   doc. Protocol docs record the current requirements and change with the
   behaviour, so the doc update is part of that option and of its effort.
   See the `documentation` skill.
-- A final line: `Auto-fix: yes, apply <letter>` or `Auto-fix: no,
-  because …`, following the review-fix rule below.
+- A final `Action` line that proposes one outcome under the review-fix
+  rule below.
 
 ## Review-fix rule
 
 The full rule with every condition is in
-[references/review-fix-rule.md](references/review-fix-rule.md). In short:
+[references/review-fix-rule.md](references/review-fix-rule.md). Read it
+before you make the final call on a finding. In short:
 
+- Each finding ends with one of three outcomes:
+  - `Action: fix now, apply <letter>`. The agent fixes it in this branch.
+  - `Action: fix after merge, apply <letter>, because …`. The agent
+    records a follow-up item, and a later branch fixes it.
+  - `Action: ask the user, because …`. The finding waits for the user,
+    and the agent records a follow-up item.
+- The reviewer proposes the outcome. The working agent makes the final
+  call, because it knows the purpose of the branch.
 - An option is blocked when it is Large, or when it needs a decision:
   - It changes a requirement without a recorded user decision, or adds a
     requirement for new behaviour at the boundary.
@@ -139,8 +149,8 @@ The full rule with every condition is in
     under the `git-commit` skill is not functionality.
   - It weakens a test of live code or a gate.
   - It needs credentials or infrastructure.
-- `Auto-fix: yes, apply <letter>` is allowed only when at least one option
-  is not blocked, for findings in these categories:
+- `fix now` and `fix after merge` are allowed only when at least one
+  option is not blocked, for findings in these categories:
   - product bugs, including edge cases, races, and platform differences
   - security issues
   - docs or spec drift
@@ -152,25 +162,20 @@ The full rule with every condition is in
   - copy defects whose fix keeps the meaning
 - The letter names the best-ranked option that is not blocked: a
   structural wider fix, then a detection wider fix, then the direct fix.
-  A blocked wider fix does not block the tag.
-- Dead code is code that the product never runs, under the predicate in
-  the `git-commit` skill. The reviewer checks each condition with a search
-  and cites the searches in the finding. Code that the product runs rarely
-  is functionality, and its deletion waits for the user.
-- Docs or spec drift is a doc that contradicts the changed code. A doc that
-  is silent on how the code works is not a finding. The wider fix for the
-  class is already in force, the `documentation` skill, so the reviewer
-  proposes no other wider fix for it. The review-fix rule says when the doc
-  side changes without the user.
-- A copy defect is user-facing text that has a typo or breaks a rule
-  under `## Copy` in the `product-ui` skill. Its category is UX wording,
-  not repository rule. The fix keeps the meaning when it adds no fact or
-  action and removes no fact or action that the end user needs. When no
-  protocol doc states the text, a fix that keeps the meaning stays within
-  the contract. The direct fix changes only the words that carry the
-  defect. When the meaning is in doubt, the reviewer tags the finding
-  `Auto-fix: no`.
-- `Auto-fix: no` when every option is blocked, when the best option on
+  A blocked wider fix does not block the fix.
+- The agent can split a finding with a wider fix. It applies the direct
+  fix now and records the wider fix for after the merge. The line is
+  `fix now, apply <letter>, and fix after merge, apply <letter>, because …`.
+- The outcome is `fix now` when one of these holds:
+  - The severity is High.
+  - The fix gets much harder after the merge, for example in a migration
+    that the diff adds.
+  - The problem breaks a gate or a test, or adds a flaky test.
+  - A doc contradicts the changed code.
+  - The fix is Small and stays in the files that the diff changes.
+- For every other finding that it may fix, the agent decides. It gives
+  each `fix after merge` outcome one sentence of reason.
+- `ask the user` when every option is blocked, when the best option on
   the merits is blocked and is not a wider fix, when the options have real
   trade-offs and no option is clearly best, or when the finding is a slow,
   custom, or low-value test, gate, lint, or check. Findings about missing
@@ -178,37 +183,40 @@ The full rule with every condition is in
   user. Any other UX wording waits too, such as a choice of tone or voice
   that no copy rule settles.
 - An `Outside the scope` problem is not a finding. Do not fix it in this
-  branch. Report it for a separate branch.
+  branch. Record it as a follow-up item.
 
 ## After the review
 
-1. Fix the confirmed `Auto-fix: yes` findings without waiting for the
-   user. Apply the option that the tag names. If the change grows past
+1. Make the final call on the outcome of each confirmed finding. When you
+   change the proposed outcome, give one sentence of reason.
+2. Fix the confirmed `fix now` findings without waiting for the user.
+   Apply the option that the `Action` line names. If the change grows past
    twice the Medium band while you work, or needs a Large trigger such as
    a dependency or a migration, revert it. Apply the next smaller option
-   that is not blocked, or leave the finding open. Leave the
+   that is not blocked, or change the outcome to `ask the user`. Leave the
    `Outside the scope` problems alone.
-2. Run the checks, commit, push, and run the review once more on the fix.
+3. Record a follow-up item for each `fix after merge` finding, each
+   `ask the user` finding, each blocked or split-off wider fix of a fixed
+   finding, and each `Outside the scope` problem. The `plans` skill gives
+   the layout. Give a wider fix one item per class. An open finding keeps
+   its wider fix as one of its options. Count the occurrences of the class
+   of a blocked wider fix: the findings of this review that share it, plus
+   the previous examples. When the count is two or more, also raise the
+   wider fix as a numbered decision in the decision layout.
+4. Run the checks, commit, push, and run the review once more on the fix.
    Name each fixed finding in its commit message.
-3. Run the validity check on the new findings. Fix any confirmed new
-   `Auto-fix: yes` findings once more, then stop. The `finish-work` skill
-   gives the next steps: the pull request and the report. Do not start a
-   third fix round without the user.
-4. In the final message, list the auto-fixed findings separately from the
-   findings that need a decision. Give each auto-fixed finding its number,
-   its severity, a plain explanation, the applied option, what changed,
-   and the commit. Give each open finding a clear recommendation, with the
-   second pass merged in. Order both lists by severity, High first. Use
-   the `decisions-and-findings` skill.
-5. List each blocked wider fix of a fixed finding as a follow-up under
-   **Open**, one line per class: the wider fix, its effort, the finding
-   numbers it covers, and the previous examples. An open finding keeps its
-   wider fix as one of its options. Count the occurrences of the class:
-   the findings of this review that share the wider fix, plus the previous
-   examples. When the count is two or more, raise the wider fix as a
-   numbered decision in the decision layout instead.
-6. List the `Outside the scope` problems under **Open**, for a separate
-   branch.
-7. Add each open finding, each follow-up, and each `Outside the scope`
-   problem as one line under the plan's review TODO, in the shape that the
-   `plans` skill gives.
+5. Run the validity check on the new findings. Fix any confirmed new
+   `fix now` findings once more, and record the other new findings as
+   follow-up items. Then stop. The `finish-work` skill gives the next
+   steps: the pull request and the report. Do not start a third fix round
+   without the user.
+6. In the final message, keep three lists: the fixed findings, the
+   deferred findings, and the findings that need a decision. Give each
+   fixed finding its number, its severity, a plain explanation, the
+   applied option, what changed, and the commit. Give each deferred
+   finding and each split-off wider fix its reason and its follow-up item.
+   Give each open finding a clear recommendation, with the second pass
+   merged in. Order each list by severity, High first. Use the
+   `decisions-and-findings` skill.
+7. List under **Open** the follow-up items of the blocked wider fixes and
+   of the `Outside the scope` problems, one line each.

@@ -50,7 +50,7 @@ For an element that the agent leaves out. Give the element a label in the
 template, and add a sentence that says it is always present.
 
 ```markdown
-- **Auto-fix:** `yes`, or `no, because` and the condition that stops the fix.
+- **Action:** `fix now`, `fix after merge`, or `ask the user, because` and the condition that sends the item to the user.
 
 Always write **Background**, **Problem**, **Impact if no action**, and
 **Options**. Keep every label, also when the user asks for a shorter
@@ -76,8 +76,8 @@ only when all of these hold:
 4. Keep every existing assertion.
 5. Add no retry, sleep, repeat, skip, quarantine, or longer time limit.
 
-An unreproducible failure, an unknown source, or a proposed removal stays
-`Auto-fix: no`.
+An unreproducible failure, an unknown source, or a proposed removal gets
+the outcome `ask the user`.
 ```
 
 ## Symptom keywords in the description

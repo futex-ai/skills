@@ -35,10 +35,10 @@ must anchor to the scope.
 A problem outside the scope is not a finding. Do not number it, and do not
 give it the finding layout. Put it in one list under the heading
 `Outside the scope` at the end of the report. Give each problem one line:
-the file path and one sentence. The whole list is `Auto-fix: no`. Nobody
-fixes these problems in this branch. A flaky test that the diff does not
-touch belongs in this list, with its name, failure text, rerun outcome, and
-suspected source.
+the file path and one sentence. Nobody fixes these problems in this
+branch. The working agent records each one as a follow-up item. A flaky
+test that the diff does not touch belongs in this list, with its name,
+failure text, rerun outcome, and suspected source.
 
 The context reads, the review focus, and the previous-examples search serve
 the findings in scope. They are not a search for new findings.
@@ -128,10 +128,12 @@ number them in that order. Use the finding layout in the
   section is Large whatever its size. The finding's effort is the grade of
   the recommended option.
 - Recommend one option and say which option best protects the codebase.
-  For a finding that you tag `Auto-fix: yes`, recommend the option that the
-  tag names.
-- End the finding with `Auto-fix: yes, apply <letter>` or `Auto-fix: no,
-  because …`.
+  For a finding that the agent may fix without the user, recommend the
+  option that the `Action` line names.
+- End the finding with an `Action` line that proposes one outcome:
+  `fix now, apply <letter>`, `fix after merge, apply <letter>, because …`,
+  or `ask the user, because …`. A finding with a wider fix can get a split
+  instead, as described below. The working agent makes the final call.
 
 An option is blocked when:
 
@@ -146,13 +148,14 @@ An option is blocked when:
   is everything on `origin/main` that is not dead code under the
   conditions below. It includes live code, its tests, an API, a doc, a
   mockup, a plan, a migration, and schema. A deletion of dead code is not
-  blocked.
+  blocked. The plan of the change and a follow-up item that the change
+  fixes are not functionality.
 - It deletes, skips, or weakens a test of live code or a gate, or raises
   a time limit.
 - It needs credentials or infrastructure.
 
-`Auto-fix: yes, apply <letter>` is allowed only when at least one option is
-not blocked, for a finding about:
+`fix now` and `fix after merge` are allowed only when at least one option
+is not blocked, for a finding about:
 
 - a product bug, including edge cases, races, and platform differences
 - a security issue
@@ -165,11 +168,35 @@ not blocked, for a finding about:
 
 The letter names the best-ranked option that is not blocked: a structural
 wider fix, then a detection wider fix, then the direct fix. A blocked wider
-fix does not block the tag. For a flaky test that the diff adds or
+fix does not block the fix. For a flaky test that the diff adds or
 changes, name the nondeterminism source and the deterministic fix. The
 deterministic fixes are a fake clock, event order, captured inputs,
 operation counts, an explicit readiness signal, or isolated state. Require
 the fixer to reproduce the flake and record pass counts before and after.
+
+Propose `fix now` when one of these holds:
+
+- The severity is High.
+- The fix gets much harder after the merge. Examples are a migration, a
+  stored data format, or a public API or message that the diff adds.
+- The problem breaks a gate or a test, or the diff adds or changes a flaky
+  test.
+- A doc contradicts the changed code.
+
+Otherwise, propose `fix now` when the fix is Small and stays in the files
+that the diff changes. For every other finding, weigh the purpose of the
+branch, the files that the fix reaches outside the diff, and whether the
+end user meets the problem before a later branch can fix it. Read the plan
+of the change, when it has one, for its purpose. Give each
+`fix after merge` proposal one sentence of reason.
+
+When the named option is a wider fix and the direct fix is not blocked,
+you can propose a split: the direct fix now, and the wider fix after the
+merge. A split fits when the wider fix does not serve the purpose of the
+branch, reaches files or areas outside the diff, or serves other open
+branches too. Keep a Small wider fix that stays in the files of the diff
+with the direct fix. Write a split with the direct fix first:
+`fix now, apply <letter>, and fix after merge, apply <letter>, because …`.
 
 Dead code is code that the product never runs. Code is dead only when all
 of these hold:
@@ -195,7 +222,7 @@ assertion kept.
 Code that the product runs rarely is functionality: an error path, a
 fallback, or the off branch of a feature flag. Its deletion is blocked.
 When a condition is in doubt, give the finding the category code
-structure and tag it `Auto-fix: no`.
+structure and propose `ask the user`.
 
 A copy defect is user-facing text that has a typo or breaks a rule under
 `## Copy` in the `product-ui` skill. Give it the category UX wording, not
@@ -203,9 +230,9 @@ repository rule. The fix keeps the meaning when it adds no fact or action
 and removes no fact or action that the end user needs. When no protocol
 doc states the text, a fix that keeps the meaning stays within the
 contract. The direct fix changes only the words that carry the defect.
-When the meaning is in doubt, tag the finding `Auto-fix: no`.
+When the meaning is in doubt, propose `ask the user`.
 
-`Auto-fix: no` for every finding that needs a decision:
+Propose `ask the user` for every finding that needs a decision:
 
 - Every option is blocked.
 - The best option on the merits is blocked and is not a wider fix.
@@ -233,19 +260,20 @@ Apply these rules to a docs or spec finding:
 - When the code breaks a requirement and the diff did not intend a
   behaviour change, the finding is a product bug in the code.
 - When the diff changes behaviour that a requirement states, and the plan
-  records the user's decision for that change, the fix updates the doc:
-  `Auto-fix: yes`, with the doc update as the named option. Without a
-  recorded decision, tag it `Auto-fix: no`, because the user decides which
-  side is right.
+  records the user's decision for that change, the fix updates the doc.
+  The agent may apply it without the user, with the doc update as the
+  named option. Without a recorded decision, propose `ask the user`,
+  because the user decides which side is right.
 - A behaviour at the boundary that the diff adds and no requirement covers
-  is a spec gap. Report it as one finding with `Auto-fix: no`, because the
+  is a spec gap. Report it as one finding with `ask the user`, because the
   user reviews each new requirement. A detail that an existing requirement
   settles is not a gap, also when the requirement does not spell the
   detail out.
 - When a protocol doc in the scope names source files, functions, or
   internal mechanics, or records history, the fix moves that content to
   its home: the crate README for entry points, the plan for history, the
-  code for mechanics. `Auto-fix: yes`, with the move as the named option.
+  code for mechanics. The agent may apply it without the user, with the
+  move as the named option.
 - Do not drop an option, rank it lower, or recommend a different option
   only because it conflicts with a protocol doc. Include the doc update in
   that option and in its effort grade, and recommend the option when it is
