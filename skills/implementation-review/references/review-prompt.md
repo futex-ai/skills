@@ -2,7 +2,10 @@
 
 Give this prompt to the reviewer. Replace `<review focus>` with the
 `## Review focus` list from the repository's `AGENTS.md`, or delete that
-sentence when the repository has none.
+sentence when the repository has none. Replace `<first number>` with the
+first free finding number of the branch. Replace `<review folder>` with
+the review folder of the branch. The findings file reference of this
+skill gives both.
 
 The scope of the prompt is the diff. When the user explicitly asks for a
 review outside the changes, for example of the whole repository or of a
@@ -62,17 +65,19 @@ sed -n '<start>,<end>p' <path>
 ```
 
 Look for previous examples of a finding's class. This search is best
-effort. Use a hit only as an example. A hit is not a new finding:
+effort. Use a hit only as an example. A hit is not a new finding. Do not
+read `<review folder>`. It holds the earlier rounds of this branch, and
+your review must stay independent of them:
 
 ```bash
 git log --oneline origin/main -- <path>
 git log --oneline -i --grep='<keyword>' origin/main
-grep -rni '<keyword>' plans/ .context/ 2>/dev/null
+grep -rni '<keyword>' plans/ .context/ 2>/dev/null | grep -v '^<review folder>/'
 ```
 
 Return the numbered findings first and the `Outside the scope` list last.
 Order the findings by severity, High first, then Medium, then Low, and
-number them in that order. Use the item layout in the
+number them in that order, from <first number>. Use the item layout in the
 `decisions-and-findings` skill, with the source Review. For every finding:
 
 - Give it a severity. High: wrong output, lost data, a security problem, or

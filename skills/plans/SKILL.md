@@ -177,7 +177,9 @@ plan that is already on `main` without the user's approval.
   results or timings, smoke-test output, search results, audit records,
   test-title inventories, and full reviewer reports. Save them under
   `.context/<plan-name>/`, which Git ignores. Under the related milestone,
-  add one line that names the file.
+  add one line that names the file. Review reports go in the review folder
+  of the branch, beside its findings file. The `implementation-review`
+  skill gives the folder.
 - A plan keeps only its summary, milestones, TODOs, contracts, decisions,
   design calls, user approvals, and short review summaries. Agents read the
   whole plan, so logs in a plan slow every session.

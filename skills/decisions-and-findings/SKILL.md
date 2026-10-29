@@ -141,7 +141,8 @@ what each field of a review item must contain.
   - **B.** <The change.> <Its cost or risk.> Effort: <Small, Medium, or Large>.
   - <More options as C, D, and so on, when the problem has them.>
 - **Wider fix:** <The letter of the option that prevents this class of issue. A structural fix, such as a helper, an abstraction, a marker, a default, or a type, ranks above a detection fix, such as a test for the class, a lint, or a guard. Or "None" and the reason, for example that the wider fix is already in force.>
-- **Previous examples:** <Earlier cases of this class, with commits or files, or "None found". Also the other items that share the wider fix.>
+- **Previous examples:** <Earlier cases of this class, with commits or files, or "None found".>
+- **Related:** <Only when the item has a link to another item. Each link: the item number, the kind of link, and what it means. A link is a shared wider fix, the same cause, the same code, options that conflict, or a repeat.>
 - **Recommendation:** <Letter>. <One sentence of reasoning.> <When another option best protects the codebase, one sentence that names it.>
 - **Action:** <`fix now, apply` and a letter. Or `fix after merge, apply` and a letter, with one sentence of reason. Or a split: `fix now, apply` the direct fix, `and fix after merge, apply` the wider fix, with one sentence of reason. Or `ask the user, because`, the number of the condition of the decision test that holds, and one sentence of evidence.>
 ```
@@ -151,8 +152,9 @@ A problem outside the review scope is not an item. The
 lists it under **Open**, for a separate branch.
 
 Keep every label, also when the user asks for more detail or for a shorter
-answer. An item leaves out **Terms** only under the rule below. For more
-detail, write **Background** as a list with one fact in each item.
+answer. An item leaves out **Terms** and **Related** only under their
+rules. For more detail, write **Background** as a list with one fact in
+each item.
 
 ## Options
 
@@ -170,7 +172,7 @@ its source: a protocol doc, a user decision, the task message, an earlier
 option's text, or the code. When it is not a requirement, or its reason
 is gone, add the option that drops it. A user decision covers the choice
 that the user made, not each sentence of the text that describes the
-chosen option. For a review item, the options check of the
+chosen option. For a review item, the finding check of the
 `implementation-review` skill asks this in a fresh context.
 
 ## Terms
@@ -212,7 +214,8 @@ entry shape under a **Terms** heading.
 
 ## Explaining items again
 
-- Read the saved review report first, when it exists.
+- Read the findings file of the branch first, when it exists. The
+  `implementation-review` skill gives its path.
 - Restate every field. Do not point to an earlier message for a field.
 - Keep the recorded option letters of each item.
 - When the record gives no wider fix, look for one. Add the wider fix that

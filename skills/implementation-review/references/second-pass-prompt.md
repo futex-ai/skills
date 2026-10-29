@@ -1,39 +1,33 @@
 # Second-pass prompt: the options check
 
-The options check confirms that the options of each open item are
-complete. It checks that the recommendation is the best one. It changes
-nothing. An item comes from a review or a plan. Give this prompt to a
-fresh read-only context, together with the items.
+The options check confirms that the options of each item are complete. It
+checks that the recommendation is the best one. It changes nothing. An
+item comes from a review or a plan.
 
-In the review flow, the second pass has two parts. The validity check in
-[validity-prompt.md](validity-prompt.md) runs first, over every finding.
-This options check runs second, over the confirmed findings with
-`Action: ask the user`. Run it beside the fix round, because the two touch
-different findings. Give it its own checkout of the reviewed commit, for
-example a git worktree. Then the options check does not read a file while
-the fix round writes it.
-
-When a second checkout is not possible, run the options check before the
-fix round. The scope of the prompt is the diff. When the user asked for a
-wider review, replace the second sentence of the prompt with that scope.
-The review prompt has the same rule.
+In the review flow, the options check is step 3 of the finding check. Each
+finding check gets this prompt after the prompt in
+[check-prompt.md](check-prompt.md), which says how to start the checks.
+When the user asked for a wider review, replace the second sentence of
+both prompts with that scope.
 
 In the plan flow, the check runs over the decisions of a plan. The
-`plans` skill says when. Run it in the working tree that holds the plan,
-before you commit the plan. No fix round runs beside it. Give it the
-decisions and the path of the plan. Replace the second sentence of the
-prompt with the path of the plan.
+`plans` skill says when. Give this prompt to a fresh read-only context,
+together with the decisions and the path of the plan. Run it in the
+working tree that holds the plan, before you commit the plan. Replace the
+second sentence of the prompt with the path of the plan.
 
 The options check does not change an `Action` line. An open item stays
 open, also when the options check finds an option that is not blocked.
-The user sees the result of each pass and decides.
+The user sees the result of each pass and decides. For a review finding
+that the agent may fix, the working agent makes the final call with the
+merged options, as the `implementation-review` skill says.
 
 ---
 
-You are checking the open items of a code review or a plan in this
-repository. The review ran on the local diff against `origin/main`. Each
-item below comes from a review or a plan. It waits for the user, who will
-choose one lettered option.
+You are checking the options of the items below, in this repository. The
+review ran on the local diff against `origin/main`. Each item comes from a
+review or a plan. The user or the working agent will choose one lettered
+option for it.
 
 Your task is to check that the options are complete and that the
 recommendation is the best one. You may inspect the repository read-only.

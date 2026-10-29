@@ -1,6 +1,6 @@
 ---
 name: implementation-review
-description: Use after you push a branch and the work needs a review, before you run a review or apply its findings, when a plan's review TODO is reached, when the user asks for a code review of a branch, a pull request, the whole repository, or a named area, when a review finds a problem outside the diff, when you order or number the findings of a review, when you grade effort or weigh a wider fix, and when you decide whether to fix a finding now or after the merge, or ask the user.
+description: Use after you push a branch and the work needs a review, before you run a review or apply its findings, when a plan's review TODO is reached, when the user asks for a code review of a branch, a pull request, the whole repository, or a named area, when a review finds a problem outside the diff, when you number review findings, when the user answers a review finding, when you grade effort or weigh a wider fix, and when you decide whether to fix a finding now or after the merge, or ask the user.
 ---
 
 # Implementation review
@@ -26,57 +26,41 @@ after the report.
 
 ## Running the review
 
+Each round has two passes: the review, then one finding check for each
+new finding. The findings file of the branch records every round. Read
+[references/findings-file.md](references/findings-file.md) before the
+first round, and read the file itself after a context summary.
+
 1. Run the review as a separate read-only pass in a fresh context. Use
    the `first-pass review agent` of the `models` skill. Give it the prompt in
-   [references/review-prompt.md](references/review-prompt.md) and the
-   `## Review focus` list from the repository's `AGENTS.md`. When the user
-   asked for a wider scope, replace the first paragraph of the prompt's
-   `## Scope` section with the requested scope.
+   [references/review-prompt.md](references/review-prompt.md), the
+   `## Review focus` list from the repository's `AGENTS.md`, the first
+   free finding number, and the review folder. When the user asked for a
+   wider scope, replace the first paragraph of the prompt's `## Scope`
+   section with the requested scope.
 2. The reviewer starts with `scripts/diff-summary.sh` so that a large diff
    fits in context, then reads changed files and focused patches directly.
 3. The reviewer returns numbered findings and then the `Outside the scope`
    list, or says clearly that there are none and names the residual test risk.
-4. Save the full report under `.context/<plan-name>/`, not in the
-   repository.
-5. Run the validity check, the first part of the second pass. It is a
-   fresh read-only `second-pass review agent`. Give it every finding and
-   the prompt in [references/validity-prompt.md](references/validity-prompt.md).
-   It confirms that each finding is real. Give it its own checkout of the
-   reviewed commit, for example a git worktree. The fix round waits for its
-   verdicts. Remove each finding with a Removed verdict from the report. A
-   finding outside the scope goes to the `Outside the scope` list. A
-   corrected severity or category replaces the finding's line, and the
-   finding keeps its number. When the corrected category always waits for the
-   user, the outcome becomes `ask the user`. When the corrected severity is
-   High, a `fix after merge` outcome becomes `fix now`. Name each removed
-   finding in one line under **Checks** in the final message. Give its
-   number, its title, and the check that failed.
-6. Run the options check, the second part. It is a fresh read-only
-   `second-pass review agent`. Give it the confirmed findings with
-   `Action: ask the user` and the prompt in
-   [references/second-pass-prompt.md](references/second-pass-prompt.md).
-   It checks that the options are complete and that the recommendation is
-   the best one. Run it beside the fix round, in the same checkout. When a
-   second checkout is not possible, run it before the fix round.
-7. Merge the options check into the findings. A new option keeps the
-   letter that the options check gave it. The source of a dropped
-   condition goes into the text of the option that drops it. When the
-   recommendation changed, the **Recommendation** line gives the new
-   letter and its reason. It then names the letter that the first pass
-   recommended. The **Wider fix** line takes the new letter in the same
-   way. The `Action` line does not change, and an open finding stays
-   open. A new problem inside the scope goes into the review focus of the
-   re-review. When no re-review runs, it goes under **Open**. A new
-   problem outside the scope joins the `Outside the scope` list. A kept
-   condition and a place that is not a real choice stay in the saved
-   options report. Save both second-pass reports beside the review report.
+4. Save the full report in the review folder. Record the round in the
+   findings file, and write each new finding as the review gave it. Do
+   this before any check starts.
+5. Run the finding checks, the second pass. Start one check for each new
+   finding, side by side, with the prompt in
+   [references/check-prompt.md](references/check-prompt.md). Each check
+   confirms its finding, finds its links to the other findings, and checks
+   its options. The fix round waits for every check.
+6. Merge each check report into the findings file, as the section
+   "Merging a check report" of the findings file reference says. Name each
+   removed finding in one line under **Checks** in the final message. Give
+   its number, its title, and the check that failed.
 
 ## Finding format
 
 Order the findings by severity, High first, then Medium, then Low. Number
-each finding in that order. For every finding give the fields below. The
-`decisions-and-findings` skill gives the layout that shows them to the
-user.
+each finding in that order, from the first free number of the branch. For
+every finding give the fields below. The `decisions-and-findings` skill
+gives the layout that shows them to the user.
 
 - A severity: High, Medium, or Low, as the `decisions-and-findings` skill
   defines them.
@@ -188,15 +172,28 @@ before you make the final call on a finding. In short:
 
 ## After the review
 
-1. Make the final call on the outcome of each confirmed finding. When you
-   change the proposed outcome, give one sentence of reason.
-2. Fix the confirmed `fix now` findings without waiting for the user.
+1. Make the final call on the outcome of each confirmed finding, with the
+   merged options. A check can change the letter of a finding that you
+   may fix. It cannot turn an open finding into a fix. When you change the
+   proposed outcome, give one sentence of reason. Record each final call
+   in the findings file.
+2. Act on the links of the **Related** lines:
+   - A repeat follows the repeat rules of the findings file.
+   - Findings with the same cause or a shared wider fix get one fix.
+   - A fix that removes the code of another finding also closes it.
+   - When two options conflict, ask the user, unless a rule settles which
+     one wins.
+   - When a fix depends on the answer to an open finding, the finding
+     waits with it. Its outcome becomes `ask the user` under condition 4
+     of the decision test, and its **Related** line names the open
+     finding.
+3. Fix the confirmed `fix now` findings without waiting for the user.
    Apply the option that the `Action` line names. If the change grows past
    twice the Medium band while you work, or needs a Large trigger such as
    a dependency or a migration, revert it. Apply the next smaller option
    that is not blocked, or change the outcome to `ask the user`. Leave the
    `Outside the scope` problems alone.
-3. Record a follow-up item for each `fix after merge` finding, each
+4. Record a follow-up item for each `fix after merge` finding, each
    `ask the user` finding, each blocked or split-off wider fix of a fixed
    finding, and each `Outside the scope` problem. The `plans` skill gives
    the layout. Give a wider fix one item per class. An open finding keeps
@@ -204,20 +201,22 @@ before you make the final call on a finding. In short:
    of a blocked wider fix: the findings of this review that share it, plus
    the previous examples. When the count is two or more, also raise the
    wider fix as a numbered item with the source Review.
-4. Run the checks, commit, push, and run the review once more on the fix.
-   Name each fixed finding in its commit message.
-5. Run the validity check on the new findings. Fix any confirmed new
-   `fix now` findings once more, and record the other new findings as
-   follow-up items. Then stop. The `finish-work` skill gives the next
-   steps: the pull request and the report. Do not start a third fix round
-   without the user.
-6. In the final message, keep three lists: the fixed findings, the
-   deferred findings, and the findings that need a decision. Give each
-   fixed finding its number, its severity, a plain explanation, the
-   applied option, what changed, and the commit. Give each deferred
-   finding and each split-off wider fix its reason and its follow-up item.
-   Give each open finding a clear recommendation, with the second pass
-   merged in. Order each list by severity, High first. Use the
-   `decisions-and-findings` skill.
-7. List under **Open** the follow-up items of the blocked wider fixes and
+5. Run the checks, commit, push, and run the review once more on the fix.
+   Name each fixed finding in its commit message. Record each commit in
+   the findings file.
+6. Run the finding checks on the new findings, and again on each open
+   finding whose code a fix changed. Fix any confirmed new `fix now`
+   findings once more, and record the other new findings as follow-up
+   items. Then stop. The `finish-work` skill gives the next steps: the
+   pull request and the report. Do not start a third fix round without
+   the user.
+7. In the final message, keep three lists: the fixed findings, the
+   deferred findings, and the findings that need a decision. Build them
+   from the findings file. Give each fixed finding its number, its
+   severity, a plain explanation, the applied option, what changed, and
+   the commit. Give each deferred finding and each split-off wider fix its
+   reason and its follow-up item. Give each open finding a clear
+   recommendation, with its check merged in. Order each list by severity,
+   High first. Use the `decisions-and-findings` skill.
+8. List under **Open** the follow-up items of the blocked wider fixes and
    of the `Outside the scope` problems, one line each.
