@@ -25,8 +25,8 @@ else does.
 
 Every action runs at the `max` effort. The model ids are the ids that
 `conductor model` lists. When `conductor model` does not list a model of
-this table, the table is stale. Tell the user, and use the nearest model
-that it lists.
+this table, the table is stale. Tell the user. Then use the nearest
+model that it lists.
 
 The user can override an action for one task in a message. Nothing else
 overrides the table.
@@ -54,8 +54,8 @@ when it needs that compute. Do not split for its own sake.
   It shares the files and the branch of its workspace. Add
   `--workspace <id>` for a workspace other than your own.
 - An in-session subagent: the Agent tool of Claude Code. It runs Claude
-  models only. Name the model by its family, such as `opus` or `fable`,
-  and pass the effort. It ends with its parent session.
+  models only. Name the model by its family, such as `opus` or `fable`.
+  Pass the effort. It ends with its parent session.
 - A Conductor routine: `conductor routine create --name <name>
   --project-id <id> --agent <agent> --model <model> --effort <effort>
   --prompt-file <path>`. Routine commands need a user API key.
@@ -67,14 +67,14 @@ session.
 ## Delegating
 
 Give each delegation the goal, the constraints, the files to avoid, and
-the report that you expect. Read the report and check the work before
-you use it.
+the report that you expect. Read the report. Check the work before you
+use it.
 
 The report of a session is the last text that its agent wrote. Wait
 until `conductor session status <id>` says `idle`. Then read the
 transcript with `conductor --json session message <id> --limit 100`.
 The list starts with the oldest message. Step `--offset` until `hasMore`
-is false, and take the last text of the agent.
+is false. Take the last text of the agent.
 
 ## Checklist
 
@@ -82,6 +82,6 @@ is false, and take the last text of the agent.
 - [ ] The command or the Agent tool call passes the agent, the model, and
       the effort of that action.
 - [ ] Work that becomes an implementation or a pull request runs in its
-      own workspace, and its first session runs the `default orchestrator`
+      own workspace. Its first session runs the `default orchestrator`
       action.
-- [ ] You read the report and checked the work before you used it.
+- [ ] You read the report. You checked the work before you used it.
