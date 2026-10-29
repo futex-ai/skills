@@ -86,12 +86,12 @@ change. [templates/plan.md](templates/plan.md) is the starting point.
   milestone that changes a requirement proposes the change as a decision
   and updates the protocol doc in the milestone that changes the code. See
   the `documentation` skill.
-- A mockup milestone holds only mockup work, and no other milestone holds
+- A mockup milestone holds only mockup work. No other milestone holds
   mockup work. Keep backend changes and UI implementation in separate
   milestones too. Mockups complete before UI implementation begins.
-- Add another mockup milestone only when implementation finds a genuine
-  mockup gap. When you add milestones for review fixes or for a mockup
-  gap, put the new mockup milestone first among them.
+- Add another mockup milestone only for review fixes or for a genuine
+  mockup gap that implementation finds. When you add milestones for review
+  fixes or for a mockup gap, put the new mockup milestone first among them.
 - A milestone with UI or mockup work has a tag line directly below its
   heading: `Tags: ui` or `Tags: mockup`. A tagged milestone has no backend
   work. If backend work is missing while you implement a tagged milestone,
