@@ -75,10 +75,11 @@ gives the layout that shows them to the user.
   no prior knowledge.
 - The problem: what is wrong, in plain words and defined terms.
 - The impact of making no change.
+- The root question, in the words of the goal.
 - Solution options labelled A, B, and so on, from the smallest effort to
-  the largest. Before you write them, ask two questions. Are these the
-  only options? What would you build if the current code did not exist?
-  Add each new option that the questions give. Always consider a wider
+  the largest. Widen and narrow them with the options rule of the
+  `decisions-and-findings` skill, and list the approaches that you leave
+  out under **Left out**. Always consider a wider
   fix: a rule, test, lint, guard, abstraction, or architectural change
   that prevents the class of issue.
   Prefer a structural fix that removes the wrong case, such as a helper,

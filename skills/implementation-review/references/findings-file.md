@@ -88,8 +88,11 @@ and a list of new problems. Merge them into the entry of the finding:
   `fix after merge` outcome becomes `fix now`.
 - Each link goes into the **Related** line of both findings. Drop a link
   to a removed finding.
+- A better root question replaces the **Root question** line.
 - A new option keeps the letter that the check gave it. The source of a
-  dropped condition goes into the text of the option that drops it.
+  dropped condition goes into the text of the option that drops it. An
+  approach that the check brings back is such a new option. The
+  **Left out** line takes each other change of the check.
 - When the recommendation changed, the **Recommendation** line gives the
   new letter and its reason. It then names the letter that the first pass
   recommended. The **Wider fix** line takes the new letter in the same

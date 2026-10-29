@@ -95,10 +95,13 @@ number them in that order, from <first number>. Use the item layout in the
   with no prior knowledge.
 - State the problem: what is wrong, in plain words and defined terms.
 - State the impact of making no change.
-- Give solution options labelled A, B, and so on, from the smallest effort
-  to the largest. Before you write them, ask two questions. Are these the
-  only options? What would you build if the current code did not exist?
-  Add each new option that the questions give. Always consider a wider
+- Write the root question of the finding in the words of the goal, not
+  of the current mechanism. Then give solution options labelled A, B, and
+  so on, from the smallest effort to the largest. Widen and narrow them
+  with the options rule of the `decisions-and-findings` skill: at least
+  three distinct approaches, or one sentence that says why fewer are
+  real, its two questions, and a **Left out** line with the reason for
+  each approach that you leave out. Always consider a wider
   fix: a rule, test, lint, guard, abstraction, or architectural change
   that prevents the class of issue.
   Prefer a structural fix that removes the wrong case, such as a helper or

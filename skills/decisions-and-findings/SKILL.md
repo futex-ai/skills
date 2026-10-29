@@ -137,10 +137,12 @@ what each field of a review item must contain.
 - **Background:** <Two to five sentences: what the feature does and where it is. Use plain words and defined terms only.>
 - **Problem:** <One to three sentences that say what is wrong. Use plain words and defined terms only.>
 - **Impact if no action:** <One or two sentences.>
+- **Root question:** <One question in the words of the goal, not of the current mechanism. The options answer it.>
 - **Options:**
   - **A.** <The change.> <Its cost or risk.> Effort: <Small, Medium, or Large>.
   - **B.** <The change.> <Its cost or risk.> Effort: <Small, Medium, or Large>.
   - <More options as C, D, and so on, when the problem has them.>
+- **Left out:** <Each approach that the options leave out, with its reason: it fails the goal, it breaks a requirement that stays, or an option is better on every point. When the item has fewer than three distinct approaches, one sentence that says why. Or "None".>
 - **Wider fix:** <The letter of the option that prevents this class of issue. A structural fix, such as a helper, an abstraction, a marker, a default, or a type, ranks above a detection fix, such as a test for the class, a lint, or a guard. Or "None" and the reason, for example that the wider fix is already in force.>
 - **Previous examples:** <Earlier cases of this class, with commits or files, or "None found".>
 - **Related:** <Only when the item has a link to another item. Each link: the item number, the kind of link, and what it means. A link is a shared wider fix, the same cause, the same code, options that conflict, or a repeat.>
@@ -164,9 +166,27 @@ smallest effort to the largest, and give each its own grade. When you
 explain an item again, keep the recorded letters and their order. The
 wider fix of an item is one of these options.
 
-Before you write the options, ask two questions. Are these the only
-options? What would you build if the current code did not exist? Add each
-new option that the questions give.
+Every writer of options follows these steps: the reviewer, the finding
+check, a plan decision, and a brainstorm.
+
+1. Write the root question in the words of the goal, not of the current
+   mechanism. Ask "how does an old tab learn of a new version?", not
+   "what does the detail id cover?". Put all symptoms of one problem
+   under one root question. A mechanism in a brief or in the code is an
+   approach, not a requirement. A requirement comes from a protocol doc,
+   the choice of a user decision, or the task message.
+2. Widen to at least three distinct approaches. Two approaches are
+   distinct when they differ in what is built or where it lives, not
+   only in a detail. When fewer than three are real, say why in one
+   sentence.
+3. Ask two questions. Are these the only approaches? What would you build
+   if the current code did not exist? Add each approach that the
+   questions give. Add "change nothing" when it meets the goal.
+4. Narrow. Leave out an approach only when it fails the goal, breaks a
+   requirement that stays, or another approach is better on every point.
+   Give each approach that you leave out one line under **Left out**, with
+   its reason, so that the user can bring it back. Each other approach is
+   a lettered option.
 
 For a design item, then name each condition that every option keeps. Name
 its source: a protocol doc, a user decision, the task message, an earlier
@@ -174,7 +194,8 @@ option's text, or the code. When it is not a requirement, or its reason
 is gone, add the option that drops it. A user decision covers the choice
 that the user made, not each sentence of the text that describes the
 chosen option. For a review item, the finding check of the
-`implementation-review` skill asks this in a fresh context.
+`implementation-review` skill checks these steps and asks for the
+conditions in a fresh context.
 
 ## Terms
 
@@ -226,9 +247,10 @@ entry shape under a **Terms** heading.
   number to the **Source** line.
 - List the items by severity, also when the recorded numbers are then out
   of sequence. Do not renumber them for this.
-- Always write **Background**, **Problem**, **Impact if no action**, and
-  **Options**. They explain the item, so you can write them from the
-  record, the code, and the docs.
+- Always write **Background**, **Problem**, **Impact if no action**,
+  **Root question**, and **Options**. They explain the item, so you can
+  write them from the record, the code, and the docs.
+- When the record gives no **Left out** line, write "Not recorded".
 - Add **Terms** under the rule above, also when the record has none. You
   can write it from the code and the docs.
 - Some fields are judgments: severity, effort, category, recommendation,

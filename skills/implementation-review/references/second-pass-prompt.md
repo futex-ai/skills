@@ -39,17 +39,28 @@ For each item:
    code that it names. Read the code that causes the problem, and the code
    that owns the thing that the item is about. Read the plan and the
    protocol doc that the item names.
-2. Ask two questions. Are these the only options? What would you build if
-   the current code did not exist? Give an option at each place that the
-   current options do not cover. When a place is not a real choice, say
-   why in one sentence.
-3. Name each condition that every option keeps. Name its source: a
+2. Check the root question. When the item writes it in the words of the
+   current mechanism, or splits one problem into several symptoms, write
+   a better one.
+3. Widen. Count the distinct approaches in the options and in the
+   **Left out** line. Two approaches are distinct when they differ in what
+   is built or where it lives. Ask two questions. Are these the only
+   approaches? What would you build if the current code did not exist?
+   Give an option at each place that the current options do not cover.
+   When a place is not a real choice, say why in one sentence. When the
+   item has fewer than three distinct approaches, add approaches, or
+   confirm its reason for fewer.
+4. Name each condition that every option keeps. Name its source: a
    protocol doc, a user decision, the task message, an earlier option's
    text, or the code. Say whether its reason still holds. When it is not
    a requirement, or its reason is gone, give the option that drops it. A
    user decision covers the choice that the user made, not each sentence
    of the text that describes the chosen option.
-4. Check the wider fix and the recommendation. A wider fix still prevents
+5. Check the **Left out** line. An approach stays out only when it fails
+   the goal, breaks a requirement that stays, or another approach is
+   better on every point. Bring back each approach that the item left out
+   for another reason, as a new option.
+6. Check the wider fix and the recommendation. A wider fix still prevents
    the class when the detail that failed changes shape. An option that
    must know that detail is a direct fix. Say when the recommendation
    should change, and why.
@@ -69,9 +80,11 @@ Return one block for each item, in the order given:
 ```markdown
 ### <number>. <title as given>
 
+- **Root question:** <"Kept", or a better root question and one sentence of reason.>
 - **Places not covered:** <Each place with the letter of its new option, or the one sentence that says why it is not a real choice. Or "None".>
 - **Conditions:** <Each condition that every option keeps: its source, whether its reason holds, and the letter of the option that drops it, or "kept" when step 3 gives none. Or "None".>
 - **New options:** <Each new option with the next free letter, the change, its cost or risk, and its effort grade. Or "None".>
+- **Left out:** <Each approach that you leave out or bring back, with its reason. Or "No change".>
 - **Recommendation:** <The letter you recommend and one sentence of reasoning. When it differs from the review's, say so.>
 - **Wider fix:** <The letter, or "No change".>
 ```
