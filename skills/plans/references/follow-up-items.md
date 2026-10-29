@@ -33,13 +33,14 @@ not have the plan, the review report, or the findings file.
   Copy a failure text, a count, or a command. Do not point to it.
 - Do not depend on a plan, a review report, a findings file, a file under
   `.context/`, a pull request, a chat, or another workspace.
-- Do not use a number that only another document explains, such as "user
-  item 104", "finding 11", or "M14". Say what it stands for. For a
-  decision, give its choice and its date.
+- In the body, do not use a number that only another document explains,
+  such as "user item 104", "finding 11", or "M14". Say what it stands
+  for. For a decision, give its choice and its date.
 - Name the live files of the repository by path: code, docs, and other
   follow-up items. Say what the item needs from each file.
-- You can end the body with a permalink to the source, as history. The
-  item must make sense without the link.
+- The **Added** line can name the source and its finding number, as
+  history. The body can end with a permalink to the source. The item must
+  make sense without them.
 - Write each field of the layout. When the source does not give a field,
   write it from the code and the docs. "Explaining items again" in the
   `decisions-and-findings` skill says how. Add "(estimate)" after each
