@@ -123,8 +123,8 @@ parallel Codex and Claude sessions. One combined gate verified them.
   status as that skill says. Then delete the primary branch and archive
   its workspace.
 - A work item is a milestone, or a group of TODOs in one milestone that
-  touches its own files. Keep the milestone order of the plan: docs,
-  then mockups, then backend, then UI. Fan out inside one level.
+  touches its own files. Keep the milestone order from the `plans` skill.
+  Keep backend work before UI work. Fan out inside one level.
 - The orchestrator plans, writes the prompts, delegates, and checks. It
   does not implement. A correction of a few lines found while you check
   is fine. Anything larger goes back to the delegate.
