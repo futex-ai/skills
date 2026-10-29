@@ -44,9 +44,9 @@ workspace other than your own.
 
 To review a work item, start the session in the workspace of the item.
 Use the values of the `first-pass review agent` action. That workspace
-has the item's branch checked out. Start the validity check and the
-options check in the same way, with the `second-pass review agent`
-action.
+has the item's branch checked out. Start the finding checks of the
+`implementation-review` skill the same way, with the
+`second-pass review agent` action.
 
 ## Subagent
 

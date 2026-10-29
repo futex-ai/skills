@@ -64,9 +64,8 @@ change. [templates/plan.md](templates/plan.md) is the starting point.
 - Break the work into concrete units called milestones. At the end of each
   milestone the product works. Never leave the code base or feature broken.
 - Each milestone has a short summary and a TODO checklist.
-- Each milestone has a `Depends on:` line under its heading: `none`, or
-  the milestones that it needs. The `delegating` skill starts milestones
-  by these lines. A review of the plan checks them.
+- Each milestone has a `Depends on:` line: `none`, or the milestones that
+  it needs. A plan review checks it. The `delegating` skill uses it.
 - When the plan has mockup work, Milestone 1 is the mockup milestone. It
   comes before every other milestone. That includes the documentation
   milestone and repository bootstrap work, such as the workspace skeleton,
@@ -132,8 +131,7 @@ change. [templates/plan.md](templates/plan.md) is the starting point.
 - Record each open or deferred review finding, each blocked or split-off
   wider fix, and each problem outside the review scope as a follow-up
   item, not as a line in the plan. The section "Follow-up items" says how.
-- An open finding blocks only the later milestones that depend on its
-  code or contract, as the `delegating` skill says.
+- An open finding blocks only dependent work, as the `delegating` skill says.
 
 ## Implementing a plan
 

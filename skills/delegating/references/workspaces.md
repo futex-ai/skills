@@ -35,8 +35,11 @@ the install script.
 
 The agent reports in its session. Read its first message for the
 branch. Then read its report, as [conductor.md](conductor.md) says, and
-its pull request. Send a fix request as one message with the numbered
-findings and the option to apply for each.
+its pull request.
+
+You run the review of the item's branch, so you keep its findings file,
+as the `implementation-review` skill says. Send a fix request as one
+message with the text of each `fix now` finding and the option to apply.
 
 ## Integrate and close
 
