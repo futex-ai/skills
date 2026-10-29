@@ -25,6 +25,7 @@ field() {  # field <file> <label>: the text of "- **<label>:** " up to its first
 tab="$(printf '\t')"
 for item in "${items[@]}"; do
   severity="$(field "$item" Severity)"
+  severity="${severity%% (*}"  # "High (estimate)" ranks as High
   case "$severity" in
     High) rank=1 ;;
     Medium) rank=2 ;;

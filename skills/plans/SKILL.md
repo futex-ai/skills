@@ -164,8 +164,8 @@ action. The `delegating` skill gives its route.
 ## Follow-up items
 
 A follow-up item records work that waits until after the merge. Each item
-is one file under `plans/follow-ups/`, in the layout of
-[templates/follow-up.md](templates/follow-up.md). Read
+is one file under `plans/follow-ups/`. It holds every fact that the work
+needs. Its layout is [templates/follow-up.md](templates/follow-up.md). Read
 [references/follow-up-items.md](references/follow-up-items.md) before you
 add, fix, or drop an item. List the open items, High severity first, with
 `scripts/follow-ups.sh`.
