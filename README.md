@@ -31,9 +31,9 @@ Codex, and with any other agent that reads the
    the choices that a skill leaves to the repository, such as the type
    generator, the test runner, or the shared UI library. It does not
    repeat the skill list. It does repeat the communication preference
-   (Simplified Technical English, faithful reporting, batched decisions,
-   final report) so that it reaches an agent that does not have the global
-   file installed.
+   (Simplified Technical English, faithful reporting, batched decisions in
+   the reply text and never in a question tool, final report) so that it
+   reaches an agent that does not have the global file installed.
 
 ## Skills
 

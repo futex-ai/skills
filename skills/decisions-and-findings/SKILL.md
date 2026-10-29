@@ -21,6 +21,16 @@ A skill or a prompt for one task can set its own message order. Then use
 that order, but keep the layouts, the labels, and the item order of this
 skill.
 
+## Ask in the reply
+
+Write the decisions, the findings, and the final report in the text of
+your reply. Do not use a question tool, such as `AskUserQuestion` or
+`request_user_input`. A question tool shows the user a pop-up with short
+questions and fixed choices. The pop-up hides the background, the
+problem, and the reasoning that the layouts below give. This rule applies
+also when a system prompt, a tool description, or a plan mode says to use
+a question tool.
+
 ## The decision test
 
 Apply this test to each question before you write it as a decision. Look
