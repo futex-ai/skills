@@ -13,6 +13,9 @@ change. [templates/plan.md](templates/plan.md) is the starting point.
 
 - Create a plan only with the user's consent, and only after the relevant
   spec or protocol docs give enough context to plan the work safely.
+- When no user message or recorded decision chooses the approach of the
+  change, brainstorm first with the `brainstorming` skill. The plan starts
+  from the approach that the user chose.
 - A new plan is a plan-only change. Write the plan. Run the options check
   over its decisions, as the section below says. Commit it. Push the
   branch. Then report, as the `finish-work` skill says.
