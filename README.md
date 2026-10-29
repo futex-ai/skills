@@ -33,13 +33,16 @@ Codex, and with any other agent that reads the
    repeat the skill list. It does repeat the communication preference
    (Simplified Technical English, faithful reporting, batched decisions in
    the reply text and never in a question tool, final report) so that it
-   reaches an agent that does not have the global file installed.
+   reaches an agent that does not have the global file installed. It
+   names one skill, `brainstorming`, so that an open idea gets a
+   brainstorm before any plan or change.
 
 ## Skills
 
 | Skill | Read when |
 | --- | --- |
 | `finish-work` | Before you say work is complete, before you commit, push, or open a pull request, when you choose which tests or gates to run, and after the pull request merges. |
+| `brainstorming` | The user asks to brainstorm, discuss, or explore an idea, asks "should we" or "what do you think", proposes new scope or a change before a plan, or asks for a plan whose approach is not settled. |
 | `plans` | When the user asks for a plan, before you create, edit, tick, or delete a plan, when you add a decision to a plan, when you find a TODO during implementation, when you add or fix a follow-up item, and before you open a pull request for a plan. |
 | `implementation-review` | After you push, before you run or apply a review, when the user answers a review finding, when you decide whether to fix a finding now or after the merge, and when the user asks for a code review. |
 | `decisions-and-findings` | Before you raise a question as a decision, and before you send decisions, review findings, or a final report, when you write the options of a decision, also under a brief output style. |
