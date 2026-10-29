@@ -15,7 +15,8 @@ the same test, the same layout, and a place in the same list. Its
 **Source** says where it comes from:
 
 - **Review:** an item that a review found.
-- **Plan:** every other item, such as a question from a plan or a task.
+- **Design:** every other item, such as a question from a brainstorm, a
+  plan, or a task.
 
 ## Precedence
 
@@ -68,10 +69,10 @@ When no condition holds, apply the recommended option without the user:
 
 - A review item gets `fix now` or `fix after merge`. The review-fix rule
   says which one, and when to split the item.
-- A plan item is a design call. Record the call, its reason, and the date
-  in the plan, in the design of the change. When the change has no plan,
-  record it in the commit or the pull request description. Do not ask the
-  user. Give each design call one line in the final report.
+- A design item is a design call. Record the call, its reason, and the
+  date in the plan, in the design of the change. When the change has no
+  plan, record it in the commit or the pull request description. Do not
+  ask the user. Give each design call one line in the final report.
 
 Three signs that an item fails the test:
 
@@ -128,7 +129,7 @@ what each field of a review item must contain.
 ### 1. <The problem, in eight words or fewer>
 
 - **Severity:** <High, Medium, or Low>. **Effort:** <Small, Medium, or Large: the grade of the recommended option.>
-- **Source:** <Review or Plan.>
+- **Source:** <Review or Design.>
 - **Category:** <One category from the scales below.>
 - **Location:** <The file path and line, or "None" when the item has no place in the code.>
 - **Terms:** <Only when the item uses a term that the shared list does not define. Up to five entries.>
@@ -165,7 +166,7 @@ Before you write the options, ask two questions. Are these the only
 options? What would you build if the current code did not exist? Add each
 new option that the questions give.
 
-For a plan item, then name each condition that every option keeps. Name
+For a design item, then name each condition that every option keeps. Name
 its source: a protocol doc, a user decision, the task message, an earlier
 option's text, or the code. When it is not a requirement, or its reason
 is gone, add the option that drops it. A user decision covers the choice
