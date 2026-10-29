@@ -88,8 +88,13 @@ can give one fix for both findings.
 
 ## Step 3: check the options
 
-Apply the options check below to your finding, with the links in mind.
-Your finding is its only item.
+The options check follows this prompt, after the `---` line. It is
+written for a list of items. Use it for your finding only. Where it says
+"the items below", it means your finding in the findings file.
+
+Keep the links of step 2 in mind while you look for options. For example,
+a shared cause can give one fix for both findings. A conflict can need an
+option that works with the options of the other finding.
 
 ## Return
 
