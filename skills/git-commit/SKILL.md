@@ -8,7 +8,9 @@ description: Use before you commit and directly after, when you write a commit m
 Do not delete or override functionality already on `origin/main` without
 explicit user approval. Functionality includes live code, its tests, APIs,
 docs, mockups, plans, migrations, and schema. Dead code needs no approval.
-The section "Dead code" below says when code is dead. Merges and rebases
+The section "Dead code" below says when code is dead. The plan of the
+change and a follow-up item that the change fixes are not functionality.
+The change deletes them, as the `plans` skill says. Merges and rebases
 have their own procedure in the `git-merge` skill.
 
 ## Before and after each commit
@@ -127,6 +129,10 @@ body. The format enables automated changelogs and readable history.
   - each intentional merge decision with the paths it affects
   - each design call under the decision test in the
     `decisions-and-findings` skill, when the change has no plan
+  - for a change that deletes its plan: each user decision and design
+    call of the plan with its date, and a permalink to the plan at the
+    commit before the deletion
+  - each follow-up item that the change adds or deletes
   - the review finding that a fix commit resolves, by number
 - When a later commit changes what the pull request description says,
   update the description.

@@ -1,14 +1,14 @@
 ---
 name: finish-work
-description: Use before you say that work is complete or done, before you commit, push, or open a pull request, when you decide which tests, checks, or gates to run, when a gate or a test suite fails or a run was partial, when you add a feature that needs a smoke test, and when the change that you finish is documentation-only or plan-only.
+description: Use before you say that work is complete or done, before you commit, push, or open a pull request, when you decide which tests, checks, or gates to run, when a gate or a test suite fails or a run was partial, when you add a feature that needs a smoke test, when the change that you finish is documentation-only or plan-only, and when you learn that its pull request merged.
 ---
 
 # Finish work
 
-Work is complete only when every step below is done, in order. The commands
-for each step come from the repository's `AGENTS.md` under `## Commands`. If
-a step cannot run, say so, name the blocker, and list the checks that did
-run.
+Work is complete only when steps 1 to 7 below are done, in order. Step 8
+comes after the merge. The commands for each step come from the
+repository's `AGENTS.md` under `## Commands`. If a step cannot run, say so,
+name the blocker, and list the checks that did run.
 
 ## 1. During development
 
@@ -69,14 +69,15 @@ run.
   finding before each fix round. A finding that is not real or not in the
   scope is removed. The check corrects a wrong severity or category in
   place.
-- Apply the review-fix rule. Fix only the confirmed findings tagged
-  `Auto-fix: yes`, with the option that each tag names. Run the checks.
-  Commit and push. Re-review once. Then stop the fix rounds and go on to
-  step 6.
+- Apply the review-fix rule. Make the final call on the outcome of each
+  confirmed finding. Fix the findings with `Action: fix now`, with the
+  option that each names. Record a follow-up item for each other finding,
+  as the `plans` skill says. Run the checks. Commit and push. Re-review
+  once. Then stop the fix rounds and go on to step 6.
 - Run the options check of the `implementation-review` skill over the
-  confirmed findings tagged `Auto-fix: no`. It runs beside the fix round,
-  in its own checkout. Merge its options into the findings before you
-  report them.
+  confirmed findings with `Action: ask the user`. It runs beside the fix
+  round, in its own checkout. Merge its options into the findings before
+  you report them.
 
 ## 6. Pull request
 
@@ -85,11 +86,14 @@ run.
   other milestone TODOs are also ticked. A new plan has unticked
   milestone TODOs, so it is not complete. Open findings that wait for the
   user do not make the implementation incomplete.
+- When the change has a plan, delete it in the last commit before you
+  open the pull request. The `plans` skill gives the steps. Push that
+  commit.
 - Open the pull request when the implementation is complete, or when the
   user asks for it. Before that, report the branch. Write the title and
-  the description with the `git-commit` skill.
-- When the change has an active plan, put the link in its status
-  paragraph. Commit and push that edit. See the `plans` skill.
+  the description with the `git-commit` skill. The description lists each
+  follow-up item that the change adds, so that the user can bring one
+  back into the branch before the merge.
 
 ## 7. Report
 
@@ -99,14 +103,22 @@ and labels in the `decisions-and-findings` skill. Include:
 - What changed, the commit, and the branch or the pull request.
 - The checks that ran and their results. Name any check that was skipped or
   could not run, and why.
-- Auto-fixed review findings, separately from the findings that need a
-  decision, each with a recommendation.
-- Follow-ups for the wider fixes that the review did not apply, one line
-  per class.
+- The fixed review findings, the deferred findings with their follow-up
+  items, and the findings that need a decision, each with a
+  recommendation. Keep them in three lists.
+- The number of open follow-up items in the repository.
+- The follow-up items of the blocked wider fixes, one line per class.
 - Problems outside the review scope, for a separate branch. An unrelated
   flaky test gives its name, failure text, rerun outcome, and suspected
   source.
-- Open plan TODOs or follow-ups.
+- Open plan TODOs.
+
+## 8. After the merge
+
+When you learn that the pull request merged, remind the user of the open
+follow-up items. Name the items that the change added. Give the number of
+all open items, from the script in the `plans` skill. Start work on an
+item only when the user asks for it.
 
 ## Checklist
 
@@ -117,12 +129,17 @@ and labels in the `decisions-and-findings` skill. Include:
       change.
 - [ ] Preservation audit clean: each deletion is dead code or approved.
 - [ ] Committed with Conventional Commits and pushed; new files tracked.
-- [ ] Post-push review run; `Auto-fix: yes` findings fixed; re-reviewed once.
+- [ ] Post-push review run; `fix now` findings fixed; re-reviewed once.
+- [ ] Each deferred or open finding has a follow-up item.
 - [ ] Validity check run before each fix round. Removed findings named
       under **Checks**.
 - [ ] Options check run over the open findings and the new plan decisions,
       and merged into the report.
+- [ ] When the change has a plan, the plan deleted in the last commit.
+      Its record and the follow-up items are in the pull request
+      description.
 - [ ] Pull request opened once the implementation was complete or the user
-      asked. When the change has an active plan, its link is in the status
-      paragraph.
-- [ ] Final report in STE with fixed and open findings.
+      asked.
+- [ ] Final report in STE with fixed, deferred, and open findings, and the
+      number of open follow-up items.
+- [ ] After the merge, the user reminded of the open follow-up items.

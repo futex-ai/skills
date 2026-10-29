@@ -1,6 +1,6 @@
 ---
 name: plans
-description: Use when the user asks for a plan, before you create, edit, or tick a plan file under plans/, when you add a decision to a plan, when you discover a TODO or blocked work during implementation, when a milestone has UI or mockup work, when you would paste command output or a review report into a plan, when a review finding stays open, when you are about to open a pull request for a plan, and when a pull request for a plan opens or merges.
+description: Use when the user asks for a plan, before you create, edit, tick, or delete a plan file under plans/, when you add a decision to a plan, when you discover a TODO or blocked work during implementation, when a milestone has UI or mockup work, when you would paste command output or a review report into a plan, when a review finding is deferred or stays open, when you add or fix a follow-up item, and before you open a pull request for a plan.
 ---
 
 # Plans
@@ -33,7 +33,8 @@ change. [templates/plan.md](templates/plan.md) is the starting point.
 - The plan is the dated record of each decision: the choice, the
   alternatives, the reason, and the date. The protocol doc keeps only the
   decision in force. History, such as what the code did before the change,
-  belongs in the plan, not in a protocol doc.
+  belongs in the plan, not in a protocol doc. When the change deletes the
+  plan, its pull request description keeps the dated record.
 - The plan also records each design call that you make yourself: the
   choice, the reason, and the date. The `decisions-and-findings` skill
   says which questions are design calls. Put each call in the design of
@@ -109,28 +110,21 @@ change. [templates/plan.md](templates/plan.md) is the starting point.
 - When you discover a TODO that the PR needs, add it under the relevant
   milestone, then continue with the active TODO.
 - Break a complex TODO into sub-tasks.
-- Every plan ends with a commit-and-push TODO, a review TODO, and a pull
-  request TODO. The review TODO directs a reviewer to use the
-  `implementation-review` skill against `origin/main` after the push. The
-  reviewer reports the findings. Then the review-fix rule applies: fix
-  the `Auto-fix: yes` findings, re-review once, and report the rest. Read
-  an older review TODO that says "without changing the implementation"
-  under the same rule.
-- The pull request TODO is the last milestone TODO. Do it when every other
-  milestone TODO is ticked, or when the user asks for the pull request.
-  Then put the link in the status paragraph. The `finish-work` skill
-  gives the steps. An older plan without this TODO follows the same rule.
-- Add each open review finding as one line under the review TODO so that it
-  is not lost when the session ends. List the lines by severity, High
-  first. Each line gives the number, title, severity, the effort of the
-  recommended option, and the recommended option, for example:
-  `3. Retry loop has no limit. Severity High, effort Small. Recommended: A, cap the retries.`
-- Add each follow-up, the blocked wider fix of a fixed finding, as one
-  line too, one per class: the wider fix, its effort, the finding numbers
-  it covers, and the previous examples, for example:
-  `Follow-up: guard port reuse in the test harness. Effort Large. Covers findings 2 and 5. Previous examples: 3f2c1ab.`
-- Add each problem that the review listed under `Outside the scope` as one
-  line too: its path, one sentence, and `Separate branch.`
+- Every plan ends with a commit-and-push TODO, a review TODO, a TODO that
+  deletes the plan, and a pull request TODO. The review TODO directs a
+  reviewer to use the `implementation-review` skill against `origin/main`
+  after the push. The reviewer reports the findings. Then the review-fix
+  rule applies: fix the `fix now` findings, record follow-up items for the
+  rest, re-review once, and report. Read an older review TODO under the
+  same rule, also when it says "without changing the implementation" or
+  "fix the `Auto-fix: yes` findings".
+- The last two TODOs delete the plan and open the pull request. Do them
+  when every other milestone TODO is ticked. The section "Deleting the
+  plan" gives the steps, and the `finish-work` skill gives the pull
+  request. An older plan without these TODOs follows the same rule.
+- Record each open or deferred review finding, each blocked wider fix, and
+  each problem outside the review scope as a follow-up item, not as a line
+  in the plan. The section "Follow-up items" says how.
 
 ## Implementing a plan
 
@@ -154,15 +148,31 @@ action and its route.
   merged.
 - Put post-merge work, including smoke tests that need the merged or
   deployed change, in a `## Post-merge follow-up (non-blocking)` section
-  outside the milestones. It does not affect completion.
+  outside the milestones. It does not affect completion. When the change
+  deletes the plan, each unchecked task becomes a follow-up item.
 - Keep smoke tests that can run before merge as required milestone TODOs.
-- When the plan's own pull request opens, replace the branch sentence
-  with `[PR #<number>](<url>) is open.`
-- When the PR merges, change the status paragraph to start with
-  `Status: Completed. [PR #<number>](<url>) merged on <YYYY-MM-DD>.` and
-  keep any open review findings or follow-up owners in that paragraph.
-- That status update is a complete change on its own. Put it on a
-  branch, push it, and open its pull request.
+- When the pull request opens before the work is complete, replace the
+  branch sentence with `[PR #<number>](<url>) is open.`
+- When the work spans more than one pull request, the plan stays until
+  the last one. The last pull request deletes it.
+
+## Follow-up items
+
+A follow-up item records work that waits until after the merge. Each item
+is one file under `plans/follow-ups/`, in the layout of
+[templates/follow-up.md](templates/follow-up.md). Read
+[references/follow-up-items.md](references/follow-up-items.md) before you
+add, fix, or drop an item. List the open items, High severity first, with
+`scripts/follow-ups.sh`.
+
+## Deleting the plan
+
+The pull request of the change deletes its plan, so that a plan does not
+stay on `main` after its work merges. Delete it in the last commit before
+you open the pull request, with the steps in
+[references/deleting-a-plan.md](references/deleting-a-plan.md). Do not
+delete a completed plan that is already on `main` without the user's
+approval.
 
 ## Evidence
 

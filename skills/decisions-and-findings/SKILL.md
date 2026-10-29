@@ -54,7 +54,7 @@ Three signs that a question fails the test:
 - The recommendation says that the option costs nothing.
 - The severity is Low, and the impact is only that the work waits for the
   answer.
-- The **Auto-fix** reason says only that the item is a decision.
+- The **Action** reason says only that the item is a decision.
 
 ## Simplified Technical English
 
@@ -116,7 +116,7 @@ not a review finding.
   - **B.** <The change.> <Its cost or risk.> Effort: <Small, Medium, or Large>.
   - <More options as C, D, and so on, when the problem has them.>
 - **Recommendation:** <Letter>. <One sentence of reasoning.>
-- **Auto-fix:** no, because <the number of the condition of the decision test that holds, and one sentence of evidence.>
+- **Action:** ask the user, because <the number of the condition of the decision test that holds, and one sentence of evidence.>
 ```
 
 ## Finding layout
@@ -143,7 +143,7 @@ what each field must contain.
 - **Wider fix:** <The letter of the option that prevents this class of issue. A structural fix, such as a helper, an abstraction, a marker, a default, or a type, ranks above a detection fix, such as a test for the class, a lint, or a guard. Or "None" and the reason, for example that the wider fix is already in force.>
 - **Previous examples:** <Earlier cases of this class, with commits or files, or "None found". Also the other findings in this review that share the wider fix.>
 - **Recommendation:** <Letter>. <One sentence of reasoning.> <When another option best protects the codebase, one sentence that names it.>
-- **Auto-fix:** <`yes, apply` and the letter of the option to apply, or `no, because` and the condition that stops the fix.>
+- **Action:** <`fix now, apply` and a letter. Or `fix after merge, apply` and a letter, with one sentence of reason. Or `ask the user, because` and the condition that sends the item to the user.>
 ```
 
 A problem outside the review scope is not a finding. The
@@ -229,20 +229,25 @@ entry shape under a **Terms** heading.
 - Add **Terms** under the rule above, also when the record has none. You
   can write it from the code and the docs.
 - Some fields are judgments: severity, effort, category, recommendation,
-  and Auto-fix. When the record does not give a judgment, give your own.
+  and Action. When the record does not give a judgment, give your own.
   Add "(estimate)" after it.
 - When you cannot find the location, write "Not found". When you find no
   previous examples, write "None found".
 
 ## Final report
 
-End every task with a final report. Under **Fixed** and under **Open**,
-keep the item order above. Use these labels:
+End every task with a final report. Under **Fixed**, **Deferred**, and
+**Open**, keep the item order above. Use these labels:
 
 - **Changed:** what changed, the commit, and the branch or the pull
   request.
-- **Fixed:** each auto-fixed finding. Give its number, its severity, a
-  plain explanation, the applied option, what changed, and the commit.
+- **Fixed:** each finding that the agent fixed. Give its number, its
+  severity, a plain explanation, the applied option, what changed, and the
+  commit.
+- **Deferred:** each finding with `fix after merge`. Give its number, its
+  severity, the reason, and its follow-up item. When the repository has a
+  `plans/` directory, give the number of open follow-up items. The
+  `plans` skill gives the script that counts them.
 - **Decisions:** each decision that the user answered, and its outcome.
   Then each design call that you made under the decision test, in one
   line: the call and its reason.
@@ -251,9 +256,8 @@ keep the item order above. Use these labels:
   Name each unrelated flaky test with its failure text, rerun outcome, and
   suspected source.
 - **Open:** the decisions and review items that still need the user. For
-  each open decision, say what it blocks. Add the open plan TODOs and the
-  follow-ups. Add the problems outside the review scope for a separate
-  branch, and other skipped or blocked work. A follow-up for a wider fix
-  that the review did not apply is one line per class. The line gives the
-  wider fix, its effort, the finding numbers it covers, and the previous
-  examples.
+  each open decision, say what it blocks. Add the open plan TODOs. Add the
+  follow-up items of the blocked wider fixes and of the problems outside
+  the review scope, and other skipped or blocked work. A blocked wider fix
+  is one line per class. The line gives the wider fix, its effort, the
+  finding numbers it covers, and the previous examples.
