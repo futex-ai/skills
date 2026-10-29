@@ -46,10 +46,10 @@ change. [templates/plan.md](templates/plan.md) is the starting point.
   condition that every option keeps.
 - When you add a decision to a plan, run the options check of the
   `implementation-review` skill over it. Do this before you report the
-  decision. The check is a fresh read-only context with the second-pass
-  prompt of that skill, the decisions, and the path of the plan. It
-  checks that the options are complete and that the recommendation is
-  the best one.
+  decision. The check is a fresh read-only `second-pass review agent`
+  with the second-pass prompt of that skill, the decisions, and the path
+  of the plan. It checks that the options are complete and that the
+  recommendation is the best one.
 - Merge the result of the check into the plan before you commit. A new
   option keeps the letter that the check gave it. When the recommendation
   changed, the **Recommendation** line gives the new letter and names the
@@ -63,9 +63,25 @@ change. [templates/plan.md](templates/plan.md) is the starting point.
 - Before you start a milestone, read the `parallel-agents` skill. Decide
   whether its work splits across workspaces, and which action of the
   `models` skill does each item.
-- The first milestone updates the relevant documentation and protocol or
-  spec docs so that they state the requirements and the decisions for the
-  work that follows. The plan itself holds the design: the approach, the
+- When the plan has mockup work, Milestone 1 is the mockup milestone. It
+  comes before every other milestone. That includes the documentation
+  milestone and repository bootstrap work, such as the workspace skeleton,
+  checks, and CI. Mockups find problems in a design better than any other
+  step. A plan has mockup work when it adds or changes a screen, a user
+  flow, or anything else that a mockup shows.
+- Put all mockup work that is known at planning time in the mockup
+  milestone. Include every product area of the plan. When the repository
+  has no mockup catalogue tooling yet, the mockup milestone also sets up
+  that tooling.
+- As the last TODO of the mockup milestone, update the design and the
+  TODOs of the plan. Do this for each problem that the mockups show. Add
+  a decision when the decision test of the `decisions-and-findings` skill
+  says so.
+- The documentation milestone comes directly after the mockup milestone.
+  When the plan has no mockup work, the documentation milestone is
+  Milestone 1. It updates the relevant documentation and protocol or spec
+  docs so that they state the requirements and the decisions for the work
+  that follows. The plan itself holds the design: the approach, the
   components, and the mechanics. See the `documentation` skill for what
   belongs in a protocol doc.
 - The documentation milestone does not freeze the protocol docs. A later
@@ -73,16 +89,12 @@ change. [templates/plan.md](templates/plan.md) is the starting point.
   milestone that changes a requirement proposes the change as a decision
   and updates the protocol doc in the milestone that changes the code. See
   the `documentation` skill.
-- When a product area needs mockup work, its initial mockup milestone comes
-  directly after the documentation milestone for that area. It also comes
-  before any UI milestone for that area. Milestones for repository
-  bootstrap work, such as the workspace skeleton, checks, CI, and the
-  mockup catalogue tooling, can come before the first mockup milestone.
-- Put all mockup work for an area that is known at planning time in the
-  initial mockup milestone for that area. Add another mockup milestone only
-  when implementation finds a genuine mockup gap.
-- Keep backend changes, mockup or design updates, and UI implementation in
-  separate milestones. Mockups complete before UI implementation begins.
+- A mockup milestone holds only mockup work. No other milestone holds
+  mockup work. Keep backend changes and UI implementation in separate
+  milestones too. Mockups complete before UI implementation begins.
+- Add another mockup milestone only for review fixes or for a genuine
+  mockup gap that implementation finds. When you add milestones for review
+  fixes or for a mockup gap, put the new mockup milestone first among them.
 - A milestone with UI or mockup work has a tag line directly below its
   heading: `Tags: ui` or `Tags: mockup`. A tagged milestone has no backend
   work. If backend work is missing while you implement a tagged milestone,
@@ -127,6 +139,20 @@ change. [templates/plan.md](templates/plan.md) is the starting point.
 - An open finding blocks a later milestone only when that milestone depends
   on the affected code or contract. The `parallel-agents` skill gives the
   rule.
+
+## Implementing a plan
+
+When the plan is approved, the orchestrator session of the workspace
+implements all milestones by delegation. The `models` skill defines each
+action and its route.
+
+- Delegate the docs work of a milestone to the `docs implementor`.
+  Delegate the UI work to the `ui implementor`. Delegate the other work
+  to the `non-ui implementor`.
+- Check each delegated result against the milestone's TODOs and the
+  repository rules. Request changes until it passes. Then tick the TODO.
+- Keep the gate, the review, and the pull request with the orchestrator,
+  as the `finish-work` skill says.
 
 ## Completion boundary
 

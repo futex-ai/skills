@@ -13,9 +13,8 @@ skill apply to mockups too.
 
 - Any work that needs design implementation updates an existing mockup or
   creates a new one first, before the implementation lands. In a plan, the
-  initial mockup milestone for a product area comes directly after the
-  documentation milestone for that area and before any UI milestone for
-  that area; see the `plans` skill.
+  mockup milestone is Milestone 1. It comes before every other milestone,
+  also before the documentation milestone. See the `plans` skill.
 - Consider where each screen sits in the wider app. Do not build an
   isolated mockup that cannot be reached from another relevant screen,
   flow, or navigation surface. Keep new mockups visually and structurally
