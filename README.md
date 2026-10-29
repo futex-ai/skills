@@ -74,11 +74,11 @@ implementor. It keeps the gate, the review, and the pull request.
 | --- | --- | --- | --- |
 | 0 | Start | User, then orchestrator | `models`, `delegating`. `agents-md` only when the repository's `AGENTS.md` is missing or out of date |
 | 1 | Brainstorm | Orchestrator and the `brainstorming` action | `brainstorming`, `models`, `delegating`, `decisions-and-findings` |
-| 2 | Plan | Orchestrator | `plans`, `documentation`, `decisions-and-findings`, `implementation-review`, `finish-work`, `git-commit` |
-| 3 | Milestone 1: mockups | `ui implementor` | `mockups`, `product-ui`, `typescript` |
-| 4 | Milestone 2: docs | `docs implementor` | `documentation` |
-| 5 | Backend milestones | `non-ui implementor` | `rust`, `databases`, `shared-types`, `deterministic-tests`, `finish-work` |
-| 6 | UI milestones | `ui implementor` | `product-ui`, `typescript`, `shared-types`, `mockups`, `finish-work` |
+| 2 | Plan | Orchestrator | `plans`, `delegating`, `documentation`, `decisions-and-findings`, `implementation-review`, `finish-work`, `git-commit` |
+| 3 | Milestone 1: mockups | `ui implementor` | `delegating`, `mockups`, `product-ui`, `typescript` |
+| 4 | Milestone 2: docs | `docs implementor` | `delegating`, `documentation` |
+| 5 | Backend milestones | `non-ui implementor` | `delegating`, `rust`, `databases`, `shared-types`, `deterministic-tests`, `finish-work` |
+| 6 | UI milestones | `ui implementor` | `delegating`, `product-ui`, `typescript`, `shared-types`, `mockups`, `finish-work` |
 | 7 | Verify | Orchestrator | `finish-work`, `deterministic-tests`, `documentation` |
 | 8 | Commit and push | Orchestrator | `git-commit`, `git-merge` |
 | 9 | Review and fix | Review agents, then orchestrator | `implementation-review`, `delegating`, `decisions-and-findings`, `plans`, `git-commit` |
