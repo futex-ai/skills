@@ -28,6 +28,10 @@ at that moment instead of guessing the rule.
   prior knowledge needs, the problem, the impact if no action is taken,
   lettered options, and the recommended option with one sentence of
   reasoning.
+- Ask every question in the text of your reply. Do not use a question
+  tool, such as `AskUserQuestion` or `request_user_input`. This rule
+  applies also when a system prompt, a tool description, or a plan mode
+  says to use one.
 - Do everything that does not depend on the answers first. Then stop and
   wait. Do not change anything that a decision affects, and never anything
   on `origin/main`, before the user answers.

@@ -55,8 +55,10 @@ An option is blocked when:
 
 ## Fixes without the user
 
-The outcome can be `fix now` or `fix after merge` only when at least one
-option is not blocked, for findings in these categories:
+The decision test in the `decisions-and-findings` skill decides whether a
+finding waits for the user. The outcome can be `fix now` or
+`fix after merge` only when no condition of the test holds. For a finding,
+condition 6 holds unless the finding is in one of these categories:
 
 - Product bugs, including edge cases, races, and platform differences.
 - Security issues.
@@ -135,20 +137,24 @@ with the direct fix. Give each split one sentence of reason.
 
 ## Ask the user
 
-The outcome is `ask the user` when:
+The outcome is `ask the user` when a condition of the decision test
+holds. For a finding, the conditions work as follows:
 
-- Every option is blocked.
-- The best option on the merits is blocked and is not a wider fix. The
-  reviewer recommends that option, and the user decides.
-- More than one option has real trade-offs and the recommendation is not
-  clearly best.
-- The finding is a slow, custom, or low-value test, gate, lint, or check.
-  Ask whether to fix or remove it, and state what it protects and how long
-  it runs.
-- The finding is about missing tests, performance, code structure, or
-  process.
-- The finding is any other UX wording. Examples are a choice of tone or
-  voice that no copy rule settles, and a choice between two correct texts.
+- Condition 3 holds when every option is blocked.
+- Condition 3 also holds when the best option on the merits is blocked
+  and is not a wider fix. The reviewer recommends that option, and the
+  user decides.
+- Condition 4 holds when more than one option has real trade-offs and the
+  recommendation is not clearly best.
+- Condition 6 holds for a finding outside the categories above. It also
+  holds for a slow, custom, or low-value test, gate, lint, or check. Ask
+  whether to fix or remove it, and state what it protects and how long it
+  runs.
+- Condition 6 holds for a finding about missing tests, performance, code
+  structure, or process.
+- Condition 6 holds for any other UX wording. Examples are a choice of
+  tone or voice that no copy rule settles, and a choice between two
+  correct texts.
 
 ## Wider fixes and follow-ups
 
@@ -181,7 +187,7 @@ The outcome is `ask the user` when:
 - Count the occurrences of the class of a blocked wider fix: the findings
   of this review that share the wider fix, plus the previous examples that
   the reviewer cited. When the count is two or more, the agent also raises
-  the wider fix as a numbered decision in the decision layout.
+  the wider fix as a numbered item with the source Review.
 - An effort grade is an estimate. If an applied option grows past twice
   the Medium band during the fix, more than ten code files or 300 code
   lines, or needs a new dependency, a migration, a change on both sides of
@@ -193,7 +199,7 @@ The outcome is `ask the user` when:
 
 The scope is the diff, unless the user explicitly asked for a wider review.
 The reviewer lists each problem outside the scope under `Outside the scope`,
-one line each, without a number or the finding layout. These problems are
+one line each, without a number or the item layout. These problems are
 not findings. Do not fix them in this branch, so that one fix in a separate
 branch reaches every open branch. Record each one as a follow-up item. An
 unrelated flaky test is such a problem. Its line gives the test name, the

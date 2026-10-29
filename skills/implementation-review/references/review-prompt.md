@@ -33,7 +33,7 @@ changed behaviour, and a generated artifact of a changed source. A finding
 must anchor to the scope.
 
 A problem outside the scope is not a finding. Do not number it, and do not
-give it the finding layout. Put it in one list under the heading
+give it the item layout. Put it in one list under the heading
 `Outside the scope` at the end of the report. Give each problem one line:
 the file path and one sentence. Nobody fixes these problems in this
 branch. The working agent records each one as a follow-up item. A flaky
@@ -76,8 +76,8 @@ grep -rni '<keyword>' plans/ .context/ 2>/dev/null
 
 Return the numbered findings first and the `Outside the scope` list last.
 Order the findings by severity, High first, then Medium, then Low, and
-number them in that order. Use the finding layout in the
-`decisions-and-findings` skill. For every finding:
+number them in that order. Use the item layout in the
+`decisions-and-findings` skill, with the source Review. For every finding:
 
 - Give it a severity. High: wrong output, lost data, a security problem, or
   blocked work. Medium: a visible defect, or a spec gap with a workaround.
@@ -133,7 +133,9 @@ number them in that order. Use the finding layout in the
 - End the finding with an `Action` line that proposes one outcome:
   `fix now, apply <letter>`, `fix after merge, apply <letter>, because …`,
   or `ask the user, because …`. A finding with a wider fix can get a split
-  instead, as described below. The working agent makes the final call.
+  instead, as described below. The working agent makes the final call. The decision test
+  in the `decisions-and-findings` skill decides whether the finding waits
+  for the user.
 
 An option is blocked when:
 
@@ -154,8 +156,9 @@ An option is blocked when:
   a time limit.
 - It needs credentials or infrastructure.
 
-`fix now` and `fix after merge` are allowed only when at least one option
-is not blocked, for a finding about:
+`fix now` and `fix after merge` are allowed only when no condition of the
+decision test holds. For a finding, condition 6 holds unless the finding
+is about:
 
 - a product bug, including edge cases, races, and platform differences
 - a security issue
@@ -232,19 +235,23 @@ doc states the text, a fix that keeps the meaning stays within the
 contract. The direct fix changes only the words that carry the defect.
 When the meaning is in doubt, propose `ask the user`.
 
-Propose `ask the user` for every finding that needs a decision:
+Propose `ask the user` when a condition of the decision test holds. For a
+finding, the conditions work as follows:
 
-- Every option is blocked.
-- The best option on the merits is blocked and is not a wider fix.
-  Recommend that option, so that the user decides.
-- More than one option has real trade-offs and no option is clearly best.
-- The finding is a slow, custom, or low-value test, gate, lint, or check in
-  the scope. Ask whether to fix it or remove it, and state what it protects
-  and how long it runs.
-- The finding is about missing tests, performance, code structure, or
-  process.
-- The finding is any other UX wording. Examples are a choice of tone or
-  voice that no copy rule settles, and a choice between two correct texts.
+- Condition 3 holds when every option is blocked.
+- Condition 3 also holds when the best option on the merits is blocked and
+  is not a wider fix. Recommend that option, so that the user decides.
+- Condition 4 holds when more than one option has real trade-offs and no
+  option is clearly best.
+- Condition 6 holds for a finding outside the list above. It also holds
+  for a slow, custom, or low-value test, gate, lint, or check in the scope.
+  Ask whether to fix it or remove it, and state what it protects and how
+  long it runs.
+- Condition 6 holds for a finding about missing tests, performance, code
+  structure, or process.
+- Condition 6 holds for any other UX wording. Examples are a choice of
+  tone or voice that no copy rule settles, and a choice between two
+  correct texts.
 
 Protocol docs hold the requirements and the decisions in force for an area:
 observable behaviour at a boundary, and the reason for each choice. They do
