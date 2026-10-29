@@ -71,9 +71,10 @@ name the blocker, and list the checks that did run.
   place.
 - Apply the review-fix rule. Make the final call on the outcome of each
   confirmed finding. Fix the findings with `Action: fix now`, with the
-  option that each names. Record a follow-up item for each other finding,
-  as the `plans` skill says. Run the checks. Commit and push. Re-review
-  once. Then stop the fix rounds and go on to step 6.
+  option that each names. Record a follow-up item for each other finding
+  and for each wider fix that you split off, as the `plans` skill says.
+  Run the checks. Commit and push. Re-review once. Then stop the fix
+  rounds and go on to step 6.
 - Run the options check of the `implementation-review` skill over the
   confirmed findings with `Action: ask the user`. It runs beside the fix
   round, in its own checkout. Merge its options into the findings before
@@ -103,9 +104,9 @@ and labels in the `decisions-and-findings` skill. Include:
 - What changed, the commit, and the branch or the pull request.
 - The checks that ran and their results. Name any check that was skipped or
   could not run, and why.
-- The fixed review findings, the deferred findings with their follow-up
-  items, and the findings that need a decision, each with a
-  recommendation. Keep them in three lists.
+- The fixed review findings, the deferred findings and wider fixes with
+  their follow-up items, and the findings that need a decision, each with
+  a recommendation. Keep them in three lists.
 - The number of open follow-up items in the repository.
 - The follow-up items of the blocked wider fixes, one line per class.
 - Problems outside the review scope, for a separate branch. An unrelated

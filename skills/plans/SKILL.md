@@ -122,9 +122,9 @@ change. [templates/plan.md](templates/plan.md) is the starting point.
   The section "Deleting the plan" says when they run, also when the user
   asks for the pull request early. The `finish-work` skill gives the pull
   request. An older plan without these TODOs follows the same rule.
-- Record each open or deferred review finding, each blocked wider fix, and
-  each problem outside the review scope as a follow-up item, not as a line
-  in the plan. The section "Follow-up items" says how.
+- Record each open or deferred review finding, each blocked or split-off
+  wider fix, and each problem outside the review scope as a follow-up
+  item, not as a line in the plan. The section "Follow-up items" says how.
 
 ## Implementing a plan
 

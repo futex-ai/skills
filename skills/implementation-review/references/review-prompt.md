@@ -128,7 +128,8 @@ number them in that order. Use the finding layout in the
   option that the `Action` line names.
 - End the finding with an `Action` line that proposes one outcome:
   `fix now, apply <letter>`, `fix after merge, apply <letter>, because …`,
-  or `ask the user, because …`. The working agent makes the final call.
+  or `ask the user, because …`. A finding with a wider fix can get a split
+  instead, as described below. The working agent makes the final call.
 
 An option is blocked when:
 
@@ -184,6 +185,14 @@ branch, the files that the fix reaches outside the diff, and whether the
 end user meets the problem before a later branch can fix it. Read the plan
 of the change, when it has one, for its purpose. Give each
 `fix after merge` proposal one sentence of reason.
+
+When the named option is a wider fix and the direct fix is not blocked,
+you can propose a split: the direct fix now, and the wider fix after the
+merge. A split fits when the wider fix does not serve the purpose of the
+branch, reaches files or areas outside the diff, or serves other open
+branches too. Keep a Small wider fix that stays in the files of the diff
+with the direct fix. Write a split with the direct fix first:
+`fix now, apply <letter>, and fix after merge, apply <letter>, because …`.
 
 Dead code is code that the product never runs. Code is dead only when all
 of these hold:

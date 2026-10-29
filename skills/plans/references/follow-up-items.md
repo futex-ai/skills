@@ -11,6 +11,8 @@ layout.
   - a review finding with `Action: fix after merge`
   - a review finding with `Action: ask the user`
   - a blocked wider fix of a fixed finding, one item per class
+  - a wider fix that the agent split off a fixed finding, one item per
+    class
   - a problem that the review lists under `Outside the scope`
   - an unchecked post-merge task of a plan that the change deletes
 - Name the file after the problem in concise kebab-case, for example

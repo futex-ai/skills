@@ -159,6 +159,9 @@ before you make the final call on a finding. In short:
 - The letter names the best-ranked option that is not blocked: a
   structural wider fix, then a detection wider fix, then the direct fix.
   A blocked wider fix does not block the fix.
+- The agent can split a finding with a wider fix. It applies the direct
+  fix now and records the wider fix for after the merge. The line is
+  `fix now, apply <letter>, and fix after merge, apply <letter>, because …`.
 - The outcome is `fix now` when one of these holds:
   - The severity is High.
   - The fix gets much harder after the merge, for example in a migration
@@ -189,13 +192,13 @@ before you make the final call on a finding. In short:
    that is not blocked, or change the outcome to `ask the user`. Leave the
    `Outside the scope` problems alone.
 3. Record a follow-up item for each `fix after merge` finding, each
-   `ask the user` finding, each blocked wider fix of a fixed finding, and
-   each `Outside the scope` problem. The `plans` skill gives the layout.
-   Give a blocked wider fix one item per class. An open finding keeps its
-   wider fix as one of its options. Count the occurrences of the class:
-   the findings of this review that share the wider fix, plus the previous
-   examples. When the count is two or more, also raise the wider fix as a
-   numbered decision in the decision layout.
+   `ask the user` finding, each blocked or split-off wider fix of a fixed
+   finding, and each `Outside the scope` problem. The `plans` skill gives
+   the layout. Give a wider fix one item per class. An open finding keeps
+   its wider fix as one of its options. Count the occurrences of the class
+   of a blocked wider fix: the findings of this review that share it, plus
+   the previous examples. When the count is two or more, also raise the
+   wider fix as a numbered decision in the decision layout.
 4. Run the checks, commit, push, and run the review once more on the fix.
    Name each fixed finding in its commit message.
 5. Run the validity check on the new findings. Fix any confirmed new
@@ -207,8 +210,9 @@ before you make the final call on a finding. In short:
    deferred findings, and the findings that need a decision. Give each
    fixed finding its number, its severity, a plain explanation, the
    applied option, what changed, and the commit. Give each deferred
-   finding its reason and its follow-up item. Give each open finding a
-   clear recommendation, with the second pass merged in. Order each list
-   by severity, High first. Use the `decisions-and-findings` skill.
+   finding and each split-off wider fix its reason and its follow-up item.
+   Give each open finding a clear recommendation, with the second pass
+   merged in. Order each list by severity, High first. Use the
+   `decisions-and-findings` skill.
 7. List under **Open** the follow-up items of the blocked wider fixes and
    of the `Outside the scope` problems, one line each.

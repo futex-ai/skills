@@ -143,7 +143,7 @@ what each field must contain.
 - **Wider fix:** <The letter of the option that prevents this class of issue. A structural fix, such as a helper, an abstraction, a marker, a default, or a type, ranks above a detection fix, such as a test for the class, a lint, or a guard. Or "None" and the reason, for example that the wider fix is already in force.>
 - **Previous examples:** <Earlier cases of this class, with commits or files, or "None found". Also the other findings in this review that share the wider fix.>
 - **Recommendation:** <Letter>. <One sentence of reasoning.> <When another option best protects the codebase, one sentence that names it.>
-- **Action:** <`fix now, apply` and a letter. Or `fix after merge, apply` and a letter, with one sentence of reason. Or `ask the user, because` and the condition that sends the item to the user.>
+- **Action:** <`fix now, apply` and a letter. Or `fix after merge, apply` and a letter, with one sentence of reason. Or a split: `fix now, apply` the direct fix, `and fix after merge, apply` the wider fix, with one sentence of reason. Or `ask the user, because` and the condition that sends the item to the user.>
 ```
 
 A problem outside the review scope is not a finding. The
@@ -244,10 +244,10 @@ End every task with a final report. Under **Fixed**, **Deferred**, and
 - **Fixed:** each finding that the agent fixed. Give its number, its
   severity, a plain explanation, the applied option, what changed, and the
   commit.
-- **Deferred:** each finding with `fix after merge`. Give its number, its
-  severity, the reason, and its follow-up item. When the repository has a
-  `plans/` directory, give the number of open follow-up items. The
-  `plans` skill gives the script that counts them.
+- **Deferred:** each finding or wider fix with `fix after merge`. Give the
+  finding number, its severity, the reason, and the follow-up item. When
+  the repository has a `plans/` directory, give the number of open
+  follow-up items. The `plans` skill gives the script that counts them.
 - **Decisions:** each decision that the user answered, and its outcome.
   Then each design call that you made under the decision test, in one
   line: the call and its reason.

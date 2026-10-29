@@ -14,6 +14,10 @@ Each finding ends with one `Action` line:
   user.
 - `Action: ask the user, because <condition>`. The finding waits for the
   user. The agent records a follow-up item so that the finding is not lost.
+- `Action: fix now, apply <letter>, and fix after merge, apply <letter>,
+  because <reason>`. The agent splits the finding. It applies the direct
+  fix now and records the wider fix as a follow-up item. The section
+  "Split a finding" says when.
 
 The reviewer proposes the outcome. The working agent makes the final call,
 because it knows the purpose of the branch. When the working agent changes
@@ -84,9 +88,9 @@ option is not blocked, for findings in these categories:
 
 The letter names the best-ranked option that is not blocked: a structural
 wider fix, then a detection wider fix, then the direct fix. The ranking is
-under "Wider fixes and follow-ups". So a Small or Medium wider fix is
-applied before a direct fix, and a blocked wider fix does not block the
-fix.
+under "Wider fixes and follow-ups". So a Small or Medium wider fix ranks
+before a direct fix, and a blocked wider fix does not block the fix. The
+agent can still split the finding and apply the wider fix after the merge.
 
 ## Fix now or after merge
 
@@ -115,6 +119,19 @@ For every other finding, the agent decides. It weighs these questions:
 Give each `fix after merge` outcome one sentence of reason. The pull
 request description lists each one, so that the user can bring it back
 into the branch before the merge.
+
+## Split a finding
+
+When the named option is a wider fix and the direct fix is not blocked,
+the agent can split the finding. It applies the direct fix now, and it
+records the wider fix as a follow-up item with `fix after merge`. A later
+branch applies the wider fix without the user.
+
+The agent decides. It asks the questions of the section above about the
+wider fix. A split fits when the wider fix does not serve the purpose of
+the branch, reaches files or areas outside the diff, or serves other open
+branches too. A Small wider fix that stays in the files of the diff goes in
+with the direct fix. Give each split one sentence of reason.
 
 ## Ask the user
 
@@ -159,10 +176,12 @@ The outcome is `ask the user` when:
   gives the wider fix, its effort, the finding numbers it covers, and the
   previous examples. When the finding stays open, its wider fix stays one
   of its options, and it gets no item of its own.
-- Count the occurrences of the class: the findings of this review that
-  share the wider fix, plus the previous examples that the reviewer cited.
-  When the count is two or more, the agent also raises the wider fix as a
-  numbered decision in the decision layout.
+- A wider fix that the agent splits off gets the same item, one per class,
+  with `fix after merge`. A later branch applies it without the user.
+- Count the occurrences of the class of a blocked wider fix: the findings
+  of this review that share the wider fix, plus the previous examples that
+  the reviewer cited. When the count is two or more, the agent also raises
+  the wider fix as a numbered decision in the decision layout.
 - An effort grade is an estimate. If an applied option grows past twice
   the Medium band during the fix, more than ten code files or 300 code
   lines, or needs a new dependency, a migration, a change on both sides of
@@ -196,9 +215,10 @@ failure text, the rerun outcome, and the suspected source, as the
 - After the validity check reports, make the final call on each outcome.
   Apply the option that each confirmed `fix now` line names. Record a
   follow-up item for each `fix after merge` finding, each `ask the user`
-  finding, each blocked wider fix of a fixed finding, and each problem
-  outside the scope. The `plans` skill gives the layout of an item. Run
-  the checks, commit, and push. Then re-run the review once on the fix.
+  finding, each blocked or split-off wider fix of a fixed finding, and
+  each problem outside the scope. The `plans` skill gives the layout of an
+  item. Run the checks, commit, and push. Then re-run the review once on
+  the fix.
 - Run the validity check on the new findings. Fix any confirmed new
   `fix now` findings once more, and record the other new findings as
   follow-up items. Then stop. The `finish-work` skill gives the next steps:
@@ -214,8 +234,8 @@ failure text, the rerun outcome, and the suspected source, as the
   Use the `decisions-and-findings` skill.
   - For a fixed finding, give its number, its severity, a plain
     explanation, the applied option, what changed, and the commit.
-  - For a deferred finding, give its number, its severity, the reason, and
-    its follow-up item.
+  - For a deferred finding or a split-off wider fix, give the finding
+    number, its severity, the reason, and the follow-up item.
   - For a finding that needs a decision, give a clear recommendation.
 - Name the fixed finding in its commit message.
 - Give each open finding with the options check merged in. Its new
