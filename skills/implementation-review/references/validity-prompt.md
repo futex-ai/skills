@@ -16,7 +16,9 @@ number, its title, and the check that failed. A finding outside the scope
 is removed too, and its line says that the problem went to the
 `Outside the scope` list. A corrected severity or category replaces the
 finding's line, and the finding keeps its number. When the corrected
-category always waits for the user, the tag becomes `Auto-fix: no`.
+category always waits for the user, the outcome becomes `ask the user`.
+When the corrected severity is High, a `fix after merge` outcome becomes
+`fix now`.
 
 The scope of the prompt is the diff. When the user asked for a wider
 review, replace the second sentence of the prompt with that scope. The
