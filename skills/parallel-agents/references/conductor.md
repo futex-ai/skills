@@ -39,9 +39,9 @@ conductor session create --workspace <workspaceId> --agent <agent> \
 ```
 
 Take the values from the `first-pass review agent` action. The session
-runs in the workspace of the item, so it reviews the branch that is
-checked out there. Start the validity check and the options check in
-the same way, with the `second-pass review agent` action.
+runs in the workspace of the item. That workspace has the item's branch
+checked out. Start the validity check and the options check in the same
+way, with the `second-pass review agent` action.
 
 ## Read, message, and archive
 

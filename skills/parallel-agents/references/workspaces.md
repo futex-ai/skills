@@ -1,11 +1,13 @@
 # Workspaces
 
 A workspace is a checkout on its own branch, on its own machine or in
-its own worktree, where one agent does one work item. Conductor is one
-tool for it, and [conductor.md](conductor.md) gives its commands. A
-worktree agent, a second machine, or a cloud session follows the same
-procedure. A worktree agent here is a workspace agent in a worktree. It
-pushes its branch and opens a pull request, unlike a worktree subagent.
+its own worktree, where one agent does one work item. When you work in
+Conductor, each workspace is a Conductor workspace, as the `models`
+skill says. [conductor.md](conductor.md) gives its commands. Without
+Conductor, a worktree agent, a second machine, or a cloud session
+follows the same procedure. A worktree agent here is a workspace agent
+in a worktree. It pushes its branch and opens a pull request, unlike a
+worktree subagent.
 
 The orchestrator runs the procedure from the primary workspace, on the
 primary branch. It keeps the ledger under

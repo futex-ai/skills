@@ -24,9 +24,9 @@ Context:
 - The primary branch is `<primary-branch>`. Start your branch from it,
   or confirm that the tool did. Report your branch name in your first
   message.
-- You are the orchestrator of this workspace. Delegate the work to <the
-  implementor action of each part, for example the `non-ui implementor`>,
-  inside this workspace, as the `plans` skill says. Check the delegated
+- You are the orchestrator of this workspace. Delegate the work inside
+  this workspace, as the `plans` skill says. Use <the implementor action
+  of each part, for example the `non-ui implementor`>. Check the delegated
   work before you tick a TODO.
 
 Steps:

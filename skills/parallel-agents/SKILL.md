@@ -70,7 +70,7 @@ table instead, as the `models` skill says. When an action's model
 blocks a request, ask the user, with the refusal text verbatim. Only
 the user can override the action, for one task.
 
-A blocked item stays in its workspace, and its next delegate gets the
+A blocked item stays in its workspace. Its next delegate gets the
 prompt and the diff so far. Do not rewrite the request to hide what it
 does, and do not skip the step.
 
@@ -119,9 +119,9 @@ parallel Codex and Claude sessions. One combined gate verified them.
 - The primary branch is the branch of the plan. Every workspace branch
   starts from it and merges from it, never from `main`. Only the primary
   branch merges `main`. Its pull request into `main` is the completion
-  boundary from the `plans` skill, and it deletes the plan as that skill
-  says. After that merge, delete the primary branch and archive its
-  workspace.
+  boundary from the `plans` skill. That pull request deletes the plan,
+  as that skill says. After that merge, delete the primary branch and
+  archive its workspace.
 - A work item is a milestone, or a group of TODOs in one milestone that
   touches its own files. Keep the milestone order from the `plans` skill.
   Keep backend work before UI work. Fan out inside one level.
@@ -169,8 +169,8 @@ parallel Codex and Claude sessions. One combined gate verified them.
    before each branch merge, and before the final pull request.
 5. Merge each branch as it finishes. An open finding never blocks the
    merge of a workspace branch. Record it as a follow-up item, as the
-   `plans` skill says. Fix it in a new workspace after the user answers.
-   A branch that waits diverges. Its conflicts grow.
+   `plans` skill says. Fix it after the user answers, on a route from the
+   `models` skill. A branch that waits diverges. Its conflicts grow.
 6. A High or Medium finding blocks only the work that depends on the
    affected code or contract. A Low finding never blocks. Every open
    finding closes before the final pull request merges, unless the user
