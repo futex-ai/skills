@@ -108,7 +108,7 @@ overwrite each other. In the shared tree only you commit.
 In its own worktree a subagent commits on its branch with the
 `git-commit` skill and does not push. Commit your own changes first. A
 worktree holds only committed content. Integrate the branch with the
-`git-merge` skill. Then remove the worktree and delete its branch.
+`git-merge` skill. Then remove the worktree. Delete its branch.
 
 ## Workspaces across machines
 
