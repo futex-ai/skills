@@ -55,6 +55,7 @@ Codex, and with any other agent that reads the
 | `product-ui` | Before you change a user-facing screen, state, or copy, or hardcode data in a screen. |
 | `agents-md` | A repository has no `AGENTS.md`, still has a monolithic one, or needs its rules aligned with the shared skills. |
 | `writing-skills` | Before you create or edit a skill or its description. Opt-in: linked only with `install.sh --opt-in`. |
+| `models` | Before you delegate work, choose an agent, a model, or an effort, create a Conductor workspace, session, or routine, or start a subagent or a reviewer. Also when a skill names an action. |
 
 ## Install
 

@@ -26,8 +26,8 @@ after the report.
 
 ## Running the review
 
-1. Run the review as a separate read-only pass with a fresh context: a
-   subagent, a second agent, or a new session. Give it the prompt in
+1. Run the review as a separate read-only pass in a fresh context. Use
+   the `first-pass review agent` of the `models` skill. Give it the prompt in
    [references/review-prompt.md](references/review-prompt.md) and the
    `## Review focus` list from the repository's `AGENTS.md`. When the user
    asked for a wider scope, replace the first paragraph of the prompt's
@@ -35,24 +35,24 @@ after the report.
 2. The reviewer starts with `scripts/diff-summary.sh` so that a large diff
    fits in context, then reads changed files and focused patches directly.
 3. The reviewer returns numbered findings and then the `Outside the scope`
-   list, or says clearly that there are none and names the residual test
-   risk.
+   list, or says clearly that there are none and names the residual test risk.
 4. Save the full report under `.context/<plan-name>/`, not in the
    repository.
 5. Run the validity check, the first part of the second pass. It is a
-   fresh read-only context. Give it every finding and the prompt in
-   [references/validity-prompt.md](references/validity-prompt.md). It
-   confirms that each finding is real. Give it its own checkout of the
-   reviewed commit, for example a git worktree. The fix round waits for
-   its verdicts. Remove each finding with a Removed verdict from the
-   report. A finding outside the scope goes to the `Outside the scope`
-   list. A corrected severity or category replaces the finding's line,
-   and the finding keeps its number. When the corrected category always
-   waits for the user, the tag becomes `Auto-fix: no`. Name each removed
-   finding in one line under **Checks** in the final message. Give its
-   number, its title, and the check that failed.
-6. Run the options check, the second part. It is a fresh read-only context.
-   Give it the confirmed findings tagged `Auto-fix: no` and the prompt in
+   fresh read-only `second-pass review agent`. Give it every finding and
+   the prompt in [references/validity-prompt.md](references/validity-prompt.md).
+   It confirms that each finding is real. Give it its own checkout of the
+   reviewed commit, for example a git worktree. The fix round waits for its
+   verdicts. Remove each finding with a Removed verdict from the report. A
+   finding outside the scope goes to the `Outside the scope` list. A
+   corrected severity or category replaces the finding's line, and the
+   finding keeps its number. When the corrected category always waits for the
+   user, the tag becomes `Auto-fix: no`. Name each removed finding in one
+   line under **Checks** in the final message. Give its number, its title,
+   and the check that failed.
+6. Run the options check, the second part. It is a fresh read-only
+   `second-pass review agent`. Give it the confirmed findings tagged
+   `Auto-fix: no` and the prompt in
    [references/second-pass-prompt.md](references/second-pass-prompt.md).
    It checks that the options are complete and that the recommendation is
    the best one. Run it beside the fix round, in the same checkout. When a

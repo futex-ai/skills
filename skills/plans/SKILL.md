@@ -46,10 +46,10 @@ change. [templates/plan.md](templates/plan.md) is the starting point.
   condition that every option keeps.
 - When you add a decision to a plan, run the options check of the
   `implementation-review` skill over it. Do this before you report the
-  decision. The check is a fresh read-only context with the second-pass
-  prompt of that skill, the decisions, and the path of the plan. It
-  checks that the options are complete and that the recommendation is
-  the best one.
+  decision. The check is a fresh read-only `second-pass review agent`
+  with the second-pass prompt of that skill, the decisions, and the path
+  of the plan. It checks that the options are complete and that the
+  recommendation is the best one.
 - Merge the result of the check into the plan before you commit. A new
   option keeps the letter that the check gave it. When the recommendation
   changed, the **Recommendation** line gives the new letter and names the
@@ -131,6 +131,20 @@ change. [templates/plan.md](templates/plan.md) is the starting point.
   `Follow-up: guard port reuse in the test harness. Effort Large. Covers findings 2 and 5. Previous examples: 3f2c1ab.`
 - Add each problem that the review listed under `Outside the scope` as one
   line too: its path, one sentence, and `Separate branch.`
+
+## Implementing a plan
+
+When the plan is approved, the orchestrator session of the workspace
+implements all milestones by delegation. The `models` skill defines each
+action and its route.
+
+- Delegate the docs work of a milestone to the `docs implementor`.
+  Delegate the UI work to the `ui implementor`. Delegate the other work
+  to the `non-ui implementor`.
+- Check each delegated result against the milestone's TODOs and the
+  repository rules. Request changes until it passes. Then tick the TODO.
+- Keep the gate, the review, and the pull request with the orchestrator,
+  as the `finish-work` skill says.
 
 ## Completion boundary
 
