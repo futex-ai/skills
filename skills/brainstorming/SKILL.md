@@ -40,14 +40,9 @@ choice that the user made, not each sentence that describes it.
 
 - Write the goal as you read it: what the user wants, for whom, and why.
   Mark each guess as a guess.
-- Write the root question in the words of the goal, not of the current
-  mechanism. Ask "how does an old tab learn of a new version?", not
-  "what does the detail id cover?".
-- Put all symptoms of one problem under one root question. Do not give
-  each symptom its own local options.
-- A mechanism in the brief or in the code is an approach, not a
-  requirement. A requirement comes from a protocol doc, the choice of a
-  user decision, or the task message.
+- Write the root question with step 1 of the options rule in the
+  `decisions-and-findings` skill. Do not give each symptom its own local
+  options.
 
 ## 3. Widen
 
@@ -60,26 +55,19 @@ their sources. Also give it the earlier work and the paths to read. Tell
 it to change nothing. Do not give it your own approaches, so that its
 read is not anchored on yours.
 
-- Find at least three distinct approaches. Two approaches are distinct
-  when they differ in what is built or where it lives, not only in a
-  detail.
-- Include the approach that you would build if the current code did not
-  exist. Include "change nothing" when it meets the goal.
-- Apply the options rule of the `decisions-and-findings` skill to the
-  approaches. Ask its two questions. Name each condition that every
-  approach keeps, with its source. Add the approach that drops a
-  condition that is not a requirement.
+- Widen with steps 2 and 3 of the options rule in the
+  `decisions-and-findings` skill. A brainstorm always finds at least
+  three distinct approaches. The reason for fewer does not apply here.
+- Name each condition that every approach keeps, with its source, as that
+  rule says for a design item. Add the approach that drops a condition
+  that is not a requirement.
 - For each approach, give what it does, its effort grade, and its cost
   or risk.
 
 ## 4. Narrow
 
-- Drop an approach only for one of these reasons:
-  - It fails the goal.
-  - It breaks a requirement that stays.
-  - Another approach is better on every point.
-- Give each dropped approach one line with its reason, so that the user
-  can bring it back.
+- Narrow with step 4 of the options rule in the `decisions-and-findings`
+  skill. Give each approach that you leave out one line with its reason.
 - Keep each approach that has a real trade-off against the others.
   Recommend one.
 - Apply the decision test of the `decisions-and-findings` skill to each
@@ -139,7 +127,7 @@ recommended approach.
       approaches of yours.
 - [ ] At least three distinct approaches. Each condition that every
       approach keeps is named with its source.
-- [ ] Each dropped approach has one line with its reason.
+- [ ] Each approach that you left out has one line with its reason.
 - [ ] One message holds every item, in the `decisions-and-findings`
       layout. Every other question is a design call in the final report.
 - [ ] Nothing in the repository changed.

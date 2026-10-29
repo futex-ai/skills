@@ -209,29 +209,33 @@ failure text, the rerun outcome, and the suspected source, as the
 ## Fix rounds
 
 - Keep the review itself read-only.
-- Run the validity check over every finding before each fix round, in its
-  own checkout of the reviewed commit. A finding that is not real or not
-  in the scope is removed. The check corrects a wrong severity or category
-  in place. A real problem outside the scope joins the `Outside the scope`
-  list. The fix round applies confirmed findings only.
-- Run the options check over the confirmed `ask the user` findings beside
-  the first fix round, in the same checkout. It adds options and can
-  change a recommendation. It does not change an `Action` line, and an
-  open finding stays open.
-- After the validity check reports, make the final call on each outcome.
-  Apply the option that each confirmed `fix now` line names. Record a
+- Before each fix round, run one finding check for each new finding, as
+  the `implementation-review` skill says. Each check confirms its finding,
+  finds its links to the other findings, and checks its options. A finding
+  that is not real or not in the scope is removed. The check corrects a
+  wrong severity or category in place. A real problem outside the scope
+  joins the `Outside the scope` list. The fix round waits for every check
+  and applies confirmed findings only.
+- After every check reports, merge the reports into the findings file.
+  Then make the final call on each outcome, with the merged options. A
+  check can change the letter of a finding that the agent may fix. It
+  does not turn an open finding into a fix, and it does not change an
+  `Action` line by itself.
+- Apply the option that each confirmed `fix now` line names. Record a
   follow-up item for each `fix after merge` finding, each `ask the user`
   finding, each blocked or split-off wider fix of a fixed finding, and
   each problem outside the scope. The `plans` skill gives the layout of an
   item. Run the checks, commit, and push. Then re-run the review once on
   the fix.
-- Run the validity check on the new findings. Fix any confirmed new
-  `fix now` findings once more, and record the other new findings as
-  follow-up items. Then stop. The `finish-work` skill gives the next steps:
-  the pull request and the report. Do not start a third fix round without
-  the user.
+- Run the finding checks on the new findings, and again on each open
+  finding whose code a fix changed. Fix any confirmed new `fix now`
+  findings once more, and record the other new findings as follow-up
+  items. Then stop. The `finish-work` skill gives the next steps: the pull
+  request and the report. Do not start a third fix round without the
+  user.
 - When the user answers an `ask the user` finding and the branch applies
-  the answer, delete its follow-up item in the same commit.
+  the answer, delete its follow-up item in the same commit. Record the
+  answer and its date in the findings file.
 
 ## Reporting
 
@@ -244,11 +248,12 @@ failure text, the rerun outcome, and the suspected source, as the
     number, its severity, the reason, and the follow-up item.
   - For a finding that needs a decision, give a clear recommendation.
 - Name the fixed finding in its commit message.
-- Give each open finding with the options check merged in. Its new
+- Give each open finding with its finding check merged in. Its new
   options keep their letters. When the recommendations differ, give both.
-- Name each finding that the validity check removed in one line under
+- Name each finding that a finding check removed in one line under
   **Checks**. Give its number, its title, and the check that failed.
 - List under **Open** the follow-up items of the blocked wider fixes and of
   the problems outside the scope, one line each.
-- Keep the review report and any evidence under the git-ignored `.context/`
-  directory, not in the repository.
+- Build the three lists from the findings file of the branch.
+- Keep the findings file, the review reports, and any evidence under the
+  git-ignored `.context/` directory, not in the repository.

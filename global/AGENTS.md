@@ -63,9 +63,9 @@ at that moment instead of guessing the rule.
 - Keep files short. Target about 200 lines and split a file that passes 300.
   Do not remove blank lines or compact code to stay under a limit.
 - Keep scratch output under the git-ignored `.context/` directory: review
-  reports, verification evidence, measurements, and logs. Do not create
-  evidence files in the repository. Add `.context/` to `.gitignore` if it is
-  missing.
+  reports, findings files, verification evidence, measurements, and logs.
+  Do not create evidence files in the repository. Add `.context/` to
+  `.gitignore` if it is missing.
 
 ## Testing
 

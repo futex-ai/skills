@@ -21,7 +21,7 @@ else does. The `delegating` skill says where and how each action runs.
 | `ui implementor` | claude | `opus-5-5-1m` | `max` | Screens, components, styles, and mockups. |
 | `docs implementor` | claude | `opus-5-5-1m` | `max` | Docs, protocol docs, READMEs, and plans. |
 | `first-pass review agent` | codex | `gpt-6.1-sol` | `max` | The implementation review and plan reviews. |
-| `second-pass review agent` | claude | `opus-5-5-1m` | `max` | The validity check, the options check, and investigations of a decision or a review item. |
+| `second-pass review agent` | claude | `opus-5-5-1m` | `max` | The finding checks of a review, the options check of plan decisions, and investigations of a decision or a review item. |
 
 Every action runs at the `max` effort. The model ids are the ids that
 `conductor model` lists. When `conductor model` does not list a model of
