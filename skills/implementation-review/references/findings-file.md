@@ -11,8 +11,10 @@ message to another agent.
 
 ## Where it lives
 
-- The file is `.context/reviews/<branch>/findings.md`. Replace each `/` in
-  the branch name with `-`. Its folder is the review folder of the branch.
+- The file is `.context/reviews/<branch>/findings.md`, with the full
+  branch name. Each `/` in the branch name makes a nested folder, so two
+  branch names never share a folder. Its folder is the review folder of
+  the branch.
 - Save the full report of each pass in the review folder:
   `round-<number>-review.md` for the review, and
   `round-<number>-checks.md` for the finding checks of that round.
