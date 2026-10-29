@@ -36,11 +36,11 @@ table.
 
 ## Routes
 
-Work that becomes an implementation or a pull request gets its own
-Conductor workspace. Its first session is the orchestrator of that work.
-Everything else runs where the orchestrator chooses: an in-session
-subagent, or a session in the same workspace. A review, an
-investigation, or a brainstorm is such work. A Codex action always
+Each separate change, one that becomes its own pull request, gets its
+own Conductor workspace. Its first session is the orchestrator of that
+change. The implementors of the change run where the orchestrator
+chooses: an in-session subagent, or a session in the same workspace.
+Its reviews, investigations, and brainstorms run there too. A Codex action always
 needs a session or a workspace, because a subagent runs Claude models
 only.
 

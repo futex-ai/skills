@@ -26,7 +26,7 @@ after the report.
 
 ## Running the review
 
-1. Run the review as a separate read-only pass in a fresh context, with
+1. Run the review as a separate read-only pass in a fresh context. Use
    the `first-pass review agent` of the `models` skill. Give it the prompt in
    [references/review-prompt.md](references/review-prompt.md) and the
    `## Review focus` list from the repository's `AGENTS.md`. When the user

@@ -122,11 +122,23 @@ test_section_scan_needs_a_workspace_id() {
   assert_contains "$out" "no workspace id" "message"
 }
 
-test_last_report_keeps_the_last_good_result_across_pages() {
+test_last_report_gives_a_later_claude_error_across_pages() {
   fake_conductor "$1"
   page "session_message_s1_--limit_100_--offset_0" true '[{"type":"userMessage","content":{"message":"go"}},{"type":"agent","content":{"rawPayload":{"type":"assistant","message":{"content":[{"type":"text","text":"thinking aloud"}]}}}},{"type":"agent","content":{"rawPayload":{"type":"result","subtype":"success","is_error":false,"result":"first report"}}}]'
-  page "session_message_s1_--limit_100_--offset_3" false '[{"type":"agent","content":{"rawPayload":{"type":"result","subtype":"success","is_error":true,"result":"API Error: 429"}}}]'
-  assert_eq "first report" "$("$scripts/last-report.sh" s1)" "claude report"
+  page "session_message_s1_--limit_100_--offset_3" false '[{"type":"userMessage","content":{"message":"continue"}},{"type":"agent","content":{"rawPayload":{"type":"result","subtype":"success","is_error":true,"result":"API Error: 429"}}}]'
+  assert_eq "error: API Error: 429" "$("$scripts/last-report.sh" s1)" "claude error"
+}
+
+test_last_report_gives_the_codex_error_that_ended_the_turn() {
+  fake_conductor "$1"
+  page "session_message_s5_--limit_100_--offset_0" false '[{"type":"agent","content":{"rawPayload":{"event":{"type":"item.completed","item":{"type":"agentMessage","text":"saving the report"}}}}},{"type":"agent","content":{"rawPayload":{"event":{"type":"error","message":"Reconnecting... 1/5","willRetry":true,"additionalDetails":"last status: 429 Too Many Requests"}}}}]'
+  assert_eq "error: Reconnecting... 1/5: last status: 429 Too Many Requests" "$("$scripts/last-report.sh" s5)" "codex error"
+}
+
+test_last_report_gives_the_codex_message_after_a_recovered_error() {
+  fake_conductor "$1"
+  page "session_message_s6_--limit_100_--offset_0" false '[{"type":"agent","content":{"rawPayload":{"event":{"type":"error","message":"Reconnecting... 1/5","willRetry":true}}}},{"type":"agent","content":{"rawPayload":{"event":{"type":"item.completed","item":{"type":"agentMessage","text":"final report"}}}}},{"type":"agent","content":{"rawPayload":{"event":{"type":"turn.completed"}}}}]'
+  assert_eq "final report" "$("$scripts/last-report.sh" s6)" "recovered codex turn"
 }
 
 test_last_report_reads_a_codex_session() {

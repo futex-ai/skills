@@ -35,12 +35,14 @@ orchestrator whose last message is not a final report.
     The coordinator of the section "<section>" now coordinates this
     workspace. You are its orchestrator. You manage the work here. The
     coordinator sends its messages to you and reads your reports.
+
     <For a new orchestrator session: The session <id> worked here before
-    you. Its last report follows: <report>.> Report in the final-report
-    layout of the `decisions-and-findings` skill. Give the branch, the
-    plan file, and the pull request. Say what is done and what is open.
-    Number every decision that you need, with lettered options. Name
-    every blocker. Change nothing.
+    you. Its last report follows: <report>.>
+
+    Report in the final-report layout of the `decisions-and-findings`
+    skill. Give the branch, the plan file, and the pull request. Say what
+    is done and what is open. Number every decision that you need, with
+    lettered options. Name every blocker. Change nothing.
 
 ## Plan amendments
 
@@ -112,12 +114,21 @@ agent` action.
     files>. Merge `origin/main` into the branch with the `git-merge`
     skill, run the checks, push, and report.
 
+## Stack
+
+After a pull request in the middle of a stack.
+
+    Pull request #<n> merged as <commit>. Run `gh stack sync`, and report
+    the next pull request of the stack. Do not update the plan status
+    yet. Do no other work.
+
 ## After merge
+
+After the last pull request of the change.
 
     Pull request #<n> merged as <commit>. Update the plan status as the
     `plans` skill says, on a new branch, and open its pull request. Report
-    its number. <For a stack: run `gh stack sync` and report the next
-    pull request.> Do no other work.
+    its number. Do no other work.
 
 Keep deferred items open in the report and the plan status update.
 The coordinator keeps their follow-ups in its backlog after it archives the workspace.

@@ -170,10 +170,11 @@ Merge a pull request only when all of these hold:
    Deferred items stay open for their follow-up pull requests.
 
 Then run `gh pr merge <number> --squash --delete-branch`, or the merge
-method that the repository's `AGENTS.md` names. After the merge, send the
-after-merge message. The child updates the plan status as the `plans`
-skill says and opens that pull request. Merge it too. Then set the stage
-`done` and archive the workspace.
+method that the repository's `AGENTS.md` names. In the middle of a stack,
+send the stack message, as the cycle reference says. After the last pull
+request of the change, send the after-merge message. The child updates
+the plan status as the `plans` skill says and opens that pull request.
+Merge it too. Then set the stage `done` and archive the workspace.
 
 ## Checklist
 
