@@ -45,17 +45,22 @@ git fetch origin <branch>
 git merge --no-ff origin/<branch>
 # run the merge audit and the complete gate first
 git push origin <primary-branch>
+```
+
+Merge the branch on the primary branch when its review is done, also
+when findings stay open. Merge it again after each fix round. Directly
+after each merge commit, run the merge audit from the `git-merge` skill.
+Run the complete gate from `AGENTS.md`, then push.
+
+After the last merge, close the work item:
+
+```sh
 gh pr view <number> --json state,headRefOid
 git merge-base --is-ancestor <headRefOid> HEAD
 # only when the state is OPEN
 gh pr close <number> --comment "merged into <primary-branch> at <sha>"
 git push origin --delete <branch>
 ```
-
-Run the merge on the primary branch after the fix rounds, also when
-findings stay open. Directly after the merge commit, run the merge
-audit from the `git-merge` skill. Run the complete gate from
-`AGENTS.md`, then push.
 
 Confirm that the pull request's head commit is in the primary branch.
 When it is not, or git reports an unknown commit, the branch moved after

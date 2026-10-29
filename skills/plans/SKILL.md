@@ -64,8 +64,9 @@ change. [templates/plan.md](templates/plan.md) is the starting point.
 - Break the work into concrete units called milestones. At the end of each
   milestone the product works. Never leave the code base or feature broken.
 - Each milestone has a short summary and a TODO checklist.
-- Before you start a milestone, read the `delegating` skill. Decide
-  whether its work splits across workspaces.
+- Each milestone has a `Depends on:` line under its heading: `none`, or
+  the milestones that it needs. The `delegating` skill starts milestones
+  by these lines. A review of the plan checks them.
 - When the plan has mockup work, Milestone 1 is the mockup milestone. It
   comes before every other milestone. That includes the documentation
   milestone and repository bootstrap work, such as the workspace skeleton,
@@ -115,8 +116,7 @@ change. [templates/plan.md](templates/plan.md) is the starting point.
 - When you discover a TODO that the PR needs, add it under the relevant
   milestone, then continue with the active TODO.
 - Break a complex TODO into sub-tasks.
-- When a delegated workspace owns a TODO, end the line with `Branch:` and
-  the branch name. The `delegating` skill gives the workspace rules.
+- A TODO that a delegated workspace owns ends with `Branch:` and its branch.
 - Every plan ends with a commit-and-push TODO, a review TODO, a TODO that
   deletes the plan, and a pull request TODO. The review TODO directs a
   reviewer to use the `implementation-review` skill against `origin/main`

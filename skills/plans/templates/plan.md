@@ -18,6 +18,8 @@ Contract owners:
 
 Tags: mockup
 
+Depends on: none
+
 <Keep this milestone only when the change has mockup work. It comes before
 every other milestone. Without mockup work, the documentation milestone is
 Milestone 1. Summary: which screens and flows change, for every product area
@@ -30,6 +32,8 @@ of the plan.>
 
 ## Milestone 2: Documentation and protocol
 
+Depends on: 1 <or none, when the plan has no mockup milestone>
+
 <Summary: which docs and protocol docs change so that they state the
 requirements and the decisions for the work below.>
 
@@ -40,6 +44,8 @@ requirements and the decisions for the work below.>
 
 Tags: ui <keep the tag line only for a ui or mockup milestone>
 
+Depends on: <none, or the numbers of the milestones that this one needs>
+
 <Summary.>
 
 - [ ] <TODO>
@@ -47,6 +53,8 @@ Tags: ui <keep the tag line only for a ui or mockup milestone>
   - [ ] <sub-task>
 
 ## Milestone N: Verification, commit, review, and pull request
+
+Depends on: every other milestone
 
 <Summary.>
 

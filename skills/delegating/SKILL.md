@@ -112,9 +112,9 @@ worktree holds only committed content. Integrate the branch with the
 
 ## Workspaces across machines
 
-The orchestrator splits a plan into work items. Items that pass the
-independence test run at the same time, each in its own workspace. The
-orchestrator delegates the other items in order, inside its own workspace.
+A milestone starts when each milestone on its `Depends on:` line has
+merged. Milestones that start together each get their own workspace. A
+milestone that starts alone runs in the orchestrator's workspace.
 
 [references/workspaces.md](references/workspaces.md) gives the procedure.
 One real example: milestones 6a, 7, and 7a of a plan ran in parallel
@@ -127,8 +127,7 @@ Codex and Claude sessions. One combined gate verified them.
   as that skill says. After that merge, delete the primary branch and
   archive its workspace.
 - A work item is a milestone, or a group of TODOs in one milestone that
-  touches its own files. Keep the milestone order from the `plans` skill.
-  Keep backend work before UI work. Fan out inside one level.
+  touches its own files.
 - The orchestrator plans, writes the prompts, delegates, and checks. It
   does not implement. A correction of a few lines found while you check
   is fine. Anything larger goes back to the delegate.
@@ -150,25 +149,26 @@ Codex and Claude sessions. One combined gate verified them.
    area. Then read the diff yourself and re-run the checks. Confirm
    every ticked TODO and the push, and run the deletion audit from the
    `git-commit` skill. Never accept the report alone.
-2. Send the `fix now` findings back to the same workspace session as
-   one fix request. Give the numbers, the option of each, and "do not
-   start the next item". The review-fix rule allows two fix rounds. Then
-   stop and merge.
-3. Merge the branch into the primary branch with the `git-merge` skill.
-   Run the complete gate from `AGENTS.md` on the merged tree, then push.
-   Each workspace ran the gate on its own tree only. The combined gate
-   proves the milestone. Then close the workspace and mark it closed in
-   the ledger, as the workspace reference says. Do the same for a
-   workspace that the user agrees to abandon.
+2. When its review is done, merge the branch into the primary branch with
+   the `git-merge` skill. Run the complete gate from `AGENTS.md` on the
+   merged tree, then push. Each workspace ran the gate on its own tree
+   only. The combined gate proves the milestone. Then start the milestones
+   that depend on it, unless step 6 blocks one.
 
    | The record says | The answer |
    | --- | --- |
    | "[...] passed in all ten phases on the tree before the last two merges. [...] The commits after that run change only Markdown." | The gate proves the tree that it ran on. Run it on the merged tree, or name the CI run that did. |
 
+3. Send the `fix now` findings back to the same workspace session as one
+   fix request. Give the numbers, the option of each, and "do not start
+   the next item". The review-fix rule allows two fix rounds. Merge each
+   round as in step 2. After the last merge, close the workspace as the
+   workspace reference says. Do the same for a workspace that the user
+   agrees to abandon.
 4. Merge `main` into the primary branch before each delegation batch,
    before each branch merge, and before the final pull request.
-5. Merge each branch as it finishes. An open finding never blocks the
-   merge of a workspace branch. Record it as a follow-up item, as the
+5. An open finding never blocks the merge of a workspace branch. Record
+   each finding that the fix rounds leave open as a follow-up item, as the
    `plans` skill says. Fix it after the user answers, on a route from
    "Routes and blocks". A branch that waits diverges. Its conflicts grow.
 6. A High or Medium finding blocks only the work that depends on the
