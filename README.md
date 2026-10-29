@@ -60,6 +60,38 @@ Codex, and with any other agent that reads the
 | `writing-skills` | Before you create or edit a skill or its description. Opt-in: linked only with `install.sh --opt-in`. |
 | `models` | Before you delegate work, choose an agent, a model, or an effort, create a Conductor workspace, session, or routine, or start a subagent or a reviewer. Also when a skill names an action. |
 
+## The flow of a feature
+
+The table shows the stages of a typical feature request and the skills
+that each stage loads. The `models` skill defines each role. The
+orchestrator is the `default orchestrator` action. It runs as the first
+session in the feature's Conductor workspace. It hands each milestone to
+an implementor. It keeps the gate, the review, and the pull request.
+
+| # | Stage | Runs it | Skills |
+| --- | --- | --- | --- |
+| 0 | Start | User, then orchestrator | `models`. `agents-md` only when the repository's `AGENTS.md` is missing or out of date |
+| 1 | Brainstorm | Orchestrator and the `brainstorming` action | `brainstorming`, `models`, `decisions-and-findings` |
+| 2 | Plan | Orchestrator | `plans`, `documentation`, `decisions-and-findings`, `implementation-review`, `finish-work`, `git-commit` |
+| 3 | Milestone 1: mockups | `ui implementor` | `mockups`, `product-ui`, `typescript` |
+| 4 | Milestone 2: docs | `docs implementor` | `documentation` |
+| 5 | Backend milestones | `non-ui implementor` | `rust`, `databases`, `shared-types`, `deterministic-tests`, `finish-work` |
+| 6 | UI milestones | `ui implementor` | `product-ui`, `typescript`, `shared-types`, `mockups`, `finish-work` |
+| 7 | Verify | Orchestrator | `finish-work`, `deterministic-tests`, `documentation` |
+| 8 | Commit and push | Orchestrator | `git-commit`, `git-merge` |
+| 9 | Review and fix | Review agents, then orchestrator | `implementation-review`, `decisions-and-findings`, `plans`, `git-commit` |
+| 10 | Pull request | Orchestrator | `plans`, `git-commit`, `finish-work` |
+| 11 | Final report | Orchestrator | `finish-work`, `decisions-and-findings` |
+| 12 | After the merge | Orchestrator | `finish-work`, `plans` |
+
+Some stages run only in some cases:
+
+- The brainstorm runs only when no message or recorded decision chooses
+  the approach.
+- The mockup milestone runs only when the plan changes something that a
+  mockup shows. Without it, the docs milestone is Milestone 1.
+- A change without a plan has no plan stage and no milestones.
+
 ## Install
 
 On your own machine, clone this repository and link it. Edits are live.
