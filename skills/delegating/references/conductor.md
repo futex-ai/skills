@@ -42,8 +42,8 @@ A session runs in a workspace and shares its files and its branch. Take
 the values from the action of the task. Add `--workspace <id>` for a
 workspace other than your own.
 
-To review a work item, start the session in the workspace of the item,
-with the values of the `first-pass review agent` action. That workspace
+To review a work item, start the session in the workspace of the item.
+Use the values of the `first-pass review agent` action. That workspace
 has the item's branch checked out. Start the validity check and the
 options check in the same way, with the `second-pass review agent`
 action.
@@ -61,8 +61,8 @@ conductor routine create --name <name> --project-id <id> \
   --agent <agent> --model <model> --effort <effort> --prompt-file <path>
 ```
 
-A routine runs when its webhook URL is called. Routine commands need a
-user API key.
+A routine runs when a program calls its webhook URL. Routine commands
+need a user API key.
 
 ## Read, message, and archive
 

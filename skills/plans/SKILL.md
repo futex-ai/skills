@@ -132,9 +132,8 @@ change. [templates/plan.md](templates/plan.md) is the starting point.
 - Record each open or deferred review finding, each blocked or split-off
   wider fix, and each problem outside the review scope as a follow-up
   item, not as a line in the plan. The section "Follow-up items" says how.
-- An open finding blocks a later milestone only when that milestone depends
-  on the affected code or contract. The `delegating` skill gives the
-  rule.
+- An open finding blocks only the later milestones that depend on its
+  code or contract, as the `delegating` skill says.
 
 ## Implementing a plan
 
