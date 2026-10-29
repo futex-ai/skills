@@ -13,7 +13,21 @@ Contract owners:
 - [<Protocol doc>](../docs/protocol/<doc>.md).
 - The [<area> README](../<path>/README.md).
 
-## Milestone 1: Documentation and protocol
+## Milestone 1: Mockups
+
+Tags: mockup
+
+<Keep this milestone only when the change has mockup work. It comes before
+every other milestone. Without mockup work, the documentation milestone is
+Milestone 1. Summary: which screens and flows change, for every product area
+of the plan.>
+
+- [ ] <Create or update the mockup of a screen or a flow.>
+- [ ] Run the mockup check named in `AGENTS.md`. Smoke-test the changed pages.
+- [ ] Update the design and the TODOs of this plan for each problem that the
+      mockups show.
+
+## Milestone 2: Documentation and protocol
 
 <Summary: which docs and protocol docs change so that they state the
 requirements and the decisions for the work below.>
@@ -21,9 +35,9 @@ requirements and the decisions for the work below.>
 - [ ] Update `docs/protocol/<doc>.md` with <requirements and decisions>.
 - [ ] Update `<path>/README.md`.
 
-## Milestone 2: <Name>
+## Milestone 3: <Name>
 
-Tags: mockup <keep the tag line only for a mockup or ui milestone>
+Tags: ui <keep the tag line only for a ui or mockup milestone>
 
 <Summary.>
 
