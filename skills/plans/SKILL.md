@@ -61,8 +61,8 @@ change. [templates/plan.md](templates/plan.md) is the starting point.
   milestone the product works. Never leave the code base or feature broken.
 - Each milestone has a short summary and a TODO checklist.
 - Before you start a milestone, read the `parallel-agents` skill. Decide
-  whether its work splits across workspaces, and which model does each
-  item.
+  whether its work splits across workspaces, and which action of the
+  `models` skill does each item.
 - The first milestone updates the relevant documentation and protocol or
   spec docs so that they state the requirements and the decisions for the
   work that follows. The plan itself holds the design: the approach, the

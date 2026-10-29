@@ -15,12 +15,12 @@ primary branch. It keeps the ledger under
 
 1. Write the prompt from the workspace prompt template. Save it under
    `.context/<plan-name>/prompts/<item>.md`.
-2. Create the workspace on the primary branch, with the model from the
-   table in the skill. Give it the prompt as its first message. When the
-   tool does not create the branch, create it from the primary branch
-   and name it for the item.
-3. Record the workspace, its session, the model, and the branch that the
-   agent reports in the ledger.
+2. Create the workspace on the primary branch, with the action of the
+   item from the `models` skill. Give it the prompt as its first
+   message. When the tool does not create the branch, create it from the
+   primary branch and name it for the item.
+3. Record the workspace, its session, the action, and the branch that
+   the agent reports in the ledger.
 
 A new workspace gets the skills from the repository's setup script.
 Codex has no update hook, so that script runs the update script before

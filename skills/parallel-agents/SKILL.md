@@ -1,6 +1,6 @@
 ---
 name: parallel-agents
-description: Use when you work on a plan, before you decide whether to split it across workspaces or which model does each item, when you have two or more independent tasks, such as failing tests in separate files, bugs in separate subsystems, or separate research questions, before you start a subagent or write its prompt, when a model blocks or rejects a request, when a delegated branch comes back, when agents would edit the same files, and when an open finding could block the next milestone.
+description: Use when you work on a plan, before you decide whether to split it across workspaces, when you have two or more independent tasks, such as failing tests in separate files, bugs in separate subsystems, or separate research questions, before you start a subagent or write its prompt, when a model blocks or rejects a request, when a delegated branch comes back, when agents would edit the same files, and when an open finding could block the next milestone.
 ---
 
 # Parallel agents
@@ -54,6 +54,33 @@ Output. The templates are
 A read-only agent, such as the reviewer in the `implementation-review`
 skill, gets "change nothing" as its constraint.
 
+## Actions and blocks
+
+Name an action, never a model. The `models` skill defines the agent,
+the model, the effort, and the route of each action. Give each subagent
+and each work item the action that the skill gives for its kind of work.
+The orchestrator runs the `default orchestrator` action. Some actions
+run as a session in your workspace. That session shares your working
+tree, so treat it as a subagent.
+
+A block is a refusal, or a rejection that stays after one retry.
+Examples: a usage limit, an input limit, a missing or revoked
+credential, or a rejected model id. When an action's model blocks a
+request, send the same request to the fallback model that the `models`
+skill gives. When every fallback blocks it, or the skill gives none,
+stop and ask the user, with the refusal text verbatim.
+
+When a delegate's model blocks during an item, give the item to the
+fallback model in the same workspace. Give it the prompt and the diff so
+far. Do not rewrite the request to hide what it does, and do not skip
+the step.
+
+| The record says | The answer |
+| --- | --- |
+| "Codex rejected the generated review prompt [...] so no review findings were emitted." | Send the same review to the fallback model. A missing review is not a result. |
+| "retry this task when reviewer capacity resets." | The fallback model reviews now. Record the retry time for the blocked model only. |
+| "the cloud Codex CLI is unauthenticated (HTTP 401), so no review findings were produced." | The fallback model reviews now, with the same prompt. The review is the step. The tool is not. |
+
 ## Subagents in one session
 
 1. Group the work into domains. A domain is one test file, one
@@ -82,12 +109,12 @@ committed content. Integrate the branch with the `git-merge` skill.
 
 The orchestrator splits a plan into work items and gives each item a
 workspace. Items that pass the independence test run at the same time.
-The others run one after the other. A plan with one work item needs no
-orchestrator. The session that owns the plan does the item.
+The others run one after the other. A one-item plan needs no second
+workspace. The orchestrator delegates the item inside its own workspace.
 [references/workspaces.md](references/workspaces.md) gives the procedure,
 and [references/conductor.md](references/conductor.md) the Conductor
 commands. One real example: milestones 6a, 7, and 7a of a plan ran in
-parallel Codex and Opus sessions. One combined gate verified them.
+parallel Codex and Claude sessions. One combined gate verified them.
 
 - The primary branch is the branch of the plan. Every workspace branch
   starts from it and merges from it, never from `main`. Only the primary
@@ -107,47 +134,20 @@ parallel Codex and Opus sessions. One combined gate verified them.
   its branch name to the TODO lines that it owns, and it ticks only those
   lines. You resolve a plan conflict path by path at the merge.
 - Keep a ledger under `.context/<plan-name>/workspaces.md`. It lists
-  the item, the ids, the model, the branch, the pull request, the review
+  the item, the ids, the action, the branch, the pull request, the review
   round, and the state. Keep the prompts and the reports there too.
 - The workspace agent commits with the `git-commit` skill, pushes its
   branch, and opens a pull request into the primary branch. It never
   merges. When its push fails for a missing credential, it reports the
   commit and stops.
 
-### Models
-
-| Work | Model | Effort |
-| --- | --- | --- |
-| The orchestrator and its reviewers | Fable 5.1 | max |
-| Screens, components, mockups, and user-facing copy | Opus 5.5 | max |
-| Everything else: backend, scripts, data, docs, research | Astra 6 | max |
-
-Ranking, highest first: Fable 5.1, then Opus 5.5 and Astra 6 as peers,
-then Sol 6.1. A block is a refusal, or a rejection that stays after one
-retry. Examples: a usage limit, an input limit, a missing or revoked
-credential, or a rejected model id. When a model blocks a request, send
-the same request to its peer. When the peer blocks it too, send it one
-rank down. Fable 5.1 has no peer. When it blocks, send the request one
-rank down. Opus 5.5 takes screens, components, mockups, and copy, and
-Astra 6 takes the rest. When every model blocks it, stop and ask the
-user, with the refusal text verbatim. When a delegate's model blocks
-during an item, give the item to the peer in the same workspace. Give the
-peer the prompt and the diff so far. Do not rewrite the request to hide
-what it does, and do not skip the step.
-
-| The record says | The answer |
-| --- | --- |
-| "Codex rejected the generated review prompt [...] so no review findings were emitted." | Send the same review to the peer model. A missing review is not a result. |
-| "retry this task when reviewer capacity resets." | The peer model reviews now. Record the retry time for the blocked model only. |
-| "the cloud Codex CLI is unauthenticated (HTTP 401), so no review findings were produced." | A Claude reviewer with the same prompt reviews now. The review is the step. The tool is not. |
-
 ### Check, merge, and continue
 
 1. When a workspace reports, run the `implementation-review` skill on
    its branch against the primary branch, in a fresh read-only agent. A
-   large diff can split by area, one reviewer per area, each on Fable
-   5.1. Then read the diff yourself and re-run the checks. Confirm every
-   ticked TODO and the push, and run the deletion audit from the
+   large diff can split by area, with one `first-pass review agent` for
+   each area. Then read the diff yourself and re-run the checks. Confirm
+   every ticked TODO and the push, and run the deletion audit from the
    `git-commit` skill. Never accept the report alone.
 2. Send the findings back to the same workspace session as one fix
    request. Give the numbers, the option that the review-fix rule or the
@@ -193,7 +193,7 @@ what it does, and do not skip the step.
 - [ ] Every parallel task passed the independence test.
 - [ ] Every prompt has the six fields, from Scope to Output.
 - [ ] Each workspace branch starts and merges from the primary branch.
-- [ ] A blocked request went to the peer model, then one rank down.
+- [ ] Delegates ran their actions. Blocked requests went to the fallback.
 - [ ] You ran the combined gate and closed each merged workspace.
 - [ ] The ledger and the reports are under `.context/`, not in the plan.
 - [ ] Open findings never block a workspace merge. They block dependent

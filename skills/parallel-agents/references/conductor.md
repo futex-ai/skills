@@ -11,7 +11,7 @@ from `conductor --help`. The procedure around these commands is in
 ```sh
 conductor workspace create --branch <primary-branch> \
   --name "<plan-name>: <item>" --agent <agent> --model <model> \
-  --effort max --message-file .context/<plan-name>/prompts/<item>.md
+  --effort <effort> --message-file .context/<plan-name>/prompts/<item>.md
 conductor workspace session <workspaceId>
 conductor workspace status <workspaceId>
 ```
@@ -25,15 +25,9 @@ when the machine is ready. Inside a Conductor workspace,
 
 ## Agents and models
 
-| Model | Agent | Model id |
-| --- | --- | --- |
-| Fable 5.1 | `claude` | `fable-5-1` |
-| Opus 5.5 | `claude` | `opus-5-5-1m` |
-| Astra 6 | `codex` | `gpt-6-astra` |
-| Sol 6.1 | `codex` | `gpt-6.1-sol` |
-
-`conductor model` lists the current ids and the favourites. Both agents
-take `--effort max`.
+Take `--agent`, `--model`, and `--effort` from the action of the work
+item in the `models` skill. `conductor model` lists the ids that
+Conductor accepts now.
 
 ## Read, message, and archive
 
