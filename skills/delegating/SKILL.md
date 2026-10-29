@@ -57,15 +57,14 @@ Output. The templates are
 Name an action, never a model. The `models` skill gives the agent, the
 model, and the effort of each action. Work that becomes an implementation
 or a pull request gets its own workspace. Its first session runs the
-`default orchestrator` action. That session runs every other action of
-the work inside the workspace, as a subagent or a session. The
-implementors of its milestones, a review, and a brainstorm are such
-actions.
+`default orchestrator` action. That session runs every other action of the
+work inside the workspace, as a subagent or a session. The implementors of
+its milestones, a review, and a brainstorm are such actions.
 
 A subagent runs the models of your own agent only. An action of another
 agent runs as a session. A session shares your working tree, so treat it
-as a subagent. Split work into a second workspace only for parallel work
-or for compute. [references/conductor.md](references/conductor.md) gives
+as a subagent. Split work into a second workspace only for parallel
+work. [references/conductor.md](references/conductor.md) gives
 the command of each route.
 
 A block is a refusal, or a rejection that stays after one retry.
@@ -104,16 +103,17 @@ does, and do not skip the step.
 
 Subagents share your working tree unless the tool gives each its own
 worktree. Keep the scopes disjoint, or two subagents that edit one file
-overwrite each other. In the shared tree only you commit. In its own
-worktree a subagent commits on its branch with the `git-commit` skill
-and does not push. Commit your own changes first. A worktree holds only
-committed content. Integrate the branch with the `git-merge` skill.
+overwrite each other. In the shared tree only you commit.
+
+In its own worktree a subagent commits on its branch with the
+`git-commit` skill and does not push. Commit your own changes first. A
+worktree holds only committed content. Integrate the branch with the
+`git-merge` skill. Then remove the worktree and delete its branch.
 
 ## Workspaces across machines
 
 The orchestrator splits a plan into work items. Items that pass the
-independence test run at the same time, each in its own workspace. An
-item that needs the compute of its own machine gets one too. The
+independence test run at the same time, each in its own workspace. The
 orchestrator delegates the other items in order, inside its own workspace.
 
 [references/workspaces.md](references/workspaces.md) gives the procedure.
