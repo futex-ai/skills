@@ -53,11 +53,12 @@ choice that the user made, not each sentence that describes it.
 
 Run steps 3 and 4 as the `brainstorming` action of the `models` skill.
 When your session runs the agent, the model, and the effort of that
-action, do the steps yourself. Otherwise, delegate them as the `models`
-skill says. Give the agent the goal, the root question, and the
-requirements with their sources. Also give it the earlier work and the
-paths to read. Tell it to change nothing. Do not give it your own
-approaches, so that its read is not anchored on yours.
+action, do the steps yourself. Otherwise, delegate them with the agent,
+the model, and the effort of that action, as the `models` skill says.
+Give the agent the goal, the root question, and the requirements with
+their sources. Also give it the earlier work and the paths to read. Tell
+it to change nothing. Do not give it your own approaches, so that its
+read is not anchored on yours.
 
 - Find at least three distinct approaches. Two approaches are distinct
   when they differ in what is built or where it lives, not only in a
