@@ -1,0 +1,82 @@
+# Workspaces
+
+A workspace is a checkout on its own branch, on its own machine or in
+its own worktree, where one agent does one work item. In Conductor,
+each workspace is a Conductor workspace. [conductor.md](conductor.md)
+gives its commands. Without Conductor, a worktree agent, a second
+machine, or a cloud session follows the same procedure. A worktree
+agent here is a workspace agent in a worktree. It pushes its branch and
+opens a pull request, unlike a worktree subagent.
+
+The orchestrator runs the procedure from the primary workspace, on the
+primary branch. It keeps a ledger under
+`.context/<plan-name>/workspaces.md`. The ledger lists the item, the
+ids, the action, the branch, the pull request, the review round, and the
+state. The prompts and the reports go under `.context/<plan-name>/` too.
+
+## Start a work item
+
+1. Write the prompt from the workspace prompt template. Save it under
+   `.context/<plan-name>/prompts/<item>.md`.
+2. Create the workspace on the primary branch, with the
+   `default orchestrator` action from the `models` skill. Name it
+   `<plan-name>: <item>`. Give it the prompt as its first message. The
+   prompt names the action that does the item. When the tool does not
+   create the branch, create it from the primary branch and name it for
+   the item.
+3. Record the workspace, its session, the action, and the branch that
+   the agent reports in the ledger.
+
+A new workspace gets the skills from the repository's setup script.
+Codex has no update hook, so that script runs the update script before
+the install script.
+
+## Read the result and request changes
+
+The agent reports in its session. Read its first message for the
+branch. Then read its report, as [conductor.md](conductor.md) says, and
+its pull request.
+
+You run the review of the item's branch, so you keep its findings file,
+as the `implementation-review` skill says. Send a fix request as one
+message with the text of each `fix now` finding and the option to apply.
+
+## Integrate and close
+
+```sh
+git fetch origin <branch>
+git merge --no-ff origin/<branch>
+# run the merge audit and the complete gate first
+git push origin <primary-branch>
+```
+
+Merge the branch on the primary branch when its review is done, also
+when findings stay open. Merge it again after each fix round. Directly
+after each merge commit, run the merge audit from the `git-merge` skill.
+Run the complete gate from `AGENTS.md`, then push.
+
+After the last merge, close the work item:
+
+```sh
+gh pr view <number> --json state,headRefOid
+git merge-base --is-ancestor <headRefOid> HEAD
+# only when the state is OPEN
+gh pr close <number> --comment "merged into <primary-branch> at <sha>"
+git push origin --delete <branch>
+```
+
+Confirm that the pull request's head commit is in the primary branch.
+When it is not, or git reports an unknown commit, the branch moved after
+your fetch. Fetch and merge again. GitHub may not mark a pull request
+into a branch other than the default as merged. When the state stays
+open, close the pull request with a comment that names the merge commit.
+
+Delete the branch on the remote. Archive the workspace with its tool.
+Mark it closed in the ledger. The merge commit keeps the content of a
+merged branch, so its deletion needs no approval. The content of an
+abandoned branch is in no merge, so the abandon is a decision for the
+user.
+
+The primary branch's pull request into `main` deletes the plan, as the
+`plans` skill says. When that pull request merges, delete the primary
+branch and archive the primary workspace.

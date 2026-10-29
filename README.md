@@ -45,6 +45,7 @@ Codex, and with any other agent that reads the
 | `brainstorming` | The user asks to brainstorm, discuss, or explore an idea, asks "should we" or "what do you think", proposes new scope or a change before a plan, or asks for a plan whose approach is not settled. |
 | `plans` | When the user asks for a plan, before you create, edit, tick, or delete a plan, when you add a decision to a plan, when you find a TODO during implementation, when you add or fix a follow-up item, and before you open a pull request for a plan. |
 | `implementation-review` | After you push, before you run or apply a review, when the user answers a review finding, when you decide whether to fix a finding now or after the merge, and when the user asks for a code review. |
+| `delegating` | When you work on a plan, before you delegate a task, create a Conductor workspace, session, or routine, start a subagent or a reviewer, or split work across workspaces, and when a model blocks a request. |
 | `decisions-and-findings` | Before you raise a question as a decision, and before you send decisions, review findings, or a final report, when you write the options of a decision, also under a brief output style. |
 | `deterministic-tests` | A test flakes, would assert elapsed time, or tempts you to add a sleep, a retry, or a longer time limit. |
 | `git-commit` | Before and after you commit, and when you write a commit or pull request message. When a diff deletes or renames something, or when you find dead code. |
@@ -58,28 +59,29 @@ Codex, and with any other agent that reads the
 | `product-ui` | Before you change a user-facing screen, state, or copy, or hardcode data in a screen. |
 | `agents-md` | A repository has no `AGENTS.md`, still has a monolithic one, or needs its rules aligned with the shared skills. |
 | `writing-skills` | Before you create or edit a skill or its description. Opt-in: linked only with `install.sh --opt-in`. |
-| `models` | Before you delegate work, choose an agent, a model, or an effort, create a Conductor workspace, session, or routine, or start a subagent or a reviewer. Also when a skill names an action. |
+| `models` | Before you delegate work, start a subagent or a reviewer, or choose an agent, a model, or an effort. Also when a skill names an action. |
 
 ## The flow of a feature
 
 The table shows the stages of a typical feature request and the skills
 that each stage loads. The `models` skill defines each role. The
-orchestrator is the `default orchestrator` action. It runs as the first
-session in the feature's Conductor workspace. It hands each milestone to
-an implementor. It keeps the gate, the review, and the pull request.
+`delegating` skill gives the route of each role. The orchestrator is the
+`default orchestrator` action. It runs as the first session in the
+feature's Conductor workspace. It hands each milestone to an
+implementor. It keeps the gate, the review, and the pull request.
 
 | # | Stage | Runs it | Skills |
 | --- | --- | --- | --- |
-| 0 | Start | User, then orchestrator | `models`. `agents-md` only when the repository's `AGENTS.md` is missing or out of date |
-| 1 | Brainstorm | Orchestrator and the `brainstorming` action | `brainstorming`, `models`, `decisions-and-findings` |
-| 2 | Plan | Orchestrator | `plans`, `documentation`, `decisions-and-findings`, `implementation-review`, `finish-work`, `git-commit` |
-| 3 | Milestone 1: mockups | `ui implementor` | `mockups`, `product-ui`, `typescript` |
-| 4 | Milestone 2: docs | `docs implementor` | `documentation` |
-| 5 | Backend milestones | `non-ui implementor` | `rust`, `databases`, `shared-types`, `deterministic-tests`, `finish-work` |
-| 6 | UI milestones | `ui implementor` | `product-ui`, `typescript`, `shared-types`, `mockups`, `finish-work` |
+| 0 | Start | User, then orchestrator | `models`, `delegating`. `agents-md` only when the repository's `AGENTS.md` is missing or out of date |
+| 1 | Brainstorm | Orchestrator and the `brainstorming` action | `brainstorming`, `models`, `delegating`, `decisions-and-findings` |
+| 2 | Plan | Orchestrator | `plans`, `delegating`, `documentation`, `decisions-and-findings`, `implementation-review`, `finish-work`, `git-commit` |
+| 3 | Milestone 1: mockups | `ui implementor` | `delegating`, `mockups`, `product-ui`, `typescript` |
+| 4 | Milestone 2: docs | `docs implementor` | `delegating`, `documentation` |
+| 5 | Backend milestones | `non-ui implementor` | `delegating`, `rust`, `databases`, `shared-types`, `deterministic-tests`, `finish-work` |
+| 6 | UI milestones | `ui implementor` | `delegating`, `product-ui`, `typescript`, `shared-types`, `mockups`, `finish-work` |
 | 7 | Verify | Orchestrator | `finish-work`, `deterministic-tests`, `documentation` |
 | 8 | Commit and push | Orchestrator | `git-commit`, `git-merge` |
-| 9 | Review and fix | Review agents, then orchestrator | `implementation-review`, `decisions-and-findings`, `plans`, `git-commit` |
+| 9 | Review and fix | Review agents, then orchestrator | `implementation-review`, `delegating`, `decisions-and-findings`, `plans`, `git-commit` |
 | 10 | Pull request | Orchestrator | `plans`, `git-commit`, `finish-work` |
 | 11 | Final report | Orchestrator | `finish-work`, `decisions-and-findings` |
 | 12 | After the merge | Orchestrator | `finish-work`, `plans` |

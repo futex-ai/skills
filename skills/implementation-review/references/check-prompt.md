@@ -10,8 +10,8 @@ options of its finding. It changes nothing.
 - Start one check for each new finding of the round, side by side. Each
   check is a fresh read-only `second-pass review agent` of the `models`
   skill.
-- Run each check as an in-session subagent when the `models` skill allows
-  one for your agent. Its report then comes straight back to you.
+- Run each check as an in-session subagent when the `delegating` skill
+  allows one for your agent. Its report then comes straight back to you.
 - When the tool refuses a check because too many checks run at once,
   start that check when an earlier check ends.
 - Start the checks before you edit any file, so that every check reads the

@@ -64,6 +64,8 @@ change. [templates/plan.md](templates/plan.md) is the starting point.
 - Break the work into concrete units called milestones. At the end of each
   milestone the product works. Never leave the code base or feature broken.
 - Each milestone has a short summary and a TODO checklist.
+- Each milestone has a `Depends on:` line: `none`, or the milestones that
+  it needs. A plan review checks it. The `delegating` skill uses it.
 - When the plan has mockup work, Milestone 1 is the mockup milestone. It
   comes before every other milestone. That includes the documentation
   milestone and repository bootstrap work, such as the workspace skeleton,
@@ -113,6 +115,7 @@ change. [templates/plan.md](templates/plan.md) is the starting point.
 - When you discover a TODO that the PR needs, add it under the relevant
   milestone, then continue with the active TODO.
 - Break a complex TODO into sub-tasks.
+- A TODO that a delegated workspace owns ends with `Branch:` and its branch.
 - Every plan ends with a commit-and-push TODO, a review TODO, a TODO that
   deletes the plan, and a pull request TODO. The review TODO directs a
   reviewer to use the `implementation-review` skill against `origin/main`
@@ -128,12 +131,13 @@ change. [templates/plan.md](templates/plan.md) is the starting point.
 - Record each open or deferred review finding, each blocked or split-off
   wider fix, and each problem outside the review scope as a follow-up
   item, not as a line in the plan. The section "Follow-up items" says how.
+- An open finding blocks only dependent work, as the `delegating` skill says.
 
 ## Implementing a plan
 
 When the plan is approved, the orchestrator session of the workspace
 implements all milestones by delegation. The `models` skill defines each
-action and its route.
+action. The `delegating` skill gives its route.
 
 - Delegate the docs work of a milestone to the `docs implementor`.
   Delegate the UI work to the `ui implementor`. Delegate the other work

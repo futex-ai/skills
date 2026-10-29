@@ -62,7 +62,8 @@ name the blocker, and list the checks that did run.
 ## 5. Review
 
 - After the push, review the complete local diff against `origin/main` with
-  the `implementation-review` skill. The review itself is read-only. Its
+  the `implementation-review` skill. Review a branch that targets a primary
+  branch against that branch instead. The review itself is read-only. Its
   findings stay in the diff unless the user explicitly asked for a wider
   review.
 - Record each round in the findings file of the branch, as the

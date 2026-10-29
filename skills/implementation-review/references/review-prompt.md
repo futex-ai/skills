@@ -12,6 +12,10 @@ review outside the changes, for example of the whole repository or of a
 named area, replace the first paragraph of `## Scope` with the scope that
 the user named. Do not widen the scope for any other reason.
 
+When the branch targets a primary branch instead of `main`, replace
+`origin/main` with that branch throughout. The `delegating` skill
+describes the primary branch.
+
 ---
 
 You are reviewing local changes in this repository.
