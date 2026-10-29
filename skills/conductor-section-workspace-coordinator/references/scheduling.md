@@ -52,6 +52,32 @@ Split work to run more of it in parallel, not for its own sake. See the
   that workspace the merge-main message in the same cycle.
 - Keep one active change per area.
 
+## Items that wait for the user
+
+The coordinator owns the schedule and the merge. A waiting answer blocks
+the work that depends on it. It does not block independent work.
+
+1. Escalate each item tagged `Auto-fix: no` and each reserved choice.
+   Record the escalation under **Escalations** with the work that its
+   answer blocks.
+2. Decide whether the current pull request needs that answer.
+   Keep the pull request blocked when the answer affects its safety or
+   approved requirements.
+3. When the current pull request meets its approved requirements without
+   the answer, defer the dependent work.
+   Keep the required checks and approved plan TODOs with the current
+   pull request.
+   Record the follow-up under **Backlog**. Keep the original item open.
+   Apply no option while the answer waits.
+4. Tell the orchestrator which work can merge and which work waits.
+   Record the reason that the current pull request can merge.
+   Keep each deferred item's source report and planned follow-up in the
+   state file.
+5. Recheck the escalations in each cycle.
+   When the user answers a deferred item, schedule its follow-up under
+   the usual conflict checks.
+   A merged pull request does not close a deferred item.
+
 ## When there is nothing to do
 
 A board with no active work has every stage at `done`, or at `blocked`
@@ -70,7 +96,7 @@ on the user. Then:
    for each candidate that can run in parallel, and sequence the rest.
 3. Record the candidates that you did not start under **Backlog** in the
    state file. A later cycle can start them. The backlog also
-   holds the larger fixes that a decision deferred. Start from the
+   holds larger fixes and deferred user items. Start from the
    backlog before you start a new goal review.
 4. Without a goal, end the cycle. Say in the status report that the
    section has no work and no goal.

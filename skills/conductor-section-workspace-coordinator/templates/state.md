@@ -30,8 +30,9 @@ Stages: new, planning, implementing, review, merge, done, blocked.
 
 ## Escalations
 
-- <date>: <workspace>: <item number and title>. Blocks: <what>. Asked in
-  the status report on <date>.
+- <date>: <workspace/session>: <source report id, item number, and title>.
+  Blocks: <the current pull request, or a deferred follow-up>.
+  Asked in the status report on <date>.
 
 ## Backlog
 
@@ -39,6 +40,9 @@ Stages: new, planning, implementing, review, merge, done, blocked.
   areas, and why it waits>.
 - <follow-up: the larger fix that a decision deferred, the workspace and
   the item number, and its effort>.
+- <deferred item: source workspace, session, report id, item number, and title>.
+  Follow-up: <scope and effort>. Waits for: <the user's answer>.
+  Current pull request can merge because: <reason>.
 
 ## Log
 

@@ -88,11 +88,15 @@ actions, or the board. Apply it before the steps below.
 - Name an action, never a model. The `models` skill defines the agent,
   the model, and the effort of each action. The state file records the
   overrides that the user gave for this section.
+  Fill `<agent>`, `<model>`, and `<effort>` from that action and those overrides.
 - Every change that becomes an implementation or a pull request gets its
   own workspace, as the `models` skill says. Run `conductor workspace
-  create` with `--name "<change>"`, `--session-name orchestrator`, the
-  `default orchestrator` action, and `--message-file` with the plan
-  request. Then move the workspace into the section with
+  create --name "<change>" --session-name orchestrator --agent <agent>
+  --model <model> --effort <effort> --message-file <path>`.
+  Use the values of the `default orchestrator` action.
+  The message file holds the plan request.
+
+  Move the workspace into the section with
   `conductor workspace move <id> --section <section id>`. The first
   session is the workspace's orchestrator. It writes the plan. After the
   approval it implements every milestone by delegation inside its
@@ -103,8 +107,9 @@ actions, or the board. Apply it before the steps below.
 - A plan review gets a new session in the child's workspace with the
   `first-pass review agent` action. An investigation of a decision or a
   review item gets one with the `second-pass review agent` action. Run
-  `conductor session create --workspace <id>` with a name and
-  `--message-file`. The session shares the files and the branch. Read its
+  `conductor session create --workspace <id> --agent <agent> --model <model>
+  --effort <effort> --name "<name>" --message-file <path>`.
+  The session shares the files and the branch. Read its
   report, then archive it with `conductor session archive <id>`.
 - A goal review gets a new session in this workspace with the
   `brainstorming` action. It produces a report, not a change, so it
@@ -119,8 +124,11 @@ actions, or the board. Apply it before the steps below.
 A child ends a task with the final-report layout: numbered decisions and
 review findings with lettered options. You answer in place of the user.
 
-- Answer every item of a report in one message, each with its number,
-  the letter, and one sentence of reasoning.
+- Answer every report item in one message. Give each chosen option its
+  number, letter, and one sentence of reasoning. Mark each escalated item
+  as waiting for the user.
+- Escalate every item tagged `Auto-fix: no`. Keep the choice open until
+  the user answers. Apply no option while that answer waits.
 - Choose on the merits and on the goals of the section. When the report
   does not give enough evidence, delegate an investigation, wait for its
   report, and then answer.
@@ -141,6 +149,9 @@ review findings with lettered options. You answer in place of the user.
 - Record each escalation under **Escalations** in the state file with
   what it blocks. Continue with every other item and every other
   workspace.
+- You own scheduling and merges. Decide which escalated work can wait,
+  as [references/scheduling.md](references/scheduling.md) says.
+  Deferred work can leave the current pull request ready to merge.
 - Do not answer an item by doing the work yourself.
 
 ## Merging
@@ -155,7 +166,8 @@ Merge a pull request only when all of these hold:
 3. `gh pr view <number> --json mergeable,mergeStateStatus` shows no
    conflict. When `main` moved under the branch, send the merge-main
    message first.
-4. No decision, review item, or escalation of this pull request is open.
+4. No unanswered item blocks this pull request under the scheduling reference.
+   Deferred items stay open for their follow-up pull requests.
 
 Then run `gh pr merge <number> --squash --delete-branch`, or the merge
 method that the repository's `AGENTS.md` names. After the merge, send the
@@ -182,6 +194,6 @@ skill says and opens that pull request. Merge it too. Then set the stage
 - [ ] Every delegation named an action from the `models` skill.
 - [ ] Every new workspace started with a plan request after a conflict
       check.
-- [ ] Every decision got a letter, and the reserved classes were
-      escalated.
+- [ ] Each answered item got a letter. Each unanswered user choice stayed open.
+      The state records deferred work and its merge reason.
 - [ ] The cycle ended with the state written and a short status report.

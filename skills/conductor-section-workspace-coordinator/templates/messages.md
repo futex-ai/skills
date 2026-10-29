@@ -71,9 +71,18 @@ To the workspace's orchestrator session, after the plan is approved.
     Answers to your report of <date>:
     1. <letter>. <one sentence>.
     2. <letter>. <one sentence>.
-    Item <n> waits for the user. Continue with the other items. Apply the
-    answers, run the checks, commit, push, re-review once, and report
-    again in the final-report layout.
+
+    Item <n> waits for the user. Apply no option for that item.
+    Schedule: <the current pull request is blocked, or the dependent work
+    moves to a follow-up pull request>. Reason: <why the current pull request
+    needs the answer, or meets its approved requirements without it>.
+
+    <For deferred work: Keep item <n> open in the report and the plan's
+    review TODO. Record the source report and follow-up scope.>
+    Continue with the independent work. Apply the answered options.
+
+    Run the checks. Commit the changes. Push the branch.
+    Re-review once. Report again in the final-report layout.
 
 ## Investigation
 
@@ -109,6 +118,9 @@ agent` action.
     `plans` skill says, on a new branch, and open its pull request. Report
     its number. <For a stack: run `gh stack sync` and report the next
     pull request.> Do no other work.
+
+Keep deferred items open in the report and the plan status update.
+The coordinator keeps their follow-ups in its backlog after it archives the workspace.
 
 ## Goal review
 

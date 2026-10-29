@@ -14,8 +14,8 @@ date of the last change.
   **Checks**, **Open**.
 - When the session is `working`, do not read it and do not send to it.
   Wait for `idle`.
-- When the last message is a question, answer it. When it is an error,
-  or not a final report, send the status request.
+- When the last message is a question, apply the decisions section of `SKILL.md`.
+  When the message is an error, or not a final report, send the status request.
 - Keep what the next cycle needs in the board line: the branch, the pull
   request number, and the open items. Do not copy reports into the state
   file.
@@ -26,7 +26,7 @@ date of the last change.
 | --- | --- | --- |
 | `new` | just added to the section | A workspace that you created has its orchestrator and its plan request, so set `planning`. A workspace that the user added gets an orchestrator first, as the section below says. Then set the stage that the orchestrator's report shows. A pushed plan is `planning`. A pull request is `review`. With neither, send the plan request. Its goal is the task in the report, or else the workspace name. |
 | `planning` | writing the plan | The report names a branch with a pushed plan and no pull request, as the `plans` skill says. Review the plan against the checks below. To amend the plan, send the amendments message and keep the stage. To approve it, send the implement message to the orchestrator and set `implementing`. The orchestrator then delegates the milestones inside its workspace. |
-| `implementing` | implementing the plan | Read the report. Answer the decisions and the review items. A report with an open pull request, every milestone ticked, and no open item goes to `review`. A blocked report goes to `blocked` with the blocker on the board. When the report says that the branch conflicts with `main`, send the merge-main message. |
+| `implementing` | implementing the plan | Read the report. Handle the decisions and review items under `SKILL.md`. A report with an open pull request and every milestone ticked can go to `review`. Move it when no item blocks that pull request. A blocked report goes to `blocked` with the blocker on the board. When the report says that the branch conflicts with `main`, send the merge-main message. |
 | `review` | done, pull request open | Check the merge conditions in `SKILL.md`. When they hold, set `merge`. When a condition fails because of the child, send the message that names the gap and set `implementing`. When it fails because of an escalation, set `blocked`. |
 | `merge` | waiting for the merge | Merge as `SKILL.md` says. Send the after-merge message. When the plan status pull request is merged, set `done`. |
 | `done` | finished | Archive the workspace, as the section below says. Keep the line for one week, then drop it. |
@@ -46,8 +46,10 @@ creation. A workspace that the user added gets it in its `new` stage:
    status request.
 3. Otherwise, start a new session with the `default orchestrator`
    action. Run `conductor session create --workspace <id> --name
-   orchestrator`, with the status request as `--message-file`. Put the
-   last report of the newest session into that message.
+   orchestrator --agent <agent> --model <model> --effort <effort>
+   --message-file <path>`. Take the three values from that action in the
+   `models` skill. The message file holds the status request.
+   Put the last report of the newest session into that message.
 4. Leave the other sessions of the workspace as they are. Record the
    orchestrator's session id on the board.
 
@@ -75,9 +77,8 @@ first message is the plan request, with the workspace name as the goal.
 - Name the stage that you expect next and the report that you want.
 - Never send code. Describe the change in words. A child that needs a
   design decision gets the decision, not the implementation.
-- When the child asks a question that the goals answer, answer it. When
-  the goals do not answer it and the choice is not reserved, decide.
-  Record the decision in the log. Escalate a reserved choice.
+- Handle each decision and review item under "Decisions and review items" in `SKILL.md`.
+  Record each answer in the log. Escalate each choice that needs the user.
 
 ## Archive
 

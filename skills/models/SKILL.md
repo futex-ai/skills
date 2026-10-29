@@ -7,7 +7,7 @@ description: Use before you choose an agent, a model, or an effort for delegated
 
 One table defines the agent, the model, and the effort of each action. A
 skill, a plan, or a message names the action, for example "the
-`brainstorming` model" or "the `non-ui implementor` action". It never
+`brainstorming` action" or "the `non-ui implementor` action". It never
 names a model id. When a model changes, this table changes and nothing
 else does.
 
@@ -21,7 +21,7 @@ else does.
 | `ui implementor` | claude | `opus-5-5-1m` | `max` | Screens, components, styles, and mockups. |
 | `docs implementor` | claude | `opus-5-5-1m` | `max` | Docs, protocol docs, READMEs, and plans. |
 | `first-pass review agent` | codex | `gpt-6.1-sol` | `max` | The implementation review and plan reviews. |
-| `second-pass review agent` | claude | `fable-5-1` | `max` | The validity check, the options check, and investigations of a decision or a review item. |
+| `second-pass review agent` | claude | `opus-5-5-1m` | `max` | The validity check, the options check, and investigations of a decision or a review item. |
 | `wake routine` | claude | `haiku-5-5-1m` | `low` | The hourly routine that wakes a section coordinator. It runs a few commands. |
 
 Every action except `wake routine` runs at max thinking. The model ids
