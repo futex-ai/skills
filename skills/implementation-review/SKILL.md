@@ -18,7 +18,7 @@ after the report.
   changed behaviour.
 - A finding must anchor to the scope.
 - The reviewer lists every other problem under `Outside the scope`, one
-  line each, without a number or the finding layout. Nobody fixes these
+  line each, without a number or the item layout. Nobody fixes these
   problems in this branch. An unrelated flaky test is such a problem.
 - The user can widen the scope by asking for it explicitly, for example a
   review of the whole repository or of a named area. Then the requested
@@ -80,6 +80,7 @@ user.
 
 - A severity: High, Medium, or Low, as the `decisions-and-findings` skill
   defines them.
+- The source: Review.
 - A category: product bug, security, docs or spec, mockup, repository rule,
   test, performance, code structure, dead code, UX wording, or process.
 - The file path and line reference when possible.
@@ -118,8 +119,8 @@ user.
   doc. Protocol docs record the current requirements and change with the
   behaviour, so the doc update is part of that option and of its effort.
   See the `documentation` skill.
-- A final `Action` line that proposes one outcome under the review-fix
-  rule below.
+- A final `Action` line that proposes one outcome under the decision test
+  in the `decisions-and-findings` skill and the review-fix rule below.
 
 ## Review-fix rule
 
@@ -145,8 +146,10 @@ before you make the final call on a finding. In short:
     under the `git-commit` skill is not functionality.
   - It weakens a test of live code or a gate.
   - It needs credentials or infrastructure.
-- `fix now` and `fix after merge` are allowed only when at least one
-  option is not blocked, for findings in these categories:
+- The decision test in the `decisions-and-findings` skill decides whether
+  a finding waits for the user. `fix now` and `fix after merge` are
+  allowed only when no condition holds. Condition 6 holds for each finding
+  outside these categories:
   - product bugs, including edge cases, races, and platform differences
   - security issues
   - docs or spec drift
@@ -171,13 +174,15 @@ before you make the final call on a finding. In short:
   - The fix is Small and stays in the files that the diff changes.
 - For every other finding that it may fix, the agent decides. It gives
   each `fix after merge` outcome one sentence of reason.
-- `ask the user` when every option is blocked, when the best option on
-  the merits is blocked and is not a wider fix, when the options have real
-  trade-offs and no option is clearly best, or when the finding is a slow,
-  custom, or low-value test, gate, lint, or check. Findings about missing
-  tests, performance, code structure, and process always wait for the
-  user. Any other UX wording waits too, such as a choice of tone or voice
-  that no copy rule settles.
+- `ask the user` when a condition of the decision test holds. For a
+  finding, condition 3 holds when every option is blocked, or when the
+  best option on the merits is blocked and is not a wider fix. Condition 4
+  holds when the options have real trade-offs and no option is clearly
+  best. Condition 6 also holds for a slow, custom, or low-value test,
+  gate, lint, or check. Findings about missing tests, performance, code
+  structure, and process always meet condition 6. Any other UX wording
+  meets it too, such as a choice of tone or voice that no copy rule
+  settles.
 - An `Outside the scope` problem is not a finding. Do not fix it in this
   branch. Record it as a follow-up item.
 
@@ -198,7 +203,7 @@ before you make the final call on a finding. In short:
    its wider fix as one of its options. Count the occurrences of the class
    of a blocked wider fix: the findings of this review that share it, plus
    the previous examples. When the count is two or more, also raise the
-   wider fix as a numbered decision in the decision layout.
+   wider fix as a numbered item with the source Review.
 4. Run the checks, commit, push, and run the review once more on the fix.
    Name each fixed finding in its commit message.
 5. Run the validity check on the new findings. Fix any confirmed new

@@ -8,7 +8,7 @@
 
 <The body depends on the kind:
 
-- A review finding: the finding in the finding layout of the
+- A review finding: the finding in the item layout of the
   `decisions-and-findings` skill, from **Terms** to **Action**.
 - A wider fix: the wider fix, its options, the finding numbers that it
   covers, and the previous examples. A blocked wider fix has the kind
