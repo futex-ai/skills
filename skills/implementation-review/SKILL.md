@@ -18,7 +18,7 @@ after the report.
   changed behaviour.
 - A finding must anchor to the scope.
 - The reviewer lists every other problem under `Outside the scope`, one
-  line each, without a number or the finding layout. Nobody fixes these
+  line each, without a number or the item layout. Nobody fixes these
   problems in this branch. An unrelated flaky test is such a problem.
 - The user can widen the scope by asking for it explicitly, for example a
   review of the whole repository or of a named area. Then the requested
@@ -79,6 +79,7 @@ user.
 
 - A severity: High, Medium, or Low, as the `decisions-and-findings` skill
   defines them.
+- The source: Review.
 - A category: product bug, security, docs or spec, mockup, repository rule,
   test, performance, code structure, dead code, UX wording, or process.
 - The file path and line reference when possible.
@@ -118,7 +119,8 @@ user.
   behaviour, so the doc update is part of that option and of its effort.
   See the `documentation` skill.
 - A final line: `Auto-fix: yes, apply <letter>` or `Auto-fix: no,
-  because …`, following the review-fix rule below.
+  because …`, following the decision test in the `decisions-and-findings`
+  skill and the review-fix rule below.
 
 ## Review-fix rule
 
@@ -135,8 +137,9 @@ The full rule with every condition is in
     under the `git-commit` skill is not functionality.
   - It weakens a test of live code or a gate.
   - It needs credentials or infrastructure.
-- `Auto-fix: yes, apply <letter>` is allowed only when at least one option
-  is not blocked, for findings in these categories:
+- The decision test in the `decisions-and-findings` skill decides the tag.
+  `Auto-fix: yes, apply <letter>` is allowed only when no condition holds.
+  Condition 6 holds for each finding outside these categories:
   - product bugs, including edge cases, races, and platform differences
   - security issues
   - docs or spec drift
@@ -166,13 +169,15 @@ The full rule with every condition is in
   the contract. The direct fix changes only the words that carry the
   defect. When the meaning is in doubt, the reviewer tags the finding
   `Auto-fix: no`.
-- `Auto-fix: no` when every option is blocked, when the best option on
-  the merits is blocked and is not a wider fix, when the options have real
-  trade-offs and no option is clearly best, or when the finding is a slow,
-  custom, or low-value test, gate, lint, or check. Findings about missing
-  tests, performance, code structure, and process always wait for the
-  user. Any other UX wording waits too, such as a choice of tone or voice
-  that no copy rule settles.
+- `Auto-fix: no` when a condition of the decision test holds. For a
+  finding, condition 3 holds when every option is blocked, or when the
+  best option on the merits is blocked and is not a wider fix. Condition 4
+  holds when the options have real trade-offs and no option is clearly
+  best. Condition 6 also holds for a slow, custom, or low-value test,
+  gate, lint, or check. Findings about missing tests, performance, code
+  structure, and process always meet condition 6. Any other UX wording
+  meets it too, such as a choice of tone or voice that no copy rule
+  settles.
 - An `Outside the scope` problem is not a finding. Do not fix it in this
   branch. Report it for a separate branch.
 
@@ -202,7 +207,7 @@ The full rule with every condition is in
    wider fix as one of its options. Count the occurrences of the class:
    the findings of this review that share the wider fix, plus the previous
    examples. When the count is two or more, raise the wider fix as a
-   numbered decision in the decision layout instead.
+   numbered item with the source Review instead.
 6. List the `Outside the scope` problems under **Open**, for a separate
    branch.
 7. Add each open finding, each follow-up, and each `Outside the scope`
