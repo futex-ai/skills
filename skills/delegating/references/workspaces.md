@@ -1,27 +1,29 @@
 # Workspaces
 
 A workspace is a checkout on its own branch, on its own machine or in
-its own worktree, where one agent does one work item. When you work in
-Conductor, each workspace is a Conductor workspace, as the `models`
-skill says. [conductor.md](conductor.md) gives its commands. Without
-Conductor, a worktree agent, a second machine, or a cloud session
-follows the same procedure. A worktree agent here is a workspace agent
-in a worktree. It pushes its branch and opens a pull request, unlike a
-worktree subagent.
+its own worktree, where one agent does one work item. In Conductor,
+each workspace is a Conductor workspace. [conductor.md](conductor.md)
+gives its commands. Without Conductor, a worktree agent, a second
+machine, or a cloud session follows the same procedure. A worktree
+agent here is a workspace agent in a worktree. It pushes its branch and
+opens a pull request, unlike a worktree subagent.
 
 The orchestrator runs the procedure from the primary workspace, on the
-primary branch. It keeps the ledger under
-`.context/<plan-name>/workspaces.md`, as the skill defines it.
+primary branch. It keeps a ledger under
+`.context/<plan-name>/workspaces.md`. The ledger lists the item, the
+ids, the action, the branch, the pull request, the review round, and the
+state. The prompts and the reports go under `.context/<plan-name>/` too.
 
 ## Start a work item
 
 1. Write the prompt from the workspace prompt template. Save it under
    `.context/<plan-name>/prompts/<item>.md`.
 2. Create the workspace on the primary branch, with the
-   `default orchestrator` action from the `models` skill. Give it the
-   prompt as its first message. The prompt names the action that does
-   the item. When the tool does not create the branch, create it from
-   the primary branch and name it for the item.
+   `default orchestrator` action from the `models` skill. Name it
+   `<plan-name>: <item>`. Give it the prompt as its first message. The
+   prompt names the action that does the item. When the tool does not
+   create the branch, create it from the primary branch and name it for
+   the item.
 3. Record the workspace, its session, the action, and the branch that
    the agent reports in the ledger.
 
@@ -32,9 +34,9 @@ the install script.
 ## Read the result and request changes
 
 The agent reports in its session. Read its first message for the
-branch. Then read its report, as the `models` skill says, and its pull
-request. Send a fix request as one message with the numbered findings
-and the option to apply for each.
+branch. Then read its report, as [conductor.md](conductor.md) says, and
+its pull request. Send a fix request as one message with the numbered
+findings and the option to apply for each.
 
 ## Integrate and close
 

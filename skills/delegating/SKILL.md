@@ -1,9 +1,9 @@
 ---
-name: parallel-agents
-description: Use when you work on a plan, before you decide whether to split it across workspaces, when you have two or more independent tasks, such as failing tests in separate files, bugs in separate subsystems, or separate research questions, before you start a subagent or write its prompt, when a model blocks or rejects a request, when a delegated branch comes back, when agents would edit the same files, and when an open finding could block the next milestone.
+name: delegating
+description: Use when you work on a plan, before you delegate a task, create a Conductor workspace, session, or routine, start a subagent or a reviewer, or write a delegation prompt, when you decide whether to split work across workspaces, when you have independent tasks, such as failing tests or bugs in separate files, when a model blocks or rejects a request, when a delegated branch comes back, when agents would edit the same files, and when an open finding could block the next milestone.
 ---
 
-# Parallel agents
+# Delegating
 
 A subagent is an agent with a fresh context that you start for one task
 in your own session. A workspace agent works on its own machine and its
@@ -46,22 +46,27 @@ Output. The templates are
 - **Steps:** the procedure, with the agent's own checks and TODO ticks.
 - **Constraints:** the files that it may change, and what it must not
   do. Examples: change files outside the scope, merge `main`, increase a
-  timeout, delete a test, or start the next item.
+  timeout, delete a test, or start the next item. A read-only agent,
+  such as a reviewer, gets "change nothing".
 - **Output:** the report to return. Ask for the result or the root
   cause, the files changed, and the checks with their results. Ask who
   decided what, and the open questions.
 
-A read-only agent, such as the reviewer in the `implementation-review`
-skill, gets "change nothing" as its constraint.
+## Routes and blocks
 
-## Actions and blocks
+Name an action, never a model. The `models` skill gives the agent, the
+model, and the effort of each action. Work that becomes an implementation
+or a pull request gets its own workspace. Its first session runs the
+`default orchestrator` action. That session runs every other action of
+the work inside the workspace, as a subagent or a session. The
+implementors of its milestones, a review, and a brainstorm are such
+actions.
 
-Name an action, never a model. The `models` skill defines the agent,
-the model, the effort, and the route of each action. Delegate each task
-to the action that the skill gives for its kind of work. The
-orchestrator and each workspace agent run the `default orchestrator`
-action. An action of another agent runs as a session in your workspace.
-That session shares your working tree, so treat it as a subagent.
+A subagent runs the models of your own agent only. An action of another
+agent runs as a session. A session shares your working tree, so treat it
+as a subagent. Split work into a second workspace only for parallel work
+or for compute. [references/conductor.md](references/conductor.md) gives
+the command of each route.
 
 A block is a refusal, or a rejection that stays after one retry.
 Examples: a usage limit, an input limit, or a missing or revoked
@@ -111,10 +116,9 @@ independence test run at the same time, each in its own workspace. An
 item that needs the compute of its own machine gets one too. The
 orchestrator delegates the other items in order, inside its own workspace.
 
-[references/workspaces.md](references/workspaces.md) gives the procedure,
-and [references/conductor.md](references/conductor.md) the Conductor
-commands. One real example: milestones 6a, 7, and 7a of a plan ran in
-parallel Codex and Claude sessions. One combined gate verified them.
+[references/workspaces.md](references/workspaces.md) gives the procedure.
+One real example: milestones 6a, 7, and 7a of a plan ran in parallel
+Codex and Claude sessions. One combined gate verified them.
 
 - The primary branch is the branch of the plan. Every workspace branch
   starts from it and merges from it, never from `main`. Only the primary
@@ -128,14 +132,11 @@ parallel Codex and Claude sessions. One combined gate verified them.
 - The orchestrator plans, writes the prompts, delegates, and checks. It
   does not implement. A correction of a few lines found while you check
   is fine. Anything larger goes back to the delegate.
-- Name the workspace `<plan-name>: <item>`. The tool creates the branch.
-  Record the reported branch in the ledger.
 - The plan file is the one shared file. A workspace adds `Branch:` and
   its branch name to the TODO lines that it owns, and it ticks only those
   lines. You resolve a plan conflict path by path at the merge.
-- Keep a ledger under `.context/<plan-name>/workspaces.md`. It lists
-  the item, the ids, the action, the branch, the pull request, the review
-  round, and the state. Keep the prompts and the reports there too.
+- Keep the ledger, the prompts, and the reports under
+  `.context/<plan-name>/`, as the workspace reference says.
 - The workspace agent commits with the `git-commit` skill, pushes its
   branch, and opens a pull request into the primary branch. It never
   merges. When its push fails for a missing credential, it reports the
@@ -156,10 +157,9 @@ parallel Codex and Claude sessions. One combined gate verified them.
 3. Merge the branch into the primary branch with the `git-merge` skill.
    Run the complete gate from `AGENTS.md` on the merged tree, then push.
    Each workspace ran the gate on its own tree only. The combined gate
-   proves the milestone. Then close the workspace. Confirm the merge and
-   close its pull request as the workspace reference says. Delete its
-   remote branch. Archive the workspace. Mark it closed in the ledger. Do
-   the same for a workspace that the user agrees to abandon.
+   proves the milestone. Then close the workspace and mark it closed in
+   the ledger, as the workspace reference says. Do the same for a
+   workspace that the user agrees to abandon.
 
    | The record says | The answer |
    | --- | --- |
@@ -169,8 +169,8 @@ parallel Codex and Claude sessions. One combined gate verified them.
    before each branch merge, and before the final pull request.
 5. Merge each branch as it finishes. An open finding never blocks the
    merge of a workspace branch. Record it as a follow-up item, as the
-   `plans` skill says. Fix it after the user answers, on a route from the
-   `models` skill. A branch that waits diverges. Its conflicts grow.
+   `plans` skill says. Fix it after the user answers, on a route from
+   "Routes and blocks". A branch that waits diverges. Its conflicts grow.
 6. A High or Medium finding blocks only the work that depends on the
    affected code or contract. A Low finding never blocks. Every open
    finding closes before the final pull request merges, unless the user

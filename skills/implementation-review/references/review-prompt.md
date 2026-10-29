@@ -10,7 +10,7 @@ named area, replace the first paragraph of `## Scope` with the scope that
 the user named. Do not widen the scope for any other reason.
 
 When the branch targets a primary branch instead of `main`, replace
-`origin/main` with that branch throughout. The `parallel-agents` skill
+`origin/main` with that branch throughout. The `delegating` skill
 describes the primary branch.
 
 ---

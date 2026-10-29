@@ -26,7 +26,7 @@ git diff --name-status "$base"..origin/main
 
 Every path in that list is content the merge must keep.
 
-A workspace branch that targets a primary branch, as the `parallel-agents`
+A workspace branch that targets a primary branch, as the `delegating`
 skill describes, merges from that branch and never from `main`. Fetch and
 audit the primary branch in place of `origin/main` above. Only the primary
 branch merges `main`.

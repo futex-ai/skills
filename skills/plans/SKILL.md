@@ -64,7 +64,7 @@ change. [templates/plan.md](templates/plan.md) is the starting point.
 - Break the work into concrete units called milestones. At the end of each
   milestone the product works. Never leave the code base or feature broken.
 - Each milestone has a short summary and a TODO checklist.
-- Before you start a milestone, read the `parallel-agents` skill. Decide
+- Before you start a milestone, read the `delegating` skill. Decide
   whether its work splits across workspaces.
 - When the plan has mockup work, Milestone 1 is the mockup milestone. It
   comes before every other milestone. That includes the documentation
@@ -116,7 +116,7 @@ change. [templates/plan.md](templates/plan.md) is the starting point.
   milestone, then continue with the active TODO.
 - Break a complex TODO into sub-tasks.
 - When a delegated workspace owns a TODO, end the line with `Branch:` and
-  the branch name. The `parallel-agents` skill gives the workspace rules.
+  the branch name. The `delegating` skill gives the workspace rules.
 - Every plan ends with a commit-and-push TODO, a review TODO, a TODO that
   deletes the plan, and a pull request TODO. The review TODO directs a
   reviewer to use the `implementation-review` skill against `origin/main`
@@ -133,14 +133,14 @@ change. [templates/plan.md](templates/plan.md) is the starting point.
   wider fix, and each problem outside the review scope as a follow-up
   item, not as a line in the plan. The section "Follow-up items" says how.
 - An open finding blocks a later milestone only when that milestone depends
-  on the affected code or contract. The `parallel-agents` skill gives the
+  on the affected code or contract. The `delegating` skill gives the
   rule.
 
 ## Implementing a plan
 
 When the plan is approved, the orchestrator session of the workspace
 implements all milestones by delegation. The `models` skill defines each
-action and its route.
+action. The `delegating` skill gives its route.
 
 - Delegate the docs work of a milestone to the `docs implementor`.
   Delegate the UI work to the `ui implementor`. Delegate the other work

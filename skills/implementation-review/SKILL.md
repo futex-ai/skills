@@ -17,7 +17,7 @@ after the report.
   function, a test that covers changed code, or a doc that describes
   changed behaviour.
 - The base of the diff is `origin/main`. When the branch targets a
-  primary branch, as the `parallel-agents` skill describes, the orchestrator
+  primary branch, as the `delegating` skill describes, the orchestrator
   names that branch as the base. Pass the base to `scripts/diff-summary.sh`
   and replace `origin/main` with it in the prompt.
 - A finding must anchor to the scope.
