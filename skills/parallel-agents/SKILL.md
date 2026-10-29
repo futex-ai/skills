@@ -119,9 +119,9 @@ parallel Codex and Claude sessions. One combined gate verified them.
 - The primary branch is the branch of the plan. Every workspace branch
   starts from it and merges from it, never from `main`. Only the primary
   branch merges `main`. Its pull request into `main` is the completion
-  boundary from the `plans` skill. After that merge, update the plan's
-  status as that skill says. Then delete the primary branch and archive
-  its workspace.
+  boundary from the `plans` skill, and it deletes the plan as that skill
+  says. After that merge, delete the primary branch and archive its
+  workspace.
 - A work item is a milestone, or a group of TODOs in one milestone that
   touches its own files. Keep the milestone order from the `plans` skill.
   Keep backend work before UI work. Fan out inside one level.
@@ -149,10 +149,10 @@ parallel Codex and Claude sessions. One combined gate verified them.
    area. Then read the diff yourself and re-run the checks. Confirm
    every ticked TODO and the push, and run the deletion audit from the
    `git-commit` skill. Never accept the report alone.
-2. Send the findings back to the same workspace session as one fix
-   request. Give the numbers, the option that the review-fix rule or the
-   user chose for each, and "do not start the next item". The review-fix
-   rule allows two fix rounds. Then stop and merge.
+2. Send the `fix now` findings back to the same workspace session as
+   one fix request. Give the numbers, the option of each, and "do not
+   start the next item". The review-fix rule allows two fix rounds. Then
+   stop and merge.
 3. Merge the branch into the primary branch with the `git-merge` skill.
    Run the complete gate from `AGENTS.md` on the merged tree, then push.
    Each workspace ran the gate on its own tree only. The combined gate
@@ -168,9 +168,9 @@ parallel Codex and Claude sessions. One combined gate verified them.
 4. Merge `main` into the primary branch before each delegation batch,
    before each branch merge, and before the final pull request.
 5. Merge each branch as it finishes. An open finding never blocks the
-   merge of a workspace branch. List the finding under the plan's review
-   TODO. Fix it in a new workspace after the user answers. A branch that
-   waits diverges. Its conflicts grow.
+   merge of a workspace branch. Record it as a follow-up item, as the
+   `plans` skill says. Fix it in a new workspace after the user answers.
+   A branch that waits diverges. Its conflicts grow.
 6. A High or Medium finding blocks only the work that depends on the
    affected code or contract. A Low finding never blocks. Every open
    finding closes before the final pull request merges, unless the user
@@ -180,7 +180,7 @@ parallel Codex and Claude sessions. One combined gate verified them.
    - a deletion against `origin/main`,
    - a requirement change in a protocol doc,
    - an irreversible or outward-facing action,
-   - a High finding with `Auto-fix: no`,
+   - a High finding with `Action: ask the user`,
    - a choice where any assumption wastes the work.
    Send the other decisions in one numbered message at the next batch
    boundary, in the layout of the `decisions-and-findings` skill.

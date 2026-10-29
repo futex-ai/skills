@@ -65,7 +65,6 @@ merged branch, so its deletion needs no approval. The content of an
 abandoned branch is in no merge, so the abandon is a decision for the
 user.
 
-When the primary branch's pull request into `main` merges, update the
-plan's status as the `plans` skill says. Commit that update on `main` or
-on a new branch, not on the primary branch. Then delete the primary
+The primary branch's pull request into `main` deletes the plan, as the
+`plans` skill says. When that pull request merges, delete the primary
 branch and archive the primary workspace.
