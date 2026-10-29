@@ -7,9 +7,19 @@ permalink keeps the full plan.
 
 ## When
 
-Delete the plan when every other TODO is ticked and the review rounds are
-done. Do it in the last commit before you open the pull request. When the
-work spans more than one pull request, the last one deletes the plan.
+The last two milestone TODOs of a plan delete it and open the pull
+request. Do them when every other milestone TODO is ticked and the review
+rounds are done. The tasks under `## Post-merge follow-up (non-blocking)`
+are not milestone TODOs, so they do not hold back the deletion. Delete the
+plan in the last commit before you open the pull request.
+
+Keep the plan in these cases:
+
+- The user asks for the pull request before the work is complete. Open
+  it, and keep the plan. Delete the plan in the last commit of the work,
+  when the condition above holds.
+- The work spans more than one pull request. Each earlier pull request
+  keeps the plan. The last one deletes it.
 
 ## Steps
 

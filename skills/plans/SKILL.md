@@ -118,9 +118,9 @@ change. [templates/plan.md](templates/plan.md) is the starting point.
   rest, re-review once, and report. Read an older review TODO under the
   same rule, also when it says "without changing the implementation" or
   "fix the `Auto-fix: yes` findings".
-- The last two TODOs delete the plan and open the pull request. Do them
-  when every other milestone TODO is ticked. The section "Deleting the
-  plan" gives the steps, and the `finish-work` skill gives the pull
+- The last two milestone TODOs delete the plan and open the pull request.
+  The section "Deleting the plan" says when they run, also when the user
+  asks for the pull request early. The `finish-work` skill gives the pull
   request. An older plan without these TODOs follows the same rule.
 - Record each open or deferred review finding, each blocked wider fix, and
   each problem outside the review scope as a follow-up item, not as a line
@@ -153,8 +153,6 @@ action and its route.
 - Keep smoke tests that can run before merge as required milestone TODOs.
 - When the pull request opens before the work is complete, replace the
   branch sentence with `[PR #<number>](<url>) is open.`
-- When the work spans more than one pull request, the plan stays until
-  the last one. The last pull request deletes it.
 
 ## Follow-up items
 
@@ -168,11 +166,10 @@ add, fix, or drop an item. List the open items, High severity first, with
 ## Deleting the plan
 
 The pull request of the change deletes its plan, so that a plan does not
-stay on `main` after its work merges. Delete it in the last commit before
-you open the pull request, with the steps in
-[references/deleting-a-plan.md](references/deleting-a-plan.md). Do not
-delete a completed plan that is already on `main` without the user's
-approval.
+stay on `main` after its work merges.
+[references/deleting-a-plan.md](references/deleting-a-plan.md) says when
+the plan goes, when it stays, and the steps. Do not delete a completed
+plan that is already on `main` without the user's approval.
 
 ## Evidence
 

@@ -23,11 +23,11 @@ git diff --diff-filter=D --name-status origin/main
 git diff --name-status origin/main..HEAD   # after the commit
 ```
 
-Stop unless each deletion is dead code under the section below or has the
-user's explicit approval. A feature-wide reduction is functionality. Record
-every removal and its related cleanup in the commit or PR description. For
-dead code, record the search that proved it dead. For functionality,
-record the approval.
+Stop unless each deletion removes no functionality, as the paragraph at the
+top of this skill defines it, or has the user's explicit approval. A
+feature-wide reduction is functionality. Record every removal and its
+related cleanup in the commit or PR description. For dead code, record the
+search that proved it dead. For functionality, record the approval.
 
 Run `git add -A` before you commit so that newly created files are tracked
 and included in the commit, the push, and the review diff. Do not commit

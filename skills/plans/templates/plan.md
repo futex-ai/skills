@@ -1,6 +1,6 @@
 # <Change title>
 
-Status: Active. On branch `<branch>`, no pull request yet. The last commit before the pull request deletes this plan. <When a pull request opens before the work is complete, the branch sentence becomes "[PR #123](<url>) is open.">
+Status: Active. On branch `<branch>`, no pull request yet. The pull request that completes the work deletes this plan, as the `plans` skill says. <When a pull request opens before the work is complete, the branch sentence becomes "[PR #123](<url>) is open.">
 
 <One or two short paragraphs: the problem, the chosen approach, and what the
 change does not cover. Record each user decision with its date, the
@@ -57,8 +57,8 @@ Tags: ui <keep the tag line only for a ui or mockup milestone>
       then apply the review-fix rule: fix the `fix now` findings, record
       follow-up items under `plans/follow-ups/` for the rest, re-review
       once, and report.
-- [ ] Delete this plan in the last commit, as the `plans` skill says under
-      "Deleting the plan".
+- [ ] Delete this plan when the `plans` skill says, under "Deleting the
+      plan".
 - [ ] Open the pull request. Its description gives the decisions and the
       design calls of this plan with their dates, a permalink to this plan,
       and the follow-up items that the change adds.

@@ -86,9 +86,9 @@ name the blocker, and list the checks that did run.
   other milestone TODOs are also ticked. A new plan has unticked
   milestone TODOs, so it is not complete. Open findings that wait for the
   user do not make the implementation incomplete.
-- When the change has a plan, delete it in the last commit before you
-  open the pull request. The `plans` skill gives the steps. Push that
-  commit.
+- When the change has a plan, read "Deleting the plan" in the `plans`
+  skill before you open the pull request. It says when the plan goes,
+  when it stays, and the steps.
 - Open the pull request when the implementation is complete, or when the
   user asks for it. Before that, report the branch. Write the title and
   the description with the `git-commit` skill. The description lists each
@@ -127,7 +127,8 @@ item only when the user asks for it.
 - [ ] Complete gate passed once, or the blocker is explained.
 - [ ] Docs, protocol docs, mockups, READMEs, and plan updated in the same
       change.
-- [ ] Preservation audit clean: each deletion is dead code or approved.
+- [ ] Preservation audit clean: each deletion removes no functionality
+      under the `git-commit` skill, or the user approved it.
 - [ ] Committed with Conventional Commits and pushed; new files tracked.
 - [ ] Post-push review run; `fix now` findings fixed; re-reviewed once.
 - [ ] Each deferred or open finding has a follow-up item.
@@ -135,9 +136,9 @@ item only when the user asks for it.
       under **Checks**.
 - [ ] Options check run over the open findings and the new plan decisions,
       and merged into the report.
-- [ ] When the change has a plan, the plan deleted in the last commit.
-      Its record and the follow-up items are in the pull request
-      description.
+- [ ] When the change has a plan, the plan deleted or kept as the `plans`
+      skill says. The pull request description gives its record and the
+      follow-up items.
 - [ ] Pull request opened once the implementation was complete or the user
       asked.
 - [ ] Final report in STE with fixed, deferred, and open findings, and the
