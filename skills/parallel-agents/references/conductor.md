@@ -25,8 +25,10 @@ when the machine is ready. Inside a Conductor workspace,
 
 ## Agents and models
 
-Take `--agent`, `--model`, and `--effort` from the action of the work
-item in the `models` skill. `conductor model` lists the ids that
+Take `--agent`, `--model`, and `--effort` from the
+`default orchestrator` action in the `models` skill. The first session
+is the orchestrator of the workspace. It delegates the item to the
+action that the prompt names. `conductor model` lists the ids that
 Conductor accepts now.
 
 ## Read, message, and archive

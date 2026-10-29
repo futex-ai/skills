@@ -15,10 +15,11 @@ primary branch. It keeps the ledger under
 
 1. Write the prompt from the workspace prompt template. Save it under
    `.context/<plan-name>/prompts/<item>.md`.
-2. Create the workspace on the primary branch, with the action of the
-   item from the `models` skill. Give it the prompt as its first
-   message. When the tool does not create the branch, create it from the
-   primary branch and name it for the item.
+2. Create the workspace on the primary branch, with the
+   `default orchestrator` action from the `models` skill. Give it the
+   prompt as its first message. The prompt names the action that does
+   the item. When the tool does not create the branch, create it from
+   the primary branch and name it for the item.
 3. Record the workspace, its session, the action, and the branch that
    the agent reports in the ledger.
 

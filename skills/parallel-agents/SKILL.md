@@ -57,11 +57,11 @@ skill, gets "change nothing" as its constraint.
 ## Actions and blocks
 
 Name an action, never a model. The `models` skill defines the agent,
-the model, the effort, and the route of each action. Give each subagent
-and each work item the action that the skill gives for its kind of work.
-The orchestrator runs the `default orchestrator` action. Some actions
-run as a session in your workspace. That session shares your working
-tree, so treat it as a subagent.
+the model, the effort, and the route of each action. Delegate each task
+to the action that the skill gives for its kind of work. The
+orchestrator and each workspace agent run the `default orchestrator`
+action. Some actions run as a session in your workspace. That session
+shares your working tree, so treat it as a subagent.
 
 A block is a refusal, or a rejection that stays after one retry.
 Examples: a usage limit, an input limit, a missing or revoked
