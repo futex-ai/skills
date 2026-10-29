@@ -64,16 +64,16 @@ change. [templates/plan.md](templates/plan.md) is the starting point.
   comes before every other milestone. That includes the documentation
   milestone and repository bootstrap work, such as the workspace skeleton,
   checks, and CI. Mockups find problems in a design better than any other
-  step. A plan has mockup work when it changes anything that a mockup
-  shows.
+  step. A plan has mockup work when it adds or changes a screen, a user
+  flow, or anything else that a mockup shows.
 - Put all mockup work that is known at planning time in the mockup
-  milestone, for every product area of the plan. When the repository has
-  no mockup catalogue tooling yet, the mockup milestone also sets up that
-  tooling.
-- When the mockup milestone is complete, update the design and the TODOs
-  of the plan for each problem that the mockups show. Do this before the
-  next milestone starts. Add a decision when the decision test of the
-  `decisions-and-findings` skill says so.
+  milestone. Include every product area of the plan. When the repository
+  has no mockup catalogue tooling yet, the mockup milestone also sets up
+  that tooling.
+- As the last TODO of the mockup milestone, update the design and the
+  TODOs of the plan. Do this for each problem that the mockups show. Add
+  a decision when the decision test of the `decisions-and-findings` skill
+  says so.
 - The documentation milestone comes directly after the mockup milestone.
   When the plan has no mockup work, the documentation milestone is
   Milestone 1. It updates the relevant documentation and protocol or spec
