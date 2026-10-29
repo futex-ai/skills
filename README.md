@@ -65,14 +65,15 @@ Codex, and with any other agent that reads the
 
 The table shows the stages of a typical feature request and the skills
 that each stage loads. The `models` skill defines each role. The
-orchestrator is the `default orchestrator` action. It runs as the first
-session in the feature's Conductor workspace. It hands each milestone to
-an implementor. It keeps the gate, the review, and the pull request.
+`delegating` skill gives the route of each role. The orchestrator is the
+`default orchestrator` action. It runs as the first session in the
+feature's Conductor workspace. It hands each milestone to an
+implementor. It keeps the gate, the review, and the pull request.
 
 | # | Stage | Runs it | Skills |
 | --- | --- | --- | --- |
-| 0 | Start | User, then orchestrator | `models`. `agents-md` only when the repository's `AGENTS.md` is missing or out of date |
-| 1 | Brainstorm | Orchestrator and the `brainstorming` action | `brainstorming`, `models`, `decisions-and-findings` |
+| 0 | Start | User, then orchestrator | `models`, `delegating`. `agents-md` only when the repository's `AGENTS.md` is missing or out of date |
+| 1 | Brainstorm | Orchestrator and the `brainstorming` action | `brainstorming`, `models`, `delegating`, `decisions-and-findings` |
 | 2 | Plan | Orchestrator | `plans`, `documentation`, `decisions-and-findings`, `implementation-review`, `finish-work`, `git-commit` |
 | 3 | Milestone 1: mockups | `ui implementor` | `mockups`, `product-ui`, `typescript` |
 | 4 | Milestone 2: docs | `docs implementor` | `documentation` |
@@ -80,7 +81,7 @@ an implementor. It keeps the gate, the review, and the pull request.
 | 6 | UI milestones | `ui implementor` | `product-ui`, `typescript`, `shared-types`, `mockups`, `finish-work` |
 | 7 | Verify | Orchestrator | `finish-work`, `deterministic-tests`, `documentation` |
 | 8 | Commit and push | Orchestrator | `git-commit`, `git-merge` |
-| 9 | Review and fix | Review agents, then orchestrator | `implementation-review`, `decisions-and-findings`, `plans`, `git-commit` |
+| 9 | Review and fix | Review agents, then orchestrator | `implementation-review`, `delegating`, `decisions-and-findings`, `plans`, `git-commit` |
 | 10 | Pull request | Orchestrator | `plans`, `git-commit`, `finish-work` |
 | 11 | Final report | Orchestrator | `finish-work`, `decisions-and-findings` |
 | 12 | After the merge | Orchestrator | `finish-work`, `plans` |
