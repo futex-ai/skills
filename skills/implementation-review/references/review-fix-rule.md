@@ -1,6 +1,27 @@
 # Review-fix rule
 
-Rules for applying review findings after the post-push review reports.
+Rules for the findings of the post-push review: which findings the agent
+may fix without the user, when it fixes them, and how it records the rest.
+
+## Outcomes
+
+Each finding ends with one `Action` line:
+
+- `Action: fix now, apply <letter>`. The agent applies the option in this
+  branch, before the merge.
+- `Action: fix after merge, apply <letter>, because <reason>`. The agent
+  records a follow-up item. A later branch applies the option without the
+  user.
+- `Action: ask the user, because <condition>`. The finding waits for the
+  user. The agent records a follow-up item so that the finding is not lost.
+- `Action: fix now, apply <letter>, and fix after merge, apply <letter>,
+  because <reason>`. The agent splits the finding. It applies the direct
+  fix now and records the wider fix as a follow-up item. The section
+  "Split a finding" says when.
+
+The reviewer proposes the outcome. The working agent makes the final call,
+because it knows the purpose of the branch. When the working agent changes
+the proposed outcome, it gives one sentence of reason.
 
 ## Effort
 
@@ -8,7 +29,7 @@ Effort grades one option, not the problem. The `decisions-and-findings`
 skill gives the scale. It counts the code change only, and it gives file
 and line bands for Small, Medium, and Large. The finding's effort is the
 grade of the applied or recommended option. Small and Medium are within
-the auto-fix cap. Large is above it.
+the cap for fixes without the user. Large is above it.
 
 ## Blocked options
 
@@ -26,17 +47,17 @@ An option is blocked when:
   is everything on `origin/main` that is not dead code under the
   predicate in the `git-commit` skill. It includes live code, its tests,
   an API, a doc, a mockup, a plan, a migration, and schema. A deletion of
-  dead code is not blocked.
+  dead code is not blocked. The plan of the change and a follow-up item
+  that the change fixes are not functionality.
 - It deletes, skips, or weakens a test of live code or a gate, or raises
   a time limit.
 - It needs credentials or infrastructure.
 
-## Auto-fix: yes
+## Fixes without the user
 
-After the review reports, fix the findings tagged `Auto-fix: yes, apply
-<letter>` without waiting for the user. The decision test in the
-`decisions-and-findings` skill decides the tag. The reviewer may use
-`Auto-fix: yes` only when no condition of the test holds. For a finding,
+The decision test in the `decisions-and-findings` skill decides whether a
+finding waits for the user. The outcome can be `fix now` or
+`fix after merge` only when no condition of the test holds. For a finding,
 condition 6 holds unless the finding is in one of these categories:
 
 - Product bugs, including edge cases, races, and platform differences.
@@ -65,19 +86,59 @@ condition 6 holds unless the finding is in one of these categories:
   fact or action that the end user needs. When no protocol doc states the
   text, a fix that keeps the meaning stays within the contract. The direct
   fix changes only the words that carry the defect. When the meaning is in
-  doubt, the reviewer tags the finding `Auto-fix: no`.
+  doubt, the outcome is `ask the user`.
 
 The letter names the best-ranked option that is not blocked: a structural
 wider fix, then a detection wider fix, then the direct fix. The ranking is
-under "Wider fixes and follow-ups". So a Small or Medium wider fix is
-applied before a direct fix, and a blocked wider fix does not block the
-tag.
+under "Wider fixes and follow-ups". So a Small or Medium wider fix ranks
+before a direct fix, and a blocked wider fix does not block the fix. The
+agent can still split the finding and apply the wider fix after the merge.
 
-## Auto-fix: no
+## Fix now or after merge
 
-The reviewer tags a finding `Auto-fix: no` and the agent asks the user
-when a condition of the decision test holds. For a finding, the
-conditions work as follows:
+When the agent may fix a finding, it decides when. The outcome is
+`fix now` when one of these holds:
+
+1. The severity is High.
+2. The fix gets much harder after the merge. Examples are a migration, a
+   stored data format, or a public API or message that the diff adds.
+3. The problem breaks a gate or a test, or the diff adds or changes a
+   flaky test.
+4. A doc contradicts the changed code.
+
+Otherwise, the outcome is `fix now` when the fix is Small and stays in the
+files that the diff changes. A follow-up item for such a fix costs more
+than the fix.
+
+For every other finding, the agent decides. It weighs these questions:
+
+- Does the fix serve the purpose of the branch?
+- Does the fix reach files or areas outside the diff?
+- Do other open branches need the same fix? Then one branch after the
+  merge reaches all of them.
+- Does the end user meet the problem before a later branch can fix it?
+
+Give each `fix after merge` outcome one sentence of reason. The pull
+request description lists each one, so that the user can bring it back
+into the branch before the merge.
+
+## Split a finding
+
+When the named option is a wider fix and the direct fix is not blocked,
+the agent can split the finding. It applies the direct fix now, and it
+records the wider fix as a follow-up item with `fix after merge`. A later
+branch applies the wider fix without the user.
+
+The agent decides. It asks the questions of the section above about the
+wider fix. A split fits when the wider fix does not serve the purpose of
+the branch, reaches files or areas outside the diff, or serves other open
+branches too. A Small wider fix that stays in the files of the diff goes in
+with the direct fix. Give each split one sentence of reason.
+
+## Ask the user
+
+The outcome is `ask the user` when a condition of the decision test
+holds. For a finding, the conditions work as follows:
 
 - Condition 3 holds when every option is blocked.
 - Condition 3 also holds when the best option on the merits is blocked
@@ -117,21 +178,22 @@ conditions work as follows:
   expires.
 - A blocked wider fix is not applied in the fix round. The direct fix is
   applied when it is not blocked. When the finding is fixed, the agent
-  lists the blocked wider fix as a follow-up: one line per class under
-  **Open** in the final message and under the plan's review TODO. The line
+  records the blocked wider fix as one follow-up item per class. The item
   gives the wider fix, its effort, the finding numbers it covers, and the
   previous examples. When the finding stays open, its wider fix stays one
-  of its options, and it gets no follow-up line.
-- Count the occurrences of the class: the findings of this review that
-  share the wider fix, plus the previous examples that the reviewer cited.
-  When the count is two or more, the agent raises the wider fix as a
-  numbered item with the source Review instead of a follow-up line.
+  of its options, and it gets no item of its own.
+- A wider fix that the agent splits off gets the same item, one per class,
+  with `fix after merge`. A later branch applies it without the user.
+- Count the occurrences of the class of a blocked wider fix: the findings
+  of this review that share the wider fix, plus the previous examples that
+  the reviewer cited. When the count is two or more, the agent also raises
+  the wider fix as a numbered item with the source Review.
 - An effort grade is an estimate. If an applied option grows past twice
   the Medium band during the fix, more than ten code files or 300 code
   lines, or needs a new dependency, a migration, a change on both sides of
   the backend and frontend boundary, a new mockup, or a new protocol
   section, revert it. Apply the next smaller option that is not blocked,
-  or leave the finding open and report it.
+  or change the outcome to `ask the user` and report it.
 
 ## Outside the scope
 
@@ -139,9 +201,10 @@ The scope is the diff, unless the user explicitly asked for a wider review.
 The reviewer lists each problem outside the scope under `Outside the scope`,
 one line each, without a number or the item layout. These problems are
 not findings. Do not fix them in this branch, so that one fix in a separate
-branch reaches every open branch. An unrelated flaky test is such a problem.
-Its line gives the test name, the failure text, the rerun outcome, and the
-suspected source, as the `deterministic-tests` skill requires.
+branch reaches every open branch. Record each one as a follow-up item. An
+unrelated flaky test is such a problem. Its line gives the test name, the
+failure text, the rerun outcome, and the suspected source, as the
+`deterministic-tests` skill requires.
 
 ## Fix rounds
 
@@ -151,37 +214,41 @@ suspected source, as the `deterministic-tests` skill requires.
   in the scope is removed. The check corrects a wrong severity or category
   in place. A real problem outside the scope joins the `Outside the scope`
   list. The fix round applies confirmed findings only.
-- Run the options check over the confirmed `Auto-fix: no` findings beside
+- Run the options check over the confirmed `ask the user` findings beside
   the first fix round, in the same checkout. It adds options and can
-  change a recommendation. It does not change an `Auto-fix` tag, and an
+  change a recommendation. It does not change an `Action` line, and an
   open finding stays open.
-- After the validity check reports, apply the option that each confirmed
-  `Auto-fix: yes` tag names. Run the checks, commit, and push. Then re-run
-  the review once on the fix.
+- After the validity check reports, make the final call on each outcome.
+  Apply the option that each confirmed `fix now` line names. Record a
+  follow-up item for each `fix after merge` finding, each `ask the user`
+  finding, each blocked or split-off wider fix of a fixed finding, and
+  each problem outside the scope. The `plans` skill gives the layout of an
+  item. Run the checks, commit, and push. Then re-run the review once on
+  the fix.
 - Run the validity check on the new findings. Fix any confirmed new
-  `Auto-fix: yes` findings once more, then stop. The `finish-work` skill
-  gives the next steps: the pull request and the report. Do not start a
-  third fix round without the user.
+  `fix now` findings once more, and record the other new findings as
+  follow-up items. Then stop. The `finish-work` skill gives the next steps:
+  the pull request and the report. Do not start a third fix round without
+  the user.
+- When the user answers an `ask the user` finding and the branch applies
+  the answer, delete its follow-up item in the same commit.
 
 ## Reporting
 
-- List the auto-fixed findings (number, severity, plain explanation, the
-  applied option, what changed, commit) separately from the findings that
-  need a decision, each with a clear recommendation. Order both lists by
-  severity, High first. Use the `decisions-and-findings` skill.
+- Keep three lists: the fixed findings, the deferred findings, and the
+  findings that need a decision. Order each list by severity, High first.
+  Use the `decisions-and-findings` skill.
+  - For a fixed finding, give its number, its severity, a plain
+    explanation, the applied option, what changed, and the commit.
+  - For a deferred finding or a split-off wider fix, give the finding
+    number, its severity, the reason, and the follow-up item.
+  - For a finding that needs a decision, give a clear recommendation.
 - Name the fixed finding in its commit message.
 - Give each open finding with the options check merged in. Its new
   options keep their letters. When the recommendations differ, give both.
 - Name each finding that the validity check removed in one line under
   **Checks**. Give its number, its title, and the check that failed.
-- Add each open finding as one line under the plan's review TODO so that it
-  is not lost when the session ends. Use the shape that the `plans` skill
-  gives.
-- List each follow-up under **Open** in the final message, one line per
-  class. When a plan exists, add each one as one line under the plan's
-  review TODO too.
-- List the `Outside the scope` problems under **Open** in the final message,
-  for a separate branch. When a plan exists, add each one as one line under
-  the plan's review TODO too.
+- List under **Open** the follow-up items of the blocked wider fixes and of
+  the problems outside the scope, one line each.
 - Keep the review report and any evidence under the git-ignored `.context/`
   directory, not in the repository.

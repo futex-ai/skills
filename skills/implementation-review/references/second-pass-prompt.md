@@ -7,8 +7,8 @@ fresh read-only context, together with the items.
 
 In the review flow, the second pass has two parts. The validity check in
 [validity-prompt.md](validity-prompt.md) runs first, over every finding.
-This options check runs second, over the confirmed findings tagged
-`Auto-fix: no`. Run it beside the fix round, because the two touch
+This options check runs second, over the confirmed findings with
+`Action: ask the user`. Run it beside the fix round, because the two touch
 different findings. Give it its own checkout of the reviewed commit, for
 example a git worktree. Then the options check does not read a file while
 the fix round writes it.
@@ -24,7 +24,7 @@ before you commit the plan. No fix round runs beside it. Give it the
 decisions and the path of the plan. Replace the second sentence of the
 prompt with the path of the plan.
 
-The options check does not change an `Auto-fix` tag. An open item stays
+The options check does not change an `Action` line. An open item stays
 open, also when the options check finds an option that is not blocked.
 The user sees the result of each pass and decides.
 
@@ -83,6 +83,6 @@ Return one block for each item, in the order given:
 ```
 
 Keep the number, the title, the severity, the recorded letters, and the
-`Auto-fix` tag of each item. Do not add an item. Put each new problem
+`Action` line of each item. Do not add an item. Put each new problem
 in one line under `New problems` at the end. Give its path, one sentence,
 and whether it is inside the scope.
