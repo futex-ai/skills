@@ -65,20 +65,19 @@ name the blocker, and list the checks that did run.
   the `implementation-review` skill. The review itself is read-only. Its
   findings stay in the diff unless the user explicitly asked for a wider
   review.
-- Run the validity check of the `implementation-review` skill over every
-  finding before each fix round. A finding that is not real or not in the
-  scope is removed. The check corrects a wrong severity or category in
-  place.
+- Record each round in the findings file of the branch, as the
+  `implementation-review` skill says.
+- Before each fix round, run the finding checks of the
+  `implementation-review` skill: one check for each new finding. Each
+  check confirms its finding, finds its links, and checks its options. A
+  finding that is not real or not in the scope is removed. The check
+  corrects a wrong severity or category in place.
 - Apply the review-fix rule. Make the final call on the outcome of each
-  confirmed finding. Fix the findings with `Action: fix now`, with the
-  option that each names. Record a follow-up item for each other finding
-  and for each wider fix that you split off, as the `plans` skill says.
-  Run the checks. Commit and push. Re-review once. Then stop the fix
-  rounds and go on to step 6.
-- Run the options check of the `implementation-review` skill over the
-  confirmed findings with `Action: ask the user`. It runs beside the fix
-  round, in its own checkout. Merge its options into the findings before
-  you report them.
+  confirmed finding, with the merged options. Fix the findings with
+  `Action: fix now`, with the option that each names. Record a follow-up
+  item for each other finding and for each wider fix that you split off,
+  as the `plans` skill says. Run the checks. Commit and push. Re-review
+  once. Then stop the fix rounds and go on to step 6.
 
 ## 6. Pull request
 
@@ -133,10 +132,10 @@ item only when the user asks for it.
 - [ ] Committed with Conventional Commits and pushed; new files tracked.
 - [ ] Post-push review run; `fix now` findings fixed; re-reviewed once.
 - [ ] Each deferred or open finding has a follow-up item.
-- [ ] Validity check run before each fix round. Removed findings named
-      under **Checks**.
-- [ ] Options check run over the open findings and the new plan decisions,
-      and merged into the report.
+- [ ] Finding checks run before each fix round, one for each new finding.
+      Removed findings named under **Checks**.
+- [ ] Findings file of the branch up to date, with each check merged in.
+- [ ] Options check run over the new plan decisions.
 - [ ] When the change has a plan, the plan deleted or kept as the `plans`
       skill says. The pull request description gives its record and the
       follow-up items.
