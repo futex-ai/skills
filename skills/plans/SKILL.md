@@ -1,6 +1,6 @@
 ---
 name: plans
-description: Use when the user asks for a plan, before you create, edit, or tick a plan file under plans/, when you discover a TODO or blocked work during implementation, when a milestone has UI or mockup work, when you would paste command output or a review report into a plan, when a review finding stays open, and when the pull request for a plan merges.
+description: Use when the user asks for a plan, before you create, edit, or tick a plan file under plans/, when you add a decision to a plan, when you discover a TODO or blocked work during implementation, when a milestone has UI or mockup work, when you would paste command output or a review report into a plan, when a review finding stays open, when you are about to open a pull request for a plan, and when a pull request for a plan opens or merges.
 ---
 
 # Plans
@@ -13,6 +13,13 @@ change. [templates/plan.md](templates/plan.md) is the starting point.
 
 - Create a plan only with the user's consent, and only after the relevant
   spec or protocol docs give enough context to plan the work safely.
+- A new plan is a plan-only change. Write the plan. Run the options check
+  over its decisions, as the section below says. Commit it. Push the
+  branch. Then report, as the `finish-work` skill says.
+- The status paragraph names the branch and says that no pull request
+  exists yet. Do not open a pull request to fill the status paragraph.
+  The pull request opens when the implementation is complete, or when
+  the user asks for it. See the `finish-work` skill.
 - One plan file per change, named after the change in concise kebab-case,
   for example `tool-request-error-contract-alignment.md`. Do not combine
   unrelated work in one plan.
@@ -27,6 +34,26 @@ change. [templates/plan.md](templates/plan.md) is the starting point.
   alternatives, the reason, and the date. The protocol doc keeps only the
   decision in force. History, such as what the code did before the change,
   belongs in the plan, not in a protocol doc.
+- The plan also records each design call that you make yourself: the
+  choice, the reason, and the date. The `decisions-and-findings` skill
+  says which questions are design calls. Put each call in the design of
+  the change, marked as your call.
+
+## Decisions
+
+- Write each decision in the layout of the `decisions-and-findings`
+  skill. Its options rule applies. Ask the two questions. Then name each
+  condition that every option keeps.
+- When you add a decision to a plan, run the options check of the
+  `implementation-review` skill over it. Do this before you report the
+  decision. The check is a fresh read-only context with the second-pass
+  prompt of that skill, the decisions, and the path of the plan. It
+  checks that the options are complete and that the recommendation is
+  the best one.
+- Merge the result of the check into the plan before you commit. A new
+  option keeps the letter that the check gave it. When the recommendation
+  changed, the **Recommendation** line gives the new letter and names the
+  first one. Save the check's report under `.context/<plan-name>/`.
 
 ## Milestones
 
@@ -75,12 +102,17 @@ change. [templates/plan.md](templates/plan.md) is the starting point.
 - Break a complex TODO into sub-tasks.
 - When a delegated workspace owns a TODO, end the line with `Branch:` and
   the branch name. The `parallel-agents` skill gives the workspace rules.
-- Every plan ends with a commit-and-push TODO followed by a review TODO. The
-  review TODO directs a reviewer to use the `implementation-review` skill
-  against `origin/main` after the push, report findings, and then apply the
-  review-fix rule: fix the `Auto-fix: yes` findings, re-review once, and
-  report the rest. Read an older review TODO that says "without changing
-  the implementation" under the same rule.
+- Every plan ends with a commit-and-push TODO, a review TODO, and a pull
+  request TODO. The review TODO directs a reviewer to use the
+  `implementation-review` skill against `origin/main` after the push. The
+  reviewer reports the findings. Then the review-fix rule applies: fix
+  the `Auto-fix: yes` findings, re-review once, and report the rest. Read
+  an older review TODO that says "without changing the implementation"
+  under the same rule.
+- The pull request TODO is the last milestone TODO. Do it when every other
+  milestone TODO is ticked, or when the user asks for the pull request.
+  Then put the link in the status paragraph. The `finish-work` skill
+  gives the steps. An older plan without this TODO follows the same rule.
 - Add each open review finding as one line under the review TODO so that it
   is not lost when the session ends. List the lines by severity, High
   first. Each line gives the number, title, severity, the effort of the
@@ -106,9 +138,13 @@ change. [templates/plan.md](templates/plan.md) is the starting point.
   deployed change, in a `## Post-merge follow-up (non-blocking)` section
   outside the milestones. It does not affect completion.
 - Keep smoke tests that can run before merge as required milestone TODOs.
+- When the plan's own pull request opens, replace the branch sentence
+  with `[PR #<number>](<url>) is open.`
 - When the PR merges, change the status paragraph to start with
   `Status: Completed. [PR #<number>](<url>) merged on <YYYY-MM-DD>.` and
   keep any open review findings or follow-up owners in that paragraph.
+- That status update is a complete change on its own. Put it on a
+  branch, push it, and open its pull request.
 
 ## Evidence
 
@@ -118,8 +154,8 @@ change. [templates/plan.md](templates/plan.md) is the starting point.
   `.context/<plan-name>/`, which Git ignores. Under the related milestone,
   add one line that names the file.
 - A plan keeps only its summary, milestones, TODOs, contracts, decisions,
-  user approvals, and short review summaries. Agents read the whole plan, so
-  logs in a plan slow every session.
+  design calls, user approvals, and short review summaries. Agents read the
+  whole plan, so logs in a plan slow every session.
 
 ## Live and history
 

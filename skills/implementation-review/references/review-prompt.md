@@ -95,8 +95,11 @@ number them in that order. Use the finding layout in the
 - State the problem: what is wrong, in plain words and defined terms.
 - State the impact of making no change.
 - Give solution options labelled A, B, and so on, from the smallest effort
-  to the largest. Always consider a wider fix: a rule, test, lint, guard,
-  abstraction, or architectural change that prevents the class of issue.
+  to the largest. Before you write them, ask two questions. Are these the
+  only options? What would you build if the current code did not exist?
+  Add each new option that the questions give. Always consider a wider
+  fix: a rule, test, lint, guard, abstraction, or architectural change
+  that prevents the class of issue.
   Prefer a structural fix that removes the wrong case, such as a helper or
   an abstraction that every call site uses, a default that is right, a
   marker that shared code honours, or a type that cannot hold the wrong
@@ -158,6 +161,7 @@ not blocked, for a finding about:
 - a flaky test that the diff adds or changes
 - dead code
 - a repository-rule violation such as file size, lint, or layout
+- a copy defect whose fix keeps the meaning
 
 The letter names the best-ranked option that is not blocked: a structural
 wider fix, then a detection wider fix, then the direct fix. A blocked wider
@@ -193,6 +197,14 @@ fallback, or the off branch of a feature flag. Its deletion is blocked.
 When a condition is in doubt, give the finding the category code
 structure and tag it `Auto-fix: no`.
 
+A copy defect is user-facing text that has a typo or breaks a rule under
+`## Copy` in the `product-ui` skill. Give it the category UX wording, not
+repository rule. The fix keeps the meaning when it adds no fact or action
+and removes no fact or action that the end user needs. When no protocol
+doc states the text, a fix that keeps the meaning stays within the
+contract. The direct fix changes only the words that carry the defect.
+When the meaning is in doubt, tag the finding `Auto-fix: no`.
+
 `Auto-fix: no` for every finding that needs a decision:
 
 - Every option is blocked.
@@ -202,8 +214,10 @@ structure and tag it `Auto-fix: no`.
 - The finding is a slow, custom, or low-value test, gate, lint, or check in
   the scope. Ask whether to fix it or remove it, and state what it protects
   and how long it runs.
-- The finding is about missing tests, performance, code structure, UX
-  wording, or process.
+- The finding is about missing tests, performance, code structure, or
+  process.
+- The finding is any other UX wording. Examples are a choice of tone or
+  voice that no copy rule settles, and a choice between two correct texts.
 
 Protocol docs hold the requirements and the decisions in force for an area:
 observable behaviour at a boundary, and the reason for each choice. They do
@@ -225,7 +239,9 @@ Apply these rules to a docs or spec finding:
   side is right.
 - A behaviour at the boundary that the diff adds and no requirement covers
   is a spec gap. Report it as one finding with `Auto-fix: no`, because the
-  user reviews each new requirement.
+  user reviews each new requirement. A detail that an existing requirement
+  settles is not a gap, also when the requirement does not spell the
+  detail out.
 - When a protocol doc in the scope names source files, functions, or
   internal mechanics, or records history, the fix moves that content to
   its home: the crate README for entry points, the plan for history, the

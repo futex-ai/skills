@@ -43,6 +43,36 @@ after the report.
    risk.
 4. Save the full report under `.context/<plan-name>/`, not in the
    repository.
+5. Run the validity check, the first part of the second pass. It is a
+   fresh read-only context. Give it every finding and the prompt in
+   [references/validity-prompt.md](references/validity-prompt.md). It
+   confirms that each finding is real. Give it its own checkout of the
+   reviewed commit, for example a git worktree. The fix round waits for
+   its verdicts. Remove each finding with a Removed verdict from the
+   report. A finding outside the scope goes to the `Outside the scope`
+   list. A corrected severity or category replaces the finding's line,
+   and the finding keeps its number. When the corrected category always
+   waits for the user, the tag becomes `Auto-fix: no`. Name each removed
+   finding in one line under **Checks** in the final message. Give its
+   number, its title, and the check that failed.
+6. Run the options check, the second part. It is a fresh read-only context.
+   Give it the confirmed findings tagged `Auto-fix: no` and the prompt in
+   [references/second-pass-prompt.md](references/second-pass-prompt.md).
+   It checks that the options are complete and that the recommendation is
+   the best one. Run it beside the fix round, in the same checkout. When a
+   second checkout is not possible, run it before the fix round.
+7. Merge the options check into the findings. A new option keeps the
+   letter that the options check gave it. The source of a dropped
+   condition goes into the text of the option that drops it. When the
+   recommendation changed, the **Recommendation** line gives the new
+   letter and its reason. It then names the letter that the first pass
+   recommended. The **Wider fix** line takes the new letter in the same
+   way. The `Auto-fix` tag does not change, and an open finding stays
+   open. A new problem inside the scope goes into the review focus of the
+   re-review. When no re-review runs, it goes under **Open**. A new
+   problem outside the scope joins the `Outside the scope` list. A kept
+   condition and a place that is not a real choice stay in the saved
+   options report. Save both second-pass reports beside the review report.
 
 ## Finding format
 
@@ -64,8 +94,11 @@ user.
 - The problem: what is wrong, in plain words and defined terms.
 - The impact of making no change.
 - Solution options labelled A, B, and so on, from the smallest effort to
-  the largest. Always consider a wider fix: a rule, test, lint, guard,
-  abstraction, or architectural change that prevents the class of issue.
+  the largest. Before you write them, ask two questions. Are these the
+  only options? What would you build if the current code did not exist?
+  Add each new option that the questions give. Always consider a wider
+  fix: a rule, test, lint, guard, abstraction, or architectural change
+  that prevents the class of issue.
   Prefer a structural fix that removes the wrong case, such as a helper,
   an abstraction, a marker, a default, or a type, over a detection fix
   that catches it, such as a test for the class, a lint, or a guard.
@@ -116,6 +149,7 @@ The full rule with every condition is in
     in the `deterministic-tests` skill
   - dead code under the predicate in the `git-commit` skill
   - repository-rule violations such as file size, lint, and layout
+  - copy defects whose fix keeps the meaning
 - The letter names the best-ranked option that is not blocked: a
   structural wider fix, then a detection wider fix, then the direct fix.
   A blocked wider fix does not block the tag.
@@ -128,32 +162,44 @@ The full rule with every condition is in
   class is already in force, the `documentation` skill, so the reviewer
   proposes no other wider fix for it. The review-fix rule says when the doc
   side changes without the user.
+- A copy defect is user-facing text that has a typo or breaks a rule
+  under `## Copy` in the `product-ui` skill. Its category is UX wording,
+  not repository rule. The fix keeps the meaning when it adds no fact or
+  action and removes no fact or action that the end user needs. When no
+  protocol doc states the text, a fix that keeps the meaning stays within
+  the contract. The direct fix changes only the words that carry the
+  defect. When the meaning is in doubt, the reviewer tags the finding
+  `Auto-fix: no`.
 - `Auto-fix: no` when every option is blocked, when the best option on
   the merits is blocked and is not a wider fix, when the options have real
   trade-offs and no option is clearly best, or when the finding is a slow,
   custom, or low-value test, gate, lint, or check. Findings about missing
-  tests, performance, code structure, UX wording, and process always wait
-  for the user.
+  tests, performance, code structure, and process always wait for the
+  user. Any other UX wording waits too, such as a choice of tone or voice
+  that no copy rule settles.
 - An `Outside the scope` problem is not a finding. Do not fix it in this
   branch. Report it for a separate branch.
 
 ## After the review
 
-1. Fix the `Auto-fix: yes` findings without waiting for the user. Apply the
-   option that the tag names. If the change grows past twice the Medium
-   band while you work, or needs a Large trigger such as a dependency or a
-   migration, revert it. Apply the next smaller option that is not
-   blocked, or leave the finding open. Leave the `Outside the scope`
-   problems alone.
+1. Fix the confirmed `Auto-fix: yes` findings without waiting for the
+   user. Apply the option that the tag names. If the change grows past
+   twice the Medium band while you work, or needs a Large trigger such as
+   a dependency or a migration, revert it. Apply the next smaller option
+   that is not blocked, or leave the finding open. Leave the
+   `Outside the scope` problems alone.
 2. Run the checks, commit, push, and run the review once more on the fix.
    Name each fixed finding in its commit message.
-3. Fix any new `Auto-fix: yes` findings once more, then stop. Do not start a
+3. Run the validity check on the new findings. Fix any confirmed new
+   `Auto-fix: yes` findings once more, then stop. The `finish-work` skill
+   gives the next steps: the pull request and the report. Do not start a
    third fix round without the user.
-4. In the final message, list the auto-fixed findings (number, severity,
-   plain explanation, the applied option, what changed, commit) separately
-   from the findings that need a decision, each with a clear
-   recommendation. Order both lists by severity, High first. Use the
-   `decisions-and-findings` skill.
+4. In the final message, list the auto-fixed findings separately from the
+   findings that need a decision. Give each auto-fixed finding its number,
+   its severity, a plain explanation, the applied option, what changed,
+   and the commit. Give each open finding a clear recommendation, with the
+   second pass merged in. Order both lists by severity, High first. Use
+   the `decisions-and-findings` skill.
 5. List each blocked wider fix of a fixed finding as a follow-up under
    **Open**, one line per class: the wider fix, its effort, the finding
    numbers it covers, and the previous examples. An open finding keeps its

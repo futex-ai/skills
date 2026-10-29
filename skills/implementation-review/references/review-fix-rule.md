@@ -56,6 +56,14 @@ when at least one option is not blocked, for findings in these categories:
   `git-commit` skill. Code that the product runs rarely, such as an error
   path or a fallback, is functionality and waits for the user.
 - Repository-rule violations such as file size, lint, and layout.
+- Copy defects whose fix keeps the meaning: user-facing text that has a
+  typo or breaks a rule under `## Copy` in the `product-ui` skill. The
+  reviewer gives the finding the category UX wording, not repository rule.
+  The fix keeps the meaning when it adds no fact or action and removes no
+  fact or action that the end user needs. When no protocol doc states the
+  text, a fix that keeps the meaning stays within the contract. The direct
+  fix changes only the words that carry the defect. When the meaning is in
+  doubt, the reviewer tags the finding `Auto-fix: no`.
 
 The letter names the best-ranked option that is not blocked: a structural
 wider fix, then a detection wider fix, then the direct fix. The ranking is
@@ -76,8 +84,10 @@ when:
 - The finding is a slow, custom, or low-value test, gate, lint, or check.
   Ask whether to fix or remove it, and state what it protects and how long
   it runs.
-- The finding is about missing tests, performance, code structure, UX
-  wording, or process.
+- The finding is about missing tests, performance, code structure, or
+  process.
+- The finding is any other UX wording. Examples are a choice of tone or
+  voice that no copy rule settles, and a choice between two correct texts.
 
 ## Wider fixes and follow-ups
 
@@ -130,10 +140,22 @@ suspected source, as the `deterministic-tests` skill requires.
 ## Fix rounds
 
 - Keep the review itself read-only.
-- After it reports, apply the option that each `Auto-fix: yes` tag names,
-  run the checks, commit, push, and re-run the review once on the fix.
-- Fix any new `Auto-fix: yes` findings once more, then stop and report. Do
-  not start a third fix round without the user.
+- Run the validity check over every finding before each fix round, in its
+  own checkout of the reviewed commit. A finding that is not real or not
+  in the scope is removed. The check corrects a wrong severity or category
+  in place. A real problem outside the scope joins the `Outside the scope`
+  list. The fix round applies confirmed findings only.
+- Run the options check over the confirmed `Auto-fix: no` findings beside
+  the first fix round, in the same checkout. It adds options and can
+  change a recommendation. It does not change an `Auto-fix` tag, and an
+  open finding stays open.
+- After the validity check reports, apply the option that each confirmed
+  `Auto-fix: yes` tag names. Run the checks, commit, and push. Then re-run
+  the review once on the fix.
+- Run the validity check on the new findings. Fix any confirmed new
+  `Auto-fix: yes` findings once more, then stop. The `finish-work` skill
+  gives the next steps: the pull request and the report. Do not start a
+  third fix round without the user.
 
 ## Reporting
 
@@ -142,6 +164,10 @@ suspected source, as the `deterministic-tests` skill requires.
   need a decision, each with a clear recommendation. Order both lists by
   severity, High first. Use the `decisions-and-findings` skill.
 - Name the fixed finding in its commit message.
+- Give each open finding with the options check merged in. Its new
+  options keep their letters. When the recommendations differ, give both.
+- Name each finding that the validity check removed in one line under
+  **Checks**. Give its number, its title, and the check that failed.
 - Add each open finding as one line under the plan's review TODO so that it
   is not lost when the session ends. Use the shape that the `plans` skill
   gives.

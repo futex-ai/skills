@@ -70,6 +70,10 @@ between a real and a fake clock."
   `scripts/`. Link each file by its relative path. The check confirms that
   it exists.
 - Write in Simplified Technical English, as the always-on rules say.
+- In a list, each item names its subject. A pronoun points to the lead-in
+  sentence of the list only, never to another item.
+- When a reference prompt returns verdict lines or slots, say in the skill
+  what the agent does with each one.
 - Name another skill in backticks, as in "the `git-commit` skill". Do not
   use an `@` link. It loads the file at once, before the moment.
 - Give no repository-specific paths, commands, or crate names. Say "the
@@ -143,4 +147,8 @@ needs one to check against.
 - [ ] Every excuse table row quotes a recorded case.
 - [ ] Every recorded case was walked through with the final text.
 - [ ] `SKILL.md` is near 150 lines. Detail is under `references/`.
+- [ ] When the text adds a kind of record, every list that says what an
+      artifact holds names it.
+- [ ] A rule restated from another skill says what the source says, or
+      points to the source.
 - [ ] The README row exists. The repository check and `tests/run.sh` pass.

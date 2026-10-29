@@ -1,6 +1,6 @@
 ---
 name: finish-work
-description: Use before you say that work is complete or done, before you commit or push, when you decide which tests, checks, or gates to run, when a gate or a test suite fails or a run was partial, when you add a feature that needs a smoke test, and when the change that you finish is documentation-only or plan-only.
+description: Use before you say that work is complete or done, before you commit, push, or open a pull request, when you decide which tests, checks, or gates to run, when a gate or a test suite fails or a run was partial, when you add a feature that needs a smoke test, and when the change that you finish is documentation-only or plan-only.
 ---
 
 # Finish work
@@ -35,7 +35,8 @@ run.
   only under the flaky-test rule in the `deterministic-tests` skill.
 - Documentation-only or plan-only changes, including initial plan creation,
   do not require the gate. Validate the changed Markdown and review the diff
-  instead.
+  instead. For a plan with a new decision, run the options check over it,
+  as the `plans` skill says.
 
 ## 3. Keep the spec aligned
 
@@ -55,6 +56,8 @@ run.
   tracked, and write a Conventional Commits message. Then push the branch.
 - If the branch needs a merge or rebase first, follow the `git-merge`
   skill.
+- A new plan gets no pull request in this step. Step 6 says when it
+  opens. See the `plans` skill.
 
 ## 5. Review
 
@@ -63,16 +66,38 @@ run.
   branch against that branch instead. The review itself is read-only. Its
   findings stay in the diff unless the user explicitly asked for a wider
   review.
-- Apply the review-fix rule: fix only the findings tagged `Auto-fix: yes`,
-  with the option that each tag names, run the checks, commit, push,
-  re-review once, then stop and report.
+- Run the validity check of the `implementation-review` skill over every
+  finding before each fix round. A finding that is not real or not in the
+  scope is removed. The check corrects a wrong severity or category in
+  place.
+- Apply the review-fix rule. Fix only the confirmed findings tagged
+  `Auto-fix: yes`, with the option that each tag names. Run the checks.
+  Commit and push. Re-review once. Then stop the fix rounds and go on to
+  step 6.
+- Run the options check of the `implementation-review` skill over the
+  confirmed findings tagged `Auto-fix: no`. It runs beside the fix round,
+  in its own checkout. Merge its options into the findings before you
+  report them.
 
-## 6. Report
+## 6. Pull request
+
+- The implementation is complete when steps 1 to 5 are done. When the
+  change has a plan, the implementation is complete only when the plan's
+  other milestone TODOs are also ticked. A new plan has unticked
+  milestone TODOs, so it is not complete. Open findings that wait for the
+  user do not make the implementation incomplete.
+- Open the pull request when the implementation is complete, or when the
+  user asks for it. Before that, report the branch. Write the title and
+  the description with the `git-commit` skill.
+- When the change has an active plan, put the link in its status
+  paragraph. Commit and push that edit. See the `plans` skill.
+
+## 7. Report
 
 Write the final message in Simplified Technical English, with the layout
 and labels in the `decisions-and-findings` skill. Include:
 
-- What changed, and the commit or PR.
+- What changed, the commit, and the branch or the pull request.
 - The checks that ran and their results. Name any check that was skipped or
   could not run, and why.
 - Auto-fixed review findings, separately from the findings that need a
@@ -94,4 +119,11 @@ and labels in the `decisions-and-findings` skill. Include:
 - [ ] Preservation audit clean: each deletion is dead code or approved.
 - [ ] Committed with Conventional Commits and pushed; new files tracked.
 - [ ] Post-push review run; `Auto-fix: yes` findings fixed; re-reviewed once.
+- [ ] Validity check run before each fix round. Removed findings named
+      under **Checks**.
+- [ ] Options check run over the open findings and the new plan decisions,
+      and merged into the report.
+- [ ] Pull request opened once the implementation was complete or the user
+      asked. When the change has an active plan, its link is in the status
+      paragraph.
 - [ ] Final report in STE with fixed and open findings.
