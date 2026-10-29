@@ -60,26 +60,25 @@ Name an action, never a model. The `models` skill defines the agent,
 the model, the effort, and the route of each action. Delegate each task
 to the action that the skill gives for its kind of work. The
 orchestrator and each workspace agent run the `default orchestrator`
-action. Some actions run as a session in your workspace. That session
-shares your working tree, so treat it as a subagent.
+action. An action of another agent runs as a session in your workspace.
+That session shares your working tree, so treat it as a subagent.
 
 A block is a refusal, or a rejection that stays after one retry.
-Examples: a usage limit, an input limit, a missing or revoked
-credential, or a rejected model id. When an action's model blocks a
-request, send the same request to the fallback model that the `models`
-skill gives. When every fallback blocks it, or the skill gives none,
-stop and ask the user, with the refusal text verbatim.
+Examples: a usage limit, an input limit, or a missing or revoked
+credential. A model id that `conductor model` does not list is a stale
+table instead, as the `models` skill says. When an action's model
+blocks a request, ask the user, with the refusal text verbatim. Only
+the user can override the action, for one task.
 
-When a delegate's model blocks during an item, give the item to the
-fallback model in the same workspace. Give it the prompt and the diff so
-far. Do not rewrite the request to hide what it does, and do not skip
-the step.
+A blocked item stays in its workspace, and its next delegate gets the
+prompt and the diff so far. Do not rewrite the request to hide what it
+does, and do not skip the step.
 
 | The record says | The answer |
 | --- | --- |
-| "Codex rejected the generated review prompt [...] so no review findings were emitted." | Send the same review to the fallback model. A missing review is not a result. |
-| "retry this task when reviewer capacity resets." | The fallback model reviews now. Record the retry time for the blocked model only. |
-| "the cloud Codex CLI is unauthenticated (HTTP 401), so no review findings were produced." | The fallback model reviews now, with the same prompt. The review is the step. The tool is not. |
+| "Codex rejected the generated review prompt [...] so no review findings were emitted." | Split the review by area, or ask the user with the refusal text. A missing review is not a result. |
+| "retry this task when reviewer capacity resets." | Ask the user now, with the retry time. The review still runs before the merge. |
+| "the cloud Codex CLI is unauthenticated (HTTP 401), so no review findings were produced." | Ask the user now, with the error text. The review is the step. The tool is not. |
 
 ## Subagents in one session
 
@@ -107,10 +106,11 @@ committed content. Integrate the branch with the `git-merge` skill.
 
 ## Workspaces across machines
 
-The orchestrator splits a plan into work items and gives each item a
-workspace. Items that pass the independence test run at the same time.
-The others run one after the other. A one-item plan needs no second
-workspace. The orchestrator delegates the item inside its own workspace.
+The orchestrator splits a plan into work items. Items that pass the
+independence test run at the same time, each in its own workspace. An
+item that needs the compute of its own machine gets one too. The
+orchestrator delegates the other items in order, inside its own workspace.
+
 [references/workspaces.md](references/workspaces.md) gives the procedure,
 and [references/conductor.md](references/conductor.md) the Conductor
 commands. One real example: milestones 6a, 7, and 7a of a plan ran in
@@ -144,9 +144,9 @@ parallel Codex and Claude sessions. One combined gate verified them.
 ### Check, merge, and continue
 
 1. When a workspace reports, run the `implementation-review` skill on
-   its branch against the primary branch, in a fresh read-only agent. A
-   large diff can split by area, with one `first-pass review agent` for
-   each area. Then read the diff yourself and re-run the checks. Confirm
+   its branch against the primary branch, in that workspace. A large
+   diff can split by area, with one `first-pass review agent` for each
+   area. Then read the diff yourself and re-run the checks. Confirm
    every ticked TODO and the push, and run the deletion audit from the
    `git-commit` skill. Never accept the report alone.
 2. Send the findings back to the same workspace session as one fix
@@ -193,7 +193,7 @@ parallel Codex and Claude sessions. One combined gate verified them.
 - [ ] Every parallel task passed the independence test.
 - [ ] Every prompt has the six fields, from Scope to Output.
 - [ ] Each workspace branch starts and merges from the primary branch.
-- [ ] Delegates ran their actions. Blocked requests went to the fallback.
+- [ ] Delegates ran their actions. A blocked step went to the user.
 - [ ] You ran the combined gate and closed each merged workspace.
 - [ ] The ledger and the reports are under `.context/`, not in the plan.
 - [ ] Open findings never block a workspace merge. They block dependent

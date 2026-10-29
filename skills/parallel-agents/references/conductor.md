@@ -28,19 +28,29 @@ when the machine is ready. Inside a Conductor workspace,
 Take `--agent`, `--model`, and `--effort` from the
 `default orchestrator` action in the `models` skill. The first session
 is the orchestrator of the workspace. It delegates the item to the
-action that the prompt names. `conductor model` lists the ids that
-Conductor accepts now.
+action that the prompt names.
+
+## Review a work item
+
+```sh
+conductor session create --workspace <workspaceId> --agent <agent> \
+  --model <model> --effort <effort> --name "review: <item>" \
+  --message-file .context/<plan-name>/prompts/review-<item>.md
+```
+
+Take the values from the `first-pass review agent` action. The session
+runs in the workspace of the item, so it reviews the branch that is
+checked out there. Start the validity check and the options check in
+the same way, with the `second-pass review agent` action.
 
 ## Read, message, and archive
 
 ```sh
-conductor session status <sessionId>
-conductor session message <sessionId> --after <messageId>
 conductor message create --session <sessionId> --message-file <path>
 conductor workspace archive <workspaceId>
 ```
 
-`session status` says whether the agent still runs. `session message`
-lists the transcript after a message id. `message create` sends the fix
-request. `workspace archive` closes the machine at the close step of
+Read the report of a session as the `models` skill says.
+`message create` sends the fix request to the first session of the
+workspace. `workspace archive` closes the machine at the close step of
 the procedure, also for the primary workspace.

@@ -30,8 +30,8 @@ the install script.
 ## Read the result and request changes
 
 The agent reports in its session. Read its first message for the
-branch, then its final report and its pull request, not the whole
-transcript. Send a fix request as one message with the numbered findings
+branch. Then read its report, as the `models` skill says, and its pull
+request. Send a fix request as one message with the numbered findings
 and the option to apply for each.
 
 ## Integrate and close
