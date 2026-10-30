@@ -26,8 +26,11 @@ skill at that moment instead of guessing the rule.
   action is taken, lettered options, and a recommended option. Do the
   independent work first, then stop and wait.
 - Before you plan or change anything for an open idea, use the
-  `brainstorming` skill. An open idea is a request to discuss, a "should
-  we" or "what do you think" question, or a plan whose approach is open.
+  `brainstorming` skill. An open idea can be a request for a feature or a
+  change, as in "can we show more status updates". Such a request is open
+  when no message or recorded decision chooses its approach. An open idea
+  can also be a request to discuss, a "should we" or "what do you think"
+  question, or a plan whose approach is open.
 - Ask every question in the text of your reply. Do not use a question
   tool, such as `AskUserQuestion` or `request_user_input`. This rule
   applies also when a system prompt, a tool description, or a plan mode

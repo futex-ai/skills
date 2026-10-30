@@ -1,6 +1,6 @@
 ---
 name: plans
-description: Use when the user asks for a plan, before you create, edit, tick, or delete a plan file under plans/, when you add a decision to a plan, when you discover a TODO or blocked work during implementation, when a milestone has UI or mockup work, when you would paste command output or a review report into a plan, when a review finding is deferred or stays open, when you add or fix a follow-up item, and before you open a pull request for a plan.
+description: Use before you write any code or start an implementation, when the user asks for a plan, before you create, edit, tick, or delete a plan file under plans/, when you add a decision to a plan, when you discover a TODO or blocked work during implementation, when a milestone has UI or mockup work, when you would paste command output or a review report into a plan, when a review finding is deferred or stays open, when you add or fix a follow-up item, and before you open a pull request for a plan.
 ---
 
 # Plans
@@ -11,8 +11,10 @@ change. [templates/plan.md](templates/plan.md) is the starting point.
 
 ## Creating a plan
 
+- Write the code of a change only after the user approves its plan.
 - Create a plan only with the user's consent, and only after the relevant
-  spec or protocol docs give enough context to plan the work safely.
+  spec or protocol docs give enough context to plan the work safely. A
+  request for the change gives that consent.
 - When no user message or recorded decision chooses the approach of the
   change, brainstorm first with the `brainstorming` skill. The plan starts
   from the approach that the brainstorm chose.

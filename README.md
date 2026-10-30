@@ -42,8 +42,8 @@ Codex, and with any other agent that reads the
 | Skill | Read when |
 | --- | --- |
 | `finish-work` | Before you say work is complete, before you commit, push, or open a pull request, when you choose which tests or gates to run, and after the pull request merges. |
-| `brainstorming` | The user asks to brainstorm, discuss, or explore an idea, asks "should we" or "what do you think", proposes new scope or a change before a plan, or asks for a plan whose approach is not settled. |
-| `plans` | When the user asks for a plan, before you create, edit, tick, or delete a plan, when you add a decision to a plan, when you find a TODO during implementation, when you add or fix a follow-up item, and before you open a pull request for a plan. |
+| `brainstorming` | The user asks for a feature or a change, as in "can we", and no message or recorded decision chooses the approach. The user asks to brainstorm, discuss, or explore an idea, asks "should we" or "what do you think", or asks for a plan whose approach is not settled. |
+| `plans` | Before you write any code or start an implementation, when the user asks for a plan, before you create, edit, tick, or delete a plan, when you add a decision to a plan, when you find a TODO during implementation, when you add or fix a follow-up item, and before you open a pull request for a plan. |
 | `implementation-review` | After you push, before you run or apply a review, when the user answers a review finding, when you decide whether to fix a finding now or after the merge, and when the user asks for a code review. |
 | `delegating` | When you work on a plan, before you delegate a task, create a Conductor workspace, session, or routine, start a subagent or a reviewer, or split work across workspaces, and when a model blocks a request. |
 | `decisions-and-findings` | Before you raise a question as a decision, and before you send decisions, review findings, or a final report, when you write the options of a decision, also under a brief output style. |
@@ -93,7 +93,9 @@ Some stages run only in some cases:
   the approach.
 - The mockup milestone runs only when the plan changes something that a
   mockup shows. Without it, the docs milestone is Milestone 1.
-- A change without a plan has no plan stage and no milestones.
+- The code of a change waits until the user approves its plan. A change
+  without code, such as a docs-only change, can go without a plan. It then
+  has no plan stage and no milestones.
 
 ## Install
 
