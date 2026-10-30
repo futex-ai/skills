@@ -1,6 +1,6 @@
 ---
 name: plans
-description: Use when the user asks for a plan, before you create, edit, tick, or delete a plan file under plans/, when you add a decision to a plan, when you discover a TODO or blocked work during implementation, when a milestone has UI or mockup work, when you would paste command output or a review report into a plan, when a review finding is deferred or stays open, when you add or fix a follow-up item, and before you open a pull request for a plan.
+description: Use when the user asks for a plan, before you create, edit, tick, or delete a plan file under plans/, when you add a decision to a plan, when you discover a TODO or blocked work during implementation, when a milestone has UI or mockup work, when you would paste command output or a review report into a plan, when a review finding is deferred or stays open, when you add, list, or fix a follow-up item, and before you open a pull request for a plan.
 ---
 
 # Plans
@@ -167,8 +167,8 @@ A follow-up item records work that waits until after the merge. Each item
 is one file under `plans/follow-ups/`. It holds every fact that the work
 needs. Its layout is [templates/follow-up.md](templates/follow-up.md). Read
 [references/follow-up-items.md](references/follow-up-items.md) before you
-add, fix, or drop an item. List the open items, High severity first, with
-`scripts/follow-ups.sh`.
+add, fix, or drop an item, or choose the next one. `scripts/follow-ups.sh`
+lists the open items, highest priority score first.
 
 ## Deleting the plan
 
