@@ -24,7 +24,10 @@ Keep the plan in these cases:
 ## Steps
 
 1. Turn each unchecked post-merge task, and each open item that has no
-   file yet, into a follow-up item.
+   file yet, into a follow-up item. Follow "Writing an item" in
+   [follow-up-items.md](follow-up-items.md). Read the whole entry and
+   each entry that it names. Keep every fact. Merge an entry into the
+   item of the entry that covers it.
 2. Check that the protocol docs hold each decision in force. Move content
    that works as a doc, such as a roadmap, to its home under the
    `documentation` skill.
