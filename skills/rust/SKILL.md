@@ -61,6 +61,8 @@ with examples and take precedence when the two differ in detail:
 
 ## Tests
 
+- Read the `testing` skill before you plan, write, change, or remove a
+  test.
 - Keep tests out of production files. Put them in a `_tests_` directory
   beside the source and declare them with
   `#[cfg(test)] #[path = "_tests_/<name>_tests.rs"] mod <name>_tests;`.

@@ -14,6 +14,8 @@ name the blocker, and list the checks that did run.
 
 - Run only the tests that cover the change. Require a 100% pass rate for the
   tests that run.
+- Run each new asynchronous or browser test 10 times before the commit,
+  as the `testing` skill says.
 - Run the early repository check (format, lint, file length, exports) early,
   before long test runs.
 - Leave complete unit and browser suite runs to the complete gate.
@@ -124,6 +126,7 @@ item only when the user asks for it.
 ## Checklist
 
 - [ ] Targeted tests pass at 100%.
+- [ ] Each new asynchronous or browser test passed 10 of 10 runs.
 - [ ] Smoke test done for new features.
 - [ ] Complete gate passed once, or the blocker is explained.
 - [ ] Docs, protocol docs, mockups, READMEs, and plan updated in the same

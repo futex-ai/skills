@@ -69,9 +69,19 @@ at that moment instead of guessing the rule.
 
 ## Testing
 
-- Everything must be fully tested.
+- Test each requirement that a change adds or changes once, at the lowest
+  level that fails without the change. Read the `testing` skill before you
+  plan, write, change, or remove a test.
 - When you find a bug, add a test that captures the failure first, then fix
   it.
+- See each new test fail. Write it before the code when you know the
+  expected result. Otherwise break the code once, see the test fail, and
+  restore the code.
+- Keep one-time proofs out of the test suite. Save the output of
+  equivalence, migration, stress, and third-party-tool checks under
+  `.context/`.
+- Never delete, skip, weaken, or special-case a failing test to get a
+  pass. When a test seems wrong, stop and ask.
 - When you add a feature, run a smoke test: start the server, run the
   command, open the page.
 - Tests must not assert elapsed wall-clock time. Use operation counts,
@@ -81,7 +91,8 @@ at that moment instead of guessing the rule.
 ## Safety
 
 - Do not delete or override functionality already on `origin/main`
-  without explicit user approval. Dead code needs no approval. The
+  without explicit user approval. Dead code needs no approval. A test that
+  the `testing` skill lets you remove needs no approval either. The
   `git-commit` skill says what is functionality, when code is dead, and
   what to record. See also the `git-merge` skill.
 - Prefer graceful handling. When input is recoverable, warn and continue.

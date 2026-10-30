@@ -54,6 +54,8 @@ layout.
 
 ## Tests
 
+- Read the `testing` skill before you plan, write, change, or remove a
+  test.
 - Use the test runner and the test layout named in `AGENTS.md`. Do not
   add a second runner to a package.
 - Unit tests do not use the real network, file system, clock, or a
