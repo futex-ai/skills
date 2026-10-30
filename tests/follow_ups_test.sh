@@ -1,55 +1,80 @@
 #!/usr/bin/env bash
-# Tests for skills/plans/scripts/follow-ups.sh: the order by severity, an
-# estimated severity, the count, the empty and missing folders, and the
-# default plans directory.
+# Tests for skills/plans/scripts/follow-ups.sh: the order by priority score,
+# the points of each grade, the order of equal scores, the mark of a missing
+# grade, the count, the empty and missing folders, and the default plans
+# directory.
 set -euo pipefail
 # shellcheck source=tests/lib.sh
 source "$(dirname "${BASH_SOURCE[0]}")/lib.sh"
 
 follow_ups() { "$repo_under_test/skills/plans/scripts/follow-ups.sh" "$@"; }
 
-write_item() {  # write_item <dir> <name> <title> <severity line> <kind line>
+write_item() {  # write_item <dir> <name> <title> <grades line> <kind line>
   mkdir -p "$1/follow-ups"
   printf '# %s\n\n%s\n%s\n- **Reason:** It waits.\n' "$3" "$4" "$5" > "$1/follow-ups/$2.md"
 }
 
-test_lists_items_high_first_with_the_count() {
+test_lists_items_by_score_with_the_count() {
   local plans="$1/plans" out expected
-  write_item "$plans" low "Typo in help text" "- **Severity:** Low. **Effort:** Small." "- **Kind:** Fix after merge."
-  write_item "$plans" high "Retry loop has no limit" "- **Severity:** High. **Effort:** Medium." "- **Kind:** Needs decision."
-  write_item "$plans" medium "Port reuse in the harness" "- **Severity:** Medium. **Effort:** Large." "- **Kind:** Outside the scope."
-  write_item "$plans" vague "Smoke test after deploy" "- **Effort:** Small." "- **Kind:** Post-merge task."
+  write_item "$plans" typo "Typo in help text" "- **Severity:** Low. **Effort:** Small. **Confidence:** High. **Harder later:** No." "- **Kind:** Fix after merge."
+  write_item "$plans" retry "Retry loop has no limit" "- **Severity:** High. **Effort:** Medium. **Confidence:** High. **Harder later:** No." "- **Kind:** Needs decision."
+  write_item "$plans" port "Port reuse in the harness" "- **Severity:** Medium. **Effort:** Large. **Confidence:** Medium. **Harder later:** No." "- **Kind:** Outside the scope."
+  write_item "$plans" dates "Stored dates lose their zone" "- **Severity:** Medium. **Effort:** Small. **Confidence:** High. **Harder later:** Yes." "- **Kind:** Post-merge task."
   out="$(follow_ups "$plans")"
-  expected="High    $plans/follow-ups/high.md  Retry loop has no limit  [Needs decision]
-Medium  $plans/follow-ups/medium.md  Port reuse in the harness  [Outside the scope]
-Low     $plans/follow-ups/low.md  Typo in help text  [Fix after merge]
-Unknown $plans/follow-ups/vague.md  Smoke test after deploy  [Post-merge task]
+  expected=" 8/10  Medium  $plans/follow-ups/dates.md  Stored dates lose their zone  [Post-merge task]
+ 7/10  High    $plans/follow-ups/retry.md  Retry loop has no limit  [Needs decision]
+ 4/10  Low     $plans/follow-ups/typo.md  Typo in help text  [Fix after merge]
+ 3/10  Medium  $plans/follow-ups/port.md  Port reuse in the harness  [Outside the scope]
 open follow-up items: 4"
   assert_eq "$expected" "$out" "listing"
 }
 
-test_orders_items_of_one_severity_by_path() {
-  local plans="$1/plans" out
-  write_item "$plans" b-second "Second" "- **Severity:** Low. **Effort:** Small." "- **Kind:** Fix after merge."
-  write_item "$plans" a-first "First" "- **Severity:** Low. **Effort:** Small." "- **Kind:** Fix after merge."
-  out="$(follow_ups "$plans")"
-  assert_eq "Low     $plans/follow-ups/a-first.md  First  [Fix after merge]" "$(sed -n 1p <<< "$out")" "first line"
-  assert_eq "Low     $plans/follow-ups/b-second.md  Second  [Fix after merge]" "$(sed -n 2p <<< "$out")" "second line"
+test_adds_the_points_of_each_grade() {
+  local plans="$1/plans" expected grades score
+  while IFS='|' read -r expected grades; do
+    rm -rf "$plans"
+    write_item "$plans" item "Item" "- $grades" "- **Kind:** Fix after merge."
+    score="$(follow_ups "$plans" | sed -n '1s|/10.*||p')"
+    assert_eq "$expected" "${score// /}" "score of '$grades'"
+  done <<'EOF'
+10|**Severity:** High. **Effort:** Small. **Confidence:** High. **Harder later:** Yes.
+4|**Severity:** Medium. **Effort:** Medium. **Confidence:** Medium. **Harder later:** No.
+0|**Severity:** Low. **Effort:** Large. **Confidence:** Low. **Harder later:** No.
+6|**Severity:** High. **Likelihood:** Common. **Effort:** Large. **Confidence:** High. **Harder later:** No.
+4|**Severity:** High. **Likelihood:** Rare. **Effort:** Large. **Confidence:** High. **Harder later:** No.
+3|**Severity:** Medium. **Likelihood:** Rare. **Effort:** Large. **Confidence:** High. **Harder later:** No.
+8|**Severity:** High (estimate). **Likelihood:** Rare (estimate). **Effort:** Small (estimate). **Confidence:** High. **Harder later:** Yes, because each new record needs a migration.
+EOF
 }
 
-test_ranks_an_estimated_severity_by_its_grade() {
+test_orders_items_of_one_score_by_severity_then_path() {
   local plans="$1/plans" out
-  write_item "$plans" guessed "Guessed grade" "- **Severity:** High (estimate). **Effort:** Small (estimate)." "- **Kind:** Outside the scope."
-  write_item "$plans" graded "Graded item" "- **Severity:** Medium. **Effort:** Small." "- **Kind:** Fix after merge."
+  write_item "$plans" b-low "Second low" "- **Severity:** Low. **Effort:** Small. **Confidence:** High. **Harder later:** No." "- **Kind:** Fix after merge."
+  write_item "$plans" c-high "High item" "- **Severity:** High. **Effort:** Large. **Confidence:** Low. **Harder later:** No." "- **Kind:** Fix after merge."
+  write_item "$plans" a-low "First low" "- **Severity:** Low. **Effort:** Small. **Confidence:** High. **Harder later:** No." "- **Kind:** Fix after merge."
   out="$(follow_ups "$plans")"
-  assert_eq "High    $plans/follow-ups/guessed.md  Guessed grade  [Outside the scope]" "$(sed -n 1p <<< "$out")" "first line"
+  assert_eq " 4/10  High    $plans/follow-ups/c-high.md  High item  [Fix after merge]" "$(sed -n 1p <<< "$out")" "first line"
+  assert_eq " 4/10  Low     $plans/follow-ups/a-low.md  First low  [Fix after merge]" "$(sed -n 2p <<< "$out")" "second line"
+  assert_eq " 4/10  Low     $plans/follow-ups/b-low.md  Second low  [Fix after merge]" "$(sed -n 3p <<< "$out")" "third line"
+}
+
+test_marks_a_score_that_uses_a_default_grade() {
+  local plans="$1/plans" out expected
+  write_item "$plans" old "Item without the new grades" "- **Severity:** Medium. **Effort:** Small." "- **Kind:** Fix after merge."
+  write_item "$plans" odd "Grades off the scale" "- **Severity:** Critical. **Effort:** Tiny. **Confidence:** Sure. **Harder later:** Maybe." "- **Kind:** Fix after merge."
+  out="$(follow_ups "$plans")"
+  expected=" 5/10? Medium  $plans/follow-ups/old.md  Item without the new grades  [Fix after merge]
+ 4/10? Unknown $plans/follow-ups/odd.md  Grades off the scale  [Fix after merge]
+? marks a score that uses a default for a missing grade.
+open follow-up items: 2"
+  assert_eq "$expected" "$out" "listing"
 }
 
 test_marks_an_item_without_title_or_kind() {
   local plans="$1/plans"
   mkdir -p "$plans/follow-ups"
-  printf -- '- **Severity:** Medium. **Effort:** Small.\n' > "$plans/follow-ups/bare.md"
-  assert_contains "$(follow_ups "$plans")" "Medium  $plans/follow-ups/bare.md  No title  [No kind]" "listing"
+  printf -- '- **Severity:** Medium. **Effort:** Small. **Confidence:** High. **Harder later:** No.\n' > "$plans/follow-ups/bare.md"
+  assert_contains "$(follow_ups "$plans")" " 6/10  Medium  $plans/follow-ups/bare.md  No title  [No kind]" "listing"
 }
 
 test_ignores_files_that_are_not_markdown() {
