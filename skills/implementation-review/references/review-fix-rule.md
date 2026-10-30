@@ -117,6 +117,12 @@ Otherwise, the outcome is `fix now` when the fix is Small and stays in the
 files that the diff changes. A follow-up item for such a fix costs more
 than the fix.
 
+A product bug with the likelihood Rare gets `fix now` only when condition
+1 or 2 holds. Otherwise its outcome is `fix after merge`, also when the
+fix is Small. Its fix adds code for a case that seldom happens, and the
+re-review reads that code too. The `decisions-and-findings` skill gives
+the likelihood scale.
+
 For every other finding, the agent decides. It weighs these questions:
 
 - Does the fix serve the purpose of the branch?

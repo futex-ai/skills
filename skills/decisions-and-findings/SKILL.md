@@ -129,7 +129,7 @@ what each field of a review item must contain.
 ```markdown
 ### 1. <The problem, in eight words or fewer>
 
-- **Severity:** <High, Medium, or Low>. **Effort:** <Small, Medium, or Large: the grade of the recommended option.>
+- **Severity:** <High, Medium, or Low>. **Likelihood:** <Common or Rare, for a product bug only.> **Effort:** <Small, Medium, or Large: the grade of the recommended option.>
 - **Source:** <Review or Design.>
 - **Category:** <One category from the scales below.>
 - **Location:** <The file path and line, or "None" when the item has no place in the code.>
@@ -218,9 +218,15 @@ entry shape under a **Terms** heading.
 
 ## Scales
 
-- Severity. High: wrong output, lost data, a security problem, or blocked
-  work. Medium: a visible defect, or a spec gap with a workaround. Low:
-  wording, style, or a rare edge case.
+- Severity. The harm when the problem happens, not how often it happens.
+  High: wrong output, lost data, a security problem, or blocked work.
+  Medium: a visible defect, or a spec gap with a workaround. Low: wording,
+  style, or a defect that costs the user little.
+- Likelihood. How often real use meets a product bug. Give it for a
+  product bug only. Common: normal use meets it, also when only now and
+  then. Rare: normal use does not meet it. Only an unusual input, timing,
+  platform, or setup does. A problem that an attacker can cause is a
+  security problem, not a rare product bug.
 - Category. Product bug, security, docs or spec, mockup, repository rule,
   test, performance, code structure, dead code, UX wording, or process.
 - Effort. The grade of one option, not of the problem. Count the code
@@ -255,9 +261,9 @@ entry shape under a **Terms** heading.
 - When the record gives no **Left out** line, write "Not recorded".
 - Add **Terms** under the rule above, also when the record has none. You
   can write it from the code and the docs.
-- Some fields are judgments: severity, effort, category, recommendation,
-  and Action. When the record does not give a judgment, give your own.
-  Add "(estimate)" after it.
+- Some fields are judgments: severity, likelihood, effort, category,
+  recommendation, and Action. When the record does not give a judgment,
+  give your own. Add "(estimate)" after it.
 - When you cannot find the location, write "Not found". When you find no
   previous examples, write "None found".
 

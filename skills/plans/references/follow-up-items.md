@@ -44,7 +44,8 @@ not have the plan, the review report, or the findings file.
 - Write each field of the layout. When the source does not give a field,
   write it from the code and the docs. "Explaining items again" in the
   `decisions-and-findings` skill says how. Add "(estimate)" after each
-  judgment that no review gave, also after the severity and the effort.
+  judgment that no review gave, also after the severity, the likelihood,
+  and the effort.
 - Keep every fact of the source. When a finding check moved a finding
   outside the scope, start from its full text in the findings file, not
   from its one line.

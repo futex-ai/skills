@@ -1,6 +1,6 @@
 # <The problem, in eight words or fewer>
 
-- **Severity:** <High, Medium, or Low>. **Effort:** <Small, Medium, or Large.> <Add "(estimate)" after each grade that no review gave, as in "Low (estimate).">
+- **Severity:** <High, Medium, or Low>. **Likelihood:** <Common or Rare, for a product bug only.> **Effort:** <Small, Medium, or Large.> <Add "(estimate)" after each grade that no review gave, as in "Low (estimate).">
 - **Kind:** <Fix after merge, Needs decision, Outside the scope, or Post-merge task.>
 - **Added:** <YYYY-MM-DD>, from <the branch or the pull request, and the review finding number when there is one.>
 - **Location:** <Each file path and line, or "None" when the work has no place in the code. Do not point to the body.>
