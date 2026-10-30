@@ -25,7 +25,9 @@ read-only for context. Focus on concrete bugs, security issues, missing
 tests, weak tests, docs that contradict the changed code, generated
 artifact drift, and implementation risks in the scope below. A weak test
 cannot fail, was weakened or special-cased to pass, is over-mocked, or
-uses a hand-written fake store. Pay particular attention to
+uses a hand-written fake store. A missing-test finding names the
+requirement or the defect that no test covers. It also names a code change
+that no existing test catches. Pay particular attention to
 <review focus> in that scope. Do not treat speculative or purely theoretical
 concerns as findings. Do not modify files or automatically fix findings.
 
@@ -158,6 +160,8 @@ An option is blocked when:
 - It changes user-visible behaviour beyond the contract.
 - It adds a new build error, rejection, gate, lint, or stricter validation.
   This holds for a wider fix too, whatever its effort.
+- It adds a test for the class: a test that catches every case of a
+  defect class. The regression test for the defect itself is not blocked.
 - It deletes or overrides functionality on `origin/main`. Functionality
   is everything on `origin/main` that is not dead code under the
   conditions below. It includes live code, its tests, an API, a doc, a
@@ -300,4 +304,4 @@ Apply these rules to a docs or spec finding:
   that option and in its effort grade, and recommend the option when it is
   the best one.
 
-If there are no findings, say so clearly and mention residual test risk.
+If there are no findings, say so clearly.

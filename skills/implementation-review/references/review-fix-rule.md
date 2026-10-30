@@ -43,6 +43,8 @@ An option is blocked when:
 - It adds a new build error, rejection, gate, lint, or stricter validation.
   This holds for a wider fix too, whatever its effort. The always-on rules
   reserve that choice for the user.
+- It adds a test for the class: a test that catches every case of a
+  defect class. The regression test for the defect itself is not blocked.
 - It deletes or overrides functionality on `origin/main`. Functionality
   is everything on `origin/main` that is not dead code under the
   predicate in the `git-commit` skill. It includes live code, its tests,

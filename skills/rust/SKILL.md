@@ -36,6 +36,9 @@ with examples and take precedence when the two differ in detail:
 - Use `unimock` to mock trait boundaries in unit tests, including same-crate
   traits with one implementation. Unit tests must not use real disk IO,
   databases, Docker, subprocesses, clocks, or network calls.
+- Pass back mocked data with `some_call` or `each_call`. Use `next_call`
+  only when the order of the calls is the behaviour. See
+  [references/architecture.md](references/architecture.md).
 - Use `tracing` for diagnostics in libraries, servers, and workers; never
   `println!`, `eprintln!`, or `dbg!` there. Direct terminal output is only
   for CLI results, prompts, raw data output, REPL messages, build-script

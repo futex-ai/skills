@@ -106,6 +106,8 @@ and labels in the `decisions-and-findings` skill. Include:
 - What changed, the commit, and the branch or the pull request.
 - The checks that ran and their results. Name any check that was skipped or
   could not run, and why.
+- The test cost of the change: each test that it adds or removes, with its
+  run time, as the `testing` skill says.
 - The fixed review findings, the deferred findings and wider fixes with
   their follow-up items, and the findings that need a decision, each with
   a recommendation. Keep them in three lists.

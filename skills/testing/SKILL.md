@@ -1,6 +1,6 @@
 ---
 name: testing
-description: Use before you plan, write, change, port, or remove a test, when a plan, a review, or a brief asks for a test, when a test fails and you consider changing the test, when you update a snapshot or an expected value, when a test would read docs, plans, agent rules, or workflow YAML, and when you add a browser spec or a test for each input, host, or platform.
+description: Use before you plan, write, change, port, or remove a test, when a plan, a review, or a brief asks for a test, when a test fails and you consider changing the test, when you update a snapshot or an expected value, when a test would read docs, plans, agent rules, or workflow YAML, when you add a browser spec or a test for each input, host, or platform, and when the user asks to audit tests or cut test time.
 ---
 
 # Testing
@@ -33,6 +33,9 @@ The `finish-work` skill says which tests to run and when.
 - When you find a defect, add a test that fails because of it, then fix
   the defect. Add the case to the existing test of the requirement when
   one exists.
+- A test for the class, which catches every case of a defect class, needs
+  the user's approval. The `implementation-review` skill treats it like a
+  lint.
 
 ## The level of a test
 
@@ -144,11 +147,22 @@ The last test of a requirement needs the user's approval.
 
 - Run each new asynchronous or browser test 10 times. Record the pass
   count under `.context/`. Do not add a repeat or a retry to the test.
+- Find the test cost of the change: the run time of each test that it adds
+  or removes. Take the times from the runner output of one run. When the
+  runner does not give them, time a run of the new tests alone. Do not
+  compare suite times from different runs or machines.
 - Give the test evidence in the final report:
   - **Checks:** each test command, its exit status, and its pass, fail,
     and skip counts. Give the failure that you saw for each new test.
-  - **Changed:** each test that you changed, skipped, or removed, each
-    changed expected value, and each accepted snapshot, with the reason.
+  - **Changed:** each test that you added or removed, with its run time,
+    and the total. Each test that you changed or skipped, each changed
+    expected value, and each accepted snapshot, with the reason.
+
+## Audit a suite
+
+When the user asks to audit the tests or to cut test time, follow
+[references/test-audit.md](references/test-audit.md). The audit measures
+the suite, reads the trend from CI, and proposes removals as decisions.
 
 ## Red flags
 
@@ -172,5 +186,6 @@ Read the matching section again when you see one of these:
 - [ ] You saw each new test fail on an assertion.
 - [ ] Each new asynchronous or browser test passed 10 of 10 runs.
 - [ ] Each removed test has its reason and, for a duplicate, its proof.
-- [ ] The report gives the test commands, the counts, and each changed
-      test, expected value, and snapshot.
+- [ ] The report gives the test commands, the counts, the time of each
+      added and removed test, and each changed test, expected value, and
+      snapshot.
