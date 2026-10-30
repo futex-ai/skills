@@ -188,9 +188,9 @@ holds. For a finding, the conditions work as follows:
 - A blocked wider fix is not applied in the fix round. The direct fix is
   applied when it is not blocked. When the finding is fixed, the agent
   records the blocked wider fix as one follow-up item per class. The item
-  gives the wider fix, its effort, the finding numbers it covers, and the
-  previous examples. When the finding stays open, its wider fix stays one
-  of its options, and it gets no item of its own.
+  gives the wider fix, its effort, the problem of each finding that it
+  covers, and the previous examples. When the finding stays open, its
+  wider fix stays one of its options, and it gets no item of its own.
 - A wider fix that the agent splits off gets the same item, one per class,
   with `fix after merge`. A later branch applies it without the user.
 - Count the occurrences of the class of a blocked wider fix: the findings
@@ -210,10 +210,11 @@ The scope is the diff, unless the user explicitly asked for a wider review.
 The reviewer lists each problem outside the scope under `Outside the scope`,
 one line each, without a number or the item layout. These problems are
 not findings. Do not fix them in this branch, so that one fix in a separate
-branch reaches every open branch. Record each one as a follow-up item. An
-unrelated flaky test is such a problem. Its line gives the test name, the
-failure text, the rerun outcome, and the suspected source, as the
-`deterministic-tests` skill requires.
+branch reaches every open branch. Record each one as a follow-up item, in
+the full layout that the `plans` skill gives. An unrelated flaky test is
+such a problem. Its line gives the test name, the failure text, the rerun
+outcome, and the suspected source, as the `deterministic-tests` skill
+requires.
 
 ## Fix rounds
 

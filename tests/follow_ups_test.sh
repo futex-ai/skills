@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
-# Tests for skills/plans/scripts/follow-ups.sh: the order by severity, the
-# count, the empty and missing folders, and the default plans directory.
+# Tests for skills/plans/scripts/follow-ups.sh: the order by severity, an
+# estimated severity, the count, the empty and missing folders, and the
+# default plans directory.
 set -euo pipefail
 # shellcheck source=tests/lib.sh
 source "$(dirname "${BASH_SOURCE[0]}")/lib.sh"
@@ -34,6 +35,14 @@ test_orders_items_of_one_severity_by_path() {
   out="$(follow_ups "$plans")"
   assert_eq "Low     $plans/follow-ups/a-first.md  First  [Fix after merge]" "$(sed -n 1p <<< "$out")" "first line"
   assert_eq "Low     $plans/follow-ups/b-second.md  Second  [Fix after merge]" "$(sed -n 2p <<< "$out")" "second line"
+}
+
+test_ranks_an_estimated_severity_by_its_grade() {
+  local plans="$1/plans" out
+  write_item "$plans" guessed "Guessed grade" "- **Severity:** High (estimate). **Effort:** Small (estimate)." "- **Kind:** Outside the scope."
+  write_item "$plans" graded "Graded item" "- **Severity:** Medium. **Effort:** Small." "- **Kind:** Fix after merge."
+  out="$(follow_ups "$plans")"
+  assert_eq "High    $plans/follow-ups/guessed.md  Guessed grade  [Outside the scope]" "$(sed -n 1p <<< "$out")" "first line"
 }
 
 test_marks_an_item_without_title_or_kind() {

@@ -151,9 +151,10 @@ what each field of a review item must contain.
 - **Action:** <`fix now, apply` and a letter. Or `fix after merge, apply` and a letter, with one sentence of reason. Or a split: `fix now, apply` the direct fix, `and fix after merge, apply` the wider fix, with one sentence of reason. Or `ask the user, because`, the number of the condition of the decision test that holds, and one sentence of evidence.>
 ```
 
-A problem outside the review scope is not an item. The
-`implementation-review` skill gives its one-line shape. The final report
-lists it under **Open**, for a separate branch.
+In a review and in a message, a problem outside the review scope is not
+an item. The `implementation-review` skill gives its one-line shape. The
+final report lists it under **Open**, for a separate branch. Its
+follow-up item uses this layout, as the `plans` skill says.
 
 Keep every label, also when the user asks for more detail or for a shorter
 answer. An item leaves out **Terms** and **Related** only under their
