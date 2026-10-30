@@ -68,6 +68,8 @@ gives the layout that shows them to the user.
 
 - A severity: High, Medium, or Low, as the `decisions-and-findings` skill
   defines them.
+- For a product bug, a likelihood: Common or Rare, as the same skill
+  defines them.
 - The source: Review.
 - A category: product bug, security, docs or spec, mockup, repository rule,
   test, performance, code structure, dead code, UX wording, or process.
@@ -164,6 +166,9 @@ before you make the final call on a finding. In short:
   - The problem breaks a gate or a test, or adds a flaky test.
   - A doc contradicts the changed code.
   - The fix is Small and stays in the files that the diff changes.
+- A product bug with the likelihood Rare gets `fix now` only when its
+  severity is High or its fix gets much harder after the merge.
+  Otherwise it gets `fix after merge`, also when the fix is Small.
 - For every other finding that it may fix, the agent decides. It gives
   each `fix after merge` outcome one sentence of reason.
 - `ask the user` when a condition of the decision test holds. For a

@@ -88,9 +88,14 @@ Order the findings by severity, High first, then Medium, then Low, and
 number them in that order, from <first number>. Use the item layout in the
 `decisions-and-findings` skill, with the source Review. For every finding:
 
-- Give it a severity. High: wrong output, lost data, a security problem, or
-  blocked work. Medium: a visible defect, or a spec gap with a workaround.
-  Low: wording, style, or a rare edge case.
+- Give it a severity: the harm when the problem happens, not how often it
+  happens. High: wrong output, lost data, a security problem, or blocked
+  work. Medium: a visible defect, or a spec gap with a workaround. Low:
+  wording, style, or a defect that costs the user little.
+- For a product bug, give a likelihood. Common: normal use meets it, also
+  when only now and then. Rare: normal use does not meet it. Only an
+  unusual input, timing, platform, or setup does. A problem that an
+  attacker can cause is a security problem, not a rare product bug.
 - Give it a category. The categories are product bug, security, docs or
   spec, mockup, repository rule, test, performance, code structure, dead
   code, UX wording, and process.
@@ -205,11 +210,14 @@ Propose `fix now` when one of these holds:
 - A doc contradicts the changed code.
 
 Otherwise, propose `fix now` when the fix is Small and stays in the files
-that the diff changes. For every other finding, weigh the purpose of the
-branch, the files that the fix reaches outside the diff, and whether the
-end user meets the problem before a later branch can fix it. Read the plan
-of the change, when it has one, for its purpose. Give each
-`fix after merge` proposal one sentence of reason.
+that the diff changes. For a product bug with the likelihood Rare, propose
+`fix now` only when its severity is High or its fix gets much harder after
+the merge. Otherwise propose `fix after merge`, also when the fix is Small.
+For every other finding, weigh the purpose of the branch, the files that
+the fix reaches outside the diff, and whether the end user meets the
+problem before a later branch can fix it. Read the plan of the change,
+when it has one, for its purpose. Give each `fix after merge` proposal one
+sentence of reason.
 
 When the named option is a wider fix and the direct fix is not blocked,
 you can propose a split: the direct fix now, and the wider fix after the

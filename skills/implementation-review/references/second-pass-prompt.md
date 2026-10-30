@@ -90,7 +90,7 @@ Return one block for each item, in the order given:
 - **Wider fix:** <The letter, or "No change".>
 ```
 
-Keep the number, the title, the severity, the recorded letters, and the
-`Action` line of each item. Do not add an item. Put each new problem
-in one line under `New problems` at the end. Give its path, one sentence,
-and whether it is inside the scope.
+Keep the number, the title, the severity, the likelihood, the recorded
+letters, and the `Action` line of each item. Do not add an item. Put each
+new problem in one line under `New problems` at the end. Give its path,
+one sentence, and whether it is inside the scope.

@@ -51,12 +51,17 @@ Check five things at the code, and a sixth for a missing test:
 4. The impact is observable: wrong output, a visible defect, a broken
    rule, or a real risk. A concern that needs a chain of unlikely events
    is speculative.
-5. The severity and the category fit the scales. Severity: High is wrong
-   output, lost data, a security problem, or blocked work. Medium is a
-   visible defect, or a spec gap with a workaround. Low is wording,
-   style, or a rare edge case. Category: product bug, security, docs or
-   spec, mockup, repository rule, test, performance, code structure, dead
-   code, UX wording, or process.
+5. The severity, the likelihood, and the category fit the scales.
+   Severity grades the harm when the problem happens, not how often it
+   happens. High is wrong output, lost data, a security problem, or
+   blocked work. Medium is a visible defect, or a spec gap with a
+   workaround. Low is wording, style, or a defect that costs the user
+   little. Likelihood is for a product bug only. Common: normal use meets
+   it, also when only now and then. Rare: normal use does not meet it.
+   Only an unusual input, timing, platform, or setup does. A problem that
+   an attacker can cause is a security problem, not a rare product bug.
+   Category: product bug, security, docs or spec, mockup, repository rule,
+   test, performance, code structure, dead code, UX wording, or process.
 6. A finding about a missing test names the requirement or the defect that
    no test covers. It also names a code change that no existing test
    catches. Read the tests to confirm that none catches it. Remove the
@@ -67,7 +72,7 @@ Write one verdict line:
 - `<number>. Confirmed.`
 - `<number>. Removed: <the check that failed, and one sentence of evidence>.`
 - `<number>. Removed, outside the scope: <one sentence>.` when check 2 fails and the problem is real.
-- `<number>. Confirmed, severity <grade>.` or `<number>. Confirmed, category <name>.` when only check 5 fails, with one sentence.
+- `<number>. Confirmed, severity <grade>.`, `<number>. Confirmed, likelihood <word>.`, or `<number>. Confirmed, category <name>.` when only check 5 fails, with one sentence.
 
 Remove the finding only when you have read the evidence. When you are not
 sure, confirm it. When you remove the finding, return the verdict line and
