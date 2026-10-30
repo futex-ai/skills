@@ -83,8 +83,8 @@ The `finish-work` skill says which tests to run and when.
   `rejects_withdrawal_when_balance_is_zero`, not `test_withdraw`.
 - Write literal expected values that come from the spec or a hand-worked
   example. Never compute an expected value with the code under test.
-- Do not assert a value that the test itself gave to a test double. That
-  tests the double.
+- A value that goes from a test double straight to the assertion, through
+  no code under test, checks only the double. Do not assert such a value.
 - Assert exact values and typed error variants. Do not stop at `is_err()`,
   `is_some()`, `toBeTruthy()`, or `toBeDefined()`.
 - Do not put an assertion inside an `if` or a `match` arm. A loop over a
