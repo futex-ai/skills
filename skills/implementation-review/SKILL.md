@@ -45,7 +45,7 @@ first round, and read the file itself after a context summary.
 2. The reviewer starts with `scripts/diff-summary.sh` so that a large diff
    fits in context, then reads changed files and focused patches directly.
 3. The reviewer returns numbered findings and then the `Outside the scope`
-   list, or says clearly that there are none and names the residual test risk.
+   list, or says clearly that there are none.
 4. Save the full report in the review folder. Record the round in the
    findings file, and write each new finding as the review gave it. Do
    this before any check starts.
@@ -130,9 +130,11 @@ before you make the final call on a finding. In short:
     requirement for new behaviour at the boundary.
   - It decides between a mockup and the product.
   - It changes user-visible behaviour beyond the contract.
-  - It adds a gate, lint, or stricter validation, also as a wider fix.
+  - It adds a gate, a lint, stricter validation, or a test for the class,
+    also as a wider fix.
   - It deletes or overrides functionality on `origin/main`. Dead code
-    under the `git-commit` skill is not functionality.
+    under the `git-commit` skill is not functionality. Nor is a test that
+    the removal rule of the `testing` skill covers.
   - It weakens a test of live code or a gate.
   - It needs credentials or infrastructure.
 - The decision test in the `decisions-and-findings` skill decides whether
@@ -146,6 +148,7 @@ before you make the final call on a finding. In short:
   - flaky tests that the diff adds or changes under the flaky-test rule
     in the `deterministic-tests` skill
   - dead code under the predicate in the `git-commit` skill
+  - tests that the removal rule of the `testing` skill covers
   - repository-rule violations such as file size, lint, and layout
   - copy defects whose fix keeps the meaning
 - The letter names the best-ranked option that is not blocked: a
@@ -168,7 +171,8 @@ before you make the final call on a finding. In short:
   best option on the merits is blocked and is not a wider fix. Condition 4
   holds when the options have real trade-offs and no option is clearly
   best. Condition 6 also holds for a slow, custom, or low-value test,
-  gate, lint, or check. Findings about missing tests, performance, code
+  gate, lint, or check that the removal rule of the `testing` skill does
+  not cover. Findings about missing tests, performance, code
   structure, and process always meet condition 6. Any other UX wording
   meets it too, such as a choice of tone or voice that no copy rule
   settles.

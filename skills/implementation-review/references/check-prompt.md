@@ -41,7 +41,7 @@ Work in three steps, in this order.
 
 ## Step 1: confirm the finding
 
-Check five things at the code:
+Check five things at the code, and a sixth for a missing test:
 
 1. The lines at the location do what the finding says. Read them.
 2. The problem is inside the scope. When the scope is the diff, the diff
@@ -57,6 +57,10 @@ Check five things at the code:
    style, or a rare edge case. Category: product bug, security, docs or
    spec, mockup, repository rule, test, performance, code structure, dead
    code, UX wording, or process.
+6. A finding about a missing test names the requirement or the defect that
+   no test covers. It also names a code change that no existing test
+   catches. Read the tests to confirm that none catches it. Remove the
+   finding when it names no requirement and no defect, or no such change.
 
 Write one verdict line:
 

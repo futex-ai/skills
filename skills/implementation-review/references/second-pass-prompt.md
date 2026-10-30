@@ -49,7 +49,8 @@ For each item:
    Give an option at each place that the current options do not cover.
    When a place is not a real choice, say why in one sentence. When the
    item has fewer than three distinct approaches, add approaches, or
-   confirm its reason for fewer.
+   confirm its reason for fewer. Do not give an option that tests
+   something that the `testing` skill says never gets a test.
 4. Name each condition that every option keeps. Name its source: a
    protocol doc, a user decision, the task message, an earlier option's
    text, or the code. Say whether its reason still holds. When it is not

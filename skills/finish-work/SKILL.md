@@ -14,6 +14,8 @@ name the blocker, and list the checks that did run.
 
 - Run only the tests that cover the change. Require a 100% pass rate for the
   tests that run.
+- Run each new asynchronous or browser test 10 times before the commit,
+  as the `testing` skill says.
 - Run the early repository check (format, lint, file length, exports) early,
   before long test runs.
 - Leave complete unit and browser suite runs to the complete gate.
@@ -104,6 +106,8 @@ and labels in the `decisions-and-findings` skill. Include:
 - What changed, the commit, and the branch or the pull request.
 - The checks that ran and their results. Name any check that was skipped or
   could not run, and why.
+- The test cost of the change: each test that it adds or removes, with its
+  run time, as the `testing` skill says.
 - The fixed review findings, the deferred findings and wider fixes with
   their follow-up items, and the findings that need a decision, each with
   a recommendation. Keep them in three lists.
@@ -124,6 +128,7 @@ item only when the user asks for it.
 ## Checklist
 
 - [ ] Targeted tests pass at 100%.
+- [ ] Each new asynchronous or browser test passed 10 of 10 runs.
 - [ ] Smoke test done for new features.
 - [ ] Complete gate passed once, or the blocker is explained.
 - [ ] Docs, protocol docs, mockups, READMEs, and plan updated in the same

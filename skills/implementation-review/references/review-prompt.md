@@ -22,8 +22,12 @@ You are reviewing local changes in this repository.
 
 Review the local diff against `origin/main`. You may inspect the repository
 read-only for context. Focus on concrete bugs, security issues, missing
-tests, docs that contradict the changed code, generated artifact drift,
-and implementation risks in the scope below. Pay particular attention to
+tests, weak tests, docs that contradict the changed code, generated
+artifact drift, and implementation risks in the scope below. A weak test
+cannot fail, was weakened or special-cased to pass, is over-mocked, or
+uses a hand-written fake store. A missing-test finding names the
+requirement or the defect that no test covers. It also names a code change
+that no existing test catches. Pay particular attention to
 <review focus> in that scope. Do not treat speculative or purely theoretical
 concerns as findings. Do not modify files or automatically fix findings.
 
@@ -115,7 +119,9 @@ number them in that order, from <first number>. Use the item layout in the
   the class, a lint, or a guard, only when you find no structural fix. For
   example, when a modal focuses a helper icon button because no autofocus
   target was given, a guard that requires a target detects the case, and a
-  marker that excludes helper icons from autofocus removes it. Give the
+  marker that excludes helper icons from autofocus removes it. Do not
+  propose a test of something that the `testing` skill says never gets a
+  test, such as doc prose, workflow literals, or a one-time proof. Give the
   wider fix its own lettered option. Look for previous examples of
   the class in the commit history, under `plans/`, and in earlier review
   reports under `.context/`. Cite the examples you find. Propose the wider
@@ -154,6 +160,8 @@ An option is blocked when:
 - It changes user-visible behaviour beyond the contract.
 - It adds a new build error, rejection, gate, lint, or stricter validation.
   This holds for a wider fix too, whatever its effort.
+- It adds a test for the class: a test that catches every case of a
+  defect class. The regression test for the defect itself is not blocked.
 - It deletes or overrides functionality on `origin/main`. Functionality
   is everything on `origin/main` that is not dead code under the
   conditions below. It includes live code, its tests, an API, a doc, a
@@ -161,7 +169,8 @@ An option is blocked when:
   blocked. The plan of the change and a follow-up item that the change
   fixes are not functionality.
 - It deletes, skips, or weakens a test of live code or a gate, or raises
-  a time limit.
+  a time limit. A removal under the removal rule of the `testing` skill
+  is not blocked.
 - It needs credentials or infrastructure.
 
 `fix now` and `fix after merge` are allowed only when no condition of the
@@ -174,6 +183,7 @@ is about:
 - a mockup mismatch that a protocol doc already settles
 - a flaky test that the diff adds or changes
 - dead code
+- a test that the removal rule of the `testing` skill covers
 - a repository-rule violation such as file size, lint, or layout
 - a copy defect whose fix keeps the meaning
 
@@ -252,9 +262,9 @@ finding, the conditions work as follows:
 - Condition 4 holds when more than one option has real trade-offs and no
   option is clearly best.
 - Condition 6 holds for a finding outside the list above. It also holds
-  for a slow, custom, or low-value test, gate, lint, or check in the scope.
-  Ask whether to fix it or remove it, and state what it protects and how
-  long it runs.
+  for a slow, custom, or low-value test, gate, lint, or check in the scope
+  that the removal rule of the `testing` skill does not cover. Ask whether
+  to fix it or remove it, and state what it protects and how long it runs.
 - Condition 6 holds for a finding about missing tests, performance, code
   structure, or process.
 - Condition 6 holds for any other UX wording. Examples are a choice of
@@ -294,4 +304,4 @@ Apply these rules to a docs or spec finding:
   that option and in its effort grade, and recommend the option when it is
   the best one.
 
-If there are no findings, say so clearly and mention residual test risk.
+If there are no findings, say so clearly.

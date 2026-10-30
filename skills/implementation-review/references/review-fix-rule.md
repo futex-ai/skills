@@ -43,6 +43,8 @@ An option is blocked when:
 - It adds a new build error, rejection, gate, lint, or stricter validation.
   This holds for a wider fix too, whatever its effort. The always-on rules
   reserve that choice for the user.
+- It adds a test for the class: a test that catches every case of a
+  defect class. The regression test for the defect itself is not blocked.
 - It deletes or overrides functionality on `origin/main`. Functionality
   is everything on `origin/main` that is not dead code under the
   predicate in the `git-commit` skill. It includes live code, its tests,
@@ -50,7 +52,8 @@ An option is blocked when:
   dead code is not blocked. The plan of the change and a follow-up item
   that the change fixes are not functionality.
 - It deletes, skips, or weakens a test of live code or a gate, or raises
-  a time limit.
+  a time limit. A removal under the removal rule of the `testing` skill
+  is not blocked.
 - It needs credentials or infrastructure.
 
 ## Fixes without the user
@@ -78,6 +81,10 @@ condition 6 holds unless the finding is in one of these categories:
   dead code with the steps under "When you delete dead code" in the
   `git-commit` skill. Code that the product runs rarely, such as an error
   path or a fallback, is functionality and waits for the user.
+- Tests that the removal rule of the `testing` skill covers: a duplicate
+  of a named test, a test of removed behaviour, or a test of something
+  that never gets a test. The option removes the test with the steps and
+  the proof that the rule requires.
 - Repository-rule violations such as file size, lint, and layout.
 - Copy defects whose fix keeps the meaning: user-facing text that has a
   typo or breaks a rule under `## Copy` in the `product-ui` skill. The
@@ -147,9 +154,9 @@ holds. For a finding, the conditions work as follows:
 - Condition 4 holds when more than one option has real trade-offs and the
   recommendation is not clearly best.
 - Condition 6 holds for a finding outside the categories above. It also
-  holds for a slow, custom, or low-value test, gate, lint, or check. Ask
-  whether to fix or remove it, and state what it protects and how long it
-  runs.
+  holds for a slow, custom, or low-value test, gate, lint, or check that
+  the removal rule of the `testing` skill does not cover. Ask whether to
+  fix or remove it, and state what it protects and how long it runs.
 - Condition 6 holds for a finding about missing tests, performance, code
   structure, or process.
 - Condition 6 holds for any other UX wording. Examples are a choice of
@@ -162,6 +169,8 @@ holds. For a finding, the conditions work as follows:
   any other option. When the wider fix for the class is already in force,
   such as the `documentation` skill for docs drift or an existing lint, the
   reviewer says so and proposes no other wider fix.
+- A test of something that the `testing` skill says never gets a test,
+  such as doc prose or a one-time proof, is not a wider fix.
 - Rank wider fixes by how they prevent the class. A structural fix removes
   the wrong case: a helper or an abstraction that every call site uses, a
   default that is right, a marker that shared code honours, or a type that

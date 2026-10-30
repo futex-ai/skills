@@ -8,8 +8,10 @@ description: Use before you commit and directly after, when you write a commit m
 Do not delete or override functionality already on `origin/main` without
 explicit user approval. Functionality includes live code, its tests, APIs,
 docs, mockups, plans, migrations, and schema. Dead code needs no approval.
-The section "Dead code" below says when code is dead. The plan of the
-change and a follow-up item that the change fixes are not functionality.
+The section "Dead code" below says when code is dead. A test that the
+removal rule of the `testing` skill covers needs no approval either. The
+plan of the change and a follow-up item that the change fixes are not
+functionality.
 The change deletes them, as the `plans` skill says. Merges and rebases
 have their own procedure in the `git-merge` skill.
 
@@ -125,6 +127,8 @@ body. The format enables automated changelogs and readable history.
 - Record in the commit or PR description:
   - every removal and its related cleanup, with the search that proved
     the code dead or the approval for the functionality
+  - each test that the `testing` skill removes, with its reason, the
+    covering test, and the proof file
   - each plan edit made for a rename or removal
   - each intentional merge decision with the paths it affects
   - each design call under the decision test in the

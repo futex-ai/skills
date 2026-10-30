@@ -52,8 +52,9 @@ conditions holds:
 2. The recommended option adds behaviour at a boundary that no
    requirement covers.
 3. The recommended option is blocked under the review-fix rule. For
-   example, it is Large, deletes functionality, adds a gate or stricter
-   validation, weakens a test, or needs credentials or infrastructure.
+   example, it is Large, deletes functionality, adds a gate, stricter
+   validation, or a test for the class, weakens a test, or needs
+   credentials or infrastructure.
 4. Two or more options have real trade-offs, and no option is clearly
    best.
 5. The user asked you to bring this choice to them.

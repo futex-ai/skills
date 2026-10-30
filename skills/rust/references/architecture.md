@@ -82,6 +82,34 @@ side-effect boundaries.
   databases, Docker, subprocesses, clocks, network calls, or other impure
   dependencies. Integration tests can use real implementations to validate
   end-to-end behaviour.
+- Pass back mocked data with a clause that does not lock the order:
+  - `some_call` for the value of one call.
+  - `each_call` for the value of each matching call. Its return type must
+    implement `Clone`.
+  - A stub sequence for a different value at each call of one method. Two
+    `some_call` clauses on one method do not form a sequence, because the
+    first clause answers both calls.
+- Use `next_call` only when the order of the calls is the behaviour, for
+  example an audit record that must follow its commit. All `next_call`
+  clauses of one mock form one ordered list, also across traits. So a
+  refactor that only reorders independent calls fails the test.
+- Every clause kind fails the test when the code never makes the call.
+  `some_call` keeps that check and drops only the order check.
+- An existing test keeps its clauses until you change it for another
+  reason.
+
+```rust
+// Two independent reads: data, no order.
+ConfigMock::flag.some_call(matching!()).returns(true),
+UsersMock::name.some_call(matching!(7)).returns(Some(user)),
+// The order is the behaviour: the audit record follows the commit.
+LedgerMock::commit.next_call(matching!(5)).returns(()),
+LedgerMock::audit.next_call(matching!(_)).returns(()),
+// A different value at each call of one method.
+UsersMock::name.stub(|each| {
+    each.call(matching!(7)).returns(None).once().then().returns(Some(user));
+}),
+```
 
 ## Diagnostics
 

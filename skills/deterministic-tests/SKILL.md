@@ -7,6 +7,7 @@ description: Use when a test fails and then passes on a rerun, when a test is fl
 
 Required tests check correctness without depending on machine speed. A test
 that passes on a fast machine and fails on a slow one is a bug in the test.
+The `testing` skill says what earns a test, and how to write and remove one.
 
 ## Assertion rule
 
@@ -90,4 +91,6 @@ name, the failure text, the rerun outcome, and the suspected source.
 
 Slow, custom, or low-value tests, gates, lints, and checks get the outcome
 `ask the user`. Ask the user whether to fix or remove each one, and state
-what it protects and how long it runs.
+what it protects and how long it runs. A test that the removal rule of the
+`testing` skill covers is removed without asking, with the proof that the
+rule requires.
