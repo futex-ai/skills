@@ -140,9 +140,8 @@ A kind that is not in this list has no rule of its own.
   docs or spec drift rule above. When the section says to ask the user,
   the finding waits for the user. When the higher side is wrong, or worse
   than the lower side, recommend its change. The finding then waits for
-  the user.
-  The wider fix for the class is already in force, that section, so
-  propose no other wider fix.
+  the user. The wider fix for the class is already in force, that
+  section, so propose no other wider fix.
 - Flaky tests that the diff adds or changes, under the flaky-test rule in
   the `deterministic-tests` skill.
 - Dead code: code that the product never runs, under the predicate in the
