@@ -1,13 +1,14 @@
 ---
 name: mockups
-description: Use before you create or change a mockup under docs/mockups, a screen component, a user flow, or a Mokly entry, component, or configuration, when a plan has a mockup milestone or a feature needs a new screen, when a page needs more than five screens, when a user flow needs a screen that does not exist, and when generated mockup output looks wrong or is about to be edited or committed.
+description: Use before you create or change a mockup under docs/mockups, a screen component, a user flow, or a Mokly entry, component, or configuration, when a plan has a mockup milestone or a feature needs a new screen, when a page needs more than five screens, when a user flow needs a screen that does not exist, when the code or a protocol doc does not match a mockup, and when generated mockup output looks wrong or is about to be edited or committed.
 ---
 
 # Mockups
 
 Mockups are part of the spec and stay aligned with the implementation at
-all times. The forbidden visual patterns and copy rules in the `product-ui`
-skill apply to mockups too.
+all times. When they disagree, the section "When a protocol doc, a mockup,
+and the code disagree" says which side changes. The forbidden visual
+patterns and copy rules in the `product-ui` skill apply to mockups too.
 
 ## Design before implementation
 
@@ -66,3 +67,28 @@ skill apply to mockups too.
 - After changing entries, the renderer, configuration, or styles, rebuild,
   run the mockup check command named in `AGENTS.md`, and visually
   smoke-test the changed pages.
+
+## When a protocol doc, a mockup, and the code disagree
+
+The protocol doc wins over the mockup, and the mockup wins over the code.
+When two of them disagree, change the lower side to match the higher side.
+
+- A recorded user decision comes first. It can be in the task message,
+  the approved plan, or a follow-up item. Update the mockup and the code
+  to match it in the same change. A protocol doc changes only as the
+  `documentation` skill says. In a plan, the mockup milestone changes the
+  mockups, and the documentation milestone then updates the protocol docs.
+- When a difference between a mockup and the code is new in the branch,
+  and no recorded user decision covers it, the code has a product bug.
+  Fix the code.
+- When a mockup differs from a protocol doc, and no recorded user
+  decision covers the difference, the mockup is wrong. Fix the mockup.
+- When a mockup and the code already differ on `origin/main`, and no
+  protocol doc settles the difference, ask the user. There the mockup can
+  be the stale side.
+- When the higher side is wrong, or worse than the lower side, propose its
+  change to the user as a decision, as the `documentation` skill says.
+- Sample data in a mockup is not a requirement. The code shows real data,
+  as the `product-ui` skill says.
+- When a mockup breaks a rule of the `product-ui` skill, the mockup is
+  wrong. Fix the mockup.

@@ -130,7 +130,8 @@ before you make the final call on a finding. In short:
 - An option is blocked when it needs a decision:
   - It changes a requirement without a recorded user decision, or adds a
     requirement for new behaviour at the boundary.
-  - It decides between a mockup and the product.
+  - It changes a mockup to match the code, and the order in the
+    `mockups` skill does not call for that change.
   - It changes user-visible behaviour beyond the contract.
   - It adds a gate, a lint, stricter validation, or a test for the class,
     also as a wider fix.
@@ -146,7 +147,7 @@ before you make the final call on a finding. In short:
   - product bugs, including edge cases, races, and platform differences
   - security issues
   - docs or spec drift
-  - mockup mismatches that a protocol doc already settles
+  - mockup mismatches that the order in the `mockups` skill settles
   - flaky tests that the diff adds or changes under the flaky-test rule
     in the `deterministic-tests` skill
   - dead code under the predicate in the `git-commit` skill

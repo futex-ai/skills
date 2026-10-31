@@ -51,12 +51,12 @@ Codex, and with any other agent that reads the
 | `deterministic-tests` | A test flakes, would assert elapsed time, or tempts you to add a sleep, a retry, or a longer time limit. |
 | `git-commit` | Before and after you commit, and when you write a commit or pull request message. When a diff deletes or renames something, or when you find dead code. |
 | `git-merge` | Before you merge or rebase, when you resolve conflicts, and after each merge commit. |
-| `documentation` | Before you edit a README, a doc, or a protocol doc, when a change could leave a doc stale, when you decide where a sentence belongs, and when a change or a review option conflicts with a protocol doc. |
+| `documentation` | Before you edit a README, a doc, or a protocol doc, when a change could leave a doc stale, when the code, a mockup, and a protocol doc disagree, when you decide where a sentence belongs, and when a change or a review option conflicts with a protocol doc. |
 | `rust` | Before you edit Rust, add a crate or a dependency, or define an error type. |
 | `typescript` | Before you edit TypeScript or JavaScript, add an npm dependency, or set up a package. |
 | `databases` | Before you touch migrations, a schema, Diesel code, or store crates. |
 | `shared-types` | Before you add or change a type that crosses between Rust and TypeScript, or write a TypeScript type for backend data. |
-| `mockups` | Before you create or change a mockup, a screen component, or a user flow. |
+| `mockups` | Before you create or change a mockup, a screen component, or a user flow, and when the code or a protocol doc does not match a mockup. |
 | `product-ui` | Before you change a user-facing screen, state, or copy, or hardcode data in a screen. |
 | `agents-md` | A repository has no `AGENTS.md`, still has a monolithic one, or needs its rules aligned with the shared skills. |
 | `writing-skills` | Before you create or edit a skill or its description. Opt-in: linked only with `install.sh --opt-in`. |
