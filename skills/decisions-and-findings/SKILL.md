@@ -219,9 +219,11 @@ entry shape under a **Terms** heading.
 ## Scales
 
 - Severity. The harm when the problem happens, not how often it happens.
-  High: wrong output, lost data, a security problem, or blocked work.
-  Medium: a visible defect, or a spec gap with a workaround. Low: wording,
-  style, or a defect that costs the user little.
+  Harm to the users of the product weighs more than harm to the people
+  and agents who build it. Both count. High: wrong output, lost data, a
+  security problem, or blocked work. Medium: a visible defect, a spec gap
+  with a workaround, or a flaky test or check in the gate. Low: wording,
+  style, or a defect that costs little.
 - Likelihood. How often real use meets a product bug. Give it for a
   product bug only. Common: normal use meets it, also when only now and
   then. Rare: normal use does not meet it. Only an unusual input, timing,

@@ -85,7 +85,9 @@ fix it in this branch, so that one fix in a separate branch reaches every
 open branch quickly. The implementation review lists it under
 `Outside the scope`, not as a finding. Report it in the final message, and
 record it as a follow-up item, as the `plans` skill says. Add the test
-name, the failure text, the rerun outcome, and the suspected source.
+name, the failure text, the rerun outcome, and the suspected source. Grade
+its severity Medium, as the severity scale in the `decisions-and-findings`
+skill says.
 
 ## Slow and low-value tests
 
