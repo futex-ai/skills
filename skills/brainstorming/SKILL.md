@@ -1,6 +1,6 @@
 ---
 name: brainstorming
-description: Use when the user asks to brainstorm, discuss, or explore an idea, asks "should we", "what do you think", or "how could we", proposes new scope or a change before a plan exists, asks for a plan whose approach is not settled, or asks for new work whose purpose, users, or measure of success is unclear.
+description: Use when the user asks for a feature, new scope, or a change, as in "can we", "could you", "add", or "make", and no message or recorded decision chooses how to build it, when the user asks to brainstorm, discuss, or explore an idea, asks "should we", "how could we", or "what do you think", asks for a plan whose approach is open, or asks for work with an unclear goal.
 ---
 
 # Brainstorming
