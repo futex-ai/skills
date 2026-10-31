@@ -81,8 +81,7 @@ read is not anchored on yours.
 Check the report of a delegated step against the code before you use it.
 Add the approaches that you found yourself, and narrow them in the same
 way. Write the items in the layout of the `decisions-and-findings` skill
-to `.context/<topic>/items.md`. When the root question is a design call,
-also write it there as one item. Its approaches are its options.
+to `.context/<topic>/items.md`.
 
 Before you send the message, run the options check of the
 `implementation-review` skill over the items. The check is a fresh
@@ -92,22 +91,23 @@ that skill, followed by the items. Save its report under
 
 - A better root question replaces the **Root question** line.
 - A new option keeps the letter that the check gave it. The source of a
-  dropped condition goes into the text of the option that drops it. Add
+  dropped assumption goes into the text of the option that drops it. Add
   each new option to the approaches list.
 - The **Left out** line and the approaches list take each other change
   of the check.
 - When the recommendation changed, the **Recommendation** line gives the
   new letter and its reason. It then names the first letter. The
   **Wider fix** line takes the new letter in the same way.
-- A kept condition and a place that is not a real choice stay in the
+- A kept assumption and a place that is not a real choice stay in the
   saved report.
 - A new problem becomes an item when it passes the decision test.
   Otherwise, give it one line under **Open** in the final report.
 
-Then apply the decision test again to each item that changed. A design
-call can become an item, and an item can become a design call. Then
-write one message with every item, in the layout of the
-`decisions-and-findings` skill. Use this message order:
+Then apply the decision test again to each other question that changed.
+A design call can become an item, and an item can become a design call.
+The root question stays an item. Then write one message with every
+item, in the layout of the `decisions-and-findings` skill. Use this
+message order:
 
 1. One or two sentences: the recommended approach, or the root question.
 2. The background, with the goal as you read it and each guess marked.
