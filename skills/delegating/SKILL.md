@@ -161,10 +161,10 @@ Codex and Claude sessions. One combined gate verified them.
 
 3. Send the `fix now` findings back to the same workspace session as one
    fix request. Give the numbers, the option of each, and "do not start
-   the next item". The review-fix rule allows two fix rounds. Merge each
-   round as in step 2. After the last merge, close the workspace as the
-   workspace reference says. Do the same for a workspace that the user
-   agrees to abandon.
+   the next item". The `implementation-review` skill allows two fix
+   rounds. Merge each round as in step 2. After the last merge, close the
+   workspace as the workspace reference says. Do the same for a workspace
+   that the user agrees to abandon.
 4. Merge `main` into the primary branch before each delegation batch,
    before each branch merge, and before the final pull request.
 5. An open finding never blocks the merge of a workspace branch. Record
@@ -185,8 +185,8 @@ Codex and Claude sessions. One combined gate verified them.
    Send the other decisions in one numbered message at the next batch
    boundary, in the layout of the `decisions-and-findings` skill.
    Continue the independent work meanwhile. An unanswered decision stays
-   open, as the always-on rules say. The review-fix rule says which
-   findings you fix without the user.
+   open, as the always-on rules say. The `decisions-and-findings` skill
+   says which findings you fix without the user.
 
 ## Checklist
 

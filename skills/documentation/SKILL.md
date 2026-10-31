@@ -178,12 +178,12 @@ Protocol docs describe the current requirements. They are not fixed rules.
 - When the code and a protocol doc disagree, the doc wins by default.
   Change the code to match the doc. When the doc is wrong, or worse than
   the code, propose the doc change to the user as a decision instead.
-- With a mockup, the order is the protocol doc, then the mockup, then the
-  code. The `mockups` skill gives the order and its cases.
+- With a mockup, the protocol doc wins over the mockup, and the mockup
+  wins over the code. The `mockups` skill gives the cases.
 - Do not drop an option, rank it lower, or recommend a different option
   only because it conflicts with a protocol doc. Include the doc update in
   that option and in its effort.
-- The decision and safety rules still apply. The review-fix rule in the
-  `implementation-review` skill and the deletion audit in the `git-commit`
+- The decision and safety rules still apply. The decision test in the
+  `decisions-and-findings` skill and the deletion audit in the `git-commit`
   skill send some options to the user. Recommend such an option on its
   merits, and let the user decide.

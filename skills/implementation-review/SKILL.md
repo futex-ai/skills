@@ -23,7 +23,8 @@ after the report.
 - A finding must anchor to the scope.
 - The reviewer lists every other problem under `Outside the scope`, one
   line each, without a number or the item layout. Nobody fixes these
-  problems in this branch. An unrelated flaky test is such a problem.
+  problems in this branch, so that one fix in a separate branch reaches
+  every open branch. An unrelated flaky test is such a problem.
 - The user can widen the scope by asking for it explicitly, for example a
   review of the whole repository or of a named area. Then the requested
   scope replaces the diff. Do not widen the scope for any other reason.
@@ -37,7 +38,9 @@ first round, and read the file itself after a context summary.
 
 1. Run the review as a separate read-only pass in a fresh context. Use
    the `first-pass review agent` of the `models` skill. Give it the prompt in
-   [references/review-prompt.md](references/review-prompt.md), the
+   [references/review-prompt.md](references/review-prompt.md), followed by
+   the outcome rules of the `decisions-and-findings` skill, as the prompt
+   says. Also give it the
    `## Review focus` list from the repository's `AGENTS.md`, the first
    free finding number, and the review folder. When the user asked for a
    wider scope, replace the first paragraph of the prompt's `## Scope`
@@ -100,7 +103,7 @@ gives the layout that shows them to the user.
   the class is already in force, such as a skill rule or an existing lint,
   say so and propose no other wider fix.
 - An effort grade for each option, under the scale in the
-  `decisions-and-findings` skill. Effort grades the code change of one
+  `decisions-and-findings` skill. Effort grades the whole job of one
   option, not the problem. The finding's effort is the grade of the
   recommended option.
 - A clear recommended option. For a finding that the agent may fix
@@ -110,80 +113,16 @@ gives the layout that shows them to the user.
   doc. Protocol docs record the current requirements and change with the
   behaviour, so the doc update is part of that option and of its effort.
   See the `documentation` skill.
-- A final `Action` line that proposes one outcome under the decision test
-  in the `decisions-and-findings` skill and the review-fix rule below.
+- A final `Action` line that proposes one outcome under the outcome rules.
 
-## Review-fix rule
+## Fix rule
 
-The full rule with every condition is in
-[references/review-fix-rule.md](references/review-fix-rule.md). Read it
-before you make the final call on a finding. In short:
-
-- Each finding ends with one of three outcomes:
-  - `Action: fix now, apply <letter>`. The agent fixes it in this branch.
-  - `Action: fix after merge, apply <letter>, because …`. The agent
-    records a follow-up item, and a later branch fixes it.
-  - `Action: ask the user, because …`. The finding waits for the user,
-    and the agent records a follow-up item.
-- The reviewer proposes the outcome. The working agent makes the final
-  call, because it knows the purpose of the branch.
-- An option is blocked when it needs a decision:
-  - It changes a requirement without a recorded user decision, or adds a
-    requirement for new behaviour at the boundary.
-  - It changes a mockup to match the code, and the order in the
-    `mockups` skill does not call for that change.
-  - It changes user-visible behaviour beyond the contract.
-  - It adds a gate, a lint, stricter validation, or a test for the class,
-    also as a wider fix.
-  - It deletes or overrides functionality on `origin/main`. Dead code
-    under the `git-commit` skill is not functionality. Nor is a test that
-    the removal rule of the `testing` skill covers.
-  - It weakens a test of live code or a gate.
-  - It needs credentials or infrastructure.
-- The decision test in the `decisions-and-findings` skill decides whether
-  a finding waits for the user. `fix now` and `fix after merge` are
-  allowed only when no condition holds. Condition 6 holds for each finding
-  outside these categories:
-  - product bugs, including edge cases, races, and platform differences
-  - security issues
-  - docs or spec drift
-  - mockup mismatches that the order in the `mockups` skill settles
-  - flaky tests that the diff adds or changes under the flaky-test rule
-    in the `deterministic-tests` skill
-  - dead code under the predicate in the `git-commit` skill
-  - tests that the removal rule of the `testing` skill covers
-  - repository-rule violations such as file size, lint, and layout
-  - copy defects whose fix keeps the meaning
-- The letter names the best-ranked option that is not blocked: a
-  structural wider fix, then a detection wider fix, then the direct fix.
-  A blocked wider fix does not block the fix.
-- The agent can split a finding with a wider fix. It applies the direct
-  fix now and records the wider fix for after the merge. The line is
-  `fix now, apply <letter>, and fix after merge, apply <letter>, because …`.
-- The outcome is `fix now` when one of these holds:
-  - The severity is High.
-  - The fix gets much harder after the merge, for example in a migration
-    that the diff adds.
-  - The problem breaks a gate or a test, or adds a flaky test.
-  - A doc contradicts the changed code.
-  - The fix is Small and stays in the files that the diff changes.
-- A product bug with the likelihood Rare gets `fix now` only when its
-  severity is High or its fix gets much harder after the merge.
-  Otherwise it gets `fix after merge`, also when the fix is Small.
-- For every other finding that it may fix, the agent decides. It gives
-  each `fix after merge` outcome one sentence of reason.
-- `ask the user` when a condition of the decision test holds. For a
-  finding, condition 3 holds when every option is blocked, or when the
-  best option on the merits is blocked and is not a wider fix. Condition 4
-  holds when the options have real trade-offs and no option is clearly
-  best. Condition 6 also holds for a slow, custom, or low-value test,
-  gate, lint, or check that the removal rule of the `testing` skill does
-  not cover. Findings about missing tests, performance, code
-  structure, and process always meet condition 6. Any other UX wording
-  meets it too, such as a choice of tone or voice that no copy rule
-  settles.
-- An `Outside the scope` problem is not a finding. Do not fix it in this
-  branch. Record it as a follow-up item.
+The outcome rules are in the `decisions-and-findings` skill, in its file
+`outcomes.md` under `references/`. They hold the decision test and the
+fix rule. Read them before you make the final call on a finding. The
+decision test says which findings wait for the user. The fix rule says
+which option you apply to the others, and whether you fix it now or
+after the merge.
 
 ## After the review
 
@@ -196,12 +135,9 @@ before you make the final call on a finding. In short:
    - A repeat follows the repeat rules of the findings file.
    - Findings with the same cause or a shared wider fix get one fix.
    - A fix that removes the code of another finding also closes it.
-   - When two options conflict, ask the user, unless a rule settles which
-     one wins.
-   - When a fix depends on the answer to an open finding, the finding
-     waits with it. Its outcome becomes `ask the user` under condition 4
-     of the decision test, and its **Related** line names the open
-     finding.
+   - Options that conflict, and a fix that depends on the answer to an
+     open finding, get their outcome under the decision test. The
+     **Related** line names the open finding.
 3. Fix the confirmed `fix now` findings without waiting for the user.
    Apply the option that the `Action` line names. Leave the
    `Outside the scope` problems alone.
@@ -232,3 +168,6 @@ before you make the final call on a finding. In short:
    High first. Use the `decisions-and-findings` skill.
 8. List under **Open** the follow-up items of the blocked wider fixes and
    of the `Outside the scope` problems, one line each.
+9. When the user answers a finding that waits, and this branch applies
+   the answer, delete its follow-up item in the same commit. Record the
+   answer and its date in the findings file.

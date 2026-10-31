@@ -51,7 +51,7 @@ For each item:
    item has fewer than three distinct approaches, add approaches, or
    confirm its reason for fewer. Do not give an option that tests
    something that the `testing` skill says never gets a test.
-4. Name each condition that every option keeps. Name its source: a
+4. Name each assumption that all the options share. Name its source: a
    protocol doc, a user decision, the task message, an earlier option's
    text, or the code. Say whether its reason still holds. When it is not
    a requirement, or its reason is gone, give the option that drops it. A
@@ -66,15 +66,16 @@ For each item:
    must know that detail is a direct fix. Say when the recommendation
    should change, and why.
 
-Give each new option an effort grade. Effort counts the code change only:
-product code, scripts, configuration, and infrastructure files. Do not
-count tests, README files, protocol docs, plans, or mockup output. Small:
-two code files or fewer, 30 code lines or fewer, and no new code or test
-file. Medium: five code files or fewer in one package, and 150 code lines
-or fewer. Large: every option that is not Small or Medium. A new
-dependency, a migration, a change on both sides of the backend and frontend
-boundary, a new mockup, or a new protocol section is Large whatever its
-size.
+Give each new option an effort grade. Effort is your own estimate of the
+time that the whole job of the option takes, for the agent and the user
+together. The whole job is finding the cause, the change, its tests, and
+the review. Small: under an hour. Medium: up to a day. Large: longer. Use
+the expected change as one input: its files, its lines, and its kind. A
+new dependency, a migration, a backend and frontend change, a new mockup,
+or a new protocol section often takes longer. Also weigh the work that
+the change does not show, such as an unknown cause or a new test harness.
+No single input sets the grade. A typical review fix with its test is
+Small.
 
 Return one block for each item, in the order given:
 
@@ -83,7 +84,7 @@ Return one block for each item, in the order given:
 
 - **Root question:** <"Kept", or a better root question and one sentence of reason.>
 - **Places not covered:** <Each place with the letter of its new option, or the one sentence that says why it is not a real choice. Or "None".>
-- **Conditions:** <Each condition that every option keeps: its source, whether its reason holds, and the letter of the option that drops it, or "kept" when step 3 gives none. Or "None".>
+- **Assumptions:** <Each assumption that all the options share: its source, whether its reason holds, and the letter of the option that drops it, or "kept" when no option drops it. Or "None".>
 - **New options:** <Each new option with the next free letter, the change, its cost or risk, and its effort grade. Or "None".>
 - **Left out:** <Each approach that you leave out or bring back, with its reason. Or "No change".>
 - **Recommendation:** <The letter you recommend and one sentence of reasoning. When it differs from the review's, say so.>

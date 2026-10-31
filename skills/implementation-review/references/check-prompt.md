@@ -53,15 +53,17 @@ Check five things at the code, and a sixth for a missing test:
    is speculative.
 5. The severity, the likelihood, and the category fit the scales.
    Severity grades the harm when the problem happens, not how often it
-   happens. High is wrong output, lost data, a security problem, or
-   blocked work. Medium is a visible defect, or a spec gap with a
-   workaround. Low is wording, style, or a defect that costs the user
-   little. Likelihood is for a product bug only. Common: normal use meets
-   it, also when only now and then. Rare: normal use does not meet it.
-   Only an unusual input, timing, platform, or setup does. A problem that
-   an attacker can cause is a security problem, not a rare product bug.
-   Category: product bug, security, docs or spec, mockup, repository rule,
-   test, performance, code structure, dead code, UX wording, or process.
+   happens. Harm to the users of the product weighs more than harm to the
+   people and agents who build it. Both count. High is wrong output, lost
+   data, a security problem, or blocked work. Medium is a visible defect,
+   a spec gap with a workaround, or a flaky test or check in the gate. Low
+   is wording, style, or a defect that costs little. Likelihood is for a
+   product bug only. Common: normal use meets it, also when only now and
+   then. Rare: normal use does not meet it. Only an unusual input, timing,
+   platform, or setup does. A problem that an attacker can cause is a
+   security problem, not a rare product bug. Category: product bug,
+   security, docs or spec, mockup, repository rule, test, performance,
+   code structure, dead code, UX wording, or process.
 6. A finding about a missing test names the requirement or the defect that
    no test covers. It also names a code change that no existing test
    catches. Read the tests to confirm that none catches it. Remove the
