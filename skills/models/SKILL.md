@@ -22,14 +22,17 @@ else does. The `delegating` skill says where and how each action runs.
 | `docs implementor` | claude | `opus-5-5-1m` | `max` | Docs, protocol docs, READMEs, and plans. |
 | `first-pass review agent` | codex | `gpt-6.1-sol` | `max` | The implementation review and plan reviews. |
 | `second-pass review agent` | claude | `opus-5-5-1m` | `max` | The finding checks of a review, the options check of plan decisions, and investigations of a decision or a review item. |
+| `wake routine` | claude | `haiku-5-5-1m` | `low` | The hourly routine that wakes a section coordinator. It runs a few commands. |
 
-Every action runs at the `max` effort. The model ids are the ids that
-`conductor model` lists. When `conductor model` does not list a model of
-this table, the table is stale. Tell the user. Then use the nearest
-model that it lists.
+Every action except `wake routine` runs at the `max` effort. The model
+ids are the ids that `conductor model` lists. When `conductor model`
+does not list a model of this table, the table is stale. Tell the user.
+Then use the nearest model that it lists.
 
-The user can override an action for one task in a message. Nothing else
-overrides the table.
+The user can override an action for one task in a message. A section
+coordinator keeps the user's overrides for its section in its state
+file, as the `conductor-section-workspace-coordinator` skill says.
+Nothing else overrides the table.
 
 ## Checklist
 

@@ -16,6 +16,8 @@ Codex, and with any other agent that reads the
   lock, loop, and hook functions live in `scripts/lib/`.
 - `scripts/check.sh`: validates every skill.
 - `tests/`: shell tests for the scripts. `tests/run.sh` runs them all.
+- `plans/follow-ups/`: follow-up items, one file each, as the `plans`
+  skill says. `skills/plans/scripts/follow-ups.sh` lists them.
 
 ## How the pieces fit
 
@@ -61,6 +63,7 @@ Codex, and with any other agent that reads the
 | `agents-md` | A repository has no `AGENTS.md`, still has a monolithic one, or needs its rules aligned with the shared skills. |
 | `writing-skills` | Before you create or edit a skill or its description. Opt-in: linked only with `install.sh --opt-in`. |
 | `models` | Before you delegate work, start a subagent or a reviewer, or choose an agent, a model, or an effort. Also when a skill names an action. |
+| `conductor-section-workspace-coordinator` | In a Conductor cloud workspace only, when the user invokes it or names you the coordinator of a section. Also when a continue, status, or `[coordinator wake]` message arrives in a workspace named `coordinator: <section>` or holding a coordinator state file. |
 
 ## The flow of a feature
 
