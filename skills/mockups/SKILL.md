@@ -88,7 +88,7 @@ When two of them disagree, change the lower side to match the higher side.
   be the stale side.
 - When the higher side is wrong, or worse than the lower side, propose its
   change to the user as a decision, as the `documentation` skill says.
-- Sample data in a mockup is not a requirement. The product shows real
-  data, as the `product-ui` skill says.
+- Sample data in a mockup is not a requirement. The code shows real data,
+  as the `product-ui` skill says.
 - When a mockup breaks a rule of the `product-ui` skill, the mockup is
   wrong. Fix the mockup.
