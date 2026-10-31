@@ -43,7 +43,8 @@ An option is blocked when:
   This holds for a wider fix too, whatever its effort. The always-on rules
   reserve that choice for the user.
 - It adds a test for the class: a test that catches every case of a
-  defect class. The regression test for the defect itself is not blocked.
+  defect class. A property test that the review proposes as a wider fix
+  is one. The regression test for the defect itself is not blocked.
 - It deletes or overrides functionality on `origin/main`. Functionality
   is everything on `origin/main` that is not dead code under the
   predicate in the `git-commit` skill. It includes live code, its tests,
@@ -85,6 +86,10 @@ of these categories:
   of a named test, a test of removed behaviour, or a test of something
   that never gets a test. The option removes the test with the steps and
   the proof that the rule requires.
+- Test findings: a missing test, a weak test, a slow test, or a test in
+  the wrong file or group. The reviewer gives the finding the category
+  test. A fix that changes a test removes no assertion and loosens none.
+  A removal follows the bullet above.
 - Repository-rule violations such as file size, lint, and layout.
 - Copy defects whose fix keeps the meaning: user-facing text that has a
   typo or breaks a rule under `## Copy` in the `product-ui` skill. The
@@ -159,12 +164,11 @@ holds. For a finding, a condition holds in each of these cases:
 - More than one option has real trade-offs, and the recommendation is not
   clearly best.
 - The finding is outside the categories above.
-- The finding is about a slow, custom, or low-value test, gate, lint, or
-  check that the removal rule of the `testing` skill does not cover. Ask
-  whether to fix or remove it, and state what it protects and how long it
-  runs.
-- The finding is about missing tests, performance, code structure, or
-  process.
+- The finding is about a slow, custom, or low-value gate, lint, or check,
+  or about the removal of a test that the removal rule of the `testing`
+  skill does not cover. Ask whether to fix or remove it, and state what it
+  protects and how long it runs.
+- The finding is about performance, code structure, or process.
 - The finding is about any other UX wording. Examples are a choice of
   tone or voice that no copy rule settles, and a choice between two
   correct texts.

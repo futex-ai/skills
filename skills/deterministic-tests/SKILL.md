@@ -90,8 +90,8 @@ its severity with the severity scale of the `decisions-and-findings` skill.
 
 ## Slow and low-value tests
 
-Slow, custom, or low-value tests, gates, lints, and checks get the outcome
-`ask the user`. Ask the user whether to fix or remove each one, and state
-what it protects and how long it runs. A test that the removal rule of the
-`testing` skill covers is removed without asking, with the proof that the
-rule requires.
+Make a slow test faster without asking when you remove no assertion and
+loosen none. To remove a test, follow the removal rule of the `testing`
+skill. Each slow, custom, or low-value gate, lint, or check gets the
+outcome `ask the user`. Ask the user whether to fix or remove each one,
+and state what it protects and how long it runs.

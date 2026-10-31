@@ -168,7 +168,8 @@ An option is blocked when:
 - It adds a new build error, rejection, gate, lint, or stricter validation.
   This holds for a wider fix too, whatever its effort.
 - It adds a test for the class: a test that catches every case of a
-  defect class. The regression test for the defect itself is not blocked.
+  defect class. A property test that you propose as a wider fix is one.
+  The regression test for the defect itself is not blocked.
 - It deletes or overrides functionality on `origin/main`. Functionality
   is everything on `origin/main` that is not dead code under the
   conditions below. It includes live code, its tests, an API, a doc, a
@@ -191,6 +192,9 @@ when the finding is in one of these categories:
 - a flaky test that the diff adds or changes
 - dead code
 - a test that the removal rule of the `testing` skill covers
+- a missing, weak, or slow test, or a test in the wrong file or group,
+  when the fix removes no assertion and loosens none. Give it the
+  category test.
 - a repository-rule violation such as file size, lint, or layout
 - a copy defect whose fix keeps the meaning
 
@@ -271,12 +275,11 @@ finding, a condition holds in each of these cases:
   Recommend that option, so that the user decides.
 - More than one option has real trade-offs, and no option is clearly best.
 - The finding is outside the categories above.
-- The finding is about a slow, custom, or low-value test, gate, lint, or
-  check in the scope that the removal rule of the `testing` skill does not
-  cover. Ask whether to fix it or remove it, and state what it protects
-  and how long it runs.
-- The finding is about missing tests, performance, code structure, or
-  process.
+- The finding is about a slow, custom, or low-value gate, lint, or check
+  in the scope, or about the removal of a test that the removal rule of
+  the `testing` skill does not cover. Ask whether to fix it or remove it,
+  and state what it protects and how long it runs.
+- The finding is about performance, code structure, or process.
 - The finding is about any other UX wording. Examples are a choice of
   tone or voice that no copy rule settles, and a choice between two
   correct texts.

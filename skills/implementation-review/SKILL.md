@@ -152,6 +152,8 @@ before you make the final call on a finding. In short:
     in the `deterministic-tests` skill
   - dead code under the predicate in the `git-commit` skill
   - tests that the removal rule of the `testing` skill covers
+  - missing, weak, and slow tests, and tests in the wrong file or group,
+    when the fix removes no assertion and loosens none
   - repository-rule violations such as file size, lint, and layout
   - copy defects whose fix keeps the meaning
 - The letter names the best-ranked option that is not blocked: a
@@ -177,11 +179,12 @@ before you make the final call on a finding. In short:
   - Every option is blocked.
   - The best option on the merits is blocked and is not a wider fix.
   - The options have real trade-offs, and no option is clearly best.
-  - The finding is about a slow, custom, or low-value test, gate, lint,
-    or check that the removal rule of the `testing` skill does not cover.
-  - The finding is about missing tests, performance, code structure, or
-    process, or about any other UX wording, such as a choice of tone or
-    voice that no copy rule settles.
+  - The finding is about a slow, custom, or low-value gate, lint, or
+    check, or about the removal of a test that the removal rule of the
+    `testing` skill does not cover.
+  - The finding is about performance, code structure, or process, or
+    about any other UX wording, such as a choice of tone or voice that no
+    copy rule settles.
 - An `Outside the scope` problem is not a finding. Do not fix it in this
   branch. Record it as a follow-up item.
 
