@@ -119,10 +119,10 @@ Write in Simplified Technical English (ASD-STE100):
 
 ## Open items
 
-An open item is an item that you gave the user and that still waits for
-an answer. It stays open until the user answers it, also while you work
-on other tasks. The user must not miss it. While an item is open, each
-final report and each message with items does these things:
+An open item is an item of this conversation that waits for the user's
+answer. It stays open until the user answers it, also while you work on
+other tasks. The user must not miss it. While an item is open, each final
+report and each message with items does these things:
 
 - Its first sentence names the open items, as in "Two decisions need
   your answer: items 4 and 7."
