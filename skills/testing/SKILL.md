@@ -35,7 +35,8 @@ The `finish-work` skill says which tests to run and when.
   one exists.
 - A test for the class, which catches every case of a defect class, needs
   the user's approval. The `implementation-review` skill treats it like a
-  lint.
+  lint. A property test that you write for a requirement of your change
+  is not a test for the class.
 
 ## The level of a test
 

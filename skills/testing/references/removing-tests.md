@@ -42,7 +42,8 @@ newline in a snapshot, or a platform that only the old test ran on.
 - The covering test is at a higher level, for example a browser spec that
   would cover a unit test.
 - The test is slow or low value, but no reason in the `testing` skill
-  holds. The `deterministic-tests` skill says how to ask.
+  holds. You can make a slow test faster without asking. The
+  `deterministic-tests` skill says how to ask about its removal.
 
 ## Example
 

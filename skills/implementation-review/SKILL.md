@@ -151,6 +151,8 @@ before you make the final call on a finding. In short:
     in the `deterministic-tests` skill
   - dead code under the predicate in the `git-commit` skill
   - tests that the removal rule of the `testing` skill covers
+  - missing, weak, and slow tests, and tests in the wrong file or group,
+    when the fix removes no assertion and loosens none
   - repository-rule violations such as file size, lint, and layout
   - copy defects whose fix keeps the meaning
 - The letter names the best-ranked option that is not blocked: a
@@ -175,9 +177,9 @@ before you make the final call on a finding. In short:
   finding, condition 3 holds when every option is blocked, or when the
   best option on the merits is blocked and is not a wider fix. Condition 4
   holds when the options have real trade-offs and no option is clearly
-  best. Condition 6 also holds for a slow, custom, or low-value test,
-  gate, lint, or check that the removal rule of the `testing` skill does
-  not cover. Findings about missing tests, performance, code
+  best. Condition 6 also holds for a slow, custom, or low-value gate,
+  lint, or check, and for the removal of a test that the removal rule of
+  the `testing` skill does not cover. Findings about performance, code
   structure, and process always meet condition 6. Any other UX wording
   meets it too, such as a choice of tone or voice that no copy rule
   settles.
