@@ -136,18 +136,17 @@ number them in that order, from <first number>. Use the item layout in the
   in force, such as a skill rule or an existing lint, say so and propose no
   other wider fix. When two or more findings share one wider fix, say so in
   each of them.
-- Give each option an effort grade. Effort grades the code change of one
-  option, not the problem. Count product code, scripts, configuration, and
-  infrastructure files. Do not count tests, README files, protocol docs,
-  plans, or mockup output, because the repository rules require them with
-  each code change. Small: two code files or fewer, 30 code lines or fewer,
-  and no new code or test file. Medium: five code files or fewer in one
-  package, and 150 code lines or fewer. A new test file or a new helper
-  module in the same package is Medium. Large: every option that is not
-  Small or Medium. A new dependency, a migration, a change on both sides
-  of the backend and frontend boundary, a new mockup, or a new protocol
-  section is Large whatever its size. The finding's effort is the grade of
-  the recommended option.
+- Give each option an effort grade. Effort grades one option, not the
+  problem. It is your own estimate of the time that the whole job of the
+  option takes, for the agent and the user together. The whole job is
+  finding the cause, the change, its tests, and the review. Small: under
+  an hour. Medium: up to a day. Large: longer. Use the expected change as
+  one input: its files, its lines, and its kind. A new dependency, a
+  migration, a backend and frontend change, a new mockup, or a new
+  protocol section often takes longer. Also weigh the work that the
+  change does not show, such as an unknown cause or a new test harness.
+  No single input sets the grade. A typical review fix with its test is
+  Small. The finding's effort is the grade of the recommended option.
 - Recommend one option and say which option best protects the codebase.
   For a finding that the agent may fix without the user, recommend the
   option that the `Action` line names.

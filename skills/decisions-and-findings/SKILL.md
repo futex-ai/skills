@@ -248,18 +248,17 @@ entry shape under a **Terms** heading.
   security problem, not a rare product bug.
 - Category. Product bug, security, docs or spec, mockup, repository rule,
   test, performance, code structure, dead code, UX wording, or process.
-- Effort. The grade of one option, not of the problem. Count the code
-  change only: product code, scripts, configuration, and infrastructure
-  files. Do not count tests, README files, protocol docs, plans, or mockup
-  output, because the repository rules require them with each code change.
-  Small: two code files or fewer, 30 code lines or fewer, and no new code
-  or test file. Medium: five code files or fewer in one package, and 150
-  code lines or fewer. A new test file or a new helper module in the same
-  package is Medium. Large: every option that is not Small or Medium. A
-  new dependency, a migration, a change on both sides of the backend and
-  frontend boundary, a new mockup, or a new protocol section is Large
-  whatever its size. The effort of an item is the grade of its
-  recommended option.
+- Effort. The grade of one option, not of the problem. It is your own
+  estimate of the time that the whole job of the option takes, for the
+  agent and the user together. The whole job is finding the cause, the
+  change, its tests, and the review. Small: under an hour. Medium: up to
+  a day. Large: longer. Use the expected change as one input: its files,
+  its lines, and its kind. A new dependency, a migration, a backend and
+  frontend change, a new mockup, or a new protocol section often takes
+  longer. Also weigh the work that the change does not show, such as an
+  unknown cause or a new test harness. No single input sets the grade. A
+  typical review fix with its test is Small. The effort of an item is the
+  grade of its recommended option.
 
 ## Explaining items again
 

@@ -27,9 +27,9 @@ the proposed outcome, it gives one sentence of reason.
 ## Effort
 
 Effort grades one option, not the problem. The `decisions-and-findings`
-skill gives the scale. It counts the code change only, and it gives file
-and line bands for Small, Medium, and Large. The finding's effort is the
-grade of the applied or recommended option.
+skill gives the scale. The grade is the grader's own estimate of the time
+that the whole job of the option takes. The finding's effort is the grade
+of the applied or recommended option.
 
 ## Blocked options
 
