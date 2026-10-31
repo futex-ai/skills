@@ -28,14 +28,12 @@ the proposed outcome, it gives one sentence of reason.
 Effort grades one option, not the problem. The `decisions-and-findings`
 skill gives the scale. It counts the code change only, and it gives file
 and line bands for Small, Medium, and Large. The finding's effort is the
-grade of the applied or recommended option. Small and Medium are within
-the cap for fixes without the user. Large is above it.
+grade of the applied or recommended option.
 
 ## Blocked options
 
 An option is blocked when:
 
-- It is Large.
 - It changes a requirement in a protocol doc without a recorded user
   decision, adds a requirement for new behaviour at the boundary, or
   decides which side of a mockup and product mismatch is right.
@@ -97,9 +95,9 @@ condition 6 holds unless the finding is in one of these categories:
 
 The letter names the best-ranked option that is not blocked: a structural
 wider fix, then a detection wider fix, then the direct fix. The ranking is
-under "Wider fixes and follow-ups". So a Small or Medium wider fix ranks
-before a direct fix, and a blocked wider fix does not block the fix. The
-agent can still split the finding and apply the wider fix after the merge.
+under "Wider fixes and follow-ups". So a wider fix ranks before a direct
+fix, and a blocked wider fix does not block the fix. The agent can still
+split the finding and apply the wider fix after the merge.
 
 ## Fix now or after merge
 
@@ -203,12 +201,6 @@ holds. For a finding, the conditions work as follows:
   of this review that share the wider fix, plus the previous examples that
   the reviewer cited. When the count is two or more, the agent also raises
   the wider fix as a numbered item with the source Review.
-- An effort grade is an estimate. If an applied option grows past twice
-  the Medium band during the fix, more than ten code files or 300 code
-  lines, or needs a new dependency, a migration, a change on both sides of
-  the backend and frontend boundary, a new mockup, or a new protocol
-  section, revert it. Apply the next smaller option that is not blocked,
-  or change the outcome to `ask the user` and report it.
 
 ## Outside the scope
 

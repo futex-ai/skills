@@ -70,6 +70,8 @@ between a real and a fake clock."
   `scripts/`. Link each file by its relative path. The check confirms that
   it exists.
 - Write in Simplified Technical English, as the always-on rules say.
+- Use one word for one thing. When a skill defines a term, use that term
+  each time.
 - In a list, each item names its subject. A pronoun points to the lead-in
   sentence of the list only, never to another item.
 - When a reference prompt returns verdict lines or slots, say in the skill

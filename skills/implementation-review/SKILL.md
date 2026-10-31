@@ -127,7 +127,7 @@ before you make the final call on a finding. In short:
     and the agent records a follow-up item.
 - The reviewer proposes the outcome. The working agent makes the final
   call, because it knows the purpose of the branch.
-- An option is blocked when it is Large, or when it needs a decision:
+- An option is blocked when it needs a decision:
   - It changes a requirement without a recorded user decision, or adds a
     requirement for new behaviour at the boundary.
   - It decides between a mockup and the product.
@@ -202,10 +202,7 @@ before you make the final call on a finding. In short:
      of the decision test, and its **Related** line names the open
      finding.
 3. Fix the confirmed `fix now` findings without waiting for the user.
-   Apply the option that the `Action` line names. If the change grows past
-   twice the Medium band while you work, or needs a Large trigger such as
-   a dependency or a migration, revert it. Apply the next smaller option
-   that is not blocked, or change the outcome to `ask the user`. Leave the
+   Apply the option that the `Action` line names. Leave the
    `Outside the scope` problems alone.
 4. Record a follow-up item for each `fix after merge` finding, each
    `ask the user` finding, each blocked or split-off wider fix of a fixed
