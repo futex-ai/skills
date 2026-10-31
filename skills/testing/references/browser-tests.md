@@ -62,5 +62,6 @@ with Testing Library.
 - Debug a failure from its trace, screenshot, or video. Do not rerun until
   it passes.
 - A retry in the runner configuration is not a fix. A test that passes only
-  on a retry is flaky. Use the `deterministic-tests` skill.
+  on a retry is flaky. Follow
+  [deterministic-tests.md](deterministic-tests.md).
 - Screenshot baselines follow [snapshots.md](snapshots.md).

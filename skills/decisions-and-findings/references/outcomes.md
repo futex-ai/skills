@@ -129,8 +129,8 @@ A kind that is not in this list has no rule of its own.
     records history. The fix moves that content to its home: the crate
     README for entry points, the plan for history, and the code for
     mechanics. The move is the named option.
-- Flaky tests that the diff adds or changes, under the flaky-test rule in
-  the `deterministic-tests` skill.
+- Flaky tests that the diff adds or changes, under the flaky-test rule of
+  the `testing` skill.
 - Dead code: code that the product never runs, under the predicate in the
   `git-commit` skill. Check each condition with a search, and cite the
   searches in the finding. The option deletes the dead code with the steps
@@ -147,7 +147,7 @@ A kind that is not in this list has no rule of its own.
   changes a test removes no assertion and loosens none. A removal follows
   the bullet above.
 - Gates: a slow, custom, or low-value gate, lint, or check is not a test
-  finding. The `deterministic-tests` skill says how to fix it.
+  finding. The `testing` skill says how to fix it.
 - UX wording: user-facing text. A copy defect is text that has a typo or
   breaks a rule under `## Copy` in the `product-ui` skill. Give a copy
   defect the category UX wording, not repository rule. A fix keeps the

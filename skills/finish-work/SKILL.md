@@ -32,9 +32,9 @@ name the blocker, and list the checks that did run.
   verification. Only the complete gate proves the work.
 - If a test that the diff does not touch fails and then passes on a rerun,
   it is an unrelated flaky test. Do not fix it in this branch. Report it
-  under the rules in the `deterministic-tests` skill.
+  under the rules for unrelated flaky tests in the `testing` skill.
 - A flaky test that the diff adds or changes may be fixed without asking
-  only under the flaky-test rule in the `deterministic-tests` skill.
+  only under the flaky-test rule of the `testing` skill.
 - Documentation-only or plan-only changes, including initial plan creation,
   do not require the gate. Validate the changed Markdown and review the diff
   instead. For a plan with a new decision, run the options check over it,
