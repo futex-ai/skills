@@ -71,8 +71,10 @@ update it with any new useful context in the same change.
 
 ## Docs (`docs/`)
 
-- Docs stay aligned with the behaviour of the implementation. Fix a doc
-  that contradicts the code in the same change.
+- Docs stay aligned with the behaviour of the implementation. When a doc
+  contradicts the code, fix the wrong side in the same change. For a
+  protocol doc, the code is wrong by default, as the section "Protocol
+  docs change with the behaviour" says.
 - Docs are consistent with themselves: no conflicting statements.
 - Docs may be nested in multiple directories.
 - A gap in the requirements found during implementation is a decision

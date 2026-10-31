@@ -6,8 +6,9 @@ description: Use before you create or change a mockup under docs/mockups, a scre
 # Mockups
 
 Mockups are part of the spec and stay aligned with the implementation at
-all times. The forbidden visual patterns and copy rules in the `product-ui`
-skill apply to mockups too.
+all times. When they disagree, the section "When a protocol doc, a mockup,
+and the code disagree" says which side changes. The forbidden visual
+patterns and copy rules in the `product-ui` skill apply to mockups too.
 
 ## Design before implementation
 
