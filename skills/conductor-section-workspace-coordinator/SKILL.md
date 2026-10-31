@@ -63,7 +63,7 @@ actions, or the board. Apply it before the steps below.
    conditions below. A merge moves `main`, so do this before you read the
    other reports. Then archive each finished workspace, as the cycle
    reference says.
-3. For each workspace, read the report of its orchestrator, and act by
+3. For each workspace, read the result of its orchestrator, and act by
    stage, as [references/cycle.md](references/cycle.md) says. The
    action is the plan request, the plan review, the implement message,
    the answers to the items, or the next stage. A workspace without an orchestrator gets one
@@ -75,7 +75,7 @@ actions, or the board. Apply it before the steps below.
 5. When the board has no active work and the state records a goal, start
    a goal review. The scheduling reference says how. Without a goal, end
    the cycle.
-6. Wait while a child works. Read its report every few minutes, and act
+6. Wait while a child works. Read its result every few minutes, and act
    when it is no longer `pending:` or `waiting:`. Stop waiting when no
    child works, or after about 50 minutes.
 7. Write the state file. Then end the turn with a status report in the
@@ -112,7 +112,7 @@ actions, or the board. Apply it before the steps below.
 - Write every message from the templates in `templates/messages.md`. A
   message that starts a workspace or a session is a prompt. It has the
   six fields of the `delegating` skill, from Scope to Output. Send a
-  message only when the report of that session is not `pending:` or
+  message only when the result of that session is not `pending:` or
   `waiting:`. Put everything for that session into it.
 
 ## Decisions and review items

@@ -6,12 +6,12 @@ are `new`, `planning`, `implementing`, `review`, `merge`, `done`, and
 records the stage, the orchestrator session, the next action, and the
 date of the last change.
 
-## Read a report
+## Read the result
 
 - Run `scripts/last-report.sh` with the orchestrator's session id and
   the id of the last message that you sent to it. It reads the session
-  status and the transcript, so read at any status. It prints one line
-  about the latest request:
+  status and the transcript, so read at any status. It prints the
+  result, one line about the latest request:
   - `pending: <id>`: that message has not started yet.
   - `pending: working`: the agent still works on the request.
   - `waiting: <tasks>`: the request still runs background tasks.
@@ -31,7 +31,7 @@ date of the last change.
   a result is an error, nothing, or a text that is not a final report.
   Send the status request once, and record the retry in the board line. When the next
   request ends that way too, the action is blocked. Escalate it with the
-  printed line and the message id, and set `blocked`.
+  result and the message id, and set `blocked`.
 - Keep what the next cycle needs in the board line: the branch, the pull
   request number, and the open items. Do not copy reports into the state
   file.
@@ -55,7 +55,7 @@ Every child workspace has one session named `orchestrator` with the
 creation. A workspace that the user added gets it in its `new` stage:
 
 1. Read the newest session of the workspace with
-   `scripts/last-report.sh`. Wait while it prints `pending:` or
+   `scripts/last-report.sh`. Wait while its result is `pending:` or
    `waiting:`. The scan gives its id, name, model, and effort.
 2. When that session runs the model and the effort of the
    `default orchestrator` action, adopt it. Rename it with
