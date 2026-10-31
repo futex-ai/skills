@@ -100,7 +100,7 @@ gives the layout that shows them to the user.
   the class is already in force, such as a skill rule or an existing lint,
   say so and propose no other wider fix.
 - An effort grade for each option, under the scale in the
-  `decisions-and-findings` skill. Effort grades the code change of one
+  `decisions-and-findings` skill. Effort grades the whole job of one
   option, not the problem. The finding's effort is the grade of the
   recommended option.
 - A clear recommended option. For a finding that the agent may fix
