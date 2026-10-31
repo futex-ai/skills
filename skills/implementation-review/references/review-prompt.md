@@ -7,6 +7,11 @@ first free finding number of the branch. Replace `<review folder>` with
 the review folder of the branch. The findings file reference of this
 skill gives both.
 
+After the last line of the prompt, add a `---` line and paste the outcome
+rules in full: the file `references/outcomes.md` of the
+`decisions-and-findings` skill. The prompt does not copy them, so that the
+reviewer and the working agent read one text.
+
 The scope of the prompt is the diff. When the user explicitly asks for a
 review outside the changes, for example of the whole repository or of a
 named area, replace the first paragraph of `## Scope` with the scope that
@@ -150,87 +155,20 @@ number them in that order, from <first number>. Use the item layout in the
 - Recommend one option and say which option best protects the codebase.
   For a finding that the agent may fix without the user, recommend the
   option that the `Action` line names.
-- End the finding with an `Action` line that proposes one outcome:
-  `fix now, apply <letter>`, `fix after merge, apply <letter>, because …`,
-  or `ask the user, because …`. After `because`, give the reason in plain
-  words, never a condition number. A finding with a wider fix can get a
-  split instead, as described below. The working agent makes the final
-  call. The decision test in the `decisions-and-findings` skill decides
-  whether the finding waits for the user.
+- End the finding with an `Action` line that proposes one outcome under
+  the outcome rules after this prompt. The working agent makes the final
+  call.
 
-An option is blocked when:
+The outcome rules follow this prompt, after a `---` line. They hold the
+decision test and the review-fix rule. They say when a finding waits for
+the user, which option the `Action` line names, and whether the fix comes
+now or after the merge.
 
-- It changes a requirement in a protocol doc without a recorded user
-  decision, adds a requirement for new behaviour at the boundary, or
-  decides which side of a mockup and product mismatch is right.
-- It changes user-visible behaviour beyond the contract.
-- It adds a new build error, rejection, gate, lint, or stricter validation.
-  This holds for a wider fix too, whatever its effort.
-- It adds a test for the class: a test that catches every case of a
-  defect class. A property test that you propose as a wider fix is one.
-  The regression test for the defect itself is not blocked.
-- It deletes or overrides functionality on `origin/main`. Functionality
-  is everything on `origin/main` that is not dead code under the
-  conditions below. It includes live code, its tests, an API, a doc, a
-  mockup, a plan, a migration, and schema. A deletion of dead code is not
-  blocked. The plan of the change and a follow-up item that the change
-  fixes are not functionality.
-- It deletes, skips, or weakens a test of live code or a gate, or raises
-  a time limit. A removal under the removal rule of the `testing` skill
-  is not blocked.
-- It needs credentials or infrastructure.
-
-`fix now` and `fix after merge` are allowed only when no condition of the
-decision test holds. The agent may fix a finding without the user only
-when the finding is in one of these categories:
-
-- a product bug, including edge cases, races, and platform differences
-- a security issue
-- docs or spec drift
-- a mockup mismatch that a protocol doc already settles
-- a flaky test that the diff adds or changes
-- dead code
-- a test that the removal rule of the `testing` skill covers
-- a missing, weak, or slow test, or a test in the wrong file or group,
-  when the fix removes no assertion and loosens none. Give it the
-  category test.
-- a repository-rule violation such as file size, lint, or layout
-- a copy defect whose fix keeps the meaning
-
-The letter names the best-ranked option that is not blocked: a structural
-wider fix, then a detection wider fix, then the direct fix. A blocked wider
-fix does not block the fix. For a flaky test that the diff adds or
-changes, name the nondeterminism source and the deterministic fix. The
-deterministic fixes are a fake clock, event order, captured inputs,
-operation counts, an explicit readiness signal, or isolated state. Require
-the fixer to reproduce the flake and record pass counts before and after.
-
-Propose `fix now` when one of these holds:
-
-- The severity is High.
-- The fix gets much harder after the merge. Examples are a migration, a
-  stored data format, or a public API or message that the diff adds.
-- The problem breaks a gate or a test, or the diff adds or changes a flaky
-  test.
-- A doc contradicts the changed code.
-
-Otherwise, propose `fix now` when the fix is Small and stays in the files
-that the diff changes. For a product bug with the likelihood Rare, propose
-`fix now` only when its severity is High or its fix gets much harder after
-the merge. Otherwise propose `fix after merge`, also when the fix is Small.
-For every other finding, weigh the purpose of the branch, the files that
-the fix reaches outside the diff, and whether the end user meets the
-problem before a later branch can fix it. Read the plan of the change,
-when it has one, for its purpose. Give each `fix after merge` proposal one
-sentence of reason.
-
-When the named option is a wider fix and the direct fix is not blocked,
-you can propose a split: the direct fix now, and the wider fix after the
-merge. A split fits when the wider fix does not serve the purpose of the
-branch, reaches files or areas outside the diff, or serves other open
-branches too. Keep a Small wider fix that stays in the files of the diff
-with the direct fix. Write a split with the direct fix first:
-`fix now, apply <letter>, and fix after merge, apply <letter>, because …`.
+For a flaky test that the diff adds or changes, name the nondeterminism
+source and the deterministic fix. The deterministic fixes are a fake
+clock, event order, captured inputs, operation counts, an explicit
+readiness signal, or isolated state. Require the fixer to reproduce the
+flake and record pass counts before and after.
 
 Dead code is code that the product never runs. Code is dead only when all
 of these hold:
@@ -254,34 +192,7 @@ live behaviour through the dead code to the live path, with every
 assertion kept.
 
 Code that the product runs rarely is functionality: an error path, a
-fallback, or the off branch of a feature flag. Its deletion is blocked.
-When a condition is in doubt, give the finding the category code
-structure and propose `ask the user`.
-
-A copy defect is user-facing text that has a typo or breaks a rule under
-`## Copy` in the `product-ui` skill. Give it the category UX wording, not
-repository rule. The fix keeps the meaning when it adds no fact or action
-and removes no fact or action that the end user needs. When no protocol
-doc states the text, a fix that keeps the meaning stays within the
-contract. The direct fix changes only the words that carry the defect.
-When the meaning is in doubt, propose `ask the user`.
-
-Propose `ask the user` when a condition of the decision test holds. For a
-finding, a condition holds in each of these cases:
-
-- Every option is blocked.
-- The best option on the merits is blocked and is not a wider fix.
-  Recommend that option, so that the user decides.
-- More than one option has real trade-offs, and no option is clearly best.
-- The finding is outside the categories above.
-- The finding is about a slow, custom, or low-value gate, lint, or check
-  in the scope, or about the removal of a test that the removal rule of
-  the `testing` skill does not cover. Ask whether to fix it or remove it,
-  and state what it protects and how long it runs.
-- The finding is about performance, code structure, or process.
-- The finding is about any other UX wording. Examples are a choice of
-  tone or voice that no copy rule settles, and a choice between two
-  correct texts.
+fallback, or the off branch of a feature flag.
 
 Protocol docs hold the requirements and the decisions in force for an area:
 observable behaviour at a boundary, and the reason for each choice. They do
@@ -289,28 +200,12 @@ not describe how the code works. Do not treat them as fixed rules. When the
 code and a protocol doc disagree, do not assume that the doc is right.
 Apply these rules to a docs or spec finding:
 
-- Docs or spec drift is a doc that contradicts the changed code. A doc that
-  is silent on how the code works is not a finding. Do not ask for a doc to
-  be clarified or enhanced.
-- The wider fix for the class is already in force, the `documentation`
-  skill. Do not propose another wider fix for it.
+- A doc that is silent on how the code works is not a finding. Do not ask
+  for a doc to be clarified or enhanced.
 - When the code breaks a requirement and the diff did not intend a
   behaviour change, the finding is a product bug in the code.
-- When the diff changes behaviour that a requirement states, and the plan
-  records the user's decision for that change, the fix updates the doc.
-  The agent may apply it without the user, with the doc update as the
-  named option. Without a recorded decision, propose `ask the user`,
-  because the user decides which side is right.
-- A behaviour at the boundary that the diff adds and no requirement covers
-  is a spec gap. Report it as one finding with `ask the user`, because the
-  user reviews each new requirement. A detail that an existing requirement
-  settles is not a gap, also when the requirement does not spell the
-  detail out.
-- When a protocol doc in the scope names source files, functions, or
-  internal mechanics, or records history, the fix moves that content to
-  its home: the crate README for entry points, the plan for history, the
-  code for mechanics. The agent may apply it without the user, with the
-  move as the named option.
+- The outcome rules say when a doc fix waits for the user, and when a new
+  behaviour is a spec gap.
 - Do not drop an option, rank it lower, or recommend a different option
   only because it conflicts with a protocol doc. Include the doc update in
   that option and in its effort grade, and recommend the option when it is

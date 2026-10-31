@@ -41,46 +41,11 @@ a question tool.
 
 ## The decision test
 
-Apply this test to each review finding and to each question that you
-raise. Look at the option that you recommend. For a review item, the
-review-fix rule in the `implementation-review` skill says which option to
-recommend. The item is a decision for the user only when one of these
-conditions holds:
-
-- The recommended option changes a requirement or a decision in force,
-  and no recorded user decision covers the change.
-- The recommended option adds behaviour at a boundary that no
-  requirement covers.
-- The recommended option is blocked under the review-fix rule. For
-  example, it deletes functionality, adds a gate, stricter validation,
-  or a test for the class, weakens a test, or needs credentials or
-  infrastructure.
-- Two or more options have real trade-offs, and no option is clearly
-  best.
-- The user asked you to bring this choice to them.
-- The item comes from a review, and the review-fix rule does not let the
-  agent fix it without the user.
-
-A detail that an existing requirement settles is not a gap, also when the
-requirement does not spell the detail out. An option that drops the
-requirement does not make the item a decision when you do not recommend
-that option.
-
-When no condition holds, apply the recommended option without the user:
-
-- A review item gets `fix now` or `fix after merge`. The review-fix rule
-  says which one, and when to split the item.
-- A design item is a design call. Record the call, its reason, and the
-  date in the plan, in the design of the change. When the change has no
-  plan, record it in the commit or the pull request description. Do not
-  ask the user. Give each design call one line in the final report.
-
-Three signs that an item fails the test:
-
-- The recommendation says that the option costs nothing.
-- The severity is Low, and the impact is only that the work waits for the
-  answer.
-- The **Action** reason says only that the item is a decision.
+Read [references/outcomes.md](references/outcomes.md) before you raise a
+question as a decision, and before you write the **Action** line of an
+item. It holds the two outcome rules. The decision test says when an item
+waits for the user. The review-fix rule says how the agent acts on a
+review finding that does not wait.
 
 ## Simplified Technical English
 

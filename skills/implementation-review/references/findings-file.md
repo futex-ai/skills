@@ -83,11 +83,8 @@ and a list of new problems. Merge them into the entry of the finding:
   that failed. A finding outside the scope goes to the
   `Outside the scope` list.
 - A corrected severity, likelihood, or category replaces the finding's
-  line. When the corrected category always waits for the user, the
-  outcome becomes `ask the user`. When the corrected severity is High, a
-  `fix after merge` outcome becomes `fix now`. When the likelihood
-  changes, make the call between `fix now` and `fix after merge` again,
-  under the review-fix rule.
+  line. Then make the call on its outcome again, under the review-fix
+  rule.
 - Each link goes into the **Related** line of both findings. Drop a link
   to a removed finding.
 - A better root question replaces the **Root question** line.

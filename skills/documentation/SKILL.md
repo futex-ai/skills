@@ -180,6 +180,6 @@ Protocol docs describe the current requirements. They are not fixed rules.
   only because it conflicts with a protocol doc. Include the doc update in
   that option and in its effort.
 - The decision and safety rules still apply. The review-fix rule in the
-  `implementation-review` skill and the deletion audit in the `git-commit`
+  `decisions-and-findings` skill and the deletion audit in the `git-commit`
   skill send some options to the user. Recommend such an option on its
   merits, and let the user decide.
