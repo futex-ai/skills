@@ -1,6 +1,6 @@
 ---
 name: conductor-section-workspace-coordinator
-description: Use when you run in a Conductor cloud workspace and the user invokes /conductor-section-workspace-coordinator or names you the coordinator of a Conductor section. Use also when a continue, status, or [coordinator wake] message arrives in a workspace named coordinator: <section> or holding .context/coordinator/state.md. Not for other work.
+description: "Use when you run in a Conductor cloud workspace and the user invokes /conductor-section-workspace-coordinator or names you the coordinator of a Conductor section. Use also when a continue, status, or [coordinator wake] message arrives in a workspace named coordinator: <section> or holding .context/coordinator/state.md. Not for other work."
 ---
 
 # Conductor section workspace coordinator
@@ -63,8 +63,8 @@ actions, or the board. Apply it before the steps below.
    conditions below. A merge moves `main`, so do this before you read the
    other reports. Then archive each finished workspace, as the cycle
    reference says.
-3. For each workspace whose orchestrator is idle, read its report, and
-   act by stage, as [references/cycle.md](references/cycle.md) says. The
+3. For each workspace, read the report of its orchestrator, and act by
+   stage, as [references/cycle.md](references/cycle.md) says. The
    action is the plan request, the plan review, the implement message,
    the answers to the items, or the next stage. A workspace without an orchestrator gets one
    first, as that reference says.
@@ -75,9 +75,9 @@ actions, or the board. Apply it before the steps below.
 5. When the board has no active work and the state records a goal, start
    a goal review. The scheduling reference says how. Without a goal, end
    the cycle.
-6. Wait while a child works. Poll `conductor --json session status <id>`
-   every few minutes. Act on each child that becomes idle. Stop waiting
-   when every child is idle, or when the cycle has lasted about 50 minutes.
+6. Wait while a child works. Read its report every few minutes, and act
+   when it is no longer `pending:` or `waiting:`. Stop waiting when no
+   child works, or after about 50 minutes.
 7. Write the state file. Then end the turn with a status report in the
    final-report layout of the `decisions-and-findings` skill. Keep it
    short. When nothing changed, say so in one line.
@@ -112,8 +112,8 @@ actions, or the board. Apply it before the steps below.
 - Write every message from the templates in `templates/messages.md`. A
   message that starts a workspace or a session is a prompt. It has the
   six fields of the `delegating` skill, from Scope to Output. Send a
-  message only to an idle session, with everything for that session.
-  Record on the board the message id that the send command prints.
+  message only when the report of that session is not `pending:` or
+  `waiting:`. Put everything for that session into it.
 
 ## Decisions and review items
 

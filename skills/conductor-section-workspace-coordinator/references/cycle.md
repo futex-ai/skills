@@ -9,25 +9,29 @@ date of the last change.
 ## Read a report
 
 - Run `scripts/last-report.sh` with the orchestrator's session id and
-  the id of the last message that you sent to it. It prints how the
-  latest turn ended. A complete task ends with the final-report layout:
-  **Changed**, **Fixed**, **Deferred**, **Decisions**, **Checks**,
-  **Open**. A turn that failed prints its error with the prefix
-  `error: `.
+  the id of the last message that you sent to it. It reads the session
+  status and the transcript, so read at any status. It prints one line
+  about the latest request:
+  - `pending: <id>`: that message has not started yet.
+  - `pending: working`: the agent still works on the request.
+  - `waiting: <tasks>`: the request still runs background tasks.
+  - `error: <cause>`: the request failed.
+  - Any other text: the last text of the request. Nothing: the request
+    ended without text.
 - The send commands print the message id. `conductor --json message
   create` gives `messageId`. A `workspace create` or `session create`
-  with a message gives `initialMessage.messageId`.
-- The script prints `pending: <id>` while that message has not started.
-  Wait, and send nothing. When it stays pending through a whole cycle,
-  escalate it with the message id.
-- When the session is `working`, do not read it and do not send to it.
-  Wait for `idle`.
-- When the last message is a question, apply the decisions section of
-  `SKILL.md`. When it is not a final report, send the status request.
-- When it is an error, send the status request once. That is the one
-  retry of the `delegating` skill. When the next turn ends in an error
-  too, the action is blocked. Escalate it with the error text, and set
-  `blocked`.
+  with a message gives `initialMessage.messageId`. Record the id of each
+  message that you send on the board.
+- On `pending:` or `waiting:`, send nothing, and wait. When a message
+  stays `pending: <id>` through a whole cycle, escalate it with the id.
+- A complete task ends with the final-report layout: **Changed**,
+  **Fixed**, **Deferred**, **Decisions**, **Checks**, **Open**. When the
+  text is a question, apply the decisions section of `SKILL.md`.
+- Every other result gets the one retry of the `delegating` skill. Such
+  a result is an error, nothing, or a text that is not a final report.
+  Send the status request once, and record the retry in the board line. When the next
+  request ends that way too, the action is blocked. Escalate it with the
+  printed line and the message id, and set `blocked`.
 - Keep what the next cycle needs in the board line: the branch, the pull
   request number, and the open items. Do not copy reports into the state
   file.
@@ -50,8 +54,9 @@ Every child workspace has one session named `orchestrator` with the
 `default orchestrator` action. A workspace that you create gets it at
 creation. A workspace that the user added gets it in its `new` stage:
 
-1. Wait until the newest session of the workspace is idle. The scan
-   gives its id, name, model, and effort. Read its last report.
+1. Read the newest session of the workspace with
+   `scripts/last-report.sh`. Wait while it prints `pending:` or
+   `waiting:`. The scan gives its id, name, model, and effort.
 2. When that session runs the model and the effort of the
    `default orchestrator` action, adopt it. Rename it with
    `conductor session rename <id> --name orchestrator`. Send it the

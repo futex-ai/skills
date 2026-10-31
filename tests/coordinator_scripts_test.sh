@@ -138,43 +138,98 @@ test_section_scan_needs_a_workspace_id() {
 
 test_last_report_gives_a_later_claude_error_across_pages() {
   fake_conductor "$1"
+  answer "session_status_s1" '{"status":"idle"}'
   page "session_message_s1_--limit_100_--offset_0" true '[{"type":"userMessage","content":{"message":"go"}},{"type":"agent","content":{"rawPayload":{"type":"assistant","message":{"content":[{"type":"text","text":"thinking aloud"}]}}}},{"type":"agent","content":{"rawPayload":{"type":"result","subtype":"success","is_error":false,"result":"first report"}}}]'
   page "session_message_s1_--limit_100_--offset_3" false '[{"type":"userMessage","content":{"message":"continue"}},{"type":"agent","content":{"rawPayload":{"type":"result","subtype":"success","is_error":true,"result":"API Error: 429"}}}]'
   assert_eq "error: API Error: 429" "$("$scripts/last-report.sh" s1)" "claude error"
+  answer "session_status_s8" '{"status":"idle"}'
+  page "session_message_s8_--limit_100_--offset_0" false '[{"type":"userMessage","content":{"id":"m-1","message":"go"}},{"type":"agent","content":{"rawPayload":{"type":"result","subtype":"error_during_execution","is_error":true,"errors":["first failure","second failure"]}}}]'
+  assert_eq "error: error_during_execution: first failure: second failure" "$("$scripts/last-report.sh" s8)" "claude error list"
 }
 
 test_last_report_gives_the_codex_error_that_ended_the_turn() {
   fake_conductor "$1"
+  answer "session_status_s5" '{"status":"idle"}'
   page "session_message_s5_--limit_100_--offset_0" false '[{"type":"agent","content":{"rawPayload":{"event":{"type":"item.completed","item":{"type":"agentMessage","text":"saving the report"}}}}},{"type":"agent","content":{"rawPayload":{"event":{"type":"error","message":"Reconnecting... 1/5","willRetry":true,"additionalDetails":"last status: 429 Too Many Requests"}}}}]'
   assert_eq "error: Reconnecting... 1/5: last status: 429 Too Many Requests" "$("$scripts/last-report.sh" s5)" "codex error"
 }
 
 test_last_report_gives_the_codex_message_after_a_recovered_error() {
   fake_conductor "$1"
+  answer "session_status_s6" '{"status":"idle"}'
   page "session_message_s6_--limit_100_--offset_0" false '[{"type":"agent","content":{"rawPayload":{"event":{"type":"error","message":"Reconnecting... 1/5","willRetry":true}}}},{"type":"agent","content":{"rawPayload":{"event":{"type":"item.completed","item":{"type":"agentMessage","text":"final report"}}}}},{"type":"agent","content":{"rawPayload":{"event":{"type":"turn.completed"}}}}]'
   assert_eq "final report" "$("$scripts/last-report.sh" s6)" "recovered codex turn"
 }
 
 test_last_report_reads_a_codex_session() {
   fake_conductor "$1"
+  answer "session_status_s2" '{"status":"idle"}'
   page "session_message_s2_--limit_100_--offset_0" false '[{"type":"agent","content":{"rawPayload":{"event":{"type":"item.completed","item":{"type":"reasoning","text":"hmm"}}}}},{"type":"agent","content":{"rawPayload":{"event":{"type":"item.completed","item":{"type":"agentMessage","text":"pong"}}}}},{"type":"agent","content":{"rawPayload":{"event":{"type":"turn.completed"}}}}]'
   assert_eq "pong" "$("$scripts/last-report.sh" s2)" "codex report"
 }
 
 test_last_report_prints_nothing_until_the_latest_request_has_a_reply() {
   fake_conductor "$1"
+  answer "session_status_s3" '{"status":"idle"}'
   page "session_message_s3_--limit_100_--offset_0" false '[{"type":"userMessage","content":{"id":"m-1","message":"go"}},{"type":"agent","content":{"rawPayload":{"type":"result","subtype":"success","is_error":false,"result":"previous report"}}},{"type":"userMessage","content":{"id":"m-2","message":"next task"}}]'
   assert_eq "" "$("$scripts/last-report.sh" s3 m-2)" "report of the latest request"
 }
 
 test_last_report_is_pending_until_the_sent_message_starts() {
   fake_conductor "$1"
+  answer "session_status_s7" '{"status":"idle"}'
   page "session_message_s7_--limit_100_--offset_0" false '[{"type":"userMessage","content":{"id":"m-1","message":"go"}},{"type":"agent","content":{"rawPayload":{"type":"result","subtype":"success","is_error":false,"result":"previous report"}}}]'
   assert_eq "pending: m-2" "$("$scripts/last-report.sh" s7 m-2)" "queued message"
 }
 
+test_last_report_gives_the_error_of_a_session_in_error() {
+  fake_conductor "$1"
+  answer "session_status_s9" '{"status":"error","errorMessage":"thread not found"}'
+  assert_eq "error: thread not found" "$("$scripts/last-report.sh" s9)" "session in error"
+}
+
+test_last_report_gives_a_failure_after_the_request_from_the_status() {
+  fake_conductor "$1"
+  answer "session_status_s10" '{"status":"idle","lastError":"system_interrupt:shutdown","lastErrorAt":"2026-10-31T10:00:09.000Z"}'
+  page "session_message_s10_--limit_100_--offset_0" false '[{"type":"userMessage","receivedAt":"2026-10-31T10:00:00.000Z","content":{"id":"m-1","message":"go"}},{"type":"agent","content":{"rawPayload":{"event":{"type":"error","message":"Reconnecting... 3/5","willRetry":true}}}}]'
+  assert_eq "error: system_interrupt:shutdown" "$("$scripts/last-report.sh" s10 m-1)" "failure after the request"
+  answer "session_status_s11" '{"status":"idle","lastError":"old failure","lastErrorAt":"2026-10-31T09:59:00.000Z"}'
+  page "session_message_s11_--limit_100_--offset_0" false '[{"type":"userMessage","receivedAt":"2026-10-31T10:00:00.000Z","content":{"id":"m-1","message":"go"}},{"type":"agent","content":{"rawPayload":{"type":"result","subtype":"success","is_error":false,"result":"new report"}}}]'
+  assert_eq "new report" "$("$scripts/last-report.sh" s11 m-1)" "failure before the request"
+}
+
+test_last_report_is_pending_while_the_session_works() {
+  fake_conductor "$1"
+  answer "session_status_s12" '{"status":"working"}'
+  assert_eq "pending: working" "$("$scripts/last-report.sh" s12 m-1)" "working session"
+}
+
+test_last_report_waits_while_background_tasks_run() {
+  fake_conductor "$1"
+  answer "session_status_s13" '{"status":"idle"}'
+  page "session_message_s13_--limit_100_--offset_0" false '[{"type":"userMessage","content":{"id":"m-1","message":"go"}},{"type":"agent","content":{"rawPayload":{"type":"system","subtype":"background_tasks_changed","tasks":[{"task_id":"t1","task_type":"local_agent","description":"Check finding 14"}]}}},{"type":"agent","content":{"rawPayload":{"type":"result","subtype":"success","is_error":false,"result":"progress text"}}}]'
+  assert_eq "waiting: Check finding 14" "$("$scripts/last-report.sh" s13 m-1)" "live task"
+}
+
+test_last_report_is_pending_while_the_agent_still_runs() {
+  fake_conductor "$1"
+  # The agent state of the Agent SDK stays running between the turns of one
+  # request, while Conductor already shows the session as idle.
+  local request='[{"type":"userMessage","receivedAt":"2026-10-31T10:00:00.000Z","content":{"id":"m-1","message":"go"}},{"type":"agent","receivedAt":"2026-10-31T10:00:01.000Z","content":{"rawPayload":{"type":"system","subtype":"session_state_changed","state":"running"}}},{"type":"agent","receivedAt":"2026-10-31T10:00:02.000Z","content":{"rawPayload":{"type":"system","subtype":"background_tasks_changed","tasks":[{"task_id":"t1","description":"Check finding 14"}]}}},{"type":"agent","receivedAt":"2026-10-31T10:00:03.000Z","content":{"rawPayload":{"type":"result","subtype":"success","is_error":false,"result":"progress text"}}},{"type":"agent","receivedAt":"2026-10-31T10:01:00.000Z","content":{"rawPayload":{"type":"system","subtype":"background_tasks_changed","tasks":[]}}}'
+  answer "session_status_s15" '{"status":"idle"}'
+  page "session_message_s15_--limit_100_--offset_0" false "$request]"
+  # 10:02:00 UTC: one minute after the last event.
+  assert_eq "pending: working" "$(LAST_REPORT_NOW=1793440920 "$scripts/last-report.sh" s15 m-1)" "agent still running"
+  # 11:00:00 UTC: no event for 59 minutes, so the turn has stopped.
+  assert_eq "progress text" "$(LAST_REPORT_NOW=1793444400 "$scripts/last-report.sh" s15 m-1)" "stopped turn"
+  answer "session_status_s14" '{"status":"idle"}'
+  page "session_message_s14_--limit_100_--offset_0" false "$request"',{"type":"agent","receivedAt":"2026-10-31T10:01:30.000Z","content":{"rawPayload":{"type":"result","subtype":"success","is_error":false,"result":"final report"}}},{"type":"agent","receivedAt":"2026-10-31T10:01:31.000Z","content":{"rawPayload":{"type":"system","subtype":"session_state_changed","state":"idle"}}}]'
+  assert_eq "final report" "$(LAST_REPORT_NOW=1793440920 "$scripts/last-report.sh" s14 m-1)" "agent done"
+}
+
 test_last_report_reads_a_page_larger_than_one_argument() {
   fake_conductor "$1"
+  answer "session_status_s4" '{"status":"idle"}'
   # Linux caps one command argument at 128 KiB. A real transcript page had 574 KB.
   local big out
   big="$(head -c 200000 /dev/zero | tr '\0' x)"
