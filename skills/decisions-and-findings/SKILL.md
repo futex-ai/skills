@@ -268,7 +268,7 @@ entry shape under a **Terms** heading.
   can write it from the code and the docs.
 - Some fields are judgments: severity, likelihood, effort, category,
   recommendation, and Action. When the record does not give a judgment,
-  give your own. Do not copy the "(estimate)" of an older record.
+  give your own.
 - When you cannot find the location, write "Not found". When you find no
   previous examples, write "None found".
 
