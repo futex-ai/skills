@@ -34,8 +34,8 @@ not have the plan, the review report, or the findings file.
 - Do not depend on a plan, a review report, a findings file, a file under
   `.context/`, a pull request, a chat, or another workspace.
 - In the body, do not use a number that only another document explains,
-  such as "user item 104", "finding 11", or "M14". Say what it stands
-  for. For a decision, give its choice and its date.
+  such as "user item 104", "finding 11", "M14", or "condition 3". Say
+  what it stands for. For a decision, give its choice and its date.
 - Name the live files of the repository by path: code, docs, and other
   follow-up items. Say what the item needs from each file.
 - The **Added** line can name the source and its finding number, as
