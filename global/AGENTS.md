@@ -69,27 +69,6 @@ at that moment instead of guessing the rule.
   Do not create evidence files in the repository. Add `.context/` to
   `.gitignore` if it is missing.
 
-## Testing
-
-- Test each requirement that a change adds or changes once, at the lowest
-  level that fails without the change. Read the `testing` skill before you
-  plan, write, change, or remove a test.
-- When you find a bug, add a test that captures the failure first, then fix
-  it.
-- See each new test fail. Write it before the code when you know the
-  expected result. Otherwise break the code once, see the test fail, and
-  restore the code.
-- Keep one-time proofs out of the test suite. Save the output of
-  equivalence, migration, stress, and third-party-tool checks under
-  `.context/`.
-- Never delete, skip, weaken, or special-case a failing test to get a
-  pass. When a test seems wrong, stop and ask.
-- When you add a feature, run a smoke test: start the server, run the
-  command, open the page.
-- Tests must not assert elapsed wall-clock time. Use operation counts,
-  captured inputs, event order, or fake-clock time. See the
-  `deterministic-tests` skill.
-
 ## Safety
 
 - Do not delete or override functionality already on `origin/main`
