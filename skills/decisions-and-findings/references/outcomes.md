@@ -27,7 +27,9 @@ decision for the user only when one of these conditions holds:
 - The recommended option is blocked. The section "Blocked options" gives
   the list.
 - Two or more options have real trade-offs, and no option is clearly
-  best.
+  best. This also holds when the options of two items conflict and no
+  rule settles which one wins. It holds when a fix depends on the answer
+  to an open item, because no option is clearly best before the answer.
 - The user asked you to bring this choice to them.
 - The item comes from a review, and the review-fix rule does not let the
   agent fix it without the user.
@@ -139,14 +141,13 @@ only when the finding is in one of these categories:
   search and cites the searches in the finding. The option deletes the
   dead code with the steps under "When you delete dead code" in the
   `git-commit` skill. Code that the product runs rarely, such as an error
-  path or a fallback, is functionality and waits for the user. When a
+  path or a fallback, is functionality. When a
   condition is in doubt, the finding gets the category code structure,
   and it waits for the user.
 - Tests that the removal rule of the `testing` skill covers: a duplicate
   of a named test, a test of removed behaviour, or a test of something
   that never gets a test. The option removes the test with the steps and
-  the proof that the rule requires. The removal of any other test is
-  blocked.
+  the proof that the rule requires.
 - Test findings: a missing test, a weak test, a slow test, or a test in
   the wrong file or group. The reviewer gives the finding the category
   test. A fix that changes a test removes no assertion and loosens none.
@@ -193,17 +194,8 @@ apply the wider fix after the merge.
 - A test of something that the `testing` skill says never gets a test,
   such as doc prose or a one-time proof, is not a wider fix.
 
-A finding waits for the user in these cases, because the recommended
-option is blocked or no option is clearly best:
-
-- Every option is blocked.
-- The best option on the merits is blocked and is not a wider fix. The
-  reviewer recommends that option, and the user decides.
-- The options of two findings conflict, and no rule settles which one
-  wins.
-- The fix depends on the answer to an open finding. No option is clearly
-  best before the user answers. The **Related** line names the open
-  finding.
+When the best option on the merits is blocked and is not a wider fix,
+the reviewer recommends that option, so the finding waits for the user.
 
 ### Fix now or after merge
 

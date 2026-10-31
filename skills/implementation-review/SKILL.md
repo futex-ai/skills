@@ -135,7 +135,8 @@ option you apply, and whether you fix it now or after the merge.
    - Findings with the same cause or a shared wider fix get one fix.
    - A fix that removes the code of another finding also closes it.
    - Options that conflict, and a fix that depends on the answer to an
-     open finding, get their outcome under the review-fix rule.
+     open finding, get their outcome under the decision test. The
+     **Related** line names the open finding.
 3. Fix the confirmed `fix now` findings without waiting for the user.
    Apply the option that the `Action` line names. Leave the
    `Outside the scope` problems alone.
