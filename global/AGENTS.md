@@ -41,7 +41,9 @@ at that moment instead of guessing the rule.
 - End every task with a final report: what changed and the commit, each
   decision and its outcome, the checks that ran and their results, anything
   skipped or blocked, and the outstanding decisions or review items that
-  still need the user.
+  still need the user. When a decision or a review item still needs the
+  user, name it in the first sentence. Give it in full, also when an
+  earlier message gave it.
 
 ## Working
 

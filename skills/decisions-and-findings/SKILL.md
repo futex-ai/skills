@@ -26,8 +26,8 @@ structure, not decoration. Brevity means fewer words. It does not mean
 fewer fields or longer sentences.
 
 A skill or a prompt for one task can set its own message order. Then use
-that order, but keep the layout, the labels, and the item order of this
-skill.
+that order. Keep the layout, the labels, the item order, and the "Open
+items" rules of this skill.
 
 ## Ask in the reply
 
@@ -116,6 +116,20 @@ Write in Simplified Technical English (ASD-STE100):
    option. Use the same order as the items.
 5. Give each item in the layout below.
 6. When the task ends, finish with the final report.
+
+## Open items
+
+An open item is an item that you gave the user and that still waits for
+an answer. It stays open until the user answers it, also while you work
+on other tasks. The user must not miss it. While an item is open, each
+final report and each message with items does these things:
+
+- Its first sentence names the open items, as in "Two decisions need
+  your answer: items 4 and 7."
+- It gives each open item in full under the heading
+  `## Needs your answer`, before the final report. This includes each
+  open item of an earlier message. Do not shorten an open item to one
+  line or to a pointer to the earlier message.
 
 ## Item order
 
@@ -249,28 +263,11 @@ entry shape under a **Terms** heading.
 
 ## Explaining items again
 
-- Read the findings file of the branch first, when it exists. The
-  `implementation-review` skill gives its path.
-- Restate every field. Do not point to an earlier message for a field.
-- Keep the recorded option letters of each item.
-- When the record gives no wider fix, look for one. Add the wider fix that
-  you find as a new option with the next free letter.
-- Keep the recorded number when no other item in the message has it.
-  Otherwise, give the next free number. Then add the record and the old
-  number to the **Source** line.
-- List the items by severity, also when the recorded numbers are then out
-  of sequence. Do not renumber them for this.
-- Always write **Background**, **Problem**, **Impact if no action**,
-  **Root question**, and **Options**. They explain the item, so you can
-  write them from the record, the code, and the docs.
-- When the record gives no **Left out** line, write "Not recorded".
-- Add **Terms** under the rule above, also when the record has none. You
-  can write it from the code and the docs.
-- Some fields are judgments: severity, likelihood, effort, category,
-  recommendation, and Action. When the record does not give a judgment,
-  give your own. Add "(estimate)" after it.
-- When you cannot find the location, write "Not found". When you find no
-  previous examples, write "None found".
+Read [references/explaining-items-again.md](references/explaining-items-again.md)
+before you give an earlier item again. This happens when the user asks
+for an explanation, more detail, or a shorter answer. It also happens
+when an open item goes into a later message. The reference says how to
+fill each field from the record.
 
 ## Final report
 
@@ -292,8 +289,8 @@ End every task with a final report. Under **Fixed**, **Deferred**, and
   check. Name each check that was skipped or blocked, and give the reason.
   Name each unrelated flaky test with its failure text, rerun outcome, and
   suspected source.
-- **Open:** the items that still need the user. For each open item, say
-  what it blocks. Add the open plan TODOs. Add the follow-up items of the
+- **Open:** one line for each open item: its number, its title, and what
+  it blocks. Add the open plan TODOs. Add the follow-up items of the
   blocked wider fixes and of the problems outside the review scope, and
   other skipped or blocked work. A blocked wider fix is one line per class.
   The line gives the wider fix, its effort, the item numbers it covers, and
