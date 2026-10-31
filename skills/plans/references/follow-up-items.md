@@ -45,7 +45,8 @@ not have the plan, the review report, or the findings file.
   write it from the code and the docs. "Explaining items again" in the
   `decisions-and-findings` skill says how. Add "(estimate)" after each
   judgment that no review gave, also after the severity, the likelihood,
-  and the effort.
+  and the effort. The writer of the item always grades Confidence and
+  Harder later. They take no "(estimate)".
 - Keep every fact of the source. When a finding check moved a finding
   outside the scope, start from its full text in the findings file, not
   from its one line.
@@ -57,9 +58,49 @@ not have the plan, the review report, or the findings file.
 - Before you commit the item, read it as a reader without context. Add
   each fact that you had to look up somewhere else.
 
+## The priority score
+
+`scripts/follow-ups.sh` gives each item a priority score from 0 to 10.
+The score adds the points of the grades on the first line of the item:
+
+| Grade | Points |
+| --- | --- |
+| Severity | High 4, Medium 2, Low 0 |
+| Likelihood | Rare halves the severity points. Common, or no likelihood, changes nothing. |
+| Effort | Small 2, Medium 1, Large 0 |
+| Confidence | High 2, Medium 1, Low 0 |
+| Harder later | Yes 2, No 0 |
+
+Severity counts most. Each other grade moves an item by one severity
+grade at most. Items with the same score list High severity first, then
+by path. Do not write the score in the item. The script reads the grades
+each time, so the score follows each change of a grade.
+
+The `decisions-and-findings` skill gives the scales of severity,
+likelihood, and effort. Grade the other two when you write the item:
+
+- Confidence: how sure you are that the problem is real. For a post-merge
+  task, how sure you are that the task is necessary.
+  - High: a test, a run, a log, or a read of the code shows the problem.
+  - Medium: the code suggests the problem, but nobody reproduced it. For
+    example, it needs a timing or an input that nobody ran.
+  - Low: a concern that nobody checked at the code.
+- Harder later: whether the fix costs more while the item waits.
+  - Yes: new use adds work to the fix. Examples are records in a wrong
+    stored format, callers of a wrong API or message, copies of a wrong
+    pattern, and a release that users adopt.
+  - No: the fix costs the same later.
+
+When an item lacks the severity, the effort, or the confidence, the score
+uses Medium for it. A missing Harder later counts as No. A grade that is
+not on its scale counts as missing. A `?` after the score marks an item
+with a missing grade. Add the missing grade when you next edit the item.
+
 ## Working on an item
 
 - Work on an item only when the user asks for it.
+- When the user asks for the next item, or for more than one, take the
+  items in the order of `scripts/follow-ups.sh`.
 - The branch that fixes an item deletes its file. Name the item in the
   commit message.
 - When the user answers an item that needs a decision, apply the answer in
@@ -68,6 +109,8 @@ not have the plan, the review report, or the findings file.
 
 ## Listing the items
 
-`scripts/follow-ups.sh` in the `plans` skill lists the open items, High
-severity first. Its last line gives the number of open items. The final
-report and the reminder after the merge use that number.
+`scripts/follow-ups.sh` in the `plans` skill lists the open items,
+highest priority score first. Each line gives the score out of 10, the
+severity, the path, the title, and the kind. Its last line gives the
+number of open items. The final report and the reminder after the merge
+use that number.
