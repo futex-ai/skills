@@ -2,7 +2,7 @@
 
 - **Severity:** <High, Medium, or Low>. **Likelihood:** <Common or Rare, for a product bug only.> **Effort:** <Small, Medium, or Large.> **Confidence:** <High, Medium, or Low.> **Harder later:** <Yes or No.>
 - **Kind:** <Fix after merge, Needs decision, Outside the scope, or Post-merge task.>
-- **Added:** <YYYY-MM-DD>, from <the branch or the pull request, and the review finding number when there is one.>
+- **Added:** <YYYY-MM-DD>, from <the branch or the pull request, and the item number when there is one.>
 - **Location:** <Each file path and line, or "None" when the work has no place in the code. Do not point to the body.>
 - **Reason:** <One sentence: the fact about this work that makes it wait until after the merge. Do not only repeat the kind.>
 

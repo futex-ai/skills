@@ -75,7 +75,7 @@ name the blocker, and list the checks that did run.
   check confirms its finding, finds its links, and checks its options. A
   finding that is not real or not in the scope is removed. The check
   corrects a wrong severity or category in place.
-- Apply the review-fix rule. Make the final call on the outcome of each
+- Apply the fix rule. Make the final call on the outcome of each
   confirmed finding, with the merged options. Fix the findings with
   `Action: fix now`, with the option that each names. Record a follow-up
   item for each other finding and for each wider fix that you split off,
@@ -111,7 +111,7 @@ and labels in the `decisions-and-findings` skill. Include:
   could not run, and why.
 - The test cost of the change: each test that it adds or removes, with its
   run time, as the `testing` skill says.
-- The fixed review findings, the deferred findings and wider fixes with
+- The fixed findings, the deferred findings and wider fixes with
   their follow-up items, and the findings that need a decision, each with
   a recommendation. Keep them in three lists.
 - The number of open follow-up items in the repository.

@@ -1,22 +1,24 @@
 ---
 name: decisions-and-findings
-description: Use before you send a message that asks the user for a decision, presents review findings or items, or gives a final report, before you raise a question as a decision, when you write the options of a decision or a finding, when the user asks for more detail, a shorter answer, or an explanation of earlier decisions or findings, when you list open findings from a plan or a review report, when you order or number the decisions and findings of a message, and when an output style asks for brevity.
+description: Use before you send a message that asks the user for a decision, presents findings or items, or gives a final report, before you raise a question as a decision, when you write the options of a decision or a finding, when the user asks for more detail, a shorter answer, or an explanation of earlier decisions or findings, when you list open findings from a plan or a review report, when you order or number the decisions and findings of a message, and when an output style asks for brevity.
 ---
 
 # Decisions and findings
 
-Use this skill for each message that asks for a decision, presents review
+Use this skill for each message that asks for a decision, presents
 findings, or gives a final report. The reader may have no context. The
 reader must act on each item. A fixed layout lets the reader find each
 field and answer by number and letter.
 
-An item is a review finding or a question that you raise. Every item gets
-the same test, the same layout, and a place in the same list. Its
-**Source** says where it comes from:
+An item is a finding or a question that you raise. A finding is a problem
+in the code, a doc, a test, or a mockup. A question is a choice about what
+to build. Every item gets the same test, the same layout, and a place in
+the same list. Its **Source** says where it comes from:
 
+- **Design:** a question from a brainstorm, a plan, or a task.
+- **Implementation:** an item that an agent found while it built the
+  change.
 - **Review:** an item that a review found.
-- **Design:** every other item, such as a question from a brainstorm, a
-  plan, or a task.
 
 ## Precedence
 
@@ -41,46 +43,11 @@ a question tool.
 
 ## The decision test
 
-Apply this test to each review finding and to each question that you
-raise. Look at the option that you recommend. For a review item, the
-review-fix rule in the `implementation-review` skill says which option to
-recommend. The item is a decision for the user only when one of these
-conditions holds:
-
-- The recommended option changes a requirement or a decision in force,
-  and no recorded user decision covers the change.
-- The recommended option adds behaviour at a boundary that no
-  requirement covers.
-- The recommended option is blocked under the review-fix rule. For
-  example, it deletes functionality, adds a gate, stricter validation,
-  or a test for the class, weakens a test, or needs credentials or
-  infrastructure.
-- Two or more options have real trade-offs, and no option is clearly
-  best.
-- The user asked you to bring this choice to them.
-- The item comes from a review, and the review-fix rule does not let the
-  agent fix it without the user.
-
-A detail that an existing requirement settles is not a gap, also when the
-requirement does not spell the detail out. An option that drops the
-requirement does not make the item a decision when you do not recommend
-that option.
-
-When no condition holds, apply the recommended option without the user:
-
-- A review item gets `fix now` or `fix after merge`. The review-fix rule
-  says which one, and when to split the item.
-- A design item is a design call. Record the call, its reason, and the
-  date in the plan, in the design of the change. When the change has no
-  plan, record it in the commit or the pull request description. Do not
-  ask the user. Give each design call one line in the final report.
-
-Three signs that an item fails the test:
-
-- The recommendation says that the option costs nothing.
-- The severity is Low, and the impact is only that the work waits for the
-  answer.
-- The **Action** reason says only that the item is a decision.
+Read [references/outcomes.md](references/outcomes.md) before you raise a
+question as a decision, and before you write the **Action** line of an
+item. It holds the two outcome rules. The decision test says when an item
+waits for the user. The fix rule says how the agent acts on a finding
+that does not wait.
 
 ## Simplified Technical English
 
@@ -147,7 +114,7 @@ what each field of a review item must contain.
 ### 1. <The problem, in eight words or fewer>
 
 - **Severity:** <High, Medium, or Low>. **Likelihood:** <Common or Rare, for a product bug only.> **Effort:** <Small, Medium, or Large: the grade of the recommended option.>
-- **Source:** <Review or Design.>
+- **Source:** <Design, Implementation, or Review.>
 - **Category:** <One category from the scales below.>
 - **Location:** <The file path and line, or "None" when the item has no place in the code.>
 - **Terms:** <Only when the item uses a term that the shared list does not define. Up to five entries.>
@@ -207,14 +174,15 @@ check, a plan decision, and a brainstorm.
    its reason, so that the user can bring it back. Each other approach is
    a lettered option.
 
-For a design item, then name each condition that every option keeps. Name
-its source: a protocol doc, a user decision, the task message, an earlier
-option's text, or the code. When it is not a requirement, or its reason
-is gone, add the option that drops it. A user decision covers the choice
+An item from design or implementation needs one more step. Name each
+assumption that all its options share. Give the source of each one: a
+protocol doc, a user decision, the task message, an earlier option's
+text, or the code. When an assumption is not a requirement, or its reason
+is gone, add an option that drops it. A user decision covers the choice
 that the user made, not each sentence of the text that describes the
 chosen option. For a review item, the finding check of the
-`implementation-review` skill checks these steps and asks for the
-conditions in a fresh context.
+`implementation-review` skill checks these steps in a fresh context. It
+also names the shared assumptions.
 
 ## Terms
 

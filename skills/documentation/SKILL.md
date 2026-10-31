@@ -179,7 +179,7 @@ Protocol docs describe the current requirements. They are not fixed rules.
 - Do not drop an option, rank it lower, or recommend a different option
   only because it conflicts with a protocol doc. Include the doc update in
   that option and in its effort.
-- The decision and safety rules still apply. The review-fix rule in the
-  `implementation-review` skill and the deletion audit in the `git-commit`
+- The decision and safety rules still apply. The decision test in the
+  `decisions-and-findings` skill and the deletion audit in the `git-commit`
   skill send some options to the user. Recommend such an option on its
   merits, and let the user decide.

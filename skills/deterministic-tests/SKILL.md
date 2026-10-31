@@ -1,6 +1,6 @@
 ---
 name: deterministic-tests
-description: Use when a test fails and then passes on a rerun, when a test is flaky or timing-dependent, when a test would assert elapsed time, a timeout, or performance, when you want to add a sleep, a retry, or a longer time limit to a test, when you choose between a real and a fake clock, and when a review finding concerns a flaky, slow, or low-value test, gate, or check.
+description: Use when a test fails and then passes on a rerun, when a test is flaky or timing-dependent, when a test would assert elapsed time, a timeout, or performance, when you want to add a sleep, a retry, or a longer time limit to a test, when you choose between a real and a fake clock, and when a finding concerns a flaky, slow, or low-value test, gate, or check.
 ---
 
 # Deterministic tests
@@ -92,6 +92,9 @@ its severity with the severity scale of the `decisions-and-findings` skill.
 
 Make a slow test faster without asking when you remove no assertion and
 loosen none. To remove a test, follow the removal rule of the `testing`
-skill. Each slow, custom, or low-value gate, lint, or check gets the
-outcome `ask the user`. Ask the user whether to fix or remove each one,
-and state what it protects and how long it runs.
+skill. Make a slow gate, lint, or check faster without asking when it
+still checks everything that it checked before. An option that removes,
+weakens, or replaces a gate, lint, or check needs the user, as the
+decision test of the `decisions-and-findings` skill says. Then ask
+whether to fix or remove it, and state what it protects and how long it
+runs.
