@@ -89,9 +89,11 @@ number them in that order, from <first number>. Use the item layout in the
 `decisions-and-findings` skill, with the source Review. For every finding:
 
 - Give it a severity: the harm when the problem happens, not how often it
-  happens. High: wrong output, lost data, a security problem, or blocked
-  work. Medium: a visible defect, or a spec gap with a workaround. Low:
-  wording, style, or a defect that costs the user little.
+  happens. Harm to the users of the product weighs more than harm to the
+  people and agents who build it. Both count. High: wrong output, lost
+  data, a security problem, or blocked work. Medium: a visible defect, a
+  spec gap with a workaround, or a flaky test or check in the gate. Low:
+  wording, style, or a defect that costs little.
 - For a product bug, give a likelihood. Common: normal use meets it, also
   when only now and then. Rare: normal use does not meet it. Only an
   unusual input, timing, platform, or setup does. A problem that an
