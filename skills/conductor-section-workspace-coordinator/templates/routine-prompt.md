@@ -1,7 +1,14 @@
-You are the wake routine for the section workspace coordinators of this
-project. Change no file. Do these steps, then report one line per
-coordinator.
+Scope: the section coordinators of this project. A coordinator is a
+workspace named `coordinator: <section>`.
 
+Goal: each idle coordinator gets the wake message once, so that it runs
+its next cycle.
+
+Context: you are the wake routine. You run in a fresh workspace of this
+project each time the hourly trigger fires. Each coordinator talks to
+the user through its session named `coordinator`.
+
+Steps:
 1. Read this project's repository: `conductor --json workspace get` gives
    `repoUrl`.
 2. List the coordinators:
@@ -17,5 +24,9 @@ coordinator.
    When the status is `working`, skip it and say so.
 5. Send the wake message:
    `conductor message create --session <session id> --message "[coordinator wake] continue: run one coordinator cycle and report the status."`
-6. Report one line per coordinator: the workspace name, the session id,
-   and `sent`, `working`, or `no session`.
+
+Constraints: change no file. Send nothing to a session that is
+`working`. Send each coordinator one message at most.
+
+Output: one line per coordinator: the workspace name, the session id,
+and `sent`, `working`, or `no session`.

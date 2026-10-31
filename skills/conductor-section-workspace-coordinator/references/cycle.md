@@ -8,11 +8,18 @@ date of the last change.
 
 ## Read a report
 
-- `scripts/last-report.sh`, with the orchestrator's session id, prints
-  how the orchestrator's last turn ended. A complete task ends with the
-  final-report layout: **Changed**, **Fixed**, **Deferred**,
-  **Decisions**, **Checks**, **Open**. A turn that failed prints its
-  error with the prefix `error: `.
+- Run `scripts/last-report.sh` with the orchestrator's session id and
+  the id of the last message that you sent to it. It prints how the
+  latest turn ended. A complete task ends with the final-report layout:
+  **Changed**, **Fixed**, **Deferred**, **Decisions**, **Checks**,
+  **Open**. A turn that failed prints its error with the prefix
+  `error: `.
+- The send commands print the message id. `conductor --json message
+  create` gives `messageId`. A `workspace create` or `session create`
+  with a message gives `initialMessage.messageId`.
+- The script prints `pending: <id>` while that message has not started.
+  Wait, and send nothing. When it stays pending through a whole cycle,
+  escalate it with the message id.
 - When the session is `working`, do not read it and do not send to it.
   Wait for `idle`.
 - When the last message is a question, apply the decisions section of

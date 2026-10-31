@@ -63,11 +63,10 @@ actions, or the board. Apply it before the steps below.
    conditions below. A merge moves `main`, so do this before you read the
    other reports. Then archive each finished workspace, as the cycle
    reference says.
-3. For each workspace whose orchestrator is idle, read its last report
-   with `scripts/last-report.sh` and its session id. Act by stage, as
-   [references/cycle.md](references/cycle.md) says. The action is the plan
-   request, the plan review, the implement message, the answers to the
-   items, or the next stage. A workspace without an orchestrator gets one
+3. For each workspace whose orchestrator is idle, read its report, and
+   act by stage, as [references/cycle.md](references/cycle.md) says. The
+   action is the plan request, the plan review, the implement message,
+   the answers to the items, or the next stage. A workspace without an orchestrator gets one
    first, as that reference says.
 4. Schedule new work, as [references/scheduling.md](references/scheduling.md)
    says. Check the conflicts before each new workspace. Start every new
@@ -114,6 +113,7 @@ actions, or the board. Apply it before the steps below.
   message that starts a workspace or a session is a prompt. It has the
   six fields of the `delegating` skill, from Scope to Output. Send a
   message only to an idle session, with everything for that session.
+  Record on the board the message id that the send command prints.
 
 ## Decisions and review items
 

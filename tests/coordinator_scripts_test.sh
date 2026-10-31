@@ -105,6 +105,20 @@ test_section_scan_takes_the_workspace_from_the_environment() {
   assert_contains "$out" "$(printf 'self\tw-env\tready')" "self row"
 }
 
+test_section_scan_fails_when_a_session_page_fails() {
+  fake_conductor "$1"
+  page "section_list_--limit_100_--offset_0" false '[{"id":"s1","name":"One","kind":"custom","workspaceIds":["w-self","w-child"]}]'
+  page "workspace_session_w-self_--limit_100_--offset_0" false '[{"id":"ses-self","name":"coordinator","model":"opus-5-5-1m","effort":"max"}]'
+  answer "session_status_ses-self" '{"status":"working"}'
+  answer "workspace_get_w-self" '{"id":"w-self","name":"coordinator: One","state":"ready"}'
+  answer "workspace_get_w-child" '{"id":"w-child","name":"Child","state":"ready"}'
+  local out status=0
+  out="$("$scripts/section-workspaces.sh" w-self 2>&1)" || status=$?
+  assert_eq 1 "$status" "exit status"
+  assert_contains "$out" "no answer for 'workspace_session_w-child_--limit_100_--offset_0'" "failed page"
+  assert_lacks "$out" "$(printf 'member\tw-child')" "row without its session"
+}
+
 test_section_scan_fails_outside_a_section() {
   fake_conductor "$1"
   page "section_list_--limit_100_--offset_0" false '[{"id":"s1","name":"One","kind":"custom","workspaceIds":["w9"]}]'
@@ -147,10 +161,16 @@ test_last_report_reads_a_codex_session() {
   assert_eq "pong" "$("$scripts/last-report.sh" s2)" "codex report"
 }
 
-test_last_report_prints_nothing_without_agent_text() {
+test_last_report_prints_nothing_until_the_latest_request_has_a_reply() {
   fake_conductor "$1"
-  page "session_message_s3_--limit_100_--offset_0" false '[{"type":"userMessage","content":{"message":"go"}}]'
-  assert_eq "" "$("$scripts/last-report.sh" s3)" "empty report"
+  page "session_message_s3_--limit_100_--offset_0" false '[{"type":"userMessage","content":{"id":"m-1","message":"go"}},{"type":"agent","content":{"rawPayload":{"type":"result","subtype":"success","is_error":false,"result":"previous report"}}},{"type":"userMessage","content":{"id":"m-2","message":"next task"}}]'
+  assert_eq "" "$("$scripts/last-report.sh" s3 m-2)" "report of the latest request"
+}
+
+test_last_report_is_pending_until_the_sent_message_starts() {
+  fake_conductor "$1"
+  page "session_message_s7_--limit_100_--offset_0" false '[{"type":"userMessage","content":{"id":"m-1","message":"go"}},{"type":"agent","content":{"rawPayload":{"type":"result","subtype":"success","is_error":false,"result":"previous report"}}}]'
+  assert_eq "pending: m-2" "$("$scripts/last-report.sh" s7 m-2)" "queued message"
 }
 
 test_last_report_reads_a_page_larger_than_one_argument() {
