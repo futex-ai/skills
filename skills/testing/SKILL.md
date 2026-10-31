@@ -1,6 +1,6 @@
 ---
 name: testing
-description: Use before you plan, write, change, port, or remove a test, when a plan, a review, or a brief asks for a test, when a test fails and you consider changing the test, when you update a snapshot or an expected value, when a test would read docs, plans, agent rules, or workflow YAML, when you add a browser spec or a test for each input, host, or platform, and when the user asks to audit tests or cut test time.
+description: Use before you implement a feature, a behaviour change, or a bug fix, before you plan, write, change, port, or remove a test, when a plan, a review, or a brief asks for a test, when a test fails, when you update a snapshot or an expected value, when a test would read docs, plans, agent rules, or workflow YAML, when you add a browser spec or a test for each input, host, or platform, and when the user asks to audit tests or cut test time.
 ---
 
 # Testing
@@ -35,7 +35,8 @@ The `finish-work` skill says which tests to run and when.
   one exists.
 - A test for the class, which catches every case of a defect class, needs
   the user's approval. The `implementation-review` skill treats it like a
-  lint.
+  lint. A property test that you write for a requirement of your change
+  is not a test for the class.
 
 ## The level of a test
 

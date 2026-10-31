@@ -83,16 +83,12 @@ and a list of new problems. Merge them into the entry of the finding:
   that failed. A finding outside the scope goes to the
   `Outside the scope` list.
 - A corrected severity, likelihood, or category replaces the finding's
-  line. When the corrected category always waits for the user, the
-  outcome becomes `ask the user`. When the corrected severity is High, a
-  `fix after merge` outcome becomes `fix now`. When the likelihood
-  changes, make the call between `fix now` and `fix after merge` again,
-  under the review-fix rule.
+  line. Then make the call on its outcome again, under the outcome rules.
 - Each link goes into the **Related** line of both findings. Drop a link
   to a removed finding.
 - A better root question replaces the **Root question** line.
 - A new option keeps the letter that the check gave it. The source of a
-  dropped condition goes into the text of the option that drops it. An
+  dropped assumption goes into the text of the option that drops it. An
   approach that the check brings back is such a new option. The
   **Left out** line takes each other change of the check.
 - When the recommendation changed, the **Recommendation** line gives the
@@ -102,7 +98,7 @@ and a list of new problems. Merge them into the entry of the finding:
 - A new problem inside the scope goes into the review focus of the
   re-review. When no re-review runs, it goes under **Open**. A new problem
   outside the scope joins the `Outside the scope` list.
-- A kept condition and a place that is not a real choice stay in the
+- A kept assumption and a place that is not a real choice stay in the
   saved check report, `round-<number>-checks.md`.
 
 ## Repeats

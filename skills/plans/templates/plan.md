@@ -62,7 +62,7 @@ Depends on: every other milestone
 - [ ] Commit with Conventional Commits and push the branch.
 - [ ] Review the complete local diff against `origin/main` with the
       `implementation-review` skill after the push. Report the findings,
-      then apply the review-fix rule: fix the `fix now` findings, record
+      then apply the fix rule: fix the `fix now` findings, record
       follow-up items under `plans/follow-ups/` for the rest, re-review
       once, and report.
 - [ ] Delete this plan when the `plans` skill says, under "Deleting the

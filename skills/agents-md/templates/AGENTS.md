@@ -37,7 +37,9 @@ skill at that moment instead of guessing the rule.
   says to use one.
 - End every task with a final report: what changed and the commit, each
   decision and its outcome, the checks that ran, anything skipped, and the
-  outstanding decisions or review items that still need the user.
+  outstanding decisions or findings that still need the user. When a
+  decision or a finding still needs the user, name it in the first
+  sentence. Give it in full, also when an earlier message gave it.
 
 ## Commands
 

@@ -20,7 +20,7 @@ Codex, and with any other agent that reads the
 ## How the pieces fit
 
 1. **Always-on rules** in `global/AGENTS.md` apply in every session: writing
-   style, working habits, testing habits, safety rules. Keep this file short.
+   style, working habits, safety rules. Keep this file short.
    Every line costs context on every turn.
 2. **Skills** hold the detailed procedures. An agent sees the name and
    description of every installed skill, and loads a skill when the moment
@@ -46,8 +46,8 @@ Codex, and with any other agent that reads the
 | `plans` | Before you write any code or start an implementation, when the user asks for a plan, before you create, edit, tick, or delete a plan, when you add a decision to a plan, when you find a TODO during implementation, when you add, list, or fix a follow-up item, and before you open a pull request for a plan. |
 | `implementation-review` | After you push, before you run or apply a review, when the user answers a review finding, when you decide whether to fix a finding now or after the merge, and when the user asks for a code review. |
 | `delegating` | When you work on a plan, before you delegate a task, create a Conductor workspace, session, or routine, start a subagent or a reviewer, or split work across workspaces, and when a model blocks a request. |
-| `decisions-and-findings` | Before you raise a question as a decision, and before you send decisions, review findings, or a final report, when you write the options of a decision, also under a brief output style. |
-| `testing` | Before you plan, write, change, port, or remove a test, when a plan, a review, or a brief asks for a test, when a test fails and you consider changing the test, and when the user asks to audit tests or cut test time. |
+| `decisions-and-findings` | Before you raise a question as a decision, and before you send decisions, findings, or a final report, when you write the options of a decision, also under a brief output style. |
+| `testing` | Before you implement a feature, a behaviour change, or a bug fix, before you plan, write, change, port, or remove a test, when a plan, a review, or a brief asks for a test, when a test fails, and when the user asks to audit tests or cut test time. |
 | `deterministic-tests` | A test flakes, would assert elapsed time, or tempts you to add a sleep, a retry, or a longer time limit. |
 | `git-commit` | Before and after you commit, and when you write a commit or pull request message. When a diff deletes or renames something, or when you find dead code. |
 | `git-merge` | Before you merge or rebase, when you resolve conflicts, and after each merge commit. |
