@@ -103,6 +103,9 @@ name the blocker, and list the checks that did run.
 Write the final message in Simplified Technical English, with the layout
 and labels in the `decisions-and-findings` skill. Include:
 
+- Each item that still needs the user's answer, also an item from an
+  earlier message. Name it in the first sentence. Give it in full, as
+  "Open items" in the `decisions-and-findings` skill says.
 - What changed, the commit, and the branch or the pull request.
 - The checks that ran and their results. Name any check that was skipped or
   could not run, and why.
@@ -149,4 +152,6 @@ item only when the user asks for it.
       asked.
 - [ ] Final report in STE with fixed, deferred, and open findings, and the
       number of open follow-up items.
+- [ ] Each item that still needs the user named in the first sentence and
+      given in full, also an item from an earlier message.
 - [ ] After the merge, the user reminded of the open follow-up items.
