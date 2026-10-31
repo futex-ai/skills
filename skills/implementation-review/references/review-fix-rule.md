@@ -35,8 +35,8 @@ grade of the applied or recommended option.
 An option is blocked when:
 
 - It changes a requirement in a protocol doc without a recorded user
-  decision, adds a requirement for new behaviour at the boundary, or
-  decides which side of a mockup and product mismatch is right.
+  decision, or adds a requirement for new behaviour at the boundary.
+- It changes a mockup to match the code without a recorded user decision.
 - It changes user-visible behaviour beyond what the contract says.
 - It adds a new build error, rejection, gate, lint, or stricter validation.
   This holds for a wider fix too, whatever its effort. The always-on rules
@@ -64,13 +64,19 @@ condition 6 holds unless the finding is in one of these categories:
 - Product bugs, including edge cases, races, and platform differences.
 - Security issues.
 - Docs or spec drift: a doc that contradicts the changed code. Change the
-  side that is wrong. A protocol doc is not right by default; see the
-  `documentation` skill. The wider fix for the class is already in force,
-  the `documentation` skill, so the reviewer proposes no other wider fix.
-  The doc side changes without the user only when the plan records the
+  side that is wrong. A protocol doc wins over the code by default, as the
+  `documentation` skill says. The wider fix for the class is already in
+  force, the `documentation` skill, so the reviewer proposes no other wider
+  fix. The doc side changes without the user only when the plan records the
   user's decision for the behaviour change, or when the doc content is
   implementation detail or history that moves to its home.
-- Mockup mismatches that a protocol doc already settles.
+- Mockup mismatches that the order in the `mockups` skill settles. The
+  protocol doc wins over the mockup, and the mockup wins over the code.
+  The fix changes the lower side: a mockup that differs from a protocol
+  doc, or code that differs from its mockup when the difference is new in
+  the branch. When a recorded user decision asks for the difference, the
+  fix updates the mockup instead. The wider fix for the class is already
+  in force, that order, so the reviewer proposes no other wider fix.
 - Flaky tests that the diff adds or changes, under the flaky-test rule in
   the `deterministic-tests` skill.
 - Dead code: code that the product never runs, under the predicate in

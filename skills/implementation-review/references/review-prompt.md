@@ -159,8 +159,8 @@ number them in that order, from <first number>. Use the item layout in the
 An option is blocked when:
 
 - It changes a requirement in a protocol doc without a recorded user
-  decision, adds a requirement for new behaviour at the boundary, or
-  decides which side of a mockup and product mismatch is right.
+  decision, or adds a requirement for new behaviour at the boundary.
+- It changes a mockup to match the code without a recorded user decision.
 - It changes user-visible behaviour beyond the contract.
 - It adds a new build error, rejection, gate, lint, or stricter validation.
   This holds for a wider fix too, whatever its effort.
@@ -184,7 +184,7 @@ is about:
 - a product bug, including edge cases, races, and platform differences
 - a security issue
 - docs or spec drift
-- a mockup mismatch that a protocol doc already settles
+- a mockup mismatch that the spec order below settles
 - a flaky test that the diff adds or changes
 - dead code
 - a test that the removal rule of the `testing` skill covers
@@ -281,8 +281,8 @@ finding, the conditions work as follows:
 Protocol docs hold the requirements and the decisions in force for an area:
 observable behaviour at a boundary, and the reason for each choice. They do
 not describe how the code works. Do not treat them as fixed rules. When the
-code and a protocol doc disagree, do not assume that the doc is right.
-Apply these rules to a docs or spec finding:
+code and a protocol doc disagree, the doc wins by default. Still judge the
+doc on its merits. Apply these rules to a docs or spec finding:
 
 - Docs or spec drift is a doc that contradicts the changed code. A doc that
   is silent on how the code works is not a finding. Do not ask for a doc to
@@ -294,8 +294,10 @@ Apply these rules to a docs or spec finding:
 - When the diff changes behaviour that a requirement states, and the plan
   records the user's decision for that change, the fix updates the doc.
   The agent may apply it without the user, with the doc update as the
-  named option. Without a recorded decision, propose `ask the user`,
-  because the user decides which side is right.
+  named option. Without a recorded decision, the doc wins, and the finding
+  is a product bug in the code. When the doc is wrong, or worse than the
+  code, recommend the doc update and propose `ask the user`, because the
+  user decides each requirement change.
 - A behaviour at the boundary that the diff adds and no requirement covers
   is a spec gap. Report it as one finding with `ask the user`, because the
   user reviews each new requirement. A detail that an existing requirement
@@ -310,5 +312,24 @@ Apply these rules to a docs or spec finding:
   only because it conflicts with a protocol doc. Include the doc update in
   that option and in its effort grade, and recommend the option when it is
   the best one.
+
+Mockups are part of the spec too. The spec order is the protocol doc, then
+the mockup, then the code. Apply these rules to a mockup finding:
+
+- When a recorded user decision asks for the difference, the fix updates
+  the mockup to match it. A protocol doc changes only under the rules
+  above.
+- A difference between a mockup and the code that is new in the branch is
+  a product bug in the code. The fix changes the code.
+- A mockup that differs from a protocol doc is wrong. The fix changes the
+  mockup.
+- When a mockup and the code already differ on `origin/main`, and no
+  protocol doc settles the difference, propose `ask the user`. There the
+  mockup can be the stale side.
+- When the higher side is wrong, or worse than the lower side, recommend
+  its change and propose `ask the user`.
+- Sample data in a mockup is not a requirement.
+- The wider fix for the class is already in force, this order. Do not
+  propose another wider fix for it.
 
 If there are no findings, say so clearly.
