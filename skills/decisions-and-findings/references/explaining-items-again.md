@@ -24,6 +24,6 @@ message, as the "Open items" section of the skill says.
   record has none. You can write it from the code and the docs.
 - Some fields are judgments: severity, likelihood, effort, category,
   recommendation, and Action. When the record does not give a judgment,
-  give your own. Add "(estimate)" after it.
+  give your own.
 - When you cannot find the location, write "Not found". When you find no
   previous examples, write "None found".
