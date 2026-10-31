@@ -74,7 +74,7 @@ implementor. It keeps the gate, the review, and the pull request.
 | # | Stage | Runs it | Skills |
 | --- | --- | --- | --- |
 | 0 | Start | User, then orchestrator | `models`, `delegating`. `agents-md` only when the repository's `AGENTS.md` is missing or out of date |
-| 1 | Brainstorm | Orchestrator and the `brainstorming` action | `brainstorming`, `models`, `delegating`, `decisions-and-findings` |
+| 1 | Brainstorm | Orchestrator, the `brainstorming` action, and the `second-pass review agent` | `brainstorming`, `models`, `delegating`, `decisions-and-findings`, `implementation-review` |
 | 2 | Plan | Orchestrator | `plans`, `delegating`, `documentation`, `testing`, `decisions-and-findings`, `implementation-review`, `finish-work`, `git-commit` |
 | 3 | Milestone 1: mockups | `ui implementor` | `delegating`, `mockups`, `product-ui`, `typescript` |
 | 4 | Milestone 2: docs | `docs implementor` | `delegating`, `documentation` |

@@ -78,7 +78,33 @@ read is not anchored on yours.
 
 Check the report of a delegated step against the code before you use it.
 Add the approaches that you found yourself, and narrow them in the same
-way. Then write one message with every item, in the layout of the
+way. Write the items in the layout of the `decisions-and-findings` skill
+to `.context/<topic>/items.md`. When the root question is a design call,
+also write it there as one item. Its approaches are its options.
+
+Before you send the message, run the options check of the
+`implementation-review` skill over the items. The check is a fresh
+read-only `second-pass review agent`. Give it the second-pass prompt of
+that skill, followed by the items. Save its report under
+`.context/<topic>/`. Merge each slot of the report into the items:
+
+- A better root question replaces the **Root question** line.
+- A new option keeps the letter that the check gave it. The source of a
+  dropped condition goes into the text of the option that drops it. Add
+  each new option to the approaches list.
+- The **Left out** line and the approaches list take each other change
+  of the check.
+- When the recommendation changed, the **Recommendation** line gives the
+  new letter and its reason. It then names the first letter. The
+  **Wider fix** line takes the new letter in the same way.
+- A kept condition and a place that is not a real choice stay in the
+  saved report.
+- A new problem becomes an item when it passes the decision test.
+  Otherwise, give it one line under **Open** in the final report.
+
+Then apply the decision test again to each item that changed. A design
+call can become an item, and an item can become a design call. Then
+write one message with every item, in the layout of the
 `decisions-and-findings` skill. Use this message order:
 
 1. One or two sentences: the recommended approach, or the root question.
@@ -103,6 +129,8 @@ recommended approach.
   message.
 - Run steps 3 and 4 again when an answer drops the recommended approach
   or adds a new one.
+- Run the options check of step 5 over each new or changed item before
+  you send the round.
 - Silence is not approval. An item without an answer stays open. Do not
   apply any of its options.
 
@@ -128,6 +156,8 @@ recommended approach.
 - [ ] At least three distinct approaches. Each condition that every
       approach keeps is named with its source.
 - [ ] Each approach that you left out has one line with its reason.
+- [ ] The options check ran over the items before the message, and each
+      slot of its report is merged.
 - [ ] One message holds every item, in the `decisions-and-findings`
       layout. Every other question is a design call in the final report.
 - [ ] Nothing in the repository changed.

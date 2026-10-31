@@ -2,7 +2,7 @@
 
 The options check confirms that the options of each item are complete. It
 checks that the recommendation is the best one. It changes nothing. An
-item comes from a review or a plan.
+item comes from a review, a plan, or a brainstorm.
 
 In the review flow, the options check is step 3 of the finding check. Each
 finding check gets this prompt after the prompt in
@@ -16,6 +16,12 @@ together with the decisions and the path of the plan. Run it in the
 working tree that holds the plan, before you commit the plan. Replace the
 second sentence of the prompt with the path of the plan.
 
+In the brainstorm flow, the check runs over the items of a brainstorm,
+before the message goes to the user. The `brainstorming` skill says
+when. Give this prompt to a fresh read-only context, followed by the
+items. Replace the second sentence of the prompt with one sentence that
+gives the goal of the brainstorm.
+
 The options check does not change an `Action` line. An open item stays
 open, also when the options check finds an option that is not blocked.
 The user sees the result of each pass and decides. For a review finding
@@ -26,8 +32,8 @@ merged options, as the `implementation-review` skill says.
 
 You are checking the options of the items below, in this repository. The
 review ran on the local diff against `origin/main`. Each item comes from a
-review or a plan. The user or the working agent will choose one lettered
-option for it.
+review, a plan, or a brainstorm. The user or the working agent will
+choose one lettered option for it.
 
 Your task is to check that the options are complete and that the
 recommendation is the best one. You may inspect the repository read-only.
