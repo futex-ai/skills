@@ -29,7 +29,7 @@ date of the last change.
 | `planning` | writing the plan | The report names a branch with a pushed plan and no pull request, as the `plans` skill says. Review the plan against the checks below. To amend the plan, send the amendments message and keep the stage. To approve it, send the implement message to the orchestrator and set `implementing`. The orchestrator then delegates the milestones inside its workspace. |
 | `implementing` | implementing the plan | Read the report. Handle the decisions and review items under `SKILL.md`. A report with an open pull request and every milestone ticked can go to `review`. Move it when no item blocks that pull request. A blocked report goes to `blocked` with the blocker on the board. When the report says that the branch conflicts with `main`, send the merge-main message. |
 | `review` | done, pull request open | Check the merge conditions in `SKILL.md`. When they hold, set `merge`. When a condition fails because of the child, send the message that names the gap and set `implementing`. When it fails because of an escalation, set `blocked`. |
-| `merge` | waiting for the merge | Merge as `SKILL.md` says. Send the stack message or the after-merge message, as `SKILL.md` says. In the middle of a stack, set `review` for the next pull request. After the last pull request, set `done` when the plan status pull request is merged. |
+| `merge` | waiting for the merge | Merge as `SKILL.md` says. In the middle of a stack, send the stack message and set `review` for the next pull request. After the last pull request, set `done`. |
 | `done` | finished | Archive the workspace, as the section below says. Keep the line for one week, then drop it. |
 | `blocked` | waiting for the user or another section | In each cycle, check whether the blocker is gone. Examples: an answered escalation, a merged pull request of another section, or a user message. Then set the stage that the work needs. |
 
@@ -92,8 +92,7 @@ Archive a workspace that the section no longer needs, with
 `conductor workspace archive <id>`. An archived workspace stays
 restorable. A workspace is finished when:
 
-- every pull request of its change merged, and its plan status pull
-  request merged,
+- every pull request of its change merged,
 - its work was dropped, or another workspace took it over,
 - the user says that it is no longer needed.
 
@@ -107,8 +106,8 @@ investigation, archive its session. The command is
 Merge a stack from the bottom, one pull request at a time, under the
 merge conditions. After each merge in the middle of the stack, send the
 stack message. It asks the child to run `gh stack sync` and to report
-the next pull request. The plan status update waits for the last pull
-request of the stack.
+the next pull request. Only the last pull request of the stack deletes
+the plan, as the `plans` skill says.
 
 ## Restart
 

@@ -41,7 +41,8 @@ Stages: new, planning, implementing, review, merge, done, blocked.
 - <follow-up: the larger fix that a decision deferred, the workspace and
   the item number, and its effort>.
 - <deferred item: source workspace, session, report id, item number, and title>.
-  Follow-up: <scope and effort>. Waits for: <the user's answer>.
+  Follow-up: <scope, effort, and the path of the follow-up item>.
+  Waits for: <the user's answer>.
   Current pull request can merge because: <reason>.
 
 ## Log

@@ -90,7 +90,7 @@ actions, or the board. Apply it before the steps below.
   overrides that the user gave for this section.
   Fill `<agent>`, `<model>`, and `<effort>` from that action and those overrides.
 - Every change that becomes an implementation or a pull request gets its
-  own workspace, as the `models` skill says. Run `conductor workspace
+  own workspace, as the `delegating` skill says. Run `conductor workspace
   create --name "<change>" --session-name orchestrator --agent <agent>
   --model <model> --effort <effort> --message-file <path>`.
   Use the values of the `default orchestrator` action.
@@ -127,8 +127,9 @@ review findings with lettered options. You answer in place of the user.
 - Answer every report item in one message. Give each chosen option its
   number, letter, and one sentence of reasoning. Mark each escalated item
   as waiting for the user.
-- Escalate every item tagged `Auto-fix: no`. Keep the choice open until
-  the user answers. Apply no option while that answer waits.
+- Escalate every item whose **Action** is `ask the user`. Keep the
+  choice open until the user answers. Apply no option while that answer
+  waits.
 - Choose on the merits and on the goals of the section. When the report
   does not give enough evidence, delegate an investigation, wait for its
   report, and then answer.
@@ -171,10 +172,9 @@ Merge a pull request only when all of these hold:
 
 Then run `gh pr merge <number> --squash --delete-branch`, or the merge
 method that the repository's `AGENTS.md` names. In the middle of a stack,
-send the stack message, as the cycle reference says. After the last pull
-request of the change, send the after-merge message. The child updates
-the plan status as the `plans` skill says and opens that pull request.
-Merge it too. Then set the stage `done` and archive the workspace.
+send the stack message, as the cycle reference says. The last pull
+request of the change deletes its plan, as the `plans` skill says. After
+it merges, set the stage `done` and archive the workspace.
 
 ## Checklist
 

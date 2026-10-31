@@ -79,8 +79,8 @@ To the workspace's orchestrator session, after the plan is approved.
     moves to a follow-up pull request>. Reason: <why the current pull request
     needs the answer, or meets its approved requirements without it>.
 
-    <For deferred work: Keep item <n> open in the report and the plan's
-    review TODO. Record the source report and follow-up scope.>
+    <For deferred work: Keep item <n> open in the report. Record it as a
+    follow-up item, as the `plans` skill says, and give its path.>
     Continue with the independent work. Apply the answered options.
 
     Run the checks. Commit the changes. Push the branch.
@@ -119,19 +119,8 @@ agent` action.
 After a pull request in the middle of a stack.
 
     Pull request #<n> merged as <commit>. Run `gh stack sync`, and report
-    the next pull request of the stack. Do not update the plan status
-    yet. Do no other work.
-
-## After merge
-
-After the last pull request of the change.
-
-    Pull request #<n> merged as <commit>. Update the plan status as the
-    `plans` skill says, on a new branch, and open its pull request. Report
-    its number. Do no other work.
-
-Keep deferred items open in the report and the plan status update.
-The coordinator keeps their follow-ups in its backlog after it archives the workspace.
+    the next pull request of the stack. Keep the plan: the last pull
+    request of the stack deletes it. Do no other work.
 
 ## Goal review
 

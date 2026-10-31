@@ -57,7 +57,8 @@ Split work to run more of it in parallel, not for its own sake. See the
 The coordinator owns the schedule and the merge. A waiting answer blocks
 the work that depends on it. It does not block independent work.
 
-1. Escalate each item tagged `Auto-fix: no` and each reserved choice.
+1. Escalate each item whose **Action** is `ask the user`, and each
+   reserved choice.
    Record the escalation under **Escalations** with the work that its
    answer blocks.
 2. Decide whether the current pull request needs that answer.
@@ -67,7 +68,8 @@ the work that depends on it. It does not block independent work.
    the answer, defer the dependent work.
    Keep the required checks and approved plan TODOs with the current
    pull request.
-   Record the follow-up under **Backlog**. Keep the original item open.
+   The child records the work as a follow-up item, as the `plans` skill
+   says. Record it under **Backlog** too. Keep the original item open.
    Apply no option while the answer waits.
 4. Tell the orchestrator which work can merge and which work waits.
    Record the reason that the current pull request can merge.
