@@ -33,15 +33,15 @@ within a day or two of its plan.
 ## Parallel, sequence, or stack
 
 Each workspace has its own machine, so parallel workspaces add compute.
-Split work to run more of it in parallel, not for its own sake. See the
-`models` skill.
+Split work only to run more of it in parallel. Use the independence test
+of the `delegating` skill.
 
 | The changes | Schedule |
 | --- | --- |
 | Touch different areas | Parallel: one workspace each, started in the same cycle. |
 | Touch the same files | Sequence: the second starts after the first merges. |
 | Depend on each other, and each leaves the product working | One workspace, one plan, and one pull request per milestone as a stack with `gh stack`. |
-| One large change with an unclear design | One workspace. Plan first. Split by the plan review when it can be. |
+| One large change with an unclear design | One workspace. It brainstorms, then plans, as the `plans` skill says. Split by the plan review when it can be. |
 
 ## Keep branches close to main
 
@@ -63,7 +63,9 @@ the work that depends on it. It does not block independent work.
    answer blocks.
 2. Decide whether the current pull request needs that answer.
    Keep the pull request blocked when the answer affects its safety or
-   approved requirements.
+   approved requirements. Use the grades of the `delegating` skill. A
+   High or Medium item blocks only the work that depends on its code or
+   contract. A Low item never blocks.
 3. When the current pull request meets its approved requirements without
    the answer, defer the dependent work.
    Keep the required checks and approved plan TODOs with the current
@@ -77,7 +79,8 @@ the work that depends on it. It does not block independent work.
    state file.
 5. Recheck the escalations in each cycle.
    When the user answers a deferred item, schedule its follow-up under
-   the usual conflict checks.
+   the usual conflict checks. The branch that applies the answer deletes
+   the follow-up item, as the `plans` skill says.
    A merged pull request does not close a deferred item.
 
 ## When there is nothing to do
@@ -88,18 +91,19 @@ on the user. Then:
 1. When the state records goals or metrics, start a session
    `review: <goal>` in this workspace. Give it the `brainstorming` action
    and the goal-review message. Fetch and fast-forward `main` first, so
-   that the review measures the current code. The reviewer measures the
-   metric and finds the opportunities. It proposes up to five candidate
-   changes with the expected effect, the effort, the areas, and the
-   risks. It changes nothing.
+   that the review measures the current code. The reviewer brainstorms
+   as the message says, and changes nothing.
 2. Read its report, then archive the session. Order the candidates by
    expected effect per effort. Drop a candidate that conflicts with
    active work or that a reserved choice blocks. Start a plan workspace
-   for each candidate that can run in parallel, and sequence the rest.
+   for each candidate that can run in parallel, and sequence the rest. A
+   candidate that is an open follow-up item waits until the user asks
+   for it, as the `plans` skill says. Name it in the status report.
 3. Record the candidates that you did not start under **Backlog** in the
    state file. A later cycle can start them. The backlog also
    holds larger fixes and deferred user items. Start from the
-   backlog before you start a new goal review.
+   backlog before you start a new goal review. A follow-up item in the
+   backlog starts only after the user answers it or asks for it.
 4. Without a goal, end the cycle. Say in the status report that the
    section has no work and no goal.
 

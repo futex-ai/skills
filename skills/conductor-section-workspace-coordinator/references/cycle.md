@@ -10,13 +10,17 @@ date of the last change.
 
 - `scripts/last-report.sh`, with the orchestrator's session id, prints
   how the orchestrator's last turn ended. A complete task ends with the
-  final-report layout: **Changed**, **Fixed**, **Decisions**, **Checks**,
-  **Open**. A turn that failed prints its error with the prefix
-  `error: `.
+  final-report layout: **Changed**, **Fixed**, **Deferred**,
+  **Decisions**, **Checks**, **Open**. A turn that failed prints its
+  error with the prefix `error: `.
 - When the session is `working`, do not read it and do not send to it.
   Wait for `idle`.
-- When the last message is a question, apply the decisions section of `SKILL.md`.
-  When the message is an error, or not a final report, send the status request.
+- When the last message is a question, apply the decisions section of
+  `SKILL.md`. When it is not a final report, send the status request.
+- When it is an error, send the status request once. That is the one
+  retry of the `delegating` skill. When the next turn ends in an error
+  too, the action is blocked. Escalate it with the error text, and set
+  `blocked`.
 - Keep what the next cycle needs in the board line: the branch, the pull
   request number, and the open items. Do not copy reports into the state
   file.
@@ -26,8 +30,8 @@ date of the last change.
 | Stage | The child is | When its orchestrator is idle |
 | --- | --- | --- |
 | `new` | just added to the section | A workspace that you created has its orchestrator and its plan request, so set `planning`. A workspace that the user added gets an orchestrator and then a stage, as the section below says. |
-| `planning` | writing the plan | The report names a branch with a pushed plan and no pull request, as the `plans` skill says. Review the plan against the checks below. To amend the plan, send the amendments message and keep the stage. To approve it, send the implement message to the orchestrator and set `implementing`. The orchestrator then delegates the milestones inside its workspace. |
-| `implementing` | implementing the plan | Read the report. Handle the decisions and review items under `SKILL.md`. A report with an open pull request and every milestone ticked can go to `review`. Move it when no item blocks that pull request. A blocked report goes to `blocked` with the blocker on the board. When the report says that the branch conflicts with `main`, send the merge-main message. |
+| `planning` | writing the plan | A brainstorm report has no plan yet. Answer its items under `SKILL.md`, and keep the stage. A plan report names a branch with a pushed plan and no pull request, as the `plans` skill says. Review the plan against the checks below. To amend the plan, send the amendments message and keep the stage. To approve it, send the implement message to the orchestrator and set `implementing`. |
+| `implementing` | implementing the plan | Read the report. Handle the items of its **Open** list under `SKILL.md`. A report with an open pull request and every milestone ticked can go to `review`. Move it when no item blocks that pull request. A blocked report goes to `blocked` with the blocker on the board. When the report says that the branch conflicts with `main`, send the merge-main message. |
 | `review` | done, pull request open | Check the merge conditions in `SKILL.md`. When they hold, set `merge`. When a condition fails because of the child, send the message that names the gap and set `implementing`. When it fails because of an escalation, set `blocked`. |
 | `merge` | waiting for the merge | Merge as `SKILL.md` says. In the middle of a stack, send the stack message and set `review` for the next pull request. After the last pull request, set `done`. |
 | `done` | finished | Archive the workspace, as the section below says. Keep the line for one week, then drop it. |
@@ -65,15 +69,19 @@ the workspace name.
 ## Plan checks
 
 - The scope matches the goal and nothing more.
-- Each milestone leaves the product working, and its pull request can
-  merge within a day.
-- The first milestone updates the docs, as the `plans` skill says.
+- Each milestone leaves the product working, and its work can merge
+  within a day.
+- The milestones follow the order of the `plans` skill. The mockup
+  milestone comes first when the plan has mockup work. The documentation
+  milestone comes next.
+- Each milestone has a `Depends on:` line, as the `plans` skill says.
 - The plan names the files or areas of each milestone.
 - No milestone touches the areas of other active work. See the
   scheduling reference.
-- Milestones that depend on each other become a stack, one pull request
-  per milestone with `gh stack`. Independent milestones can become
-  separate workspaces when their areas do not overlap.
+- Milestones that start together run in parallel workspaces of the
+  orchestrator, as the `delegating` skill says. Milestones that depend on
+  each other can merge as a stack, one pull request per milestone with
+  `gh stack`. Then each merges within a day.
 - Before you approve a large plan, delegate a plan review with the
   `first-pass review agent` action. A large plan has three or more
   milestones, or a complex area.
@@ -83,7 +91,7 @@ the workspace name.
 - Name the stage that you expect next and the report that you want.
 - Never send code. Describe the change in words. A child that needs a
   design decision gets the decision, not the implementation.
-- Handle each decision and review item under "Decisions and review items" in `SKILL.md`.
+- Handle each item under "Decisions and review items" in `SKILL.md`.
   Record each answer in the log. Escalate each choice that needs the user.
 
 ## Archive

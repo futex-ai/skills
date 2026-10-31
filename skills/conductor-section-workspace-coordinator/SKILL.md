@@ -87,42 +87,39 @@ actions, or the board. Apply it before the steps below.
 
 - Name an action, never a model. The `models` skill defines the agent,
   the model, and the effort of each action. The state file records the
-  overrides that the user gave for this section.
-  Fill `<agent>`, `<model>`, and `<effort>` from that action and those overrides.
+  overrides that the user gave for this section. Every command takes its
+  agent, model, and effort from that action and those overrides.
 - Every change that becomes an implementation or a pull request gets its
-  own workspace, as the `delegating` skill says. Run `conductor workspace
-  create --name "<change>" --session-name orchestrator --agent <agent>
-  --model <model> --effort <effort> --message-file <path>`.
-  Use the values of the `default orchestrator` action.
-  The message file holds the plan request.
-
-  Move the workspace into the section with
+  own workspace, as the `delegating` skill says. Create it with the
+  workspace command of its Conductor reference and the
+  `default orchestrator` action. Name it after the change. Add
+  `--session-name orchestrator`, and give the plan request as the message
+  file. Then move it into the section with
   `conductor workspace move <id> --section <section id>`. The first
   session is the workspace's orchestrator. It writes the plan. After the
   approval it implements every milestone by delegation inside its
-  workspace, as the implement message says. It stays the session that
-  you talk to.
+  workspace, as the implement message says.
 - A workspace that the user adds gets an orchestrator first, as the
   cycle reference says.
 - A plan review gets a new session in the child's workspace with the
-  `first-pass review agent` action. An investigation of a decision or a
-  review item gets one with the `second-pass review agent` action. Run
-  `conductor session create --workspace <id> --agent <agent> --model <model>
-  --effort <effort> --name "<name>" --message-file <path>`.
-  The session shares the files and the branch. Read its
-  report, then archive it with `conductor session archive <id>`.
+  `first-pass review agent` action. An investigation of an item gets one
+  with the `second-pass review agent` action. Start it with the session
+  command of that reference and `--workspace <id>`. The session shares
+  the files and the branch. Read its report, then archive it with
+  `conductor session archive <id>`.
 - A goal review gets a new session in this workspace with the
   `brainstorming` action. It produces a report, not a change, so it
   needs no workspace of its own.
-- Write every message from the templates in `templates/messages.md`. Each
-  message names the goal, the constraints, the files to avoid, and the
-  report that you expect. Send a message only to an idle session, and put
-  everything for that session into it.
+- Write every message from the templates in `templates/messages.md`. A
+  message that starts a workspace or a session is a prompt. It has the
+  six fields of the `delegating` skill, from Scope to Output. Send a
+  message only to an idle session, with everything for that session.
 
 ## Decisions and review items
 
-A child ends a task with the final-report layout: numbered decisions and
-review findings with lettered options. You answer in place of the user.
+A child ends a task with the final report of the `decisions-and-findings`
+skill. Its **Open** list holds the items that wait for an answer, each
+with lettered options. You answer in place of the user.
 
 - Answer every report item in one message. Give each chosen option its
   number, letter, and one sentence of reasoning. Mark each escalated item
@@ -136,9 +133,9 @@ review findings with lettered options. You answer in place of the user.
 - When a larger option is better than the recommended one, weigh two
   schedules. Take the larger fix now when it is not much larger. Take it
   too when it removes the class of problem, or when it would undo the
-  smaller fix. Otherwise choose the smaller fix now, and put the larger
-  fix under **Backlog** in the state file as a follow-up workspace. Say
-  which schedule you chose and why.
+  smaller fix. Otherwise choose the smaller fix now. The child records
+  the larger fix as a follow-up item, as the `plans` skill says. Add it
+  under **Backlog** too. Say which schedule you chose and why.
 - The always-on rules reserve some choices for the user. Do not choose
   a reserved option. When the best option is reserved, escalate the item
   to the user. Otherwise choose the best option that is not reserved. The
@@ -146,6 +143,7 @@ review findings with lettered options. You answer in place of the user.
   - delete or override functionality on `origin/main`,
   - add a build error, rejection, gate, lint, or stricter validation,
   - change a requirement in a protocol doc,
+  - delete, skip, or weaken a test, unless the `testing` skill allows it,
   - need credentials or infrastructure.
 - Record each escalation under **Escalations** in the state file with
   what it blocks. Continue with every other item and every other
@@ -174,7 +172,8 @@ Then run `gh pr merge <number> --squash --delete-branch`, or the merge
 method that the repository's `AGENTS.md` names. In the middle of a stack,
 send the stack message, as the cycle reference says. The last pull
 request of the change deletes its plan, as the `plans` skill says. After
-it merges, set the stage `done` and archive the workspace.
+it merges, set the stage `done` and archive the workspace. In the status
+report, name its follow-up items, as step 8 of `finish-work` says.
 
 ## Checklist
 
@@ -192,7 +191,8 @@ it merges, set the stage `done` and archive the workspace.
       went to it.
 - [ ] Ready pull requests were merged before new work started, and the
       finished workspaces were archived.
-- [ ] Every delegation named an action from the `models` skill.
+- [ ] Every delegation named an action from the `models` skill. Every
+      new prompt had the six fields of the `delegating` skill.
 - [ ] Every new workspace started with a plan request after a conflict
       check.
 - [ ] Each answered item got a letter. Each unanswered user choice stayed open.
