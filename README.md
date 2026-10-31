@@ -34,15 +34,17 @@ Codex, and with any other agent that reads the
    (Simplified Technical English, faithful reporting, batched decisions in
    the reply text and never in a question tool, final report) so that it
    reaches an agent that does not have the global file installed. It
-   names one skill, `brainstorming`, so that an open idea gets a
-   brainstorm before any plan or change.
+   names one skill, `brainstorming`, so that the agent loads it before it
+   answers any question, and before any plan or change for an open idea.
+   The skill sorts each message. It answers a factual question directly
+   and brainstorms an open one.
 
 ## Skills
 
 | Skill | Read when |
 | --- | --- |
 | `finish-work` | Before you say work is complete, before you commit, push, or open a pull request, when you choose which tests or gates to run, and after the pull request merges. |
-| `brainstorming` | The user asks for a feature or a change, as in "can we", and no message or recorded decision chooses the approach. The user asks to brainstorm, discuss, or explore an idea, asks "should we" or "what do you think", or asks for a plan whose approach is not settled. |
+| `brainstorming` | The user asks any question, also a factual one, as in "what is", "why did it", or "should we". The user asks for a feature or a change, as in "can we", and no message or recorded decision chooses the approach. The user asks to brainstorm, discuss, or explore an idea, or asks for a plan whose approach is not settled. |
 | `plans` | Before you write any code or start an implementation, when the user asks for a plan, before you create, edit, tick, or delete a plan, when you add a decision to a plan, when you find a TODO during implementation, when you add, list, or fix a follow-up item, and before you open a pull request for a plan. |
 | `implementation-review` | After you push, before you run or apply a review, when the user answers a review finding, when you decide whether to fix a finding now or after the merge, and when the user asks for a code review. |
 | `delegating` | When you work on a plan, before you delegate a task, create a Conductor workspace, session, or routine, start a subagent or a reviewer, or split work across workspaces, and when a model blocks a request. |

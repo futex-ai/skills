@@ -1,6 +1,6 @@
 ---
 name: brainstorming
-description: Use when the user asks for a feature, new scope, or a change, as in "can we", "could you", "add", or "make", and no message or recorded decision chooses how to build it, when the user asks to brainstorm, discuss, or explore an idea, asks "should we", "how could we", or "what do you think", asks for a plan whose approach is open, or asks for work with an unclear goal.
+description: Use when the user asks any question, before you answer it, also a factual one or a short one in the middle of a task, as in "what is", "why did it", or "should we", when the user asks for a feature, new scope, or a change, as in "can we", "could you", "add", or "make", and no message or recorded decision chooses how to build it, when the user asks to brainstorm, discuss, or explore an idea, asks for a plan whose approach is open, or asks for work with an unclear goal.
 ---
 
 # Brainstorming
@@ -16,10 +16,30 @@ or plans, and do not commit. Do not build a mockup or a spike. The
 mockup milestone of the plan makes the pictures. Keep the notes, the
 reports, and the user's answers under `.context/<topic>/`.
 
-When the user's message or a recorded decision already chooses the
-approach, skip the brainstorm. Go on with the request, and name the
-message or the decision that chose the approach. A decision covers the
-choice that the user made, not each sentence that describes it.
+## Sort the message first
+
+Every question loads this skill, also a factual one. Sort the message
+before you start any other step. Use the first case that fits:
+
+- **A challenge:** the user asks why a result went wrong, or whether it
+  must be so, as in "why did it" or "does it have to". Give the cause
+  first, with its source. Then brainstorm the fix from step 1, when no
+  message or recorded decision chooses its approach.
+- **A fact:** the question has one answer, and the code, the docs, the
+  record, a command, or a cited source gives it. Examples are "where is
+  this defined?" and "which command runs the tests?". Find the answer,
+  and check it against its source. Answer directly, and give the source,
+  such as a file and a line. Do not brainstorm.
+- **A chosen approach:** the user's message or a recorded decision
+  already chooses the approach. Skip the brainstorm. Go on with the
+  request, and name the message or the decision that chose the approach.
+  A decision covers the choice that the user made, not each sentence
+  that describes it.
+- **An open question or request:** every other question or request, as
+  in "should we", "do we need", "what do you think", or "can we".
+  Brainstorm from step 1.
+
+When you cannot tell whether a question is a fact, brainstorm it.
 
 ## 1. Read before you ask
 
@@ -120,6 +140,8 @@ recommended approach.
 
 ## Checklist
 
+- [ ] You sorted the message first. A fact got a direct answer with its
+      source, and no brainstorm. A challenge got its cause first.
 - [ ] You read the area and searched for earlier work on the same idea.
 - [ ] The root question uses the words of the goal, not of the current
       mechanism.
