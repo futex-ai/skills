@@ -158,7 +158,6 @@ number them in that order, from <first number>. Use the item layout in the
 
 An option is blocked when:
 
-- It is Large.
 - It changes a requirement in a protocol doc without a recorded user
   decision, adds a requirement for new behaviour at the boundary, or
   decides which side of a mockup and product mismatch is right.
