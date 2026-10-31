@@ -49,7 +49,7 @@ change. [templates/plan.md](templates/plan.md) is the starting point.
 
 - Write each decision in the layout of the `decisions-and-findings`
   skill. Its options rule applies: write the root question, widen and
-  narrow the approaches, and name each condition that every option keeps.
+  narrow the approaches, and name each assumption that all options share.
 - When you add a decision to a plan, run the options check of the
   `implementation-review` skill over it. Do this before you report the
   decision. The check is a fresh read-only `second-pass review agent`

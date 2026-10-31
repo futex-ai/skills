@@ -88,7 +88,7 @@ and a list of new problems. Merge them into the entry of the finding:
   to a removed finding.
 - A better root question replaces the **Root question** line.
 - A new option keeps the letter that the check gave it. The source of a
-  dropped condition goes into the text of the option that drops it. An
+  dropped assumption goes into the text of the option that drops it. An
   approach that the check brings back is such a new option. The
   **Left out** line takes each other change of the check.
 - When the recommendation changed, the **Recommendation** line gives the
@@ -98,7 +98,7 @@ and a list of new problems. Merge them into the entry of the finding:
 - A new problem inside the scope goes into the review focus of the
   re-review. When no re-review runs, it goes under **Open**. A new problem
   outside the scope joins the `Outside the scope` list.
-- A kept condition and a place that is not a real choice stay in the
+- A kept assumption and a place that is not a real choice stay in the
   saved check report, `round-<number>-checks.md`.
 
 ## Repeats

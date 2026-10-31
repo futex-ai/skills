@@ -51,7 +51,7 @@ For each item:
    item has fewer than three distinct approaches, add approaches, or
    confirm its reason for fewer. Do not give an option that tests
    something that the `testing` skill says never gets a test.
-4. Name each condition that every option keeps. Name its source: a
+4. Name each assumption that all the options share. Name its source: a
    protocol doc, a user decision, the task message, an earlier option's
    text, or the code. Say whether its reason still holds. When it is not
    a requirement, or its reason is gone, give the option that drops it. A
@@ -84,7 +84,7 @@ Return one block for each item, in the order given:
 
 - **Root question:** <"Kept", or a better root question and one sentence of reason.>
 - **Places not covered:** <Each place with the letter of its new option, or the one sentence that says why it is not a real choice. Or "None".>
-- **Conditions:** <Each condition that every option keeps: its source, whether its reason holds, and the letter of the option that drops it, or "kept" when step 3 gives none. Or "None".>
+- **Assumptions:** <Each assumption that all the options share: its source, whether its reason holds, and the letter of the option that drops it, or "kept" when no option drops it. Or "None".>
 - **New options:** <Each new option with the next free letter, the change, its cost or risk, and its effort grade. Or "None".>
 - **Left out:** <Each approach that you leave out or bring back, with its reason. Or "No change".>
 - **Recommendation:** <The letter you recommend and one sentence of reasoning. When it differs from the review's, say so.>

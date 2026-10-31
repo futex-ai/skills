@@ -174,14 +174,15 @@ check, a plan decision, and a brainstorm.
    its reason, so that the user can bring it back. Each other approach is
    a lettered option.
 
-For a design or an implementation item, then name each condition that
-every option keeps. Name its source: a protocol doc, a user decision, the
-task message, an earlier option's text, or the code. When it is not a
-requirement, or its reason is gone, add the option that drops it. A user
-decision covers the choice that the user made, not each sentence of the
-text that describes the chosen option. For a review item, the finding
-check of the `implementation-review` skill checks these steps and asks
-for the conditions in a fresh context.
+An item from design or implementation needs one more step. Name each
+assumption that all its options share. Give the source of each one: a
+protocol doc, a user decision, the task message, an earlier option's
+text, or the code. When an assumption is not a requirement, or its reason
+is gone, add an option that drops it. A user decision covers the choice
+that the user made, not each sentence of the text that describes the
+chosen option. For a review item, the finding check of the
+`implementation-review` skill checks these steps in a fresh context. It
+also names the shared assumptions.
 
 ## Terms
 

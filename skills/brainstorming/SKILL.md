@@ -58,8 +58,8 @@ read is not anchored on yours.
 - Widen with steps 2 and 3 of the options rule in the
   `decisions-and-findings` skill. A brainstorm always finds at least
   three distinct approaches. The reason for fewer does not apply here.
-- Name each condition that every approach keeps, with its source, as that
-  rule says for a design item. Add the approach that drops a condition
+- Name each assumption that all the approaches share, with its source,
+  as the options rule says. Add the approach that drops an assumption
   that is not a requirement.
 - For each approach, give what it does, its effort grade, and its cost
   or risk.
@@ -125,8 +125,8 @@ recommended approach.
       mechanism.
 - [ ] Steps 3 and 4 ran as the `brainstorming` action. Its brief held no
       approaches of yours.
-- [ ] At least three distinct approaches. Each condition that every
-      approach keeps is named with its source.
+- [ ] At least three distinct approaches. Each assumption that all the
+      approaches share is named with its source.
 - [ ] Each approach that you left out has one line with its reason.
 - [ ] The root question is an item for the user. One message holds every
       item, in the `decisions-and-findings` layout. Every other question
