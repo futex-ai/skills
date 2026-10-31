@@ -50,7 +50,7 @@ For an element that the agent leaves out. Give the element a label in the
 template, and add a sentence that says it is always present.
 
 ```markdown
-- **Action:** `fix now`, `fix after merge`, or `ask the user, because` and the condition that sends the item to the user.
+- **Action:** `fix now`, `fix after merge`, or `ask the user, because` and, in plain words, the condition that sends the item to the user.
 
 Always write **Background**, **Problem**, **Impact if no action**, and
 **Options**. Keep every label, also when the user asks for a shorter
