@@ -12,8 +12,9 @@ Each finding ends with one `Action` line:
 - `Action: fix after merge, apply <letter>, because <reason>`. The agent
   records a follow-up item. A later branch applies the option without the
   user.
-- `Action: ask the user, because <condition>`. The finding waits for the
+- `Action: ask the user, because <reason>`. The finding waits for the
   user. The agent records a follow-up item so that the finding is not lost.
+  The reason gives the case in plain words, as "Ask the user" says.
 - `Action: fix now, apply <letter>, and fix after merge, apply <letter>,
   because <reason>`. The agent splits the finding. It applies the direct
   fix now and records the wider fix as a follow-up item. The section
@@ -59,8 +60,9 @@ An option is blocked when:
 
 The decision test in the `decisions-and-findings` skill decides whether a
 finding waits for the user. The outcome can be `fix now` or
-`fix after merge` only when no condition of the test holds. For a finding,
-condition 6 holds unless the finding is in one of these categories:
+`fix after merge` only when no condition of the test holds. This rule lets
+the agent fix a finding without the user only when the finding is in one
+of these categories:
 
 - Product bugs, including edge cases, races, and platform differences.
 - Security issues.
@@ -109,22 +111,22 @@ split the finding and apply the wider fix after the merge.
 When the agent may fix a finding, it decides when. The outcome is
 `fix now` when one of these holds:
 
-1. The severity is High.
-2. The fix gets much harder after the merge. Examples are a migration, a
-   stored data format, or a public API or message that the diff adds.
-3. The problem breaks a gate or a test, or the diff adds or changes a
-   flaky test.
-4. A doc contradicts the changed code.
+- The severity is High.
+- The fix gets much harder after the merge. Examples are a migration, a
+  stored data format, or a public API or message that the diff adds.
+- The problem breaks a gate or a test, or the diff adds or changes a
+  flaky test.
+- A doc contradicts the changed code.
 
 Otherwise, the outcome is `fix now` when the fix is Small and stays in the
 files that the diff changes. A follow-up item for such a fix costs more
 than the fix.
 
-A product bug with the likelihood Rare gets `fix now` only when condition
-1 or 2 holds. Otherwise its outcome is `fix after merge`, also when the
-fix is Small. Its fix adds code for a case that seldom happens, and the
-re-review reads that code too. The `decisions-and-findings` skill gives
-the likelihood scale.
+A product bug with the likelihood Rare gets `fix now` only when its
+severity is High or its fix gets much harder after the merge. Otherwise
+its outcome is `fix after merge`, also when the fix is Small. Its fix adds
+code for a case that seldom happens, and the re-review reads that code
+too. The `decisions-and-findings` skill gives the likelihood scale.
 
 For every other finding, the agent decides. It weighs these questions:
 
@@ -154,24 +156,27 @@ with the direct fix. Give each split one sentence of reason.
 ## Ask the user
 
 The outcome is `ask the user` when a condition of the decision test
-holds. For a finding, the conditions work as follows:
+holds. For a finding, a condition holds in each of these cases:
 
-- Condition 3 holds when every option is blocked.
-- Condition 3 also holds when the best option on the merits is blocked
-  and is not a wider fix. The reviewer recommends that option, and the
-  user decides.
-- Condition 4 holds when more than one option has real trade-offs and the
-  recommendation is not clearly best.
-- Condition 6 holds for a finding outside the categories above. It also
-  holds for a slow, custom, or low-value gate, lint, or check, and for
-  the removal of a test that the removal rule of the `testing` skill does
-  not cover. Ask whether to fix or remove it, and state what it protects
-  and how long it runs.
-- Condition 6 holds for a finding about performance, code structure, or
-  process.
-- Condition 6 holds for any other UX wording. Examples are a choice of
+- Every option is blocked.
+- The best option on the merits is blocked and is not a wider fix. The
+  reviewer recommends that option, and the user decides.
+- More than one option has real trade-offs, and the recommendation is not
+  clearly best.
+- The finding is outside the categories above.
+- The finding is about a slow, custom, or low-value gate, lint, or check,
+  or about the removal of a test that the removal rule of the `testing`
+  skill does not cover. Ask whether to fix or remove it, and state what it
+  protects and how long it runs.
+- The finding is about performance, code structure, or process.
+- The finding is about any other UX wording. Examples are a choice of
   tone or voice that no copy rule settles, and a choice between two
   correct texts.
+
+The reason in the `Action` line gives the case in plain words, with its
+evidence. It does not cite a condition by a number. Example: "ask the
+user, because no option is clearly best until a reproduction names the
+source."
 
 ## Wider fixes and follow-ups
 
