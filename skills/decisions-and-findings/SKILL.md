@@ -47,19 +47,19 @@ review-fix rule in the `implementation-review` skill says which option to
 recommend. The item is a decision for the user only when one of these
 conditions holds:
 
-1. The recommended option changes a requirement or a decision in force,
-   and no recorded user decision covers the change.
-2. The recommended option adds behaviour at a boundary that no
-   requirement covers.
-3. The recommended option is blocked under the review-fix rule. For
-   example, it deletes functionality, adds a gate, stricter validation,
-   or a test for the class, weakens a test, or needs credentials or
-   infrastructure.
-4. Two or more options have real trade-offs, and no option is clearly
-   best.
-5. The user asked you to bring this choice to them.
-6. The item comes from a review, and the review-fix rule does not let the
-   agent fix it without the user.
+- The recommended option changes a requirement or a decision in force,
+  and no recorded user decision covers the change.
+- The recommended option adds behaviour at a boundary that no
+  requirement covers.
+- The recommended option is blocked under the review-fix rule. For
+  example, it deletes functionality, adds a gate, stricter validation,
+  or a test for the class, weakens a test, or needs credentials or
+  infrastructure.
+- Two or more options have real trade-offs, and no option is clearly
+  best.
+- The user asked you to bring this choice to them.
+- The item comes from a review, and the review-fix rule does not let the
+  agent fix it without the user.
 
 A detail that an existing requirement settles is not a gap, also when the
 requirement does not spell the detail out. An option that drops the
@@ -95,6 +95,9 @@ Write in Simplified Technical English (ASD-STE100):
 - Use a vertical list for steps, options, and complex lists.
 - Use one word for one thing. Define each project term once, then use it
   the same way.
+- Do not cite a rule, a condition, or a step by its number, as in
+  "condition 3". Say what it says, so that the reader does not have to
+  look it up.
 - To give more detail, add sentences or list items. Do not make a sentence
   longer.
 
@@ -148,7 +151,7 @@ what each field of a review item must contain.
 - **Previous examples:** <Earlier cases of this class, with commits or files, or "None found".>
 - **Related:** <Only when the item has a link to another item. Each link: the item number, the kind of link, and what it means. A link is a shared wider fix, the same cause, the same code, options that conflict, or a repeat.>
 - **Recommendation:** <Letter>. <One sentence of reasoning.> <When another option best protects the codebase, one sentence that names it.>
-- **Action:** <`fix now, apply` and a letter. Or `fix after merge, apply` and a letter, with one sentence of reason. Or a split: `fix now, apply` the direct fix, `and fix after merge, apply` the wider fix, with one sentence of reason. Or `ask the user, because`, the number of the condition of the decision test that holds, and one sentence of evidence.>
+- **Action:** <`fix now, apply` and a letter. Or `fix after merge, apply` and a letter, with one sentence of reason. Or a split: `fix now, apply` the direct fix, `and fix after merge, apply` the wider fix, with one sentence of reason. Or `ask the user, because` and one sentence that says in plain words which condition of the decision test holds, with its evidence. Do not cite the condition by a number.>
 ```
 
 In a review and in a message, a problem outside the review scope is not

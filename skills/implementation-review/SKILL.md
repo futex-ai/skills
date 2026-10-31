@@ -123,8 +123,9 @@ before you make the final call on a finding. In short:
   - `Action: fix now, apply <letter>`. The agent fixes it in this branch.
   - `Action: fix after merge, apply <letter>, because …`. The agent
     records a follow-up item, and a later branch fixes it.
-  - `Action: ask the user, because …`. The finding waits for the user,
-    and the agent records a follow-up item.
+  - `Action: ask the user, because …`. The reason gives the case in plain
+    words, never a condition number. The finding waits for the user, and
+    the agent records a follow-up item.
 - The reviewer proposes the outcome. The working agent makes the final
   call, because it knows the purpose of the branch.
 - An option is blocked when it needs a decision:
@@ -141,8 +142,8 @@ before you make the final call on a finding. In short:
   - It needs credentials or infrastructure.
 - The decision test in the `decisions-and-findings` skill decides whether
   a finding waits for the user. `fix now` and `fix after merge` are
-  allowed only when no condition holds. Condition 6 holds for each finding
-  outside these categories:
+  allowed only when no condition holds. The agent may fix a finding
+  without the user only when it is in one of these categories:
   - product bugs, including edge cases, races, and platform differences
   - security issues
   - docs or spec drift
@@ -172,15 +173,15 @@ before you make the final call on a finding. In short:
 - For every other finding that it may fix, the agent decides. It gives
   each `fix after merge` outcome one sentence of reason.
 - `ask the user` when a condition of the decision test holds. For a
-  finding, condition 3 holds when every option is blocked, or when the
-  best option on the merits is blocked and is not a wider fix. Condition 4
-  holds when the options have real trade-offs and no option is clearly
-  best. Condition 6 also holds for a slow, custom, or low-value test,
-  gate, lint, or check that the removal rule of the `testing` skill does
-  not cover. Findings about missing tests, performance, code
-  structure, and process always meet condition 6. Any other UX wording
-  meets it too, such as a choice of tone or voice that no copy rule
-  settles.
+  finding, a condition holds in each of these cases:
+  - Every option is blocked.
+  - The best option on the merits is blocked and is not a wider fix.
+  - The options have real trade-offs, and no option is clearly best.
+  - The finding is about a slow, custom, or low-value test, gate, lint,
+    or check that the removal rule of the `testing` skill does not cover.
+  - The finding is about missing tests, performance, code structure, or
+    process, or about any other UX wording, such as a choice of tone or
+    voice that no copy rule settles.
 - An `Outside the scope` problem is not a finding. Do not fix it in this
   branch. Record it as a follow-up item.
 
@@ -198,9 +199,9 @@ before you make the final call on a finding. In short:
    - When two options conflict, ask the user, unless a rule settles which
      one wins.
    - When a fix depends on the answer to an open finding, the finding
-     waits with it. Its outcome becomes `ask the user` under condition 4
-     of the decision test, and its **Related** line names the open
-     finding.
+     waits with it. Its outcome becomes `ask the user`, because no option
+     is clearly best before the user answers. Its **Related** line names
+     the open finding.
 3. Fix the confirmed `fix now` findings without waiting for the user.
    Apply the option that the `Action` line names. Leave the
    `Outside the scope` problems alone.
