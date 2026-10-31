@@ -4,10 +4,10 @@ Every item ends with an outcome: the item waits for the user, or the agent
 acts on it without the user. This file holds the two outcome rules:
 
 - The decision test says when an item waits for the user. It applies in
-  the same way to every item: a review finding, or a question from a
-  brainstorm, a plan, or a task.
-- The review-fix rule says how the agent fixes a review finding that does
-  not wait: which option it applies, and when.
+  the same way to every item: a finding or a question, from design, from
+  implementation, or from a review.
+- The fix rule says how the agent fixes a finding that does not wait:
+  which option it applies, and when.
 
 The working agent pastes this file into the prompt of a fresh reviewer, as
 the `implementation-review` skill says. So the reviewer and the working
@@ -15,10 +15,10 @@ agent read the same text.
 
 ## The decision test
 
-Apply this test to each review finding and to each question that you
-raise. Look at the option that you recommend. For a review finding, the
-review-fix rule below says which option to recommend. The item is a
-decision for the user only when one of these conditions holds:
+Apply this test to each finding and to each question that you raise. Look
+at the option that you recommend. For a finding, the fix rule below says
+which option to recommend. The item is a decision for the user only when
+one of these conditions holds:
 
 - The recommended option changes a requirement or a decision in force,
   and no recorded user decision covers the change.
@@ -37,15 +37,15 @@ requirement does not spell the detail out. An option that drops the
 requirement does not make the item a decision when you do not recommend
 that option.
 
-A behaviour at the boundary that a diff adds and no requirement covers is
-a spec gap. A review reports it as one finding. The finding waits for the
-user, because the user reviews each new requirement.
+A behaviour at the boundary that a change adds and no requirement covers
+is a spec gap. Report it as one finding. The finding waits for the user,
+because the user reviews each new requirement.
 
 When no condition holds, apply the recommended option without the user:
 
-- A review finding gets `fix now` or `fix after merge`. The review-fix
-  rule says which one, and when to split the finding.
-- A design item is a design call. Record the call, its reason, and the
+- A finding gets `fix now` or `fix after merge`. The fix rule says which
+  one, and when to split the finding.
+- A question is a design call. Record the call, its reason, and the
   date in the plan, in the design of the change. When the change has no
   plan, record it in the commit or the pull request description. Do not
   ask the user. Give each design call one line in the final report.
@@ -82,11 +82,12 @@ An option is blocked when:
   is not blocked.
 - It needs credentials or infrastructure.
 
-## The review-fix rule
+## The fix rule
 
-The sections below are the review-fix rule. The reviewer proposes the
-outcome of each finding. The working agent makes the final call, because
-it knows the purpose of the branch. When the working agent changes the
+The sections below are the fix rule. The agent that reports a finding
+proposes its outcome. That agent is the reviewer, or the agent that
+builds the change. The working agent makes the final call, because it
+knows the purpose of the branch. When the working agent changes the
 proposed outcome, it gives one sentence of reason.
 
 ### The Action line
@@ -118,8 +119,8 @@ A kind that is not in this list has no rule of its own.
 - Docs or spec drift: a doc that contradicts the changed code. Change the
   side that is wrong. A protocol doc is not right by default, as the
   `documentation` skill says. The wider fix for the class is already in
-  force, the `documentation` skill, so the reviewer proposes no other
-  wider fix. The doc side changes without the user only in these cases:
+  force, the `documentation` skill, so propose no other wider fix. The
+  doc side changes without the user only in these cases:
   - The diff changes behaviour that a requirement states, and the plan
     records the user's decision for that change. The doc update is the
     named option. Without a recorded decision, the finding waits for the
@@ -130,34 +131,34 @@ A kind that is not in this list has no rule of its own.
     mechanics. The move is the named option.
 - Flaky tests that the diff adds or changes, under the flaky-test rule in
   the `deterministic-tests` skill.
-- Dead code: code that the product never runs, under the predicate in
-  the `git-commit` skill. The reviewer checks each condition with a
-  search and cites the searches in the finding. The option deletes the
-  dead code with the steps under "When you delete dead code" in the
-  `git-commit` skill. Code that the product runs rarely, such as an error
-  path or a fallback, is functionality. When a condition is in doubt, the
-  code is functionality, as the `git-commit` skill says.
+- Dead code: code that the product never runs, under the predicate in the
+  `git-commit` skill. Check each condition with a search, and cite the
+  searches in the finding. The option deletes the dead code with the steps
+  under "When you delete dead code" in the `git-commit` skill. Code that
+  the product runs rarely, such as an error path or a fallback, is
+  functionality. When a condition is in doubt, the code is functionality,
+  as the `git-commit` skill says.
 - Tests that the removal rule of the `testing` skill covers: a duplicate
   of a named test, a test of removed behaviour, or a test of something
   that never gets a test. The option removes the test with the steps and
   the proof that the rule requires.
 - Test findings: a missing test, a weak test, a slow test, or a test in
-  the wrong file or group. The reviewer gives the finding the category
-  test. A fix that changes a test removes no assertion and loosens none.
-  A removal follows the bullet above.
+  the wrong file or group. Give the finding the category test. A fix that
+  changes a test removes no assertion and loosens none. A removal follows
+  the bullet above.
 - Gates: a slow, custom, or low-value gate, lint, or check is not a test
   finding. The `deterministic-tests` skill says how to fix it.
 - UX wording: user-facing text. A copy defect is text that has a typo or
-  breaks a rule under `## Copy` in the `product-ui` skill. The reviewer
-  gives a copy defect the category UX wording, not repository rule. A fix
-  keeps the meaning when it adds no fact or action and removes no fact or
-  action that the end user needs. When no protocol doc states the text, a
-  fix that keeps the meaning stays within the contract. The direct fix of
-  a copy defect changes only the words that carry the defect. When the
-  meaning is in doubt, treat the fix as a change of user-visible
-  behaviour beyond the contract. A choice of tone or voice that no copy
-  rule settles, or a choice between two correct texts, has no clearly
-  best option.
+  breaks a rule under `## Copy` in the `product-ui` skill. Give a copy
+  defect the category UX wording, not repository rule. A fix keeps the
+  meaning when it adds no fact or action and removes no fact or action
+  that the end user needs. When no protocol doc states the text, a fix
+  that keeps the meaning stays within the contract. The direct fix of a
+  copy defect changes only the words that carry the defect. When the
+  meaning is in doubt, treat the fix as a change of user-visible behaviour
+  beyond the contract. A choice of tone or voice that no copy rule
+  settles, or a choice between two correct texts, has no clearly best
+  option.
 
 ### The option to apply
 
@@ -185,7 +186,7 @@ apply the wider fix after the merge.
   such as doc prose or a one-time proof, is not a wider fix.
 
 When the best option on the merits is blocked and is not a wider fix,
-the reviewer recommends that option, so the finding waits for the user.
+recommend that option, so the finding waits for the user.
 
 ### Fix now or after merge
 

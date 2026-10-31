@@ -8,8 +8,8 @@ layout.
 ## Adding an item
 
 - Add an item for each of these:
-  - a review finding with `Action: fix after merge`
-  - a review finding with `Action: ask the user`
+  - a finding with `Action: fix after merge`
+  - a finding with `Action: ask the user`
   - a blocked wider fix of a fixed finding, one item per class
   - a wider fix that the agent split off a fixed finding, one item per
     class

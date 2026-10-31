@@ -160,7 +160,7 @@ number them in that order, from <first number>. Use the item layout in the
   call.
 
 The outcome rules follow this prompt, after a `---` line. They hold the
-decision test and the review-fix rule. They say when a finding waits for
+decision test and the fix rule. They say when a finding waits for
 the user, which option the `Action` line names, and whether the fix comes
 now or after the merge.
 

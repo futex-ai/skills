@@ -1,6 +1,6 @@
 ---
 name: deterministic-tests
-description: Use when a test fails and then passes on a rerun, when a test is flaky or timing-dependent, when a test would assert elapsed time, a timeout, or performance, when you want to add a sleep, a retry, or a longer time limit to a test, when you choose between a real and a fake clock, and when a review finding concerns a flaky, slow, or low-value test, gate, or check.
+description: Use when a test fails and then passes on a rerun, when a test is flaky or timing-dependent, when a test would assert elapsed time, a timeout, or performance, when you want to add a sleep, a retry, or a longer time limit to a test, when you choose between a real and a fake clock, and when a finding concerns a flaky, slow, or low-value test, gate, or check.
 ---
 
 # Deterministic tests

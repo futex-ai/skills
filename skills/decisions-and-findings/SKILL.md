@@ -1,22 +1,24 @@
 ---
 name: decisions-and-findings
-description: Use before you send a message that asks the user for a decision, presents review findings or items, or gives a final report, before you raise a question as a decision, when you write the options of a decision or a finding, when the user asks for more detail, a shorter answer, or an explanation of earlier decisions or findings, when you list open findings from a plan or a review report, when you order or number the decisions and findings of a message, and when an output style asks for brevity.
+description: Use before you send a message that asks the user for a decision, presents findings or items, or gives a final report, before you raise a question as a decision, when you write the options of a decision or a finding, when the user asks for more detail, a shorter answer, or an explanation of earlier decisions or findings, when you list open findings from a plan or a review report, when you order or number the decisions and findings of a message, and when an output style asks for brevity.
 ---
 
 # Decisions and findings
 
-Use this skill for each message that asks for a decision, presents review
+Use this skill for each message that asks for a decision, presents
 findings, or gives a final report. The reader may have no context. The
 reader must act on each item. A fixed layout lets the reader find each
 field and answer by number and letter.
 
-An item is a review finding or a question that you raise. Every item gets
-the same test, the same layout, and a place in the same list. Its
-**Source** says where it comes from:
+An item is a finding or a question that you raise. A finding is a problem
+in the code, a doc, a test, or a mockup. A question is a choice about what
+to build. Every item gets the same test, the same layout, and a place in
+the same list. Its **Source** says where it comes from:
 
+- **Design:** a question from a brainstorm, a plan, or a task.
+- **Implementation:** an item that an agent found while it built the
+  change.
 - **Review:** an item that a review found.
-- **Design:** every other item, such as a question from a brainstorm, a
-  plan, or a task.
 
 ## Precedence
 
@@ -44,8 +46,8 @@ a question tool.
 Read [references/outcomes.md](references/outcomes.md) before you raise a
 question as a decision, and before you write the **Action** line of an
 item. It holds the two outcome rules. The decision test says when an item
-waits for the user. The review-fix rule says how the agent acts on a
-review finding that does not wait.
+waits for the user. The fix rule says how the agent acts on a finding
+that does not wait.
 
 ## Simplified Technical English
 
@@ -112,7 +114,7 @@ what each field of a review item must contain.
 ### 1. <The problem, in eight words or fewer>
 
 - **Severity:** <High, Medium, or Low>. **Likelihood:** <Common or Rare, for a product bug only.> **Effort:** <Small, Medium, or Large: the grade of the recommended option.>
-- **Source:** <Review or Design.>
+- **Source:** <Design, Implementation, or Review.>
 - **Category:** <One category from the scales below.>
 - **Location:** <The file path and line, or "None" when the item has no place in the code.>
 - **Terms:** <Only when the item uses a term that the shared list does not define. Up to five entries.>
@@ -172,14 +174,14 @@ check, a plan decision, and a brainstorm.
    its reason, so that the user can bring it back. Each other approach is
    a lettered option.
 
-For a design item, then name each condition that every option keeps. Name
-its source: a protocol doc, a user decision, the task message, an earlier
-option's text, or the code. When it is not a requirement, or its reason
-is gone, add the option that drops it. A user decision covers the choice
-that the user made, not each sentence of the text that describes the
-chosen option. For a review item, the finding check of the
-`implementation-review` skill checks these steps and asks for the
-conditions in a fresh context.
+For a design or an implementation item, then name each condition that
+every option keeps. Name its source: a protocol doc, a user decision, the
+task message, an earlier option's text, or the code. When it is not a
+requirement, or its reason is gone, add the option that drops it. A user
+decision covers the choice that the user made, not each sentence of the
+text that describes the chosen option. For a review item, the finding
+check of the `implementation-review` skill checks these steps and asks
+for the conditions in a fresh context.
 
 ## Terms
 

@@ -7,8 +7,8 @@ description: Use when the user asks for a feature, new scope, or a change, as in
 
 A brainstorm finds the approach for an idea, a question, or a change
 before a plan exists. It widens to distinct approaches, narrows them,
-and asks the user the choices that pass the decision test. It ends with
-an answer, or with the user's consent to a plan. The `plans` skill takes
+and gives the user the options to choose from. It ends with an answer,
+or with the user's consent to a plan. The `plans` skill takes
 over from there.
 
 A brainstorm changes nothing in the repository. Do not edit code, docs,
@@ -70,9 +70,11 @@ read is not anchored on yours.
   skill. Give each approach that you leave out one line with its reason.
 - Keep each approach that has a real trade-off against the others.
   Recommend one.
+- The root question is always an item for the user. Giving the user the
+  options is the point of a brainstorm.
 - Apply the decision test of the `decisions-and-findings` skill to each
-  open question. A question that passes is an item. Make every other
-  question a design call, and list it.
+  other open question. A question that passes is an item. Make every
+  other question a design call, and list it.
 
 ## 5. Ask the user
 
@@ -85,12 +87,10 @@ way. Then write one message with every item, in the layout of the
 2. The background, with the goal as you read it and each guess marked.
 3. The shared terms.
 4. The approaches, one line each. An approach that is an option names
-   its letter. The approach of a design call says so. Every other
-   approach gives the reason that it lost.
-5. The items. When the root question passes the decision test, it is
-   one item, and its options are the kept approaches. Otherwise, the
-   recommended approach is a design call. Give the earlier work from
-   step 1 under **Previous examples**.
+   its letter. Every other approach gives the reason that it lost.
+5. The items. The root question is one item, and its options are the
+   kept approaches. Give the earlier work from step 1 under
+   **Previous examples**.
 6. The final report. **Changed** says that the repository did not change.
    **Decisions** lists the design calls.
 
@@ -108,8 +108,8 @@ recommended approach.
 
 ## 7. The end
 
-- The brainstorm ends when the approach is chosen, by the user or by a
-  design call. It also ends when the user stops it.
+- The brainstorm ends when the user chooses the approach. It also ends
+  when the user stops it.
 - For a question, give the answer and its reasons.
 - For a change, ask for consent to write the plan, as the `plans` skill
   requires. A message that asks for the plan or the change gives that
@@ -128,8 +128,9 @@ recommended approach.
 - [ ] At least three distinct approaches. Each condition that every
       approach keeps is named with its source.
 - [ ] Each approach that you left out has one line with its reason.
-- [ ] One message holds every item, in the `decisions-and-findings`
-      layout. Every other question is a design call in the final report.
+- [ ] The root question is an item for the user. One message holds every
+      item, in the `decisions-and-findings` layout. Every other question
+      is a design call in the final report.
 - [ ] Nothing in the repository changed.
 - [ ] The plan or the change starts only after the approach is chosen
       and the user gave consent.

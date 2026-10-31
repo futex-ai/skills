@@ -18,12 +18,12 @@ at that moment instead of guessing the rule.
 
 ## Decisions
 
-- Before you send a message with decisions, review findings, or a final
+- Before you send a message with decisions, findings, or a final
   report, read the `decisions-and-findings` skill. It says which questions
   are decisions. It gives the layout and the writing limits.
 - When a task needs decisions from the user, ask for all of them in one
   message, not one at a time. Number each decision. List the decisions and
-  the review findings by severity, highest first. For each give its
+  the findings by severity, highest first. For each give its
   severity and effort, the terms and the background that a reader without
   prior knowledge needs, the problem, the impact if no action is taken,
   lettered options, and the recommended option with one sentence of
@@ -40,8 +40,8 @@ at that moment instead of guessing the rule.
   step. Report it to the user as outstanding. Say what it blocks.
 - End every task with a final report: what changed and the commit, each
   decision and its outcome, the checks that ran and their results, anything
-  skipped or blocked, and the outstanding decisions or review items that
-  still need the user. When a decision or a review item still needs the
+  skipped or blocked, and the outstanding decisions or findings that
+  still need the user. When a decision or a finding still needs the
   user, name it in the first sentence. Give it in full, also when an
   earlier message gave it.
 

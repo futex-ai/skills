@@ -1,6 +1,6 @@
 ---
 name: plans
-description: Use before you write any code or start an implementation, when the user asks for a plan, before you create, edit, tick, or delete a plan under plans/, when you add a decision to a plan, when you discover a TODO or blocked work during implementation, when a milestone has UI or mockup work, when you would paste command output or a review report into a plan, when a review finding is deferred or stays open, when you add, list, or fix a follow-up item, and before you open a pull request for a plan.
+description: Use before you write any code or start an implementation, when the user asks for a plan, before you create, edit, tick, or delete a plan under plans/, when you add a decision to a plan, when you discover a TODO or blocked work during implementation, when a milestone has UI or mockup work, when you would paste command output or a review report into a plan, when a finding is deferred or stays open, when you add, list, or fix a follow-up item, and before you open a pull request for a plan.
 ---
 
 # Plans
@@ -121,16 +121,16 @@ change. [templates/plan.md](templates/plan.md) is the starting point.
 - Every plan ends with a commit-and-push TODO, a review TODO, a TODO that
   deletes the plan, and a pull request TODO. The review TODO directs a
   reviewer to use the `implementation-review` skill against `origin/main`
-  after the push. The reviewer reports the findings. Then the review-fix
-  rule applies: fix the `fix now` findings, record follow-up items for the
+  after the push. The reviewer reports the findings. Then the fix rule
+  applies: fix the `fix now` findings, record follow-up items for the
   rest, re-review once, and report. Read an older review TODO under the
-  same rule, also when it says "without changing the implementation" or
-  "fix the `Auto-fix: yes` findings".
+  same rule, also when it says "the review-fix rule", "without changing
+  the implementation", or "fix the `Auto-fix: yes` findings".
 - The last two milestone TODOs delete the plan and open the pull request.
   The section "Deleting the plan" says when they run, also when the user
   asks for the pull request early. The `finish-work` skill gives the pull
   request. An older plan without these TODOs follows the same rule.
-- Record each open or deferred review finding, each blocked or split-off
+- Record each open or deferred finding, each blocked or split-off
   wider fix, and each problem outside the review scope as a follow-up
   item, not as a line in the plan. The section "Follow-up items" says how.
 - An open finding blocks only dependent work, as the `delegating` skill says.
@@ -196,7 +196,7 @@ plan that is already on `main` without the user's approval.
 ## Live and history
 
 In an active plan, completed milestones and checked TODOs are history; all
-other content is live. In a completed plan, open review findings and
+other content is live. In a completed plan, open findings and
 unchecked post-merge follow-ups are live; all other content is history. Do
 not change the words of history. See the `git-commit` skill for stale
 references and history links.
