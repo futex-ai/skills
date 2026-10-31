@@ -160,7 +160,8 @@ An option is blocked when:
 
 - It changes a requirement in a protocol doc without a recorded user
   decision, or adds a requirement for new behaviour at the boundary.
-- It changes a mockup to match the code without a recorded user decision.
+- It changes a mockup to match the code, and the order in the `mockups`
+  skill does not call for that change.
 - It changes user-visible behaviour beyond the contract.
 - It adds a new build error, rejection, gate, lint, or stricter validation.
   This holds for a wider fix too, whatever its effort.
@@ -184,7 +185,7 @@ is about:
 - a product bug, including edge cases, races, and platform differences
 - a security issue
 - docs or spec drift
-- a mockup mismatch that the spec order below settles
+- a mockup mismatch that the order in the `mockups` skill settles
 - a flaky test that the diff adds or changes
 - dead code
 - a test that the removal rule of the `testing` skill covers
@@ -313,23 +314,17 @@ doc on its merits. Apply these rules to a docs or spec finding:
   that option and in its effort grade, and recommend the option when it is
   the best one.
 
-Mockups are part of the spec too. The spec order is the protocol doc, then
-the mockup, then the code. Apply these rules to a mockup finding:
+Mockups are part of the spec too. The order is the protocol doc, then the
+mockup, then the code. The section "When a protocol doc, a mockup, and the
+code disagree" in the `mockups` skill gives the cases. Read it before you
+write a mockup finding. Then apply these rules:
 
-- When a recorded user decision asks for the difference, the fix updates
-  the mockup to match it. A protocol doc changes only under the rules
-  above.
-- A difference between a mockup and the code that is new in the branch is
-  a product bug in the code. The fix changes the code.
-- A mockup that differs from a protocol doc is wrong. The fix changes the
-  mockup.
-- When a mockup and the code already differ on `origin/main`, and no
-  protocol doc settles the difference, propose `ask the user`. There the
-  mockup can be the stale side.
+- A fix that the section calls for is a fix that the agent may apply
+  without the user. A protocol doc changes only under the rules above.
+- When the section says to ask the user, propose `ask the user`.
 - When the higher side is wrong, or worse than the lower side, recommend
   its change and propose `ask the user`.
-- Sample data in a mockup is not a requirement.
-- The wider fix for the class is already in force, this order. Do not
-  propose another wider fix for it.
+- The wider fix for the class is already in force, the order of that
+  section. Do not propose another wider fix for it.
 
 If there are no findings, say so clearly.

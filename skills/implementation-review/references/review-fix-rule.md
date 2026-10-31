@@ -36,7 +36,8 @@ An option is blocked when:
 
 - It changes a requirement in a protocol doc without a recorded user
   decision, or adds a requirement for new behaviour at the boundary.
-- It changes a mockup to match the code without a recorded user decision.
+- It changes a mockup to match the code, and the order in the `mockups`
+  skill does not call for that change.
 - It changes user-visible behaviour beyond what the contract says.
 - It adds a new build error, rejection, gate, lint, or stricter validation.
   This holds for a wider fix too, whatever its effort. The always-on rules
@@ -72,11 +73,10 @@ condition 6 holds unless the finding is in one of these categories:
   implementation detail or history that moves to its home.
 - Mockup mismatches that the order in the `mockups` skill settles. The
   protocol doc wins over the mockup, and the mockup wins over the code.
-  The fix changes the lower side: a mockup that differs from a protocol
-  doc, or code that differs from its mockup when the difference is new in
-  the branch. When a recorded user decision asks for the difference, the
-  fix updates the mockup instead. The wider fix for the class is already
-  in force, that order, so the reviewer proposes no other wider fix.
+  The section "When a protocol doc, a mockup, and the code disagree" in
+  that skill gives the cases, and the fix applies it. The wider fix for
+  the class is already in force, that order, so the reviewer proposes no
+  other wider fix.
 - Flaky tests that the diff adds or changes, under the flaky-test rule in
   the `deterministic-tests` skill.
 - Dead code: code that the product never runs, under the predicate in

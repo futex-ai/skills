@@ -130,8 +130,8 @@ before you make the final call on a finding. In short:
 - An option is blocked when it needs a decision:
   - It changes a requirement without a recorded user decision, or adds a
     requirement for new behaviour at the boundary.
-  - It changes a mockup to match the code without a recorded user
-    decision.
+  - It changes a mockup to match the code, and the order in the
+    `mockups` skill does not call for that change.
   - It changes user-visible behaviour beyond the contract.
   - It adds a gate, a lint, stricter validation, or a test for the class,
     also as a wider fix.
