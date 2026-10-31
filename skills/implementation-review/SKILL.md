@@ -120,8 +120,9 @@ gives the layout that shows them to the user.
 The outcome rules are in the `decisions-and-findings` skill, in its file
 `outcomes.md` under `references/`. They hold the decision test and the
 review-fix rule. Read them before you make the final call on a finding.
-The review-fix rule says which findings you fix without the user, which
-option you apply, and whether you fix it now or after the merge.
+The decision test says which findings wait for the user. The review-fix
+rule says which option you apply to the others, and whether you fix it
+now or after the merge.
 
 ## After the review
 

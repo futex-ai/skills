@@ -83,8 +83,7 @@ and a list of new problems. Merge them into the entry of the finding:
   that failed. A finding outside the scope goes to the
   `Outside the scope` list.
 - A corrected severity, likelihood, or category replaces the finding's
-  line. Then make the call on its outcome again, under the review-fix
-  rule.
+  line. Then make the call on its outcome again, under the outcome rules.
 - Each link goes into the **Related** line of both findings. Drop a link
   to a removed finding.
 - A better root question replaces the **Root question** line.

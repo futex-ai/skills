@@ -186,7 +186,7 @@ Codex and Claude sessions. One combined gate verified them.
    boundary, in the layout of the `decisions-and-findings` skill.
    Continue the independent work meanwhile. An unanswered decision stays
    open, as the always-on rules say. The `decisions-and-findings` skill
-   gives the review-fix rule: which findings you fix without the user.
+   says which findings you fix without the user.
 
 ## Checklist
 

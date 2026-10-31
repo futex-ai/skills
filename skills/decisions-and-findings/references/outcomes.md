@@ -3,11 +3,11 @@
 Every item ends with an outcome: the item waits for the user, or the agent
 acts on it without the user. This file holds the two outcome rules:
 
-- The decision test says when an item waits for the user. It applies to
-  every item: a review finding, or a question from a brainstorm, a plan,
-  or a task.
-- The review-fix rule says which review findings the agent may fix without
-  the user, which option it applies, and when.
+- The decision test says when an item waits for the user. It applies in
+  the same way to every item: a review finding, or a question from a
+  brainstorm, a plan, or a task.
+- The review-fix rule says how the agent fixes a review finding that does
+  not wait: which option it applies, and when.
 
 The working agent pastes this file into the prompt of a fresh reviewer, as
 the `implementation-review` skill says. So the reviewer and the working
@@ -31,8 +31,6 @@ decision for the user only when one of these conditions holds:
   rule settles which one wins. It holds when a fix depends on the answer
   to an open item, because no option is clearly best before the answer.
 - The user asked you to bring this choice to them.
-- The item comes from a review, and the review-fix rule does not let the
-  agent fix it without the user.
 
 A detail that an existing requirement settles is not a gap, also when the
 requirement does not spell the detail out. An option that drops the
@@ -112,14 +110,11 @@ decision test holds, with its evidence. It does not cite a condition by a
 number. Example: "ask the user, because no option is clearly best until a
 reproduction names the source."
 
-### Findings that the agent may fix
+### Rules for some kinds of finding
 
-A finding can get `fix now` or `fix after merge` only when no condition of
-the decision test holds. The agent may fix a finding without the user
-only when the finding is in one of these categories:
+These rules apply the decision test and the fix to some kinds of finding.
+A kind that is not in this list has no rule of its own.
 
-- Product bugs, including edge cases, races, and platform differences.
-- Security issues.
 - Docs or spec drift: a doc that contradicts the changed code. Change the
   side that is wrong. A protocol doc is not right by default, as the
   `documentation` skill says. The wider fix for the class is already in
@@ -133,7 +128,6 @@ only when the finding is in one of these categories:
     records history. The fix moves that content to its home: the crate
     README for entry points, the plan for history, and the code for
     mechanics. The move is the named option.
-- Mockup mismatches that a protocol doc already settles.
 - Flaky tests that the diff adds or changes, under the flaky-test rule in
   the `deterministic-tests` skill.
 - Dead code: code that the product never runs, under the predicate in
@@ -141,9 +135,8 @@ only when the finding is in one of these categories:
   search and cites the searches in the finding. The option deletes the
   dead code with the steps under "When you delete dead code" in the
   `git-commit` skill. Code that the product runs rarely, such as an error
-  path or a fallback, is functionality. When a
-  condition is in doubt, the finding gets the category code structure,
-  and it waits for the user.
+  path or a fallback, is functionality. When a condition is in doubt, the
+  code is functionality, as the `git-commit` skill says.
 - Tests that the removal rule of the `testing` skill covers: a duplicate
   of a named test, a test of removed behaviour, or a test of something
   that never gets a test. The option removes the test with the steps and
@@ -151,23 +144,20 @@ only when the finding is in one of these categories:
 - Test findings: a missing test, a weak test, a slow test, or a test in
   the wrong file or group. The reviewer gives the finding the category
   test. A fix that changes a test removes no assertion and loosens none.
-  A removal follows the bullet above. A slow, custom, or low-value gate,
-  lint, or check is not a test finding. It waits for the user. Ask whether
-  to fix or remove it, and state what it protects and how long it runs.
-- Repository-rule violations such as file size, lint, and layout.
-- Copy defects whose fix keeps the meaning: user-facing text that has a
-  typo or breaks a rule under `## Copy` in the `product-ui` skill. The
-  reviewer gives the finding the category UX wording, not repository rule.
-  The fix keeps the meaning when it adds no fact or action and removes no
-  fact or action that the end user needs. When no protocol doc states the
-  text, a fix that keeps the meaning stays within the contract. The direct
-  fix changes only the words that carry the defect. When the meaning is in
-  doubt, the outcome is `ask the user`. Any other UX wording waits for the
-  user. Examples are a choice of tone or voice that no copy rule settles,
-  and a choice between two correct texts.
-
-A finding in any other category waits for the user. Examples are
-performance, code structure, and process.
+  A removal follows the bullet above.
+- Gates: a slow, custom, or low-value gate, lint, or check is not a test
+  finding. The `deterministic-tests` skill says how to fix it.
+- UX wording: user-facing text. A copy defect is text that has a typo or
+  breaks a rule under `## Copy` in the `product-ui` skill. The reviewer
+  gives a copy defect the category UX wording, not repository rule. A fix
+  keeps the meaning when it adds no fact or action and removes no fact or
+  action that the end user needs. When no protocol doc states the text, a
+  fix that keeps the meaning stays within the contract. The direct fix of
+  a copy defect changes only the words that carry the defect. When the
+  meaning is in doubt, treat the fix as a change of user-visible
+  behaviour beyond the contract. A choice of tone or voice that no copy
+  rule settles, or a choice between two correct texts, has no clearly
+  best option.
 
 ### The option to apply
 
