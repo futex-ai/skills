@@ -8,7 +8,11 @@ description: Use before you commit and directly after, when you write a commit m
 Do not delete or override functionality already on `origin/main` without
 explicit user approval. Functionality includes live code, its tests, APIs,
 docs, mockups, plans, migrations, and schema. Dead code needs no approval.
-The section "Dead code" below says when code is dead. Merges and rebases
+The section "Dead code" below says when code is dead. A test that the
+removal rule of the `testing` skill covers needs no approval either. The
+plan of the change and a follow-up item that the change fixes are not
+functionality.
+The change deletes them, as the `plans` skill says. Merges and rebases
 have their own procedure in the `git-merge` skill.
 
 ## Before and after each commit
@@ -21,11 +25,11 @@ git diff --diff-filter=D --name-status origin/main
 git diff --name-status origin/main..HEAD   # after the commit
 ```
 
-Stop unless each deletion is dead code under the section below or has the
-user's explicit approval. A feature-wide reduction is functionality. Record
-every removal and its related cleanup in the commit or PR description. For
-dead code, record the search that proved it dead. For functionality,
-record the approval.
+Stop unless each deletion removes no functionality, as the paragraph at the
+top of this skill defines it, or has the user's explicit approval. A
+feature-wide reduction is functionality. Record every removal and its
+related cleanup in the commit or PR description. For dead code, record the
+search that proved it dead. For functionality, record the approval.
 
 Run `git add -A` before you commit so that newly created files are tracked
 and included in the commit, the push, and the review diff. Do not commit
@@ -123,10 +127,16 @@ body. The format enables automated changelogs and readable history.
 - Record in the commit or PR description:
   - every removal and its related cleanup, with the search that proved
     the code dead or the approval for the functionality
+  - each test that the `testing` skill removes, with its reason, the
+    covering test, and the proof file
   - each plan edit made for a rename or removal
   - each intentional merge decision with the paths it affects
   - each design call under the decision test in the
     `decisions-and-findings` skill, when the change has no plan
+  - for a change that deletes its plan: each user decision and design
+    call of the plan with its date, and a permalink to the plan at the
+    commit before the deletion
+  - each follow-up item that the change adds or deletes
   - the review finding that a fix commit resolves, by number
 - When a later commit changes what the pull request description says,
   update the description.

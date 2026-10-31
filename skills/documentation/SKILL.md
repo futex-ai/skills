@@ -23,7 +23,8 @@ Each fact lives in one place. Other docs link to it.
 | Components, their responsibilities, and their boundaries | The architecture doc |
 | Entry points into the code: files, types, functions | The crate or area `README.md`, under `### Key Code` |
 | How the code works: mechanics, call order, module layout | The code and its doc comments |
-| The design of one change, its dated decisions, and history | The plan under `plans/` |
+| The design of one change, its dated decisions, and history | The plan under `plans/` while the change is open, then the pull request description |
+| Work that waits until after the merge | A follow-up item under `plans/follow-ups/` |
 | Cases and examples | The tests |
 | An API surface, a schema, a type list | Generated reference |
 
@@ -130,9 +131,10 @@ review.
   sentences. Its purpose is to stop an agent from proposing the rejected
   alternative again.
 - Do not keep a dated decision log in a protocol doc. The plan holds the
-  dated record of each decision. When a later decision supersedes an
-  earlier one, the plan that made it holds the history, and the protocol
-  doc shows only the decision in force.
+  dated record of each decision. When the change deletes its plan, the
+  pull request description keeps that record. When a later decision
+  supersedes an earlier one, that record holds the history, and the
+  protocol doc shows only the decision in force.
 - Do not name source files, functions, hooks, modules, or internal call
   order. Do not record history, such as what the code did before a change.
   Do not give implementation tips. Do not list every case: state the rule
@@ -144,8 +146,10 @@ review.
   the target, split it into linked pages in the same change.
 - When a protocol doc that you touch still names code or describes
   mechanics, move that content to its home in the same change.
-- The first milestone of every plan writes the requirements and the
-  decisions for the work that follows; see the `plans` skill.
+- The documentation milestone of every plan writes the requirements and
+  the decisions for the work that follows. It comes directly after the
+  mockup milestone, or first when the plan has no mockup work. See the
+  `plans` skill.
 - When a bug reaches a review or production, check whether a requirement
   was missing or unclear. Propose the missing or clearer requirement as a
   decision with the other decisions of the task. After the user chooses the

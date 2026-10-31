@@ -36,6 +36,9 @@ with examples and take precedence when the two differ in detail:
 - Use `unimock` to mock trait boundaries in unit tests, including same-crate
   traits with one implementation. Unit tests must not use real disk IO,
   databases, Docker, subprocesses, clocks, or network calls.
+- Pass back mocked data with `some_call` or `each_call`. Use `next_call`
+  only when the order of the calls is the behaviour. See
+  [references/architecture.md](references/architecture.md).
 - Use `tracing` for diagnostics in libraries, servers, and workers; never
   `println!`, `eprintln!`, or `dbg!` there. Direct terminal output is only
   for CLI results, prompts, raw data output, REPL messages, build-script
@@ -61,6 +64,8 @@ with examples and take precedence when the two differ in detail:
 
 ## Tests
 
+- Read the `testing` skill before you plan, write, change, or remove a
+  test.
 - Keep tests out of production files. Put them in a `_tests_` directory
   beside the source and declare them with
   `#[cfg(test)] #[path = "_tests_/<name>_tests.rs"] mod <name>_tests;`.

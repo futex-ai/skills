@@ -7,6 +7,7 @@ description: Use when a test fails and then passes on a rerun, when a test is fl
 
 Required tests check correctness without depending on machine speed. A test
 that passes on a fast machine and fails on a slow one is a bug in the test.
+The `testing` skill says what earns a test, and how to write and remove one.
 
 ## Assertion rule
 
@@ -75,20 +76,21 @@ when all of these hold:
 
 If the source is in product code, it is a product bug: add the failing test
 first, then fix it. An unreproducible failure, an unknown source, or a
-proposed removal stays `Auto-fix: no`.
+proposed removal gets the outcome `ask the user`.
 
 ## Unrelated flaky tests
 
 A flaky test that the diff does not touch is an unrelated flaky test. Do not
 fix it in this branch, so that one fix in a separate branch reaches every
 open branch quickly. The implementation review lists it under
-`Outside the scope`, not as a finding. Report it in the final message and,
-when a plan exists, as one line under the plan's review TODO, in the shape
-that the `plans` skill gives. Add the test name, the failure text, the
-rerun outcome, and the suspected source.
+`Outside the scope`, not as a finding. Report it in the final message, and
+record it as a follow-up item, as the `plans` skill says. Add the test
+name, the failure text, the rerun outcome, and the suspected source.
 
 ## Slow and low-value tests
 
-Slow, custom, or low-value tests, gates, lints, and checks stay
-`Auto-fix: no`. Ask the user whether to fix or remove each one, and state
-what it protects and how long it runs.
+Slow, custom, or low-value tests, gates, lints, and checks get the outcome
+`ask the user`. Ask the user whether to fix or remove each one, and state
+what it protects and how long it runs. A test that the removal rule of the
+`testing` skill covers is removed without asking, with the proof that the
+rule requires.

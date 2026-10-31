@@ -31,18 +31,23 @@ Codex, and with any other agent that reads the
    the choices that a skill leaves to the repository, such as the type
    generator, the test runner, or the shared UI library. It does not
    repeat the skill list. It does repeat the communication preference
-   (Simplified Technical English, faithful reporting, batched decisions,
-   final report) so that it reaches an agent that does not have the global
-   file installed.
+   (Simplified Technical English, faithful reporting, batched decisions in
+   the reply text and never in a question tool, final report) so that it
+   reaches an agent that does not have the global file installed. It
+   names one skill, `brainstorming`, so that an open idea gets a
+   brainstorm before any plan or change.
 
 ## Skills
 
 | Skill | Read when |
 | --- | --- |
-| `finish-work` | Before you say work is complete, before you commit, push, or open a pull request, and when you choose which tests or gates to run. |
-| `plans` | When the user asks for a plan, before you create, edit, or tick a plan, when you add a decision to a plan, when you find a TODO during implementation, and before you open a pull request for a plan. |
-| `implementation-review` | After you push, before you run or apply a review, and when the user asks for a code review. |
+| `finish-work` | Before you say work is complete, before you commit, push, or open a pull request, when you choose which tests or gates to run, and after the pull request merges. |
+| `brainstorming` | The user asks for a feature or a change, as in "can we", and no message or recorded decision chooses the approach. The user asks to brainstorm, discuss, or explore an idea, asks "should we" or "what do you think", or asks for a plan whose approach is not settled. |
+| `plans` | Before you write any code or start an implementation, when the user asks for a plan, before you create, edit, tick, or delete a plan, when you add a decision to a plan, when you find a TODO during implementation, when you add, list, or fix a follow-up item, and before you open a pull request for a plan. |
+| `implementation-review` | After you push, before you run or apply a review, when the user answers a review finding, when you decide whether to fix a finding now or after the merge, and when the user asks for a code review. |
+| `delegating` | When you work on a plan, before you delegate a task, create a Conductor workspace, session, or routine, start a subagent or a reviewer, or split work across workspaces, and when a model blocks a request. |
 | `decisions-and-findings` | Before you raise a question as a decision, and before you send decisions, review findings, or a final report, when you write the options of a decision, also under a brief output style. |
+| `testing` | Before you plan, write, change, port, or remove a test, when a plan, a review, or a brief asks for a test, when a test fails and you consider changing the test, and when the user asks to audit tests or cut test time. |
 | `deterministic-tests` | A test flakes, would assert elapsed time, or tempts you to add a sleep, a retry, or a longer time limit. |
 | `git-commit` | Before and after you commit, and when you write a commit or pull request message. When a diff deletes or renames something, or when you find dead code. |
 | `git-merge` | Before you merge or rebase, when you resolve conflicts, and after each merge commit. |
@@ -55,8 +60,43 @@ Codex, and with any other agent that reads the
 | `product-ui` | Before you change a user-facing screen, state, or copy, or hardcode data in a screen. |
 | `agents-md` | A repository has no `AGENTS.md`, still has a monolithic one, or needs its rules aligned with the shared skills. |
 | `writing-skills` | Before you create or edit a skill or its description. Opt-in: linked only with `install.sh --opt-in`. |
-| `models` | Before you choose an agent, a model, or an effort for delegated work, or create a workspace, session, routine, subagent, or reviewer. Also when a skill names an action. |
+| `models` | Before you delegate work, start a subagent or a reviewer, or choose an agent, a model, or an effort. Also when a skill names an action. |
 | `conductor-section-workspace-coordinator` | In a Conductor cloud workspace only, when the user invokes it or names you the coordinator of a section. Also when a continue, status, or `[coordinator wake]` message arrives in a workspace named `coordinator: <section>` or holding a coordinator state file. |
+
+## The flow of a feature
+
+The table shows the stages of a typical feature request and the skills
+that each stage loads. The `models` skill defines each role. The
+`delegating` skill gives the route of each role. The orchestrator is the
+`default orchestrator` action. It runs as the first session in the
+feature's Conductor workspace. It hands each milestone to an
+implementor. It keeps the gate, the review, and the pull request.
+
+| # | Stage | Runs it | Skills |
+| --- | --- | --- | --- |
+| 0 | Start | User, then orchestrator | `models`, `delegating`. `agents-md` only when the repository's `AGENTS.md` is missing or out of date |
+| 1 | Brainstorm | Orchestrator and the `brainstorming` action | `brainstorming`, `models`, `delegating`, `decisions-and-findings` |
+| 2 | Plan | Orchestrator | `plans`, `delegating`, `documentation`, `testing`, `decisions-and-findings`, `implementation-review`, `finish-work`, `git-commit` |
+| 3 | Milestone 1: mockups | `ui implementor` | `delegating`, `mockups`, `product-ui`, `typescript` |
+| 4 | Milestone 2: docs | `docs implementor` | `delegating`, `documentation` |
+| 5 | Backend milestones | `non-ui implementor` | `delegating`, `rust`, `databases`, `shared-types`, `testing`, `deterministic-tests`, `finish-work` |
+| 6 | UI milestones | `ui implementor` | `delegating`, `product-ui`, `typescript`, `shared-types`, `mockups`, `testing`, `finish-work` |
+| 7 | Verify | Orchestrator | `finish-work`, `testing`, `deterministic-tests`, `documentation` |
+| 8 | Commit and push | Orchestrator | `git-commit`, `git-merge` |
+| 9 | Review and fix | Review agents, then orchestrator | `implementation-review`, `delegating`, `decisions-and-findings`, `testing`, `plans`, `git-commit` |
+| 10 | Pull request | Orchestrator | `plans`, `git-commit`, `finish-work` |
+| 11 | Final report | Orchestrator | `finish-work`, `decisions-and-findings` |
+| 12 | After the merge | Orchestrator | `finish-work`, `plans` |
+
+Some stages run only in some cases:
+
+- The brainstorm runs only when no message or recorded decision chooses
+  the approach.
+- The mockup milestone runs only when the plan changes something that a
+  mockup shows. Without it, the docs milestone is Milestone 1.
+- The code of a change waits until the user approves its plan. A change
+  without code, such as a docs-only change, can go without a plan. It then
+  has no plan stage and no milestones.
 
 ## Install
 
