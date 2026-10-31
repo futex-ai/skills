@@ -91,9 +91,7 @@ its severity with the severity scale of the `decisions-and-findings` skill.
 ## Slow and low-value tests
 
 Make a slow test faster without asking when you remove no assertion and
-loosen none. Remove a test without asking only under the removal rule of
-the `testing` skill, with the proof that the rule requires. Every other
-removal of a slow or low-value test gets the outcome `ask the user`. So
-does each slow, custom, or low-value gate, lint, or check. Ask the user
-whether to fix or remove each one, and state what it protects and how long
-it runs.
+loosen none. To remove a test, follow the removal rule of the `testing`
+skill. Each slow, custom, or low-value gate, lint, or check gets the
+outcome `ask the user`. Ask the user whether to fix or remove each one,
+and state what it protects and how long it runs.
