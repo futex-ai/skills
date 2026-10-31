@@ -1,0 +1,38 @@
+# Recorded user decision has three wordings
+
+- **Severity:** Medium. **Effort:** Medium. **Confidence:** High. **Harder later:** No.
+- **Kind:** Needs decision.
+- **Added:** 2026-10-31, from the branch `calummoore/mockup-discrepancy-rule`. It is the blocked wider fix of review finding 2 of that branch.
+- **Location:** `skills/decisions-and-findings/SKILL.md:50-51`, `skills/mockups/SKILL.md:76-80`, `skills/implementation-review/references/review-fix-rule.md:71-73`, and `skills/implementation-review/references/review-prompt.md:295-301`.
+- **Reason:** The fix overrides a review rule on `main`, so it waits for the user.
+
+- **Terms:**
+  - **Recorded user decision:** The user's choice that lets an agent change a requirement or a decision in force without asking again.
+  - **Protocol doc:** A doc under `docs/protocol` in a product repository that states the requirements of one area.
+  - **Review-fix rule:** `skills/implementation-review/references/review-fix-rule.md`, which says which review findings an agent may fix without the user.
+  - **Task message:** The user's message that starts the work. A reviewer in a fresh context does not see it.
+  - **Working agent:** The session that runs the review and the fixes. It makes the final call on each finding.
+- **Background:**
+  - On 2026-10-31 the user chose an order for disagreements. The protocol doc wins over the mockup, and the mockup wins over the code.
+  - The section "When a protocol doc, a mockup, and the code disagree" in `skills/mockups/SKILL.md` gives the cases. A recorded user decision comes first. It can be in the task message, the approved plan, or a follow-up item.
+  - That section lets such a decision change the mockup and the code. It sends a protocol doc change to the `documentation` skill.
+  - The `documentation` skill says that a requirement change is a decision for the user. It does not say where the decision is recorded.
+  - The decision test in `skills/decisions-and-findings/SKILL.md` uses the bare term "recorded user decision". It does not say where the decision is recorded either.
+  - The review-fix rule lets the doc side change without the user only when the plan records the user's decision. `review-prompt.md` says the same.
+- **Problem:** The skills give three answers to the question where a user decision is recorded. The `mockups` skill names three places, the review files name the plan, and the decision test names none. A reviewer does not see the task message. So a review can call a change that the user asked for a product bug in the code, and propose to undo it.
+- **Impact if no action:** The working agent must catch each such proposal in its final call. Implementation and review can reach different outcomes for the same approved change.
+- **Root question:** Which record of a user decision lets an agent change a protocol doc or a mockup without asking again, and can the reviewer read that record?
+- **Options:**
+  - **A.** Require a plan record for each protocol doc change, also in the `documentation` skill. A change without a plan then needs a plan or a question to the user. Effort: Small.
+  - **B.** Accept the task message, the approved plan, and a follow-up item in the review rules too. The reviewer still cannot read the task message. Effort: Small.
+  - **C.** Keep the three places where the user decides. Before an agent changes a higher side, it writes the decision, its date, and its origin in the plan. When the change has no plan, it writes them in the commit body. The review rules accept that record, and the review prompt tells the reviewer to read the commit bodies of the branch. Effort: Medium.
+  - **D.** Do C, but define the term once, in the decision test of `skills/decisions-and-findings/SKILL.md`. The user makes the decision in a message, the approved plan, or a follow-up item. The plan, or the commit body when the change has no plan, records it with its date. The `mockups` skill, the review-fix rule, and the review prompt use the term and point to the test. Effort: Medium.
+- **Left out:**
+  - Change nothing. The three answers stay.
+  - A test or a check of the skill text. Skills never get a test, under the `testing` skill, and a new check is a gate that needs the user.
+  - Ask the user before every protocol doc change. The user then answers decisions that they already made.
+  - Keep only the bare term everywhere. D is better on every point at the same effort.
+- **Wider fix:** D. One definition, with a record that the agent, the reviewer, and the finding check can all read.
+- **Previous examples:** Commit `7ee1ed9` fixed conflicting permissions for copy fixes across the review rules. Commit `aebdf77` fixed clauses that copies of the protocol-doc rule left out. Commit `69c40ed` holds two more copies in the review files that drifted from their source. On the branch that added this item, the review prompt first restated the mockup order without its `product-ui` case.
+- **Recommendation:** D. It gives the agent, the reviewer, and the finding check one rule in one place, with a record that each of them can read.
+- **Action:** ask the user, because condition 3 holds: D overrides the rule on `main` that only a plan record lets a review change a protocol doc without the user.

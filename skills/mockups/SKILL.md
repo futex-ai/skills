@@ -74,8 +74,9 @@ The protocol doc wins over the mockup, and the mockup wins over the code.
 When two of them disagree, change the lower side to match the higher side.
 
 - A recorded user decision comes first. It can be in the task message,
-  the approved plan, or a follow-up item. Update the higher sides to match
-  it in the same change. In a plan, the mockup milestone changes the
+  the approved plan, or a follow-up item. Update the mockup and the code
+  to match it in the same change. A protocol doc changes only as the
+  `documentation` skill says. In a plan, the mockup milestone changes the
   mockups, and the documentation milestone then updates the protocol docs.
 - When a difference between a mockup and the code is new in the branch,
   and no recorded user decision covers it, the code has a product bug.
