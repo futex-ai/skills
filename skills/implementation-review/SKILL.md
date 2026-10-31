@@ -212,10 +212,9 @@ before you make the final call on a finding. In short:
    `ask the user` finding, each blocked or split-off wider fix of a fixed
    finding, and each `Outside the scope` problem. The `plans` skill gives
    the layout. Give a wider fix one item per class. An open finding keeps
-   its wider fix as one of its options. Count the occurrences of the class
-   of a blocked wider fix: the findings of this review that share it, plus
-   the previous examples. When the count is two or more, also raise the
-   wider fix as a numbered item with the source Review.
+   its wider fix as one of its options. Never raise a blocked wider fix of
+   a fixed finding as a numbered item, also when its class repeats. Its
+   follow-up item holds the question.
 5. Run the checks, commit, push, and run the review once more on the fix.
    Name each fixed finding in its commit message. Record each commit in
    the findings file.

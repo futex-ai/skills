@@ -204,14 +204,12 @@ source."
   applied when it is not blocked. When the finding is fixed, the agent
   records the blocked wider fix as one follow-up item per class. The item
   gives the wider fix, its effort, the problem of each finding that it
-  covers, and the previous examples. When the finding stays open, its
-  wider fix stays one of its options, and it gets no item of its own.
+  covers, and the previous examples. The item holds the question for the
+  user. The wider fix is never a numbered item, also when its class
+  repeats. When the finding stays open, its wider fix stays one of its
+  options, and it gets no item of its own.
 - A wider fix that the agent splits off gets the same item, one per class,
   with `fix after merge`. A later branch applies it without the user.
-- Count the occurrences of the class of a blocked wider fix: the findings
-  of this review that share the wider fix, plus the previous examples that
-  the reviewer cited. When the count is two or more, the agent also raises
-  the wider fix as a numbered item with the source Review.
 
 ## Outside the scope
 

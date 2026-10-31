@@ -296,5 +296,5 @@ End every task with a final report. Under **Fixed**, **Deferred**, and
   what it blocks. Add the open plan TODOs. Add the follow-up items of the
   blocked wider fixes and of the problems outside the review scope, and
   other skipped or blocked work. A blocked wider fix is one line per class.
-  The line gives the wider fix, its effort, the item numbers it covers, and
-  the previous examples.
+  The line gives the wider fix, its effort, the item numbers it covers, the
+  previous examples, and the path of its follow-up item.
