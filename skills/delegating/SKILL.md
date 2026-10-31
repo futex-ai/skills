@@ -59,7 +59,7 @@ model, and the effort of each action. Work that becomes an implementation
 or a pull request gets its own workspace. Its first session runs the
 `default orchestrator` action. That session runs every other action of the
 work inside the workspace, as a subagent or a session. The implementors of
-its milestones, a review, and a brainstorm are such actions.
+its milestones, a review, and an options check are such actions.
 
 A subagent runs the models of your own agent only. An action of another
 agent runs as a session. A session shares your working tree, so treat it

@@ -46,14 +46,8 @@ choice that the user made, not each sentence that describes it.
 
 ## 3. Widen
 
-Run steps 3 and 4 as the `brainstorming` action of the `models` skill.
-When your session runs the agent, the model, and the effort of that
-action, do the steps yourself. Otherwise, delegate them with the agent,
-the model, and the effort of that action, as the `delegating` skill says.
-Give the agent the goal, the root question, and the requirements with
-their sources. Also give it the earlier work and the paths to read. Tell
-it to change nothing. Do not give it your own approaches, so that its
-read is not anchored on yours.
+Do steps 3 and 4 yourself. The options check of step 5 then reads your
+approaches in a fresh context.
 
 - Widen with steps 2 and 3 of the options rule in the
   `decisions-and-findings` skill. A brainstorm always finds at least
@@ -76,17 +70,16 @@ read is not anchored on yours.
 
 ## 5. Ask the user
 
-Check the report of a delegated step against the code before you use it.
-Add the approaches that you found yourself, and narrow them in the same
-way. Write the items in the layout of the `decisions-and-findings` skill
-to `.context/<topic>/items.md`. When the root question is a design call,
+Write the items in the layout of the `decisions-and-findings` skill to
+`.context/<topic>/items.md`. When the root question is a design call,
 also write it there as one item. Its approaches are its options.
 
 Before you send the message, run the options check of the
 `implementation-review` skill over the items. The check is a fresh
 read-only `second-pass review agent`. Give it the second-pass prompt of
 that skill, followed by the items. Save its report under
-`.context/<topic>/`. Merge each slot of the report into the items:
+`.context/<topic>/`. Check the report against the code before you merge
+it. Merge each slot of the report into the items:
 
 - A better root question replaces the **Root question** line.
 - A new option keeps the letter that the check gave it. The source of a
@@ -151,8 +144,6 @@ recommended approach.
 - [ ] You read the area and searched for earlier work on the same idea.
 - [ ] The root question uses the words of the goal, not of the current
       mechanism.
-- [ ] Steps 3 and 4 ran as the `brainstorming` action. Its brief held no
-      approaches of yours.
 - [ ] At least three distinct approaches. Each condition that every
       approach keeps is named with its source.
 - [ ] Each approach that you left out has one line with its reason.

@@ -1,21 +1,21 @@
 ---
 name: models
-description: Use before you delegate work, start a subagent or a reviewer, or choose an agent, a model, or an effort, and when a skill, a plan, or a message names an action such as brainstorming, orchestrator, implementor, or review agent.
+description: Use before you delegate work, start a subagent or a reviewer, or choose an agent, a model, or an effort, and when a skill, a plan, or a message names an action such as orchestrator, implementor, or review agent.
 ---
 
 # Models
 
 One table defines the agent, the model, and the effort of each action. A
 skill, a plan, or a message names the action, for example "the
-`brainstorming` action" or "the `non-ui implementor` action". It never
-names a model id. When a model changes, this table changes and nothing
-else does. The `delegating` skill says where and how each action runs.
+`default orchestrator` action" or "the `non-ui implementor` action". It
+never names a model id. When a model changes, this table changes and
+nothing else does. The `delegating` skill says where and how each action
+runs.
 
 ## Actions
 
 | Action | Agent | Model | Effort | Use |
 | --- | --- | --- | --- | --- |
-| `brainstorming` | claude | `opus-5-5-1m` | `max` | Goal reviews, design options, and candidate changes before a plan exists. |
 | `default orchestrator` | claude | `opus-5-5-1m` | `max` | The session that manages a workspace. It plans, delegates the milestones, checks the delegated work, and reports. |
 | `non-ui implementor` | codex | `gpt-6.1-sol` | `max` | Code that is not UI: backend, scripts, tests, and tooling. |
 | `ui implementor` | claude | `opus-5-5-1m` | `max` | Screens, components, styles, and mockups. |
