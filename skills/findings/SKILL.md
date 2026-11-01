@@ -13,13 +13,16 @@ the user asks for it.
 
 ## What to print
 
-- An open item waits for the user's answer. A closed item has an outcome:
-  the user answered it, an agent fixed it, it waits in a follow-up item,
-  or the user dropped it.
-- When the user names no items, give every open item in full and one line
-  for each closed item.
-- When the user names item numbers, give only those items in full. Under
-  the title of a closed item, one sentence gives its outcome.
+- An open item waits for the user's answer, as the "Open items" section
+  defines it. Every other item of this conversation is closed. Its
+  recorded outcome gives its label in the final report.
+- A call without item numbers asks for every open item. A call with item
+  numbers asks for the named items only.
+- The "Open items" rules give an open item in full when it is new,
+  changed, or asked for. They give every other open item one line under
+  **Open**.
+- Give each closed item that the call names in full, after the open
+  items. Under its title, one sentence gives its outcome.
 
 ## Steps
 
@@ -32,43 +35,39 @@ the user asks for it.
    - the brainstorm notes under `.context/`.
 2. Add each item of this conversation that the records do not hold.
 3. Apply each update in the order that it happened: the user's answers,
-   the fix commits, the follow-up items, and each changed field.
+   the fix commits, the deferrals with their follow-up items, and each
+   changed field.
 4. Check each open item against the current code. Update each field that
    the code changed.
-5. Write each item with the rules in the "Explaining items again" section
+5. Find each open item that changed since the last message that gave it
+   in full. The "Open items" section says what counts as a change.
+6. Write each item with the rules in the "Explaining items again" section
    of the `decisions-and-findings` skill. Keep the recorded numbers and
    option letters.
-6. Find each open item that changed since the last message that gave it
-   in full. Under its title, write one sentence that says what changed.
 
 ## The message
 
-Use the message order of the `decisions-and-findings` skill:
+Use the message order and the "Open items" rules of the
+`decisions-and-findings` skill. When no item is open, the first sentence
+says so. The final report holds these lines:
 
-1. When an item is open, start with the warning line that the "Open
-   items" section gives. When no item is open, the first sentence says
-   so.
-2. Add the background paragraph and the shared **Terms**. The reader may
-   not remember the earlier messages.
-3. Give the open items in full under `## Needs your answer`, in the item
-   order.
-4. End with the final report. It lists every closed item of this
-   conversation:
-   - **Changed:** nothing changed, because this message only re-prints.
-   - **Fixed**, **Deferred**, and **Decisions:** one line for each closed
-     item, under the label of its outcome. A dropped item goes under
-     **Decisions**.
-   - **Checks:** the records that you read, and each item that you could
-     not rebuild from them.
-   - **Open:** one line for each open item. A `fix now` finding without a
-     commit goes here too, as work in progress.
+- **Changed:** nothing changed, because this message only re-prints.
+- **Fixed**, **Deferred**, and **Decisions:** for a call without item
+  numbers, one line for each closed item, under the label of its
+  recorded outcome. A dropped item and each design call go under
+  **Decisions**.
+- **Checks:** the records that you read, each item that you could not
+  rebuild from them, and each finding that a check removed.
+- **Open:** one line for each open item, as the "Final report" section
+  says. A `fix now` finding without a commit goes here too, as work in
+  progress.
 
 ## Checklist
 
 - [ ] The records were read before the items were written.
-- [ ] Every item of this conversation is in the message: the open items
-      in full, the closed items in one line each.
+- [ ] The message follows the "Open items" rules. Each closed item that
+      the call names is in full, with its outcome.
+- [ ] For a call without item numbers, each closed item has one line
+      under the label of its outcome.
 - [ ] The recorded numbers and option letters are kept.
 - [ ] Each open item was checked against the current code.
-- [ ] Each changed item has one sentence that says what changed.
-- [ ] The warning line at the top names the open items.

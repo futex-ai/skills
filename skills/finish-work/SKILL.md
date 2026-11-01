@@ -105,8 +105,9 @@ and labels in the `decisions-and-findings` skill. Include:
 
 - Each item that still needs the user's answer, also an item from an
   earlier message. Name it in the warning line at the top of the message.
-  Give it in full when it is new or changed, and in one line otherwise,
-  as "Open items" in the `decisions-and-findings` skill says.
+  Give it in full when it is new or changed, or when the user asks.
+  Otherwise give it in one line, as "Open items" in the
+  `decisions-and-findings` skill says.
 - What changed, the commit, and the branch or the pull request.
 - The checks that ran and their results. Name any check that was skipped or
   could not run, and why.
