@@ -42,9 +42,9 @@ at that moment instead of guessing the rule.
   decision and its outcome, the checks that ran and their results, anything
   skipped or blocked, and the outstanding decisions or findings that
   still need the user. When a decision or a finding still needs the
-  user, start the message with a `***` horizontal rule and a ⚠️ line
-  that names it. Give it in full when it is new or changed, or when the
-  user asks. Otherwise give it in one line.
+  user, start the message with a ⚠️ line that names it. Give it in full
+  when it is new or changed, or when the user asks. Otherwise give it in
+  one line.
 
 ## Working
 

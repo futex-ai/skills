@@ -93,20 +93,14 @@ answer. It stays open until the user answers it, also while you work on
 other tasks. The user must not miss it. While an item is open, each final
 report and each message with items does these things:
 
-- It starts with a horizontal rule and a warning line that names the open
-  items, split out from the rest of the message:
+- It starts with a warning line that names the open items, in its own
+  paragraph:
 
   ```markdown
-  ***
-
   ⚠️ Three items still need your answer: items 1, 2, and 3
 
   <The rest of the message.>
   ```
-
-  Write the horizontal rule as `***`, not `---`. Conductor reads `---` on
-  the first line as the start of YAML front matter. Then Conductor shows
-  every list and quote of the message as plain text.
 
 - It gives each new or changed open item in full under the heading
   `## Needs your answer`, before the final report. Under the title of a
