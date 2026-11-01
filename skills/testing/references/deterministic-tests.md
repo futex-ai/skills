@@ -1,13 +1,9 @@
----
-name: deterministic-tests
-description: Use when a test fails and then passes on a rerun, when a test is flaky or timing-dependent, when a test would assert elapsed time, a timeout, or performance, when you want to add a sleep, a retry, or a longer time limit to a test, when you choose between a real and a fake clock, and when a finding concerns a flaky, slow, or low-value test, gate, or check.
----
-
 # Deterministic tests
 
 Required tests check correctness without depending on machine speed. A test
 that passes on a fast machine and fails on a slow one is a bug in the test.
-The `testing` skill says what earns a test, and how to write and remove one.
+These rules cover time in tests, flaky tests, and slow tests, gates, and
+checks.
 
 ## Assertion rule
 
@@ -56,7 +52,7 @@ Use these instead of elapsed-time assertions.
 - Opt-in benchmarks outside the test tree are outside this rule.
 
 A lint can enforce the assertion rule in JavaScript and TypeScript test
-trees; see [references/eslint-guard.md](references/eslint-guard.md).
+trees. See [eslint-guard.md](eslint-guard.md).
 
 ## Flaky-test rule
 

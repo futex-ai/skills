@@ -64,7 +64,7 @@ applies and what to do in each case. Do not write an exception clause.
 
 Weak: "Fix a flaky test yourself unless the fix is risky."
 
-Strong, from the `deterministic-tests` skill:
+Strong, from the `testing` skill:
 
 ```markdown
 A flaky test that the diff adds or changes may be fixed without asking

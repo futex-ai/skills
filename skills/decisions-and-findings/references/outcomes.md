@@ -142,8 +142,8 @@ A kind that is not in this list has no rule of its own.
   than the lower side, recommend its change. The finding then waits for
   the user. The wider fix for the class is already in force, that
   section, so propose no other wider fix.
-- Flaky tests that the diff adds or changes, under the flaky-test rule in
-  the `deterministic-tests` skill.
+- Flaky tests that the diff adds or changes, under the flaky-test rule of
+  the `testing` skill.
 - Dead code: code that the product never runs, under the predicate in the
   `git-commit` skill. Check each condition with a search, and cite the
   searches in the finding. The option deletes the dead code with the steps
@@ -160,7 +160,7 @@ A kind that is not in this list has no rule of its own.
   changes a test removes no assertion and loosens none. A removal follows
   the bullet above.
 - Gates: a slow, custom, or low-value gate, lint, or check is not a test
-  finding. The `deterministic-tests` skill says how to fix it.
+  finding. The `testing` skill says how to fix it.
 - UX wording: user-facing text. A copy defect is text that has a typo or
   breaks a rule under `## Copy` in the `product-ui` skill. Give a copy
   defect the category UX wording, not repository rule. A fix keeps the
