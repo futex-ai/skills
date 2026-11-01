@@ -30,6 +30,12 @@ Each fact lives in one place. Other docs link to it.
 | Cases and examples | The tests |
 | An API surface, a schema, a type list | Generated reference |
 
+A `README.md` holds no plan reference. A plan reference is a link to a
+plan, a follow-up item, or `plans/`, a permalink to a deleted plan, or a
+mention of one of these. A plan exists only while its change is open. A
+README describes what stays. When a README needs a fact from a plan,
+write the fact in its home in the table above.
+
 ## Workspace README
 
 - A summary of the key features of the project, not a long list of every
@@ -37,8 +43,7 @@ Each fact lives in one place. Other docs link to it.
 - User-facing interface documentation: CLI, API, and similar.
 - Developer get-started steps.
 - Key code jumping-in points.
-- Links to the architecture doc, the protocol docs, and the `plans/`
-  directory.
+- Links to the architecture doc and the protocol docs.
 
 Read the `README.md` for the area you work on before you change it, and
 update it with any new useful context in the same change.
