@@ -1,6 +1,6 @@
 ---
 name: documentation
-description: Use before you edit a README.md, a crate README, anything under docs/, an architecture doc, or a protocol doc, when a behaviour change could leave a doc stale, when the code and a protocol doc disagree, when you decide whether a sentence belongs in a protocol doc, a README, a plan, a test, or the code, and when a change or a review option conflicts with a protocol doc.
+description: Use before you edit a README.md, a crate README, anything under docs/, an architecture doc, or a protocol doc, when a behaviour change could leave a doc stale, when the code, a mockup, and a protocol doc disagree, when you decide whether a sentence belongs in a protocol doc, a README, a plan, a test, or the code, and when a change or a review option conflicts with a protocol doc.
 ---
 
 # Documentation
@@ -71,8 +71,10 @@ update it with any new useful context in the same change.
 
 ## Docs (`docs/`)
 
-- Docs stay aligned with the behaviour of the implementation. Fix a doc
-  that contradicts the code in the same change.
+- Docs stay aligned with the behaviour of the implementation. When a doc
+  contradicts the code, fix the wrong side in the same change. For a
+  protocol doc, the code is wrong by default, as the section "Protocol
+  docs change with the behaviour" says.
 - Docs are consistent with themselves: no conflicting statements.
 - Docs may be nested in multiple directories.
 - A gap in the requirements found during implementation is a decision
@@ -173,9 +175,11 @@ Protocol docs describe the current requirements. They are not fixed rules.
 - A detail that a requirement settles but does not spell out is not a
   gap. Apply the decision test in the `decisions-and-findings` skill.
   Make and record the call as the test says.
-- When the code and a protocol doc disagree, do not assume that the doc is
-  right. Decide on the merits which side is right, then change the other
-  side to match it.
+- When the code and a protocol doc disagree, the doc wins by default.
+  Change the code to match the doc. When the doc is wrong, or worse than
+  the code, propose the doc change to the user as a decision instead.
+- With a mockup, the protocol doc wins over the mockup, and the mockup
+  wins over the code. The `mockups` skill gives the cases.
 - Do not drop an option, rank it lower, or recommend a different option
   only because it conflicts with a protocol doc. Include the doc update in
   that option and in its effort.

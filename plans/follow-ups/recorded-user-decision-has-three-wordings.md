@@ -1,0 +1,38 @@
+# Recorded user decision has three wordings
+
+- **Severity:** Medium. **Effort:** Medium. **Confidence:** High. **Harder later:** No.
+- **Kind:** Needs decision.
+- **Added:** 2026-10-31, from the branch `calummoore/mockup-discrepancy-rule`. It is the blocked wider fix of review finding 2 of that branch.
+- **Location:** `skills/decisions-and-findings/references/outcomes.md:23-24` and `:125-130`, and `skills/mockups/SKILL.md:76-80`.
+- **Reason:** The fix overrides a rule of the fix rule on `main`, so it waits for the user.
+
+- **Terms:**
+  - **Recorded user decision:** The user's choice that lets an agent change a requirement or a decision in force without asking again.
+  - **Protocol doc:** A doc under `docs/protocol` in a product repository that states the requirements of one area.
+  - **Outcome rules:** `skills/decisions-and-findings/references/outcomes.md`. It holds the decision test, which says when an item waits for the user, and the fix rule, which says how an agent fixes the other findings. A fresh reviewer gets this file after its prompt.
+  - **Task message:** The user's message that starts the work. A reviewer in a fresh context does not see it.
+  - **Working agent:** The session that runs the review and the fixes. It makes the final call on each finding.
+- **Background:**
+  - On 2026-10-31 the user chose which side wins when a protocol doc, a mockup, and the code disagree. The protocol doc wins over the mockup, and the mockup wins over the code.
+  - The section "When a protocol doc, a mockup, and the code disagree" in `skills/mockups/SKILL.md` gives the cases. A recorded user decision comes first. It can be in the task message, the approved plan, or a follow-up item.
+  - That section lets such a decision change the mockup and the code. It sends a protocol doc change to the `documentation` skill.
+  - The `documentation` skill says that a requirement change is a decision for the user. It does not say where the decision is recorded.
+  - The decision test in the outcome rules uses the bare term "recorded user decision". It does not say where the decision is recorded either.
+  - The docs or spec drift rule in the outcome rules lets the doc side change without the user only when the plan records the user's decision.
+- **Problem:** The skills give three answers to the question where a user decision is recorded. The `mockups` skill names three places, the docs or spec drift rule names the plan, and the decision test names none. A reviewer does not see the task message. So a review can call a change that the user asked for a product bug in the code, and propose to undo it.
+- **Impact if no action:** The working agent must catch each such proposal in its final call. Implementation and review can reach different outcomes for the same approved change.
+- **Root question:** Which record of a user decision lets an agent change a protocol doc or a mockup without asking again, and can the reviewer read that record?
+- **Options:**
+  - **A.** Require a plan record for each protocol doc change, also in the `documentation` skill. A change without a plan then needs a plan or a question to the user. Effort: Small.
+  - **B.** Let the docs or spec drift rule also accept the task message and a follow-up item. The reviewer still cannot read the task message. Effort: Small.
+  - **C.** Keep the three places where the user decides. Before an agent changes a higher side, it writes the decision, its date, and its source in the plan. When the change has no plan, it writes them in the commit body. The docs or spec drift rule accepts that record, and the review prompt tells the reviewer to read the commit bodies of the branch. Effort: Medium.
+  - **D.** Do C, but define the term once, in the decision test of the outcome rules. The user makes the decision in a message, the approved plan, or a follow-up item. The plan, or the commit body when the change has no plan, records it with its date. The `mockups` skill and the docs or spec drift rule use the term and point to the test. Effort: Medium.
+- **Left out:**
+  - Change nothing. The three answers stay.
+  - A test or a check of the skill text. Skills never get a test, under the `testing` skill, and a new check is a gate that needs the user.
+  - Ask the user before every protocol doc change. The user then answers decisions that they already made.
+  - Keep only the bare term everywhere. D is better on every point at the same effort.
+- **Wider fix:** D. One definition, with a record that the agent, the reviewer, and the finding check can all read.
+- **Previous examples:** Commit `1928dce` merged four copies of the outcome rules that had drifted. Commit `7ee1ed9` fixed conflicting permissions for copy fixes across the review rules. Commit `aebdf77` fixed clauses that copies of the protocol-doc rule left out. Commit `69c40ed` holds two more copies in the review files that drifted from their source. On the branch that added this item, the review prompt first restated the mockup cases without their `product-ui` case.
+- **Recommendation:** D. It gives the agent, the reviewer, and the finding check one rule in one place, with a record that each of them can read.
+- **Action:** ask the user, because D is blocked: it overrides the rule on `main` that lets a review change a protocol doc without the user only when the plan records the decision.

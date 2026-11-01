@@ -62,8 +62,9 @@ Three signs that an item fails the test:
 An option is blocked when:
 
 - It changes a requirement in a protocol doc without a recorded user
-  decision, adds a requirement for new behaviour at the boundary, or
-  decides which side of a mockup and product mismatch is right.
+  decision, or adds a requirement for new behaviour at the boundary.
+- It changes a mockup to match the code, and the `mockups` skill does not
+  call for that change.
 - It changes user-visible behaviour beyond what the contract says.
 - It adds a new build error, rejection, gate, lint, or stricter validation.
   This holds for a wider fix too, whatever its effort. The always-on rules
@@ -117,18 +118,30 @@ These rules apply the decision test and the fix to some kinds of finding.
 A kind that is not in this list has no rule of its own.
 
 - Docs or spec drift: a doc that contradicts the changed code. Change the
-  side that is wrong. A protocol doc is not right by default, as the
+  side that is wrong. A protocol doc wins over the code by default, as the
   `documentation` skill says. The wider fix for the class is already in
   force, the `documentation` skill, so propose no other wider fix. The
   doc side changes without the user only in these cases:
   - The diff changes behaviour that a requirement states, and the plan
     records the user's decision for that change. The doc update is the
-    named option. Without a recorded decision, the finding waits for the
-    user, because the user decides which side is right.
+    named option. Without a recorded decision, the doc wins, and the
+    finding is a product bug in the code. When the doc is wrong, or worse
+    than the code, recommend the doc update. The finding then waits for
+    the user, because the user decides each requirement change.
   - The doc names source files, functions, or internal mechanics, or it
     records history. The fix moves that content to its home: the crate
     README for entry points, the plan for history, and the code for
     mechanics. The move is the named option.
+- Mockup mismatches: a mockup that differs from a protocol doc or from the
+  code. The protocol doc wins over the mockup, and the mockup wins over
+  the code. The section "When a protocol doc, a mockup, and the code
+  disagree" in the `mockups` skill gives the cases. A fix that the section
+  calls for needs no user decision. A protocol doc changes only under the
+  docs or spec drift rule above. When the section says to ask the user,
+  the finding waits for the user. When the higher side is wrong, or worse
+  than the lower side, recommend its change. The finding then waits for
+  the user. The wider fix for the class is already in force, that
+  section, so propose no other wider fix.
 - Flaky tests that the diff adds or changes, under the flaky-test rule of
   the `testing` skill.
 - Dead code: code that the product never runs, under the predicate in the

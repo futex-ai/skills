@@ -197,8 +197,8 @@ fallback, or the off branch of a feature flag.
 Protocol docs hold the requirements and the decisions in force for an area:
 observable behaviour at a boundary, and the reason for each choice. They do
 not describe how the code works. Do not treat them as fixed rules. When the
-code and a protocol doc disagree, do not assume that the doc is right.
-Apply these rules to a docs or spec finding:
+code and a protocol doc disagree, the doc wins by default. Still judge the
+doc on its merits. Apply these rules to a docs or spec finding:
 
 - A doc that is silent on how the code works is not a finding. Do not ask
   for a doc to be clarified or enhanced.
@@ -210,5 +210,11 @@ Apply these rules to a docs or spec finding:
   only because it conflicts with a protocol doc. Include the doc update in
   that option and in its effort grade, and recommend the option when it is
   the best one.
+
+Mockups are part of the spec too. The protocol doc wins over the mockup,
+and the mockup wins over the code. The section "When a protocol doc, a
+mockup, and the code disagree" in the `mockups` skill gives the cases.
+Read it before you write a mockup finding. The outcome rules say when a
+mockup fix waits for the user.
 
 If there are no findings, say so clearly.
