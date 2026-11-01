@@ -16,6 +16,8 @@ Codex, and with any other agent that reads the
   lock, loop, and hook functions live in `scripts/lib/`.
 - `scripts/check.sh`: validates every skill.
 - `tests/`: shell tests for the scripts. `tests/run.sh` runs them all.
+- `plans/follow-ups/`: follow-up items, one file each, as the `plans`
+  skill says.
 
 ## How the pieces fit
 
@@ -48,6 +50,7 @@ Codex, and with any other agent that reads the
 | `implementation-review` | After you push, before you run or apply a review, when the user answers a review finding, when you decide whether to fix a finding now or after the merge, and when the user asks for a code review. |
 | `delegating` | When you work on a plan, before you delegate a task, create a Conductor workspace, session, or routine, start a subagent or a reviewer, or split work across workspaces, and when a model blocks a request. |
 | `decisions-and-findings` | Before you raise a question as a decision, and before you send decisions, findings, or a final report, when you write the options of a decision, also under a brief output style. |
+| `findings` | The user types `/findings`, or asks to see, list, or reprint the open items, the findings, or the decisions of the conversation. |
 | `testing` | Before you implement a feature, a behaviour change, or a bug fix, before you plan, write, change, port, or remove a test, when a plan, a review, or a brief asks for a test, when a test fails or flakes, when a test would sleep, retry, or assert elapsed time, and when the user asks to audit tests or cut test time. |
 | `git-commit` | Before and after you commit, and when you write a commit or pull request message. When a diff deletes or renames something, or when you find dead code. |
 | `git-merge` | Before you merge or rebase, when you resolve conflicts, and after each merge commit. |
