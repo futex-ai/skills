@@ -27,7 +27,7 @@ when to read it. [templates/AGENTS.md](templates/AGENTS.md) is the template.
 | General: what to test, test levels, failing tests, removing tests | `testing` |
 | General: targeted tests, smoke tests, gate, commit, push, review loop | `finish-work` |
 | General: review format and auto-fix | `implementation-review`, with the layout in `decisions-and-findings` |
-| General: flaky tests, no wall-clock assertions | `deterministic-tests` |
+| General: flaky tests, no wall-clock assertions | `testing` |
 | General: product data, copy, left-border rule | `product-ui` |
 | Readme, Docs, Protocol Docs | `documentation` |
 | Mockups | `mockups` |
