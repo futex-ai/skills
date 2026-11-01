@@ -30,11 +30,6 @@ Each fact lives in one place. Other docs link to it.
 | Cases and examples | The tests |
 | An API surface, a schema, a type list | Generated reference |
 
-A README sentence can be about plans, such as a sentence on a check that
-reads plan files. Move such a sentence to its home in the table above. Do
-not delete only its plan words. Without them, the sentence states a wrong
-fact.
-
 ## Workspace README
 
 - A summary of the key features of the project, not a long list of every
