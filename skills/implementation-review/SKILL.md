@@ -156,8 +156,8 @@ after the merge.
    finding whose code a fix changed. Fix any confirmed new `fix now`
    findings once more, and record the other new findings as follow-up
    items. Then stop. The `finish-work` skill gives the next steps: the
-   pull request and the report. Do not start a third fix round without
-   the user.
+   pull request, the CI step, and the report. Do not start a third fix
+   round without the user.
 7. In the final message, keep three lists: the fixed findings, the
    deferred findings, and the findings that need a decision. Build them
    from the findings file. Give each fixed finding its number, its

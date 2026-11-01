@@ -1,11 +1,11 @@
 ---
 name: finish-work
-description: Use before you say that work is complete or done, before you commit, push, or open a pull request, when you decide which tests, checks, or gates to run, when a gate or a test suite fails or a run was partial, when you add a feature that needs a smoke test, when the change that you finish is documentation-only or plan-only, and when you learn that its pull request merged.
+description: Use before you say that work is complete or done, before you commit, push, or open a pull request, after a push that starts CI, when you decide which tests, checks, or gates to run, when a gate or a test suite fails or a run was partial, when a CI run fails or still runs, when you add a feature that needs a smoke test, when the change that you finish is documentation-only or plan-only, and when you learn that its pull request merged.
 ---
 
 # Finish work
 
-Work is complete only when steps 1 to 7 below are done, in order. Step 8
+Work is complete only when steps 1 to 8 below are done, in order. Step 9
 comes after the merge. The commands for each step come from the
 repository's `AGENTS.md` under `## Commands`. If a step cannot run, say so,
 name the blocker, and list the checks that did run.
@@ -98,7 +98,16 @@ name the blocker, and list the checks that did run.
   follow-up item that the change adds, so that the user can bring one
   back into the branch before the merge.
 
-## 7. Report
+## 7. CI
+
+- After each push, run `scripts/ci-wait.sh` in the background on the
+  pushed commit. It waits for the CI runs of the commit and prints their
+  results. Go on with the work while it runs.
+- When the script exits with a status other than 0, act as
+  [references/ci.md](references/ci.md) says.
+- Before the report, wait for the CI of the last push.
+
+## 8. Report
 
 Write the final message in Simplified Technical English, with the layout
 and labels in the `decisions-and-findings` skill. Include:
@@ -111,6 +120,8 @@ and labels in the `decisions-and-findings` skill. Include:
 - What changed, the commit, and the branch or the pull request.
 - The checks that ran and their results. Name any check that was skipped or
   could not run, and why.
+- Each CI run of the last push and its result. Give the fix pull request
+  or the follow-up item of each unrelated failure.
 - The test cost of the change: each test that it adds or removes, with its
   run time, as the `testing` skill says.
 - The fixed findings, the deferred findings and wider fixes with
@@ -123,12 +134,14 @@ and labels in the `decisions-and-findings` skill. Include:
   source.
 - Open plan TODOs.
 
-## 8. After the merge
+## 9. After the merge
 
 When you learn that the pull request merged, remind the user of the open
 follow-up items. Name the items that the change added. Give the number of
 all open items, from the script in the `plans` skill. Start work on an
-item only when the user asks for it.
+item only when the user asks for it. The one exception is a fix pull
+request for an unrelated CI failure. It works on the item that records
+the failure, as [references/ci.md](references/ci.md) says.
 
 ## Checklist
 
@@ -152,6 +165,8 @@ item only when the user asks for it.
       follow-up items.
 - [ ] Pull request opened once the implementation was complete or the user
       asked.
+- [ ] CI of the last push watched to its end. Each failure fixed in the
+      branch, given to a fix pull request, or reported.
 - [ ] Final report in STE with fixed, deferred, and open findings, and the
       number of open follow-up items.
 - [ ] Each item that still needs the user named in the warning line at
