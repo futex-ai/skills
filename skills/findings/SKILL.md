@@ -21,8 +21,8 @@ the user asks for it.
 - The "Open items" rules give an open item in full when it is new,
   changed, or asked for. They give every other open item one line under
   **Open**.
-- Give each closed item that the call names in full, after the open
-  items. Under its title, one sentence gives its outcome.
+- Give each closed item that the call names in full, in the item order.
+  Under its title, one sentence gives its outcome.
 
 ## Steps
 

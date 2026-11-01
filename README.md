@@ -16,6 +16,8 @@ Codex, and with any other agent that reads the
   lock, loop, and hook functions live in `scripts/lib/`.
 - `scripts/check.sh`: validates every skill.
 - `tests/`: shell tests for the scripts. `tests/run.sh` runs them all.
+- `plans/follow-ups/`: follow-up items, one file each, as the `plans`
+  skill says.
 
 ## How the pieces fit
 
