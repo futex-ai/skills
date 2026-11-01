@@ -246,7 +246,8 @@ The skill text, written from the recorded cases.
       fan-out), `75b657aa` (PR #37), and `eee1022e` (the brainstorm of
       2026-10-30). Give the place, what the agent did, and its words.
 - [ ] Write `skills/coordinator/SKILL.md` from the design, in about 150
-      lines.
+      lines. It replaces the stub that keeps `scripts/check.sh` green
+      while Milestones 2 and 3 add scripts under `skills/coordinator/`.
 - [ ] Write `references/cycle.md`, `templates/state.md`, and
       `templates/messages.md`. Take the stage table, the merge rules,
       and the messages of PR #37 where they still apply.
