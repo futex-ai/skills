@@ -1,6 +1,6 @@
 # Review prompts lack the six prompt fields
 
-- **Severity:** Low (estimate). **Effort:** Small (estimate). **Confidence:** Medium. **Harder later:** No.
+- **Severity:** Low. **Effort:** Small. **Confidence:** Medium. **Harder later:** No.
 - **Kind:** Outside the scope.
 - **Added:** 2026-10-31, from branch `calummoore/conductor-workspace-coordinator-skill` (PR #37), a problem outside the scope that the check of review round 5, finding 9, found.
 - **Location:** `skills/implementation-review/references/review-prompt.md`, `skills/implementation-review/references/check-prompt.md`, `skills/implementation-review/references/second-pass-prompt.md`.

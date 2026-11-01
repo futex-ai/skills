@@ -26,7 +26,7 @@ date of the last change.
   stays `pending: <id>` through a whole cycle, escalate it with the id.
 - A complete task ends with the final-report layout: **Changed**,
   **Fixed**, **Deferred**, **Decisions**, **Checks**, **Open**. When the
-  text is a question, apply the decisions section of `SKILL.md`.
+  text is a question, apply "Answering items" in `SKILL.md`.
 - Every other result gets the one retry of the `delegating` skill. Such
   a result is an error, nothing, or a text that is not a final report.
   Send the status request once, and record the retry in the board line. When the next
@@ -103,7 +103,7 @@ the workspace name.
 - Name the stage that you expect next and the report that you want.
 - Never send code. Describe the change in words. A child that needs a
   design decision gets the decision, not the implementation.
-- Handle each item under "Decisions and review items" in `SKILL.md`.
+- Handle each item under "Answering items" in `SKILL.md`.
   Record each answer in the log. Escalate each choice that needs the user.
 
 ## Archive

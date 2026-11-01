@@ -97,7 +97,7 @@ To the workspace's orchestrator session, after the plan is approved.
     or when an item needs an answer, in the final-report layout. Never
     merge yourself.
 
-## Answers to decisions and review items
+## Answers to items
 
     Answers to your report of <date>:
     1. <letter>. <one sentence>.

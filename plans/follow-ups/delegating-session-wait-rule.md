@@ -1,6 +1,6 @@
 # Delegating waits for idle, which misses failures
 
-- **Severity:** Medium (estimate). **Likelihood:** Common (estimate). **Effort:** Small (estimate). **Confidence:** High. **Harder later:** No.
+- **Severity:** Medium. **Likelihood:** Common. **Effort:** Small. **Confidence:** High. **Harder later:** No.
 - **Kind:** Outside the scope.
 - **Added:** 2026-10-31, from branch `calummoore/conductor-workspace-coordinator-skill` (PR #37), problems outside the scope that the checks of review round 6, findings 11 and 13, found.
 - **Location:** `skills/delegating/references/conductor.md` (section "Read, message, and archive").

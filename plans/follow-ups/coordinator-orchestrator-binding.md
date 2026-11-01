@@ -1,6 +1,6 @@
 # Coordinator trusts the orchestrator session name
 
-- **Severity:** Medium. **Likelihood:** Rare (estimate). **Effort:** Medium. **Confidence:** High. **Harder later:** No.
+- **Severity:** Medium. **Likelihood:** Rare. **Effort:** Medium. **Confidence:** High. **Harder later:** No.
 - **Kind:** Needs decision.
 - **Added:** 2026-10-31, from branch `calummoore/conductor-workspace-coordinator-skill` (PR #37), review round 3, finding 2.
 - **Location:** `skills/conductor-section-workspace-coordinator/scripts/section-workspaces.sh:31-50`, `skills/conductor-section-workspace-coordinator/references/cycle.md` (section "Give a workspace an orchestrator").
@@ -25,4 +25,4 @@
 - **Wider fix:** D. It still routes correctly when a session with the right model takes the name.
 - **Previous examples:** None found.
 - **Recommendation:** D. Messages reach only a checked session, the user's sessions stay untouched, and no workspace stops to wait.
-- **Action:** ask the user, because condition 4 holds: keeping, renaming, or replacing the user's session has real trade-offs.
+- **Action:** ask the user, because the options have real trade-offs and none is clearly best: keeping, renaming, or replacing the user's session.

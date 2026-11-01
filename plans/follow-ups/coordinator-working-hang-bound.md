@@ -1,6 +1,6 @@
 # Coordinator waits on a hung child forever
 
-- **Severity:** High (estimate). **Likelihood:** Rare (estimate). **Effort:** Medium (estimate). **Confidence:** High. **Harder later:** No.
+- **Severity:** High. **Likelihood:** Rare. **Effort:** Medium. **Confidence:** High. **Harder later:** No.
 - **Kind:** Needs decision.
 - **Added:** 2026-10-31, from branch `calummoore/conductor-workspace-coordinator-skill` (PR #37), a problem that the check of review round 6, finding 11, found.
 - **Location:** `skills/conductor-section-workspace-coordinator/scripts/last-report.sh`, `skills/conductor-section-workspace-coordinator/references/cycle.md` (section "Read a report").
@@ -27,4 +27,4 @@
 - **Wider fix:** A. An error event followed by silence is the shape of both live hangs, and a normal long wait does not have it.
 - **Previous examples:** The two live sessions above: a review session of this branch on 2026-10-28, and session `6f97d436` in another workspace.
 - **Recommendation:** A. It catches the known hangs and keeps long real waits.
-- **Action:** ask the user, because condition 2 holds: a time limit for a working child is new behaviour that no requirement covers.
+- **Action:** ask the user, because the recommended option adds behaviour that no requirement covers: a time limit for a working child.

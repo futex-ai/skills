@@ -2,7 +2,7 @@
 
 - **Severity:** Medium. **Likelihood:** Common. **Effort:** Medium. **Confidence:** High. **Harder later:** Yes.
 - **Kind:** Needs decision.
-- **Added:** 2026-10-31, from branch `calummoore/conductor-workspace-coordinator-skill` (PR #37), review round 6, finding 12, with three problems that its check found.
+- **Added:** 2026-10-31, from branch `calummoore/conductor-workspace-coordinator-skill` (PR #37), review round 6, finding 12.
 - **Location:** `skills/conductor-section-workspace-coordinator/references/routine.md`, `skills/conductor-section-workspace-coordinator/references/setup.md`, `skills/conductor-section-workspace-coordinator/templates/routine-prompt.md`.
 - **Reason:** The options trade a dependency on installed skills against a manual version check, and every option needs the user to edit saved routines in the Conductor app.
 
@@ -14,27 +14,24 @@
 - **Background:**
   - Conductor stores a routine's prompt, agent, model, and effort when the routine is created. The CLI and the public API have only `routine create`, `routine list`, and a secret rotation. Nothing updates or deletes a routine. Only the user can edit one, in the app.
   - Routine commands need a user API key. The key of a workspace gets HTTP 403.
-  - The coordinator ensures the routine only in its first cycle, when `.context/coordinator/state.md` does not exist yet. A routine named `coordinator wake` counts as confirmed.
+  - The coordinator ensures the routine only in its first cycle, when `.context/coordinator/state.md` does not exist yet.
   - The prompt comes from `templates/routine-prompt.md`. On 2026-10-31 that template moved to the six prompt fields of the `delegating` skill.
-- **Problem:**
-  - A saved routine keeps the prompt, agent, model, and effort that it was created with. A later change to the template or to the `wake routine` action of the `models` skill never reaches it.
-  - `routine list` returns the routines of every project. Only a routine's `repoUrl` names its project, but the procedure confirms any routine named `coordinator wake` "for this project".
-  - Step 5 of `references/routine.md` confirms the routine when a wake message arrives, but no cycle step leads to that file. The state can stay at "trigger waiting for the user".
-  - The routine messages a coordinator whose `session status` is `idle`. Conductor shows a Claude session as idle between the turns of one request, also while the coordinator waits on background work in its own cycle. A wake message can then start a second cycle inside the first.
-- **Impact if no action:** Existing routines run old steps, models, or efforts after a skill update. A coordinator can confirm another project's routine, keep a stale routine state, or run two cycles at once.
-- **Root question:** How does a saved wake routine follow the current skill, its steps, agent, model, and effort, and wake only a coordinator that is done with its cycle?
+- **Problem:** A saved routine keeps the prompt, agent, model, and effort that it was created with. A later change to the template or to the `wake routine` action of the `models` skill never reaches it.
+- **Impact if no action:** Existing routines run old steps, models, or efforts after a skill update.
+- **Root question:** How does a saved wake routine follow the current skill: its steps, its agent, its model, and its effort?
 - **Options:**
-  - **A.** In setup and after each template change, compare the stored prompt with the template. Use `routine list` and match the routine by name and `repoUrl`. Ask the user to edit the routine in the app when they differ. It needs a user API key. Effort: Small.
+  - **A.** In setup and after each template change, compare the stored prompt with the template, through `routine list`. Ask the user to edit the routine in the app when they differ. It needs a user API key. Effort: Small.
   - **B.** Save a short launcher prompt that reads the installed wake steps on each run, so that template changes reach every routine. Existing routines need one edit in the app. The fresh routine workspace must have the skills installed, as the setup script of each repository does. Effort: Medium.
   - **C.** Put a template version, and the model and effort that the routine reads with `conductor --json session get "$CONDUCTOR_SESSION_ID"`, into the wake message. At each wake, compare them with the template and the action, and ask the user to edit the routine when one differs. It needs no user API key. A forgotten version bump hides the drift. Effort: Small.
-  - **D.** Move the wake steps into a tested script under `scripts/`. The saved prompt runs the installed script. The script can also skip a coordinator whose report is `pending:` or `waiting:`, as `scripts/last-report.sh` gives it. It needs the installed skill and `jq` in the routine workspace. Effort: Medium.
-  - **E.** Apply B, and check every stored field at setup and at each wake: with a user API key through `routine list`, without one through the check of C. Match by `repoUrl`. Record each edit request in the state file. About five files change. Effort: Medium.
+  - **D.** Move the wake steps into a tested script under `scripts/`. The saved prompt runs the installed script. It needs the installed skill and `jq` in the routine workspace. Effort: Medium.
+  - **E.** Apply B, and check every stored field at setup and at each wake: with a user API key through `routine list`, without one through the check of C. Record each edit request in the state file. Effort: Medium.
 - **Left out:**
   - Recreating the routine needs a new trigger, a new webhook URL, and a deletion in the app. Until that deletion, two routines wake each coordinator.
   - A scheduler outside Conductor breaks the user decision of 2026-10-28 that keeps the `wake routine` action.
   - One routine per coordinator still keeps old steps.
-  - A note in each pull request that asks users to edit their routines still confirms a stale routine.
+  - A note in each pull request that asks users to edit their routines still leaves the routines stale until each user acts.
 - **Wider fix:** E. It catches a stale launcher, agent, model, or effort, with or without a user API key.
 - **Previous examples:** Main's skill updater, `scripts/update.sh`, keeps installed skill copies current. A stored routine prompt is another copy that it does not reach.
-- **Recommendation:** E. It removes the copied steps as B does, checks every stored field, and matches the routine by its project. D can replace the launcher part when tested steps matter more than the install dependency.
-- **Action:** ask the user, because condition 4 holds: the options trade an install dependency against a manual version check, and each needs edits in the app.
+- **Related:** `plans/follow-ups/coordinator-wake-routine-project-match.md`, `plans/follow-ups/coordinator-wake-confirmation-step.md`, and `plans/follow-ups/coordinator-wake-during-cycle.md` touch the same routine procedure. Fix them in the same branch when it is convenient.
+- **Recommendation:** E. It removes the copied steps as B does, and it checks every stored field. D can replace the launcher part when tested steps matter more than the install dependency.
+- **Action:** ask the user, because the options have real trade-offs and none is clearly best: they trade an install dependency against a manual version check, and each needs edits in the app.

@@ -1,6 +1,6 @@
 # Skill check does not parse frontmatter as YAML
 
-- **Severity:** High. **Likelihood:** Rare. **Effort:** Small (estimate). **Confidence:** High. **Harder later:** No.
+- **Severity:** High. **Likelihood:** Rare. **Effort:** Small. **Confidence:** High. **Harder later:** No.
 - **Kind:** Needs decision.
 - **Added:** 2026-10-31, from branch `calummoore/conductor-workspace-coordinator-skill` (PR #37), review round 6, the blocked wider fix of finding 10.
 - **Location:** `scripts/check.sh` (the frontmatter loop), `skills/writing-skills/templates/SKILL.md:3`.
@@ -24,4 +24,4 @@
 - **Wider fix:** A. It catches every YAML error. B is the Small fallback when the user accepts a gate but not a dependency.
 - **Previous examples:** The coordinator skill description, fixed on 2026-10-31. The `writing-skills` template on `main`, since commit `8dfc7be`.
 - **Recommendation:** B. It catches both known cases with no new dependency, at Small effort.
-- **Action:** ask the user, because condition 3 holds: every option adds a gate.
+- **Action:** ask the user, because every option is blocked: each adds a gate, and the always-on rules leave a new gate to the user.

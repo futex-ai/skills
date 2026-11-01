@@ -8,7 +8,7 @@ description: "Use when you run in a Conductor cloud workspace and the user invok
 A Conductor section is a sidebar group of workspaces with one focus, for
 example performance, testing, or CI. One coordinator workspace per section
 schedules the work of the other workspaces in the section. It asks each
-one for a plan and answers its decisions and review items. It keeps each
+one for a plan and answers its items. It keeps each
 branch close to `main`, merges the pull request, and archives the
 workspace. It never does the work itself.
 
@@ -115,7 +115,7 @@ actions, or the board. Apply it before the steps below.
   message only when the result of that session is not `pending:` or
   `waiting:`. Put everything for that session into it.
 
-## Decisions and review items
+## Answering items
 
 A child ends a task with the final report of the `decisions-and-findings`
 skill. Its **Open** list holds the items that wait for an answer, each
@@ -136,10 +136,10 @@ with lettered options. You answer in place of the user.
   smaller fix. Otherwise choose the smaller fix now. The child records
   the larger fix as a follow-up item, as the `plans` skill says. Add it
   under **Backlog** too. Say which schedule you chose and why.
-- The always-on rules reserve some choices for the user. Do not choose
-  a reserved option. When the best option is reserved, escalate the item
-  to the user. Otherwise choose the best option that is not reserved. The
-  reserved options:
+- The always-on rules and the `testing` skill reserve some choices for
+  the user. Do not choose a reserved option. When the best option is
+  reserved, escalate the item to the user. Otherwise choose the best
+  option that is not reserved. The reserved options:
   - delete or override functionality on `origin/main`,
   - add a build error, rejection, gate, lint, or stricter validation,
   - change a requirement in a protocol doc,
