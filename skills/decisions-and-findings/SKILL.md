@@ -110,6 +110,11 @@ table and the final report keep the same order.
 Use this layout for each item. The `implementation-review` skill says
 what each field of a review item must contain.
 
+An item holds one root question. When a problem raises a second question
+that its root question does not settle, give that question its own item.
+Each item then gets its own grades, decision test, and **Action** line.
+Do not number questions inside an item.
+
 ```markdown
 ### 1. <The problem, in eight words or fewer>
 
@@ -130,7 +135,7 @@ what each field of a review item must contain.
 - **Left out:** <Each approach that the options leave out, with its reason: it fails the goal, it breaks a requirement that stays, or an option is better on every point. When the item has fewer than three distinct approaches, one sentence that says why. Or "None".>
 - **Wider fix:** <The letter of the option that prevents this class of issue. A structural fix, such as a helper, an abstraction, a marker, a default, or a type, ranks above a detection fix, such as a test for the class, a lint, or a guard. Or "None" and the reason, for example that the wider fix is already in force.>
 - **Previous examples:** <Earlier cases of this class, with commits or files, or "None found".>
-- **Related:** <Only when the item has a link to another item. Each link: the item number, the kind of link, and what it means. A link is a shared wider fix, the same cause, the same code, options that conflict, or a repeat.>
+- **Related:** <Only when the item has a link to another item. Each link: the item number, the kind of link, and what it means. A link is a shared wider fix, the same cause, the same code, options that conflict, a repeat, or work that waits for the answer.>
 - **Recommendation:** <Letter>. <One sentence of reasoning.> <When another option best protects the codebase, one sentence that names it.>
 - **Action:** <`fix now, apply` and a letter. Or `fix after merge, apply` and a letter, with one sentence of reason. Or a split: `fix now, apply` the direct fix, `and fix after merge, apply` the wider fix, with one sentence of reason. Or `ask the user, because` and one sentence that says in plain words which condition of the decision test holds, with its evidence. Do not cite the condition by a number.>
 ```
