@@ -54,6 +54,14 @@ skill at that moment instead of guessing the rule.
 - Generate types: `<command>` <delete if none>
 - Mockup check: `<command>` <delete if none>
 
+## CI
+
+<Whether an agent can merge its fix pull request for an unrelated CI
+failure into `main`. Only the user turns agent merges on, with a merge
+method, as in `on, squash`.>
+
+- Agent merges: off
+
 ## Repository rules
 
 <Rules for work across this repository that only this repository needs. A
