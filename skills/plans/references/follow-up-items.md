@@ -43,8 +43,9 @@ not have the plan, the review report, or the findings file.
 - The **Added** line can name the source and its finding number, as
   history. The body can end with a permalink to the source. The item must
   make sense without them.
-- An item holds one root question. When the work has more than one open
-  question, follow "Work with more than one open question" below.
+- An item holds one root question, or one post-merge task. When the work
+  has more than one open question, follow "Work with more than one open
+  question" below.
 - Write each field of the layout. When the source does not give a field,
   write it from the code and the docs. "Explaining items again" in the
   `decisions-and-findings` skill says how.
