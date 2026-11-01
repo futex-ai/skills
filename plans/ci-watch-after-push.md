@@ -76,6 +76,10 @@ still runs". The report step and the checklist each gain one line.
   A new skill would add a description to every session.
 - Design call: the PR still opens only when the implementation is complete, as
   PR #28 chose. So the first CI run often comes after the PR opens.
+- Design call: step 9 points to the exception of the fix pull request, where it
+  says to work on a follow-up item only on request.
+- Design call: the skill text writes "fix pull request" in full, as
+  `finish-work` writes "pull request".
 
 ### The wait script
 
@@ -120,20 +124,9 @@ The file reports a skip when `jq` is missing. Each case runs in a temporary git
 repository, with `--interval 0`. A deadline of 0 is a timeout that the test
 expects to expire, and no case asserts elapsed time. Each case names its break:
 
-1. `test_waits_for_running_and_late_runs`: exit 0 after a run in progress, a
-   skipped run, and a late run. Break: an end at the first complete poll, or a
-   skipped run counted as a failure.
-2. `test_names_the_first_failed_step_of_each_failed_job`: exit 1, with
-   `Rust tests` at `Build HMRC LTS` and `Verify` at `Verify required jobs`.
-   Break: a wrong job filter.
-3. `test_stops_at_the_deadline_with_a_pending_run`: exit 2 with `--timeout 0`.
-   Break: no deadline.
-4. `test_reports_no_run_after_the_grace_period`: exit 3 with `--grace 0`.
-   Break: a push without CI reported as a pass.
-5. `test_polls_again_after_a_failed_gh_call`: exit 0 and a warning. Break: a
-   stop on one error.
-6. `test_stops_after_three_failed_gh_calls`: exit 4. Break: an endless retry
-   loop.
+The six cases cover running and late runs, the first failed step of each
+failed job, the deadline, the grace period, one failed `gh` call, and three
+failed calls. The comment of each case in `tests/ci_wait_test.sh` names it.
 
 ### The reference
 
@@ -189,8 +182,9 @@ expects to expire, and no case asserts elapsed time. Each case names its break:
       branch. Outside Conductor, a worktree agent does the fix.
    5. Merge. The agent of the fix PR merges it into `main` only when all of
       these hold:
-      - The `## CI` section of `AGENTS.md` says `Agent merges: on` and names
-        the merge method.
+      - The `## CI` section of `AGENTS.md` on `origin/main` says
+        `Agent merges: on` and names the merge method. Design call: the
+        setting comes from `origin/main`, so a fix PR cannot turn it on.
       - The fix rule lets the agent make the fix without the user.
       - No finding of its review waits for the user.
       - Its CI is green.
@@ -220,28 +214,30 @@ expects to expire, and no case asserts elapsed time. Each case names its break:
 
 Depends on: none
 
-- [ ] Add "after a push that starts CI, when a CI run fails" to the
+- [x] Add "after a push that starts CI, when a CI run fails" to the
       `finish-work` row of the Skills table in `README.md`.
-- [ ] Add a CI stage after the pull request stage of "The flow of a feature":
+- [x] Add a CI stage after the pull request stage of "The flow of a feature":
       the orchestrator, with `finish-work`, `testing`, `git-merge`, and
-      `delegating`. Renumber the last two stages.
-- [ ] In "How the pieces fit", add agent merges of fix PRs to the choices that
+      `delegating`. Renumber the last two stages. Design call: the row also
+      names `git-commit` and `plans`, as "Review and fix" does for that work.
+- [x] In "How the pieces fit", add agent merges of fix PRs to the choices that
       a skill leaves to the repository.
 
 ## Milestone 2: The wait script
 
 Depends on: none
 
-- [ ] Add `skills/finish-work/scripts/ci-wait.sh` as the design says.
-- [ ] Add `tests/ci_wait_test.sh` with the six cases of the design. See each
+- [x] Add `skills/finish-work/scripts/ci-wait.sh` as the design says.
+- [x] Add `tests/ci_wait_test.sh` with the six cases of the design. See each
       case fail on an assertion before the script passes it.
-- [ ] Run `scripts/check.sh`, `shellcheck -x` on both files, and
+- [x] Run `scripts/check.sh`, `shellcheck -x` on both files, and
       `tests/run.sh`. Run the new test file 10 times, and save the pass counts
       under `.context/ci-watch/`.
-- [ ] Smoke test. Run the script on `origin/main` of this repository, and
+- [x] Smoke test. Run the script on `origin/main` of this repository, and
       expect exit 0. Run it with `--repo futex-ai/accounting` on the commit of
       run 41053636670. Expect exit 1, with `Rust tests` and `Build HMRC LTS`.
-      Save the output under `.context/ci-watch/`.
+      Save the output under `.context/ci-watch/`. Evidence:
+      `.context/ci-watch/m2-*.txt` and `m2-break-proof.md`.
 
 ## Milestone 3: The CI reference and step
 
@@ -263,14 +259,15 @@ Depends on: none
 
 Split from Milestone 3 on 2026-11-01, for the small-milestone rule of `plans`.
 
-- [ ] In the `AGENTS.md` template, add a `## CI` section after `## Commands`,
+- [x] In the `AGENTS.md` template, add a `## CI` section after `## Commands`,
       with `Agent merges: off`. Its note says that only the user turns it on,
       with a merge method, as in `on, squash`. Design call: `gh pr merge`
-      needs a method, and each repository has its own.
-- [ ] In `skills/agents-md/SKILL.md`, name the setting in the list of
+      needs a method, and each repository has its own. Design call: the note
+      stays a placeholder, and the reference gives the form of the line.
+- [x] In `skills/agents-md/SKILL.md`, name the setting in the list of
       repository-specific rules. A new `AGENTS.md` keeps it `off` until the
       user turns it on.
-- [ ] In `skills/plans/references/follow-up-items.md`, add one exception to
+- [x] In `skills/plans/references/follow-up-items.md`, add one exception to
       "Work on an item only when the user asks for it". A fix PR for an
       unrelated CI failure works on the item that records the failure, and
       deletes it.
