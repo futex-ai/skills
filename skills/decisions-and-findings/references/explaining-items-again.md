@@ -1,9 +1,10 @@
 # Explaining items again
 
 Use these rules each time you give an earlier item again. The user can
-ask you to explain an item again, or to give more detail or a shorter
-answer. An open item from an earlier message also goes into each later
-message, as the "Open items" section of the skill says.
+ask you to explain an item again, to give more detail or a shorter
+answer, or to re-print the items with the `findings` skill. A changed
+open item also goes into the next message in full, as the "Open items"
+section of the skill says.
 
 - Read the findings file of the branch first, when it exists. The
   `implementation-review` skill gives its path.
