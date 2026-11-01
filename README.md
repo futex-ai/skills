@@ -29,13 +29,14 @@ Codex, and with any other agent that reads the
 3. **The per-repository `AGENTS.md`** holds what is specific to that
    repository: commands, layout, caps, product locations, review focus, and
    the choices that a skill leaves to the repository, such as the type
-   generator, the test runner, or the shared UI library. It does not
-   repeat the skill list. It does repeat the communication preference
-   (Simplified Technical English, faithful reporting, batched decisions in
-   the reply text and never in a question tool, final report) so that it
-   reaches an agent that does not have the global file installed. It
-   names one skill, `brainstorming`, so that an open idea gets a
-   brainstorm before any plan or change.
+   generator, the test runner, or the shared UI library. A rule for work
+   on one application, package, or feature lives in the `README.md` next
+   to its code instead. It does not repeat the skill list. It does repeat
+   the communication preference (Simplified Technical English, faithful
+   reporting, batched decisions in the reply text and never in a question
+   tool, final report) so that it reaches an agent that does not have the
+   global file installed. It names one skill, `brainstorming`, so that an
+   open idea gets a brainstorm before any plan or change.
 
 ## Skills
 
@@ -50,7 +51,7 @@ Codex, and with any other agent that reads the
 | `testing` | Before you implement a feature, a behaviour change, or a bug fix, before you plan, write, change, port, or remove a test, when a plan, a review, or a brief asks for a test, when a test fails or flakes, when a test would sleep, retry, or assert elapsed time, and when the user asks to audit tests or cut test time. |
 | `git-commit` | Before and after you commit, and when you write a commit or pull request message. When a diff deletes or renames something, or when you find dead code. |
 | `git-merge` | Before you merge or rebase, when you resolve conflicts, and after each merge commit. |
-| `documentation` | Before you edit a README, a doc, or a protocol doc, when a change could leave a doc stale, when you decide where a sentence belongs, and when a change or a review option conflicts with a protocol doc. |
+| `documentation` | Before you edit a README, a doc, or a protocol doc, before you add a rule to `AGENTS.md`, when a change could leave a doc stale, when you decide where a sentence belongs, and when a change or a review option conflicts with a protocol doc. |
 | `rust` | Before you edit Rust, add a crate or a dependency, or define an error type. |
 | `typescript` | Before you edit TypeScript or JavaScript, add an npm dependency, or set up a package. |
 | `databases` | Before you touch migrations, a schema, Diesel code, or store crates. |
