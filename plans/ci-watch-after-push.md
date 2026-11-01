@@ -20,9 +20,8 @@ that no session watches, such as bot branches and scheduled runs.
 
 ## Decisions
 
-The user decided on 2026-11-01, in Conductor workspace #207, after a
-brainstorm. The user gave no reason. Each reason below is the reason of the
-recommendation.
+The user decided on 2026-11-01, in Conductor workspace #207, and gave no
+reason. Each reason below is the reason of the recommendation.
 
 - Item 1, how CI gets watched and acted on: option A, a skill step and a script
   in the agent's own session. Reason: it works in Claude Code and Codex and
@@ -47,8 +46,7 @@ recommendation.
   - C: agent merges in every repository. A change can reach `main`, and deploy,
     with no human review.
 
-The plan adds no open decision. So the options check of the `plans` skill had
-nothing to check.
+The plan adds no open decision, so no options check ran.
 
 ## Check repository and cases
 
@@ -120,8 +118,7 @@ serves one JSON file of the scenario for each `gh run list` call. It applies
 the `--jq` filter of the call with `jq`, so the test also checks the filters.
 The file reports a skip when `jq` is missing. Each case runs in a temporary git
 repository, with `--interval 0`. A deadline of 0 is a timeout that the test
-expects to expire, and no case asserts elapsed time. The cases, with the break
-that each one catches:
+expects to expire, and no case asserts elapsed time. Each case names its break:
 
 1. `test_waits_for_running_and_late_runs`: exit 0 after a run in progress, a
    skipped run, and a late run. Break: an end at the first complete poll, or a
@@ -219,18 +216,6 @@ that each one catches:
    is not GitHub Actions, the report says that the agent cannot watch it. Every
    futex repository uses GitHub Actions.
 
-### Other files
-
-- `skills/plans/references/follow-up-items.md`: one exception to "Work on an
-  item only when the user asks for it". A fix PR for an unrelated CI failure
-  works on the item that records the failure, and deletes it.
-- `skills/agents-md/templates/AGENTS.md`: a new `## CI` section after
-  `## Commands`, with `Agent merges: off`. Its note says that only the user
-  turns it on, with a merge method, as in `on, squash`. Design call:
-  `gh pr merge` needs a method, and each repository has its own.
-- `skills/agents-md/SKILL.md`: the list of repository-specific rules names the
-  setting. A new `AGENTS.md` keeps it `off` until the user turns it on.
-
 ## Milestone 1: Documentation
 
 Depends on: none
@@ -258,7 +243,7 @@ Depends on: none
       run 41053636670. Expect exit 1, with `Rust tests` and `Build HMRC LTS`.
       Save the output under `.context/ci-watch/`.
 
-## Milestone 3: The CI procedure in the skills
+## Milestone 3: The CI reference and step
 
 Depends on: 2
 
@@ -266,21 +251,36 @@ Depends on: 2
 - [ ] Edit `skills/finish-work/SKILL.md`: the description, the first paragraph,
       step 7, the numbers of steps 8 and 9, the report line, and the checklist
       line.
-- [ ] Add the exception to `skills/plans/references/follow-up-items.md`.
-- [ ] Add the setting to the `AGENTS.md` template and to
-      `skills/agents-md/SKILL.md`.
 - [ ] Walk each case of "Check repository and cases" with the final text, as
       the `writing-skills` skill says. Fix the text until each walk gives the
       right action. Save the walk under `.context/ci-watch/case-walk.md`.
 - [ ] Run `scripts/check.sh` with no new warning: the `finish-work`
       description under 500 characters, and its file under 200 lines.
 
-## Milestone 4: Verification, commit, review, and pull request
+## Milestone 4: The agent-merge setting
 
-Depends on: 1, 2, 3
+Depends on: none
 
-The orchestrator keeps the gate, the review, and the pull request. CI starts
-when the pull request opens. Then the new step 7 applies to it.
+Split from Milestone 3 on 2026-11-01, for the small-milestone rule of `plans`.
+
+- [ ] In the `AGENTS.md` template, add a `## CI` section after `## Commands`,
+      with `Agent merges: off`. Its note says that only the user turns it on,
+      with a merge method, as in `on, squash`. Design call: `gh pr merge`
+      needs a method, and each repository has its own.
+- [ ] In `skills/agents-md/SKILL.md`, name the setting in the list of
+      repository-specific rules. A new `AGENTS.md` keeps it `off` until the
+      user turns it on.
+- [ ] In `skills/plans/references/follow-up-items.md`, add one exception to
+      "Work on an item only when the user asks for it". A fix PR for an
+      unrelated CI failure works on the item that records the failure, and
+      deletes it.
+
+## Milestone 5: Verification, commit, review, and pull request
+
+Depends on: 1, 2, 3, 4
+
+The orchestrator keeps the gate, the review, and the pull request. The new
+step 7 applies to the CI that starts when the pull request opens.
 
 - [ ] Run the checks of the CI workflow: `scripts/check.sh`, `shellcheck -x` on
       every script, `tests/run.sh`, and the trailing-whitespace check.
