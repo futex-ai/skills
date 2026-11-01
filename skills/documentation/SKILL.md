@@ -30,12 +30,6 @@ Each fact lives in one place. Other docs link to it.
 | Cases and examples | The tests |
 | An API surface, a schema, a type list | Generated reference |
 
-A `README.md` holds no plan reference. A plan reference is a link to a
-plan, a follow-up item, or `plans/`, a permalink to a deleted plan, or a
-mention of one of these. A plan exists only while its change is open. A
-README describes what stays. When a README needs a fact from a plan,
-write the fact in its home in the table above.
-
 A README sentence can be about plans, such as a sentence on a check that
 reads plan files. Move such a sentence to its home in the table above. Do
 not delete only its plan words. Without them, the sentence states a wrong

@@ -33,8 +33,7 @@ change. [templates/plan.md](templates/plan.md) is the starting point.
 - There is no index file. Each plan records its own status in the first
   paragraph below its title. That paragraph starts with `Status: Active`
   while the plan is open. List open plans with `scripts/active-plans.sh`.
-- A `README.md` holds no plan reference, as the `documentation` skill
-  says.
+- A `README.md` holds no plan reference.
 - Each plan describes the work needed for complete alignment with the spec
   docs.
 - The plan is the dated record of each decision: the choice, the
