@@ -197,12 +197,12 @@ Depends on: none
 
 The README states the coordinator and the role hook for the work below.
 
-- [ ] Add the `coordinator` row to the skills table of `README.md`.
-- [ ] Add a section "Coordinating several changes" after "The flow of a
+- [x] Add the `coordinator` row to the skills table of `README.md`.
+- [x] Add a section "Coordinating several changes" after "The flow of a
       feature". Say what the coordinator is, how to start it, what it
       does alone, what goes to the user, that it merges into `main`,
       that the role hook keeps its role, and that waking is outside it.
-- [ ] Say in "Keep an install current" that `install.sh --hooks` adds
+- [x] Say in "Keep an install current" that `install.sh --hooks` adds
       the role hook. Name `scripts/role-hook.sh` in "Layout".
 
 ## Milestone 2: Reader

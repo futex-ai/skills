@@ -14,6 +14,8 @@ Codex, and with any other agent that reads the
 - `scripts/install.sh`: links everything into the agent directories.
 - `scripts/update.sh`: brings an installed clone to the latest `main`. Its
   lock, loop, and hook functions live in `scripts/lib/`.
+- `scripts/role-hook.sh`: the role hook. It reminds a Claude Code session
+  of its role, such as the coordinator.
 - `scripts/check.sh`: validates every skill.
 - `tests/`: shell tests for the scripts. `tests/run.sh` runs them all.
 - `plans/follow-ups/`: follow-up items, one file each, as the `plans`
@@ -51,6 +53,7 @@ Codex, and with any other agent that reads the
 | `delegating` | When you work on a plan, before you delegate a task, create a Conductor workspace, session, or routine, start a subagent or a reviewer, or split work across workspaces, and when a model blocks a request. |
 | `decisions-and-findings` | Before you raise a question as a decision, and before you send decisions, findings, or a final report, when you write the options of a decision, also under a brief output style. |
 | `findings` | The user types `/findings`, or asks to see, list, or reprint the open items, the findings, or the decisions of the conversation. |
+| `coordinator` | The user types `/coordinator`, names you the coordinator, or asks you to manage, progress, or merge several workspaces or branches. Also when a reminder says that this session holds the coordinator role. |
 | `testing` | Before you implement a feature, a behaviour change, or a bug fix, before you plan, write, change, port, or remove a test, when a plan, a review, or a brief asks for a test, when a test fails or flakes, when a test would sleep, retry, or assert elapsed time, and when the user asks to audit tests or cut test time. |
 | `git-commit` | Before and after you commit, and when you write a commit or pull request message. When a diff deletes or renames something, or when you find dead code. |
 | `git-merge` | Before you merge or rebase, when you resolve conflicts, and after each merge commit. |
@@ -99,6 +102,35 @@ Some stages run only in some cases:
 - The code of a change waits until the user approves its plan. A change
   without code, such as a docs-only change, can go without a plan. It then
   has no plan stage and no milestones.
+
+## Coordinating several changes
+
+The coordinator is one session in a Conductor workspace of its own. Type
+`/coordinator` there to start it. It manages children: other workspaces,
+in any repository, that it starts for you or that you hand to it. It
+talks only to the orchestrator session of each child. You talk only to
+the coordinator. It never edits, commits, or pushes in its own checkout.
+
+It answers no item itself. It sends you these in one numbered list:
+
+- Each item of a child whose **Action** is `ask the user`.
+- Each brainstorm root question and each plan that waits for your approval.
+- Its own items, such as a merge that a required check blocks.
+
+It passes each answer back to its child. On its own, it starts a child
+for each change that you ask for, sends status requests, and retries a
+stalled child. It merges each ready pull request into `main`, without an
+admin bypass. Then it archives the merged child, and asks the other
+children that edit the same files to merge `main`. Each message to the
+coordinator starts one cycle of this work. Waking a sleeping coordinator
+is outside the skill.
+
+The role hook, `scripts/role-hook.sh`, keeps the role in context.
+`/coordinator` marks its session. On each prompt of that session, the
+hook prints a short reminder. At a session start, also after a compaction,
+it tells the agent to read the skill file again. `install.sh --hooks` adds
+the hook, as [Keep an install current](#keep-an-install-current) says.
+Without it, as in Codex, type `/coordinator` again after a compaction.
 
 ## Install
 
@@ -167,8 +199,8 @@ and returns. `update.sh --stop` ends the loop. The loop does not survive a
 restart of the machine, so the setup script that starts it must run again
 after a restart.
 
-`install.sh --hooks` adds two hooks to `~/.claude/settings.json` and needs
-`jq`:
+`install.sh --hooks` adds two update hooks to `~/.claude/settings.json`
+and needs `jq`:
 
 - `SessionStart` runs the update before the first prompt, unless a check
   ran in the last minute. When skills changed, it asks Claude Code to
@@ -176,12 +208,20 @@ after a restart.
 - `UserPromptSubmit` runs the update in the background, at most once every
   5 minutes while a session is active. A change shows up on the next turn.
 
-Both hooks tell the agent which skills changed since the session last
+Both update hooks tell the agent which skills changed since the session last
 heard, also when the loop or another session applied the update. When the
 always-on rules changed, they ask the agent to read `~/.claude/CLAUDE.md`
 again. For this the script keeps one small file per session under
 `~/.futex/sessions/` and removes the file of a session that was idle for
 seven days.
+
+`install.sh --hooks` also adds the role hook, `scripts/role-hook.sh`, to
+the same two events. It reminds a session of its role, such as the
+[coordinator](#coordinating-several-changes), on each prompt and at each
+session start. Claude Code waits for it, so that the reminder reaches the
+agent before it answers. An install that already has the update hooks gets
+the role hook when `install.sh --hooks` runs again. The update alone does
+not add it.
 
 Claude Code runs hooks from settings files only after you trust the folder
 in an interactive session. `install.sh --uninstall` stops the loop and
