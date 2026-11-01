@@ -23,6 +23,9 @@ layout.
   Update that item instead of adding a second one.
 - Commit the item in the branch that finds it, so that it merges with
   that branch. The pull request description lists it.
+- An item can build behaviour that a doc states and the code does not
+  have. Then give the doc a status line that links the item. The
+  `documentation` skill gives the status line.
 
 ## Writing an item
 
@@ -131,8 +134,8 @@ with a missing grade. Add the missing grade when you next edit the item.
 - Work on an item only when the user asks for it.
 - When the user asks for the next item, or for more than one, take the
   items in the order of `scripts/follow-ups.sh`.
-- The branch that fixes an item deletes its file. Name the item in the
-  commit message.
+- The branch that fixes an item deletes its file. It also removes each
+  status line that links the item. Name the item in the commit message.
 - When the user answers an item that needs a decision, apply the answer in
   a branch, and delete the item in that branch.
 - Do not start the work of a parent item while it names an open decision
@@ -143,6 +146,9 @@ with a missing grade. Add the missing grade when you next edit the item.
   of the parent item.
 - When the user drops an item, delete its file. When the user drops a
   parent item, also delete its decision items.
+- When a status line links a dropped item, remove the behaviour of the
+  item from the line and its requirements from the doc. The
+  `documentation` skill says how.
 
 ## Listing the items
 

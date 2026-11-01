@@ -8,9 +8,10 @@ description: Use before you edit a README.md, a crate README, anything under doc
 Docs under `docs/`, protocol docs, mockups, and every `README.md` are part
 of the spec. Keep them aligned with the behaviour of the implementation in
 the same change. A doc is stale when it contradicts the code. A doc that is
-silent on a detail is not stale. When a change removes or renames anything,
-search `docs/`, `plans/`, and every `README.md` for its name; see the
-`git-commit` skill. Mockups have their own rules in the `mockups` skill.
+silent on a detail is not stale. A doc is not stale for behaviour that its
+status line names. When a change removes or renames anything, search
+`docs/`, `plans/`, and every `README.md` for its name. The `git-commit`
+skill says how. Mockups have their own rules in the `mockups` skill.
 
 ## The home of each kind of content
 
@@ -27,6 +28,7 @@ Each fact lives in one place. Other docs link to it.
 | How the code works: mechanics, call order, module layout | The code and its doc comments |
 | The design of one change, its dated decisions, and history | The plan under `plans/` while the change is open, then the pull request description |
 | Work that waits until after the merge | A follow-up item under `plans/follow-ups/` |
+| Which behaviour of a doc is not built yet, and the work that will build it | The status line of that doc, below its title |
 | Cases and examples | The tests |
 | An API surface, a schema, a type list | Generated reference |
 
@@ -185,3 +187,14 @@ Protocol docs describe the current requirements. They are not fixed rules.
   `decisions-and-findings` skill and the deletion audit in the `git-commit`
   skill send some options to the user. Recommend such an option on its
   merits, and let the user decide.
+
+## Behaviour that is not built yet
+
+A doc that reaches `main` before its behaviour starts with a status line.
+Read [references/status-lines.md](references/status-lines.md) before you
+add, change, or remove one.
+
+- Remove the status line in the change that builds its behaviour.
+- Before you delete a plan or a follow-up item, find each status line that
+  links it. Remove the line when its behaviour is built. Otherwise link it
+  to the item that will build the rest.
