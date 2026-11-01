@@ -80,6 +80,8 @@ still runs". The report step and the checklist each gain one line.
   says to work on a follow-up item only on request.
 - Design call: the skill text writes "fix pull request" in full, as
   `finish-work` writes "pull request".
+- Design call: step 6 of the `implementation-review` skill names the CI step
+  among the next steps, so that a review does not skip it.
 
 ### The wait script
 
@@ -130,85 +132,49 @@ failed calls. The comment of each case in `tests/ci_wait_test.sh` names it.
 
 ### The reference
 
-`skills/finish-work/references/ci.md` holds the procedure.
+`skills/finish-work/references/ci.md` holds the procedure, in the order of
+the work: watch, read a failure, find the cause, fix an unrelated failure,
+and report. Its design calls, of 2026-11-01:
 
-1. Watch. Run the script on the pushed commit. A newer push replaces the commit
-   to watch. Design call: only the last commit decides the merge. Exit 3 means
-   that the push starts no CI. Report exit 2 under **Checks** as pending.
-2. Read a failure with `gh run view <run> --log-failed`. Start at the first
-   failed step. Skip a summary job, such as "Verify required jobs", because it
-   only repeats the other failures.
-3. Find the cause.
-   - When the branch is behind `origin/main`, merge `main` first with the
-     `git-merge` skill. PR CI tests the branch merged with `main`.
-   - A failure belongs to the branch when the job passes on `origin/main` and
-     fails on the branch. Read the last run of the job on `main`. When `main`
-     has none, run the failing command on `origin/main`.
-   - Fix a failure of the branch in the branch, as "When a test fails" in the
-     `testing` skill says. Commit, push, and watch again.
-   - Otherwise, rerun the failed jobs once with `gh run rerun <run> --failed`,
-     and watch again. A second failure is an unrelated failure. Design call:
-     more reruns hide a flaky test.
-   - A pass on the rerun makes the test flaky, and the flaky-test rules of the
-     `testing` skill apply. Design call: an unrelated flaky test keeps its
-     follow-up item and gets no fix PR. The user asked for a fix PR only when a
-     rerun does not help.
-   - A `cancelled` run: watch the newer commit when one exists. Otherwise,
-     rerun it once. An `action_required` run waits for a person, so ask the
-     user.
-   - After three failed fixes of one failure, ask the user, as the `testing`
-     skill says.
-4. Fix an unrelated failure.
-   1. Apply the decision test to the fix. The fix waits for the user when it
-      needs a credential, a secret, a runner, a skipped test, or a gate change.
-      It also waits when the cause stays unknown. Give the failure text, the
-      rerun outcome, and the suspected source. Record a follow-up item.
-   2. Search for an owner. Search the open PRs, the remote branches under
-      `ci-fix/`, the Conductor workspaces named `ci-fix:`, and the follow-up
-      items on `origin/main`. When a PR or a workspace owns the failure, name
-      it in the report, and wait as the last step says.
-   3. Claim the failure. Push an empty commit on `origin/main` to a new branch
-      `ci-fix/<job>-<step>`. Open a draft PR from it, titled
-      `fix(ci): <failure>`, with the failure text. A rejected push means that
-      another agent holds the claim, so search again. When that claim is for
-      another failure, add the test name to the branch name. Design call: each
-      agent sees a draft PR from any machine, and a push to an existing branch
-      fails, so two agents cannot both claim.
-   4. Start the fix in its own workspace, as the `delegating` skill says. The
-      workspace starts from the claim branch, is named `ci-fix: <job>`, and
-      runs the `default orchestrator` action. Its prompt gives the failure
-      text, the run URL, the rerun outcome, the suspected source, the claim
-      branch, and the draft PR. The agent follows `finish-work` on the claim
-      branch. Outside Conductor, a worktree agent does the fix.
-   5. Merge. The agent of the fix PR merges it into `main` only when all of
-      these hold:
-      - The `## CI` section of `AGENTS.md` on `origin/main` says
-        `Agent merges: on` and names the merge method. Design call: the
-        setting comes from `origin/main`, so a fix PR cannot turn it on.
-      - The fix rule lets the agent make the fix without the user.
-      - No finding of its review waits for the user.
-      - Its CI is green.
-      - Its diff changes no checksum or digest, dependency version or lockfile,
-        download URL, secret, or CI workflow file.
-
-      Then the agent merges the PR with the named method and deletes the
-      branch. It watches the CI runs of the merge commit, because a push to
-      `main` can deploy. It reports a failure there to the user at once. When a
-      condition fails, it marks the PR ready, reports it to the user, and
-      stops. Design call: the agent that owns the PR runs its review and its
-      CI, so it merges.
-   6. Wait. The agent of the original branch waits at most 60 minutes for the
-      fix PR to merge. Then it merges `main` into its branch with the
-      `git-merge` skill, pushes, and watches again. When the time ends first,
-      it reports the red CI under **Open**, with the fix PR.
-   - Design call: no follow-up item records a failure that a fix PR owns. The
-     fix PR is the record. An item in the feature branch would stay after the
-     fix.
-5. Report. **Checks** gives each CI run of the last push: the workflow, the
-   result, each rerun, and each fix commit. An unrelated failure gives its fix
-   PR, or the follow-up item that waits for the user. Design call: for CI that
-   is not GitHub Actions, the report says that the agent cannot watch it. Every
-   futex repository uses GitHub Actions.
+- A newer push replaces the commit to watch, because only the last commit
+  decides the merge.
+- A cancelled run of the last commit gets one rerun. An `action_required`
+  run waits for a person, so it goes to the user.
+- The cause test follows the order of the user's message. A failure in a
+  job, step, test, or file that the diff adds or changes is the branch's,
+  when the error is in the branch's version of the file. Every other
+  failure gets one rerun. A pass makes the test flaky. A second failure is
+  unrelated only when the job also fails on the last `origin/main` commit.
+  The first draft compared with `origin/main` first. Its case walk misfiled
+  redloop #1 and firna #1360.
+- The comparison reads the run of the last `origin/main` commit, because an
+  old run of the job hides the state of `main`.
+- The branch merges the base branch of its pull request, as the `git-merge`
+  skill says. A primary branch gets the fix only when its orchestrator
+  merges `main`.
+- One rerun for each pushed commit, because more reruns hide a flaky test.
+  An unrelated flaky test keeps its follow-up item and gets no fix PR,
+  because the user asked for a fix PR only when a rerun does not help.
+- A fix in the branch that needs a credential, a secret, or a runner waits
+  for the user, as redloop #1 shows.
+- A change of a checksum, a dependency version, or a download URL makes the
+  merge wait, not the fix.
+- The claim is an empty commit pushed to `ci-fix/<job>-<step>`, with a draft
+  PR. The commit message holds the agent's branch name, so two claims never
+  share a commit. A push to an existing branch fails.
+- The fix workspace pushes to the claim branch, because Conductor names the
+  workspace branch from the workspace name.
+- The agent of the fix PR merges it, after `gh pr ready`, and watches the
+  merge commit, because a push to `main` can deploy. It merges only when the
+  setting on `origin/main` is on, the fix rule allows the fix, no finding of
+  its review waits for the user, its CI is green, and its diff changes no
+  checksum, dependency version, download URL, secret, or workflow file. The
+  setting comes from `origin/main`, so a fix PR cannot turn it on.
+- The agent of the original branch waits at most 60 minutes for the fix PR.
+- A follow-up item on `origin/main` that records the failure goes to the fix
+  PR, which deletes it. No new item records a failure that a fix PR owns.
+- For CI that is not GitHub Actions, the report says that the agent cannot
+  watch it.
 
 ## Milestone 1: Documentation
 
@@ -243,14 +209,14 @@ Depends on: none
 
 Depends on: 2
 
-- [ ] Write `skills/finish-work/references/ci.md` as the design says.
-- [ ] Edit `skills/finish-work/SKILL.md`: the description, the first paragraph,
+- [x] Write `skills/finish-work/references/ci.md` as the design says.
+- [x] Edit `skills/finish-work/SKILL.md`: the description, the first paragraph,
       step 7, the numbers of steps 8 and 9, the report line, and the checklist
       line.
-- [ ] Walk each case of "Check repository and cases" with the final text, as
+- [x] Walk each case of "Check repository and cases" with the final text, as
       the `writing-skills` skill says. Fix the text until each walk gives the
       right action. Save the walk under `.context/ci-watch/case-walk.md`.
-- [ ] Run `scripts/check.sh` with no new warning: the `finish-work`
+- [x] Run `scripts/check.sh` with no new warning: the `finish-work`
       description under 500 characters, and its file under 200 lines.
 
 ## Milestone 4: The agent-merge setting
