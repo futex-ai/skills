@@ -29,22 +29,23 @@ Codex, and with any other agent that reads the
    matches its description. The description is the one place that says
    when to read a skill.
 3. **The per-repository `AGENTS.md`** holds what is specific to that
-   repository: commands, layout, caps, product locations, review focus, and
-   the choices that a skill leaves to the repository, such as the type
-   generator, the test runner, or the shared UI library. A rule for work
-   on one application, package, or feature lives in the `README.md` next
-   to its code instead. It does not repeat the skill list. It does repeat
-   the communication preference (Simplified Technical English, faithful
-   reporting, batched decisions in the reply text and never in a question
-   tool, final report) so that it reaches an agent that does not have the
-   global file installed. It names one skill, `brainstorming`, so that an
+   repository: commands, layout, caps, product locations, review focus, and the
+   choices that a skill leaves to the repository, such as the type generator,
+   the test runner, or the shared UI library. Another such choice is whether an
+   agent merges a fix pull request for an unrelated CI failure into `main`. A
+   rule for work on one application, package, or feature lives in the
+   `README.md` next to its code instead. It does not repeat the skill list. It
+   does repeat the communication preference (Simplified Technical English,
+   faithful reporting, batched decisions in the reply text and never in a
+   question tool, final report) so that it reaches an agent that does not have
+   the global file installed. It names one skill, `brainstorming`, so that an
    open idea gets a brainstorm before any plan or change.
 
 ## Skills
 
 | Skill | Read when |
 | --- | --- |
-| `finish-work` | Before you say work is complete, before you commit, push, or open a pull request, when you choose which tests or gates to run, and after the pull request merges. |
+| `finish-work` | Before you say work is complete, before you commit, push, or open a pull request, and when you choose which tests or gates to run. After a push that starts CI, when a CI run fails, and after the pull request merges. |
 | `brainstorming` | The user asks for a feature or a change, as in "can we", and no message or recorded decision chooses the approach. The user asks to brainstorm, discuss, or explore an idea, asks "should we" or "what do you think", or asks for a plan whose approach is not settled. |
 | `plans` | Before you write any code or start an implementation, when the user asks for a plan, before you create, edit, tick, or delete a plan, when you add a decision to a plan, when you find a TODO during implementation, when you add, list, or fix a follow-up item, and before you open a pull request for a plan. |
 | `implementation-review` | After you push, before you run or apply a review, when the user answers a review finding, when you decide whether to fix a finding now or after the merge, and when the user asks for a code review. |
@@ -87,8 +88,9 @@ implementor. It keeps the gate, the review, and the pull request.
 | 8 | Commit and push | Orchestrator | `git-commit`, `git-merge` |
 | 9 | Review and fix | Review agents, then orchestrator | `implementation-review`, `delegating`, `decisions-and-findings`, `testing`, `plans`, `git-commit` |
 | 10 | Pull request | Orchestrator | `plans`, `git-commit`, `finish-work` |
-| 11 | Final report | Orchestrator | `finish-work`, `decisions-and-findings` |
-| 12 | After the merge | Orchestrator | `finish-work`, `plans` |
+| 11 | CI | Orchestrator | `finish-work`, `testing`, `git-commit`, `git-merge`, `delegating`, `plans` |
+| 12 | Final report | Orchestrator | `finish-work`, `decisions-and-findings` |
+| 13 | After the merge | Orchestrator | `finish-work`, `plans` |
 
 Some stages run only in some cases:
 
@@ -99,6 +101,8 @@ Some stages run only in some cases:
 - The code of a change waits until the user approves its plan. A change
   without code, such as a docs-only change, can go without a plan. It then
   has no plan stage and no milestones.
+- The CI stage runs after each push that starts CI. The first CI run often
+  starts when the pull request opens.
 
 ## Install
 
