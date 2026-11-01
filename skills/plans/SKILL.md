@@ -67,6 +67,9 @@ change. [templates/plan.md](templates/plan.md) is the starting point.
 
 - Break the work into concrete units called milestones. At the end of each
   milestone the product works. Never leave the code base or feature broken.
+- Keep each milestone small. A small milestone is easier to delegate, to
+  check, and to review. Its checks find a problem early. Prefer several
+  small milestones to one large milestone.
 - Each milestone has a short summary and a TODO checklist.
 - Each milestone has a `Depends on:` line: `none`, or the milestones that
   it needs. A plan review checks it. The `delegating` skill uses it.
