@@ -15,9 +15,12 @@ the kind:
 
 - Every kind except a post-merge task: the item layout of the
   `decisions-and-findings` skill, from **Terms** to **Action**. Write each
-  field. A wider fix also gives the problem of each finding that it
-  covers. A blocked wider fix has the kind Needs decision. A wider fix
-  that the agent split off has the kind Fix after merge.
+  field. The item holds one root question. Work with more than one open
+  question gets a parent item and decision items, as
+  `references/follow-up-items.md` says. A wider fix also gives the
+  problem of each finding that it covers. A blocked wider fix has the
+  kind Needs decision. A wider fix that the agent split off has the kind
+  Fix after merge.
 - A post-merge task: **Terms** when the task needs them, then
   **Background**, **Task**, **Impact if no action**, **Needs**, and
   **Done when**. **Needs** gives what the task needs, such as the

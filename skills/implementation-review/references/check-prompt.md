@@ -92,6 +92,8 @@ Read the other findings in the file. A link is one of these:
 - the same code
 - options that conflict
 - a repeat: the same problem at the same place
+- work that waits for the answer: the fix of one finding depends on the
+  answer to the other
 
 For each link, give the number of the other finding, the kind of link,
 and what the link means for the options of your finding. A shared cause
