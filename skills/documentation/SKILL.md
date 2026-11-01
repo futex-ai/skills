@@ -1,6 +1,6 @@
 ---
 name: documentation
-description: Use before you edit a README.md, a crate README, anything under docs/, an architecture doc, or a protocol doc, when a behaviour change could leave a doc stale, when the code and a protocol doc disagree, when you decide whether a sentence belongs in a protocol doc, a README, a plan, a test, or the code, and when a change or a review option conflicts with a protocol doc.
+description: Use before you edit a README.md, a crate README, anything under docs/, an architecture doc, or a protocol doc, before you add a rule to AGENTS.md or CLAUDE.md, when a behaviour change could leave a doc stale, when the code and a protocol doc disagree, when you decide whether a sentence belongs in a protocol doc, a README, a plan, a test, or the code, and when a change or a review option conflicts with a protocol doc.
 ---
 
 # Documentation
@@ -22,6 +22,8 @@ Each fact lives in one place. Other docs link to it.
 | A decision in force, with the rejected alternative and the reason | The protocol doc, next to its requirement |
 | Components, their responsibilities, and their boundaries | The architecture doc |
 | Entry points into the code: files, types, functions | The crate or area `README.md`, under `### Key Code` |
+| A rule for work on one application, package, or feature | The `README.md` next to its code |
+| A rule for work across the repository | The repository `AGENTS.md`, under `## Repository rules` |
 | How the code works: mechanics, call order, module layout | The code and its doc comments |
 | The design of one change, its dated decisions, and history | The plan under `plans/` while the change is open, then the pull request description |
 | Work that waits until after the merge | A follow-up item under `plans/follow-ups/` |

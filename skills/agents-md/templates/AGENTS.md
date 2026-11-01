@@ -55,7 +55,9 @@ skill at that moment instead of guessing the rule.
 
 ## Repository rules
 
-<Rules that only this repository needs. Examples:>
+<Rules for work across this repository that only this repository needs. A
+rule for work on one application, package, or feature goes in the
+`README.md` next to its code. Examples:>
 
 - Changed TypeScript files are capped at 300 lines and protocol Markdown at
   250 lines by the repository gate.
