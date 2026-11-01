@@ -194,7 +194,6 @@ A doc that reaches `main` before its behaviour starts with a status line.
 Read [references/status-lines.md](references/status-lines.md) before you
 add, change, or remove one.
 
-- Remove the status line in the change that builds its behaviour.
-- Before you delete a plan or a follow-up item, find each status line that
-  links it. Remove the line when its behaviour is built. Otherwise link it
-  to the item that will build the rest.
+- Keep each status line true, as the reference says. Check the line in
+  the change that builds its behaviour. Check it also before you delete
+  a plan or a follow-up item that it links.

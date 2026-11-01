@@ -43,22 +43,23 @@ Add a status line when a doc reaches `main` before its behaviour:
 A branch whose pull request builds all the behaviour that its docs
 describe needs no status line.
 
-## When to change or remove it
+## Keep the line true
 
-- Remove the status line in the change that builds its behaviour. When
-  the change builds only one part, remove that part from the line.
-- A status line is stale when the code has the behaviour that it names.
-  It is also stale when the plan or the item that it links is gone. Fix
-  it in the same change, as for every stale doc.
-- Before you delete a plan, remove each status line that links the plan
-  and whose behaviour is built. Link each other line to the follow-up
-  item that will build the rest. Add that item when none exists.
-- The branch that fixes a follow-up item removes each status line that
-  links the item.
-- A drop of a follow-up item is the user's decision not to build its
-  behaviour. In the same branch, remove that behaviour from the status
-  line and its requirements from the doc. Name each removed requirement
-  in the commit message.
+A true status line names each part of the doc that is not built. Each
+part links the active plan or follow-up item that will build it. When no
+part remains, the line goes. Check the line at each of these events:
+
+- A change builds a part. Remove that part and its link.
+- The user drops a follow-up item. A drop is the user's decision not to
+  build its part. Remove the part from the line and its requirements
+  from the doc. Name each removed requirement in the commit message.
+- A plan or a follow-up item is deleted for another reason while its
+  part is not built. Link the part to the follow-up item that will build
+  it. Add that item when none exists.
+
+A status line is stale when it names a part that the code has. It is also
+stale when it links a plan or an item that is gone. Fix it in the same
+change, as for every stale doc.
 
 ## Docs that ship with a release
 
