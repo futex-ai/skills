@@ -8,8 +8,8 @@ description: Use when the user asks for a feature, new scope, or a change, as in
 A brainstorm finds the approach for an idea, a question, or a change
 before a plan exists. It widens to distinct approaches, narrows them,
 and gives the user the options to choose from. It ends with an answer,
-or with the user's consent to a plan. The `plans` skill takes
-over from there.
+or with the user's choice of the approach for a change. The `plans`
+skill takes over from there.
 
 A brainstorm changes nothing in the repository. Do not edit code, docs,
 or plans, and do not commit. Do not build a mockup or a spike. The
@@ -92,7 +92,8 @@ way. Then write one message with every item, in the layout of the
    kept approaches. Give the earlier work from step 1 under
    **Previous examples**.
 6. The final report. **Changed** says that the repository did not change.
-   **Decisions** lists the design calls.
+   **Decisions** lists the design calls. Do not ask for consent to the
+   plan or the change.
 
 Ask about the goal as an item only when a wrong guess changes the
 recommended approach.
@@ -111,9 +112,13 @@ recommended approach.
 - The brainstorm ends when the user chooses the approach. It also ends
   when the user stops it.
 - For a question, give the answer and its reasons.
-- For a change, ask for consent to write the plan, as the `plans` skill
-  requires. A message that asks for the plan or the change gives that
-  consent.
+- For a change, the choice gives consent to the plan, as the `plans`
+  skill says. Write the plan at once. Do not ask for consent first.
+- A change without code, such as a docs-only change, can go without a
+  plan. Then make the change at once.
+- Wait when the user says to wait. When an answer opens a question that
+  can change the approach, ask it in the next round first.
+- An item that stays open goes into the plan as an open decision.
 - The plan starts from the chosen approach. It records the other
   approaches with their reasons, each decision with its date, and each
   design call.
@@ -132,5 +137,5 @@ recommended approach.
       item, in the `decisions-and-findings` layout. Every other question
       is a design call in the final report.
 - [ ] Nothing in the repository changed.
-- [ ] The plan or the change starts only after the approach is chosen
-      and the user gave consent.
+- [ ] The plan or the change started only after the user chose the
+      approach. No message asked for consent to it.
