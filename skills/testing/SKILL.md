@@ -1,6 +1,6 @@
 ---
 name: testing
-description: Use before you plan, write, change, port, or remove a test, when a plan, a review, or a brief asks for a test, when a test fails and you consider changing the test, when you update a snapshot or an expected value, when a test would read docs, plans, agent rules, or workflow YAML, when you add a browser spec or a test for each input, host, or platform, and when the user asks to audit tests or cut test time.
+description: Use before you implement a feature, a behaviour change, or a bug fix, before you plan, write, change, port, or remove a test, when a plan, a review, or a brief asks for a test, when a test fails or flakes, when you update a snapshot or an expected value, when a test would sleep, retry, assert elapsed time, or read docs, plans, agent rules, or workflow YAML, when you add a browser spec or a test for each input, host, or platform, and when the user asks to audit tests or cut test time.
 ---
 
 # Testing
@@ -11,8 +11,9 @@ time on every gate, and an edit each time that the code it reads changes.
 A test that cannot fail has the same cost and protects nothing.
 
 The `rust` and `typescript` skills give the layout, the runner, and the
-test doubles. The `deterministic-tests` skill covers time and flaky tests.
-The `finish-work` skill says which tests to run and when.
+test doubles. The `finish-work` skill says which tests to run and when.
+[references/deterministic-tests.md](references/deterministic-tests.md)
+covers time in tests, flaky tests, and slow tests, gates, and checks.
 
 ## What earns a test
 
@@ -35,7 +36,8 @@ The `finish-work` skill says which tests to run and when.
   one exists.
 - A test for the class, which catches every case of a defect class, needs
   the user's approval. The `implementation-review` skill treats it like a
-  lint.
+  lint. A property test that you write for a requirement of your change
+  is not a test for the class.
 
 ## The level of a test
 
@@ -95,6 +97,9 @@ The `finish-work` skill says which tests to run and when.
 - Give each test its own data, temporary directory, and transaction. Set
   the time zone, the locale, and each random seed. A test passes alone, in
   any order, and in parallel.
+- Do not assert elapsed wall-clock time as an upper or a lower bound. Use
+  the evidence methods and the allowed clock uses of
+  [references/deterministic-tests.md](references/deterministic-tests.md).
 - Some tests need an outside resource, such as a database, a credential,
   or a browser. When the resource is missing, such a test fails or reports
   a skip. It never passes without its checks.
@@ -108,6 +113,9 @@ The `finish-work` skill says which tests to run and when.
 
 - The test found something. Find the root cause before you change the code
   or the test. If the code is wrong, fix the code.
+- A test that fails and then passes on a rerun is flaky. Before you
+  change it or report it, follow
+  [references/deterministic-tests.md](references/deterministic-tests.md).
 - When your task changes a behaviour on purpose, update the tests of the
   old behaviour. Name each test and the changed behaviour in the report.
 - When an existing test conflicts with the spec, stop and ask the user.

@@ -1,22 +1,24 @@
 ---
 name: decisions-and-findings
-description: Use before you send a message that asks the user for a decision, presents review findings or items, or gives a final report, before you raise a question as a decision, when you write the options of a decision or a finding, when the user asks for more detail, a shorter answer, or an explanation of earlier decisions or findings, when you list open findings from a plan or a review report, when you order or number the decisions and findings of a message, and when an output style asks for brevity.
+description: Use before you send a message that asks the user for a decision, presents findings or items, or gives a final report, before you raise a question as a decision, when you write the options of a decision or a finding, when the user asks for more detail, a shorter answer, or an explanation of earlier decisions or findings, when you list open findings from a plan or a review report, when you order or number the decisions and findings of a message, and when an output style asks for brevity.
 ---
 
 # Decisions and findings
 
-Use this skill for each message that asks for a decision, presents review
+Use this skill for each message that asks for a decision, presents
 findings, or gives a final report. The reader may have no context. The
 reader must act on each item. A fixed layout lets the reader find each
 field and answer by number and letter.
 
-An item is a review finding or a question that you raise. Every item gets
-the same test, the same layout, and a place in the same list. Its
-**Source** says where it comes from:
+An item is a finding or a question that you raise. A finding is a problem
+in the code, a doc, a test, or a mockup. A question is a choice about what
+to build. Every item gets the same test, the same layout, and a place in
+the same list. Its **Source** says where it comes from:
 
+- **Design:** a question from a brainstorm, a plan, or a task.
+- **Implementation:** an item that an agent found while it built the
+  change.
 - **Review:** an item that a review found.
-- **Design:** every other item, such as a question from a brainstorm, a
-  plan, or a task.
 
 ## Precedence
 
@@ -26,8 +28,8 @@ structure, not decoration. Brevity means fewer words. It does not mean
 fewer fields or longer sentences.
 
 A skill or a prompt for one task can set its own message order. Then use
-that order, but keep the layout, the labels, and the item order of this
-skill.
+that order. Keep the layout, the labels, the item order, and the "Open
+items" rules of this skill.
 
 ## Ask in the reply
 
@@ -41,46 +43,11 @@ a question tool.
 
 ## The decision test
 
-Apply this test to each review finding and to each question that you
-raise. Look at the option that you recommend. For a review item, the
-review-fix rule in the `implementation-review` skill says which option to
-recommend. The item is a decision for the user only when one of these
-conditions holds:
-
-1. The recommended option changes a requirement or a decision in force,
-   and no recorded user decision covers the change.
-2. The recommended option adds behaviour at a boundary that no
-   requirement covers.
-3. The recommended option is blocked under the review-fix rule. For
-   example, it deletes functionality, adds a gate, stricter validation,
-   or a test for the class, weakens a test, or needs credentials or
-   infrastructure.
-4. Two or more options have real trade-offs, and no option is clearly
-   best.
-5. The user asked you to bring this choice to them.
-6. The item comes from a review, and the review-fix rule does not let the
-   agent fix it without the user.
-
-A detail that an existing requirement settles is not a gap, also when the
-requirement does not spell the detail out. An option that drops the
-requirement does not make the item a decision when you do not recommend
-that option.
-
-When no condition holds, apply the recommended option without the user:
-
-- A review item gets `fix now` or `fix after merge`. The review-fix rule
-  says which one, and when to split the item.
-- A design item is a design call. Record the call, its reason, and the
-  date in the plan, in the design of the change. When the change has no
-  plan, record it in the commit or the pull request description. Do not
-  ask the user. Give each design call one line in the final report.
-
-Three signs that an item fails the test:
-
-- The recommendation says that the option costs nothing.
-- The severity is Low, and the impact is only that the work waits for the
-  answer.
-- The **Action** reason says only that the item is a decision.
+Read [references/outcomes.md](references/outcomes.md) before you raise a
+question as a decision, and before you write the **Action** line of an
+item. It holds the two outcome rules. The decision test says when an item
+waits for the user. The fix rule says how the agent acts on a finding
+that does not wait.
 
 ## Simplified Technical English
 
@@ -95,12 +62,17 @@ Write in Simplified Technical English (ASD-STE100):
 - Use a vertical list for steps, options, and complex lists.
 - Use one word for one thing. Define each project term once, then use it
   the same way.
+- Do not cite a rule, a condition, or a step by its number, as in
+  "condition 3". Say what it says, so that the reader does not have to
+  look it up.
 - To give more detail, add sentences or list items. Do not make a sentence
   longer.
 
 ## Message order
 
-1. Start with one or two sentences that give the result or the question.
+1. When an item is open, start with the warning line that the "Open
+   items" section gives. Then give one or two sentences with the result
+   or the question.
 2. When the items share background, add a background paragraph. Say what
    the project is, what the feature does, and what changed. Use six
    sentences or fewer. The **Background** of each item then adds only what
@@ -114,6 +86,37 @@ Write in Simplified Technical English (ASD-STE100):
 5. Give each item in the layout below.
 6. When the task ends, finish with the final report.
 
+## Open items
+
+An open item is an item of this conversation that waits for the user's
+answer. It stays open until the user answers it, also while you work on
+other tasks. The user must not miss it. While an item is open, each final
+report and each message with items does these things:
+
+- It starts with a horizontal rule and a warning line that names the open
+  items, split out from the rest of the message:
+
+  ```markdown
+  ---
+
+  ⚠️ Three items still need your answer: items 1, 2, and 3
+
+  <The rest of the message.>
+  ```
+
+- It gives each new or changed open item in full under the heading
+  `## Needs your answer`, before the final report. Under the title of a
+  changed item, one sentence says what changed.
+- It gives each other open item one line under **Open** in the final
+  report. Give such an item in full only when the user asks for it. The
+  `findings` skill re-prints every item on request.
+
+An item changed when one of its fields changed since the last message
+that gave it in full. The fields are **Severity**, **Likelihood**,
+**Effort**, **Problem**, **Impact if no action**, **Options**,
+**Recommendation**, **Action**, and **Related**. New words with the same
+meaning are not a change.
+
 ## Item order
 
 Put all items in one list. Order the items by severity: High first, then
@@ -126,11 +129,16 @@ table and the final report keep the same order.
 Use this layout for each item. The `implementation-review` skill says
 what each field of a review item must contain.
 
+An item holds one root question. When a problem raises a second question
+that its root question does not settle, give that question its own item.
+Each item then gets its own grades, decision test, and **Action** line.
+Do not number questions inside an item.
+
 ```markdown
 ### 1. <The problem, in eight words or fewer>
 
 - **Severity:** <High, Medium, or Low>. **Likelihood:** <Common or Rare, for a product bug only.> **Effort:** <Small, Medium, or Large: the grade of the recommended option.>
-- **Source:** <Review or Design.>
+- **Source:** <Design, Implementation, or Review.>
 - **Category:** <One category from the scales below.>
 - **Location:** <The file path and line, or "None" when the item has no place in the code.>
 - **Terms:** <Only when the item uses a term that the shared list does not define. Up to five entries.>
@@ -146,9 +154,9 @@ what each field of a review item must contain.
 - **Left out:** <Each approach that the options leave out, with its reason: it fails the goal, it breaks a requirement that stays, or an option is better on every point. When the item has fewer than three distinct approaches, one sentence that says why. Or "None".>
 - **Wider fix:** <The letter of the option that prevents this class of issue. A structural fix, such as a helper, an abstraction, a marker, a default, or a type, ranks above a detection fix, such as a test for the class, a lint, or a guard. Or "None" and the reason, for example that the wider fix is already in force.>
 - **Previous examples:** <Earlier cases of this class, with commits or files, or "None found".>
-- **Related:** <Only when the item has a link to another item. Each link: the item number, the kind of link, and what it means. A link is a shared wider fix, the same cause, the same code, options that conflict, or a repeat.>
+- **Related:** <Only when the item has a link to another item. Each link: the item number, the kind of link, and what it means. A link is a shared wider fix, the same cause, the same code, options that conflict, a repeat, or work that waits for the answer.>
 - **Recommendation:** <Letter>. <One sentence of reasoning.> <When another option best protects the codebase, one sentence that names it.>
-- **Action:** <`fix now, apply` and a letter. Or `fix after merge, apply` and a letter, with one sentence of reason. Or a split: `fix now, apply` the direct fix, `and fix after merge, apply` the wider fix, with one sentence of reason. Or `ask the user, because`, the number of the condition of the decision test that holds, and one sentence of evidence.>
+- **Action:** <`fix now, apply` and a letter. Or `fix after merge, apply` and a letter, with one sentence of reason. Or a split: `fix now, apply` the direct fix, `and fix after merge, apply` the wider fix, with one sentence of reason. Or `ask the user, because` and one sentence that says in plain words which condition of the decision test holds, with its evidence. Do not cite the condition by a number.>
 ```
 
 In a review and in a message, a problem outside the review scope is not
@@ -190,14 +198,15 @@ check, a plan decision, and a brainstorm.
    its reason, so that the user can bring it back. Each other approach is
    a lettered option.
 
-For a design item, then name each condition that every option keeps. Name
-its source: a protocol doc, a user decision, the task message, an earlier
-option's text, or the code. When it is not a requirement, or its reason
-is gone, add the option that drops it. A user decision covers the choice
+An item from design or implementation needs one more step. Name each
+assumption that all its options share. Give the source of each one: a
+protocol doc, a user decision, the task message, an earlier option's
+text, or the code. When an assumption is not a requirement, or its reason
+is gone, add an option that drops it. A user decision covers the choice
 that the user made, not each sentence of the text that describes the
 chosen option. For a review item, the finding check of the
-`implementation-review` skill checks these steps and asks for the
-conditions in a fresh context.
+`implementation-review` skill checks these steps in a fresh context. It
+also names the shared assumptions.
 
 ## Terms
 
@@ -219,9 +228,11 @@ entry shape under a **Terms** heading.
 ## Scales
 
 - Severity. The harm when the problem happens, not how often it happens.
-  High: wrong output, lost data, a security problem, or blocked work.
-  Medium: a visible defect, or a spec gap with a workaround. Low: wording,
-  style, or a defect that costs the user little.
+  Harm to the users of the product weighs more than harm to the people
+  and agents who build it. Both count. High: wrong output, lost data, a
+  security problem, or blocked work. Medium: a visible defect, a spec gap
+  with a workaround, or a flaky test or check in the gate. Low: wording,
+  style, or a defect that costs little.
 - Likelihood. How often real use meets a product bug. Give it for a
   product bug only. Common: normal use meets it, also when only now and
   then. Rare: normal use does not meet it. Only an unusual input, timing,
@@ -229,43 +240,25 @@ entry shape under a **Terms** heading.
   security problem, not a rare product bug.
 - Category. Product bug, security, docs or spec, mockup, repository rule,
   test, performance, code structure, dead code, UX wording, or process.
-- Effort. The grade of one option, not of the problem. Count the code
-  change only: product code, scripts, configuration, and infrastructure
-  files. Do not count tests, README files, protocol docs, plans, or mockup
-  output, because the repository rules require them with each code change.
-  Small: two code files or fewer, 30 code lines or fewer, and no new code
-  or test file. Medium: five code files or fewer in one package, and 150
-  code lines or fewer. A new test file or a new helper module in the same
-  package is Medium. Large: every option that is not Small or Medium. A
-  new dependency, a migration, a change on both sides of the backend and
-  frontend boundary, a new mockup, or a new protocol section is Large
-  whatever its size. The effort of an item is the grade of its
-  recommended option.
+- Effort. The grade of one option, not of the problem. It is your own
+  estimate of the time that the whole job of the option takes, for the
+  agent and the user together. The whole job is finding the cause, the
+  change, its tests, and the review. Small: under an hour. Medium: up to
+  a day. Large: longer. Use the expected change as one input: its files,
+  its lines, and its kind. A new dependency, a migration, a backend and
+  frontend change, a new mockup, or a new protocol section often takes
+  longer. Also weigh the work that the change does not show, such as an
+  unknown cause or a new test harness. No single input sets the grade. A
+  typical review fix with its test is Small. The effort of an item is the
+  grade of its recommended option.
 
 ## Explaining items again
 
-- Read the findings file of the branch first, when it exists. The
-  `implementation-review` skill gives its path.
-- Restate every field. Do not point to an earlier message for a field.
-- Keep the recorded option letters of each item.
-- When the record gives no wider fix, look for one. Add the wider fix that
-  you find as a new option with the next free letter.
-- Keep the recorded number when no other item in the message has it.
-  Otherwise, give the next free number. Then add the record and the old
-  number to the **Source** line.
-- List the items by severity, also when the recorded numbers are then out
-  of sequence. Do not renumber them for this.
-- Always write **Background**, **Problem**, **Impact if no action**,
-  **Root question**, and **Options**. They explain the item, so you can
-  write them from the record, the code, and the docs.
-- When the record gives no **Left out** line, write "Not recorded".
-- Add **Terms** under the rule above, also when the record has none. You
-  can write it from the code and the docs.
-- Some fields are judgments: severity, likelihood, effort, category,
-  recommendation, and Action. When the record does not give a judgment,
-  give your own. Add "(estimate)" after it.
-- When you cannot find the location, write "Not found". When you find no
-  previous examples, write "None found".
+Read [references/explaining-items-again.md](references/explaining-items-again.md)
+before you give an earlier item again. This happens when the user asks
+for an explanation, more detail, a shorter answer, or a re-print. It also
+happens when a changed open item goes into a later message. The reference
+says how to fill each field from the record.
 
 ## Final report
 
@@ -287,8 +280,9 @@ End every task with a final report. Under **Fixed**, **Deferred**, and
   check. Name each check that was skipped or blocked, and give the reason.
   Name each unrelated flaky test with its failure text, rerun outcome, and
   suspected source.
-- **Open:** the items that still need the user. For each open item, say
-  what it blocks. Add the open plan TODOs. Add the follow-up items of the
+- **Open:** one line for each open item. The line gives the number, the
+  title, the severity, the recommended option in a few words with its
+  letter, and what the item blocks. Add the open plan TODOs. Add the follow-up items of the
   blocked wider fixes and of the problems outside the review scope, and
   other skipped or blocked work. A blocked wider fix is one line per class.
   The line gives the wider fix, its effort, the item numbers it covers, and

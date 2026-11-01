@@ -1,6 +1,6 @@
 ---
 name: plans
-description: Use before you write any code or start an implementation, when the user asks for a plan, before you create, edit, tick, or delete a plan under plans/, when you add a decision to a plan, when you discover a TODO or blocked work during implementation, when a milestone has UI or mockup work, when you would paste command output or a review report into a plan, when a review finding is deferred or stays open, when you add, list, or fix a follow-up item, and before you open a pull request for a plan.
+description: Use before you write any code or start an implementation, when the user asks for a plan, before you create, edit, tick, or delete a plan under plans/, when you add a decision to a plan, when you discover a TODO or blocked work during implementation, when a milestone has UI or mockup work, when you would paste command output or a review report into a plan, when a finding is deferred or stays open, when you add, list, or fix a follow-up item, and before you open a pull request for a plan.
 ---
 
 # Plans
@@ -14,7 +14,9 @@ change. [templates/plan.md](templates/plan.md) is the starting point.
 - Write the code of a change only after the user approves its plan.
 - Create a plan only with the user's consent, and only after the relevant
   spec or protocol docs give enough context to plan the work safely. A
-  request for the change gives that consent.
+  request for the change gives that consent. The user's choice of its
+  approach in a brainstorm also gives it. Do not ask for consent in
+  either case.
 - When no user message or recorded decision chooses the approach of the
   change, brainstorm first with the `brainstorming` skill. The plan starts
   from the approach that the brainstorm chose.
@@ -49,7 +51,7 @@ change. [templates/plan.md](templates/plan.md) is the starting point.
 
 - Write each decision in the layout of the `decisions-and-findings`
   skill. Its options rule applies: write the root question, widen and
-  narrow the approaches, and name each condition that every option keeps.
+  narrow the approaches, and name each assumption that all options share.
 - When you add a decision to a plan, run the options check of the
   `implementation-review` skill over it. Do this before you report the
   decision. The check is a fresh read-only `second-pass review agent`
@@ -65,6 +67,9 @@ change. [templates/plan.md](templates/plan.md) is the starting point.
 
 - Break the work into concrete units called milestones. At the end of each
   milestone the product works. Never leave the code base or feature broken.
+- Keep each milestone small. A small milestone is easier to delegate, to
+  check, and to review. Its checks find a problem early. Prefer several
+  small milestones to one large milestone.
 - Each milestone has a short summary and a TODO checklist.
 - Each milestone has a `Depends on:` line: `none`, or the milestones that
   it needs. A plan review checks it. The `delegating` skill uses it.
@@ -121,16 +126,16 @@ change. [templates/plan.md](templates/plan.md) is the starting point.
 - Every plan ends with a commit-and-push TODO, a review TODO, a TODO that
   deletes the plan, and a pull request TODO. The review TODO directs a
   reviewer to use the `implementation-review` skill against `origin/main`
-  after the push. The reviewer reports the findings. Then the review-fix
-  rule applies: fix the `fix now` findings, record follow-up items for the
+  after the push. The reviewer reports the findings. Then the fix rule
+  applies: fix the `fix now` findings, record follow-up items for the
   rest, re-review once, and report. Read an older review TODO under the
-  same rule, also when it says "without changing the implementation" or
-  "fix the `Auto-fix: yes` findings".
+  same rule, also when it says "the review-fix rule", "without changing
+  the implementation", or "fix the `Auto-fix: yes` findings".
 - The last two milestone TODOs delete the plan and open the pull request.
   The section "Deleting the plan" says when they run, also when the user
   asks for the pull request early. The `finish-work` skill gives the pull
   request. An older plan without these TODOs follows the same rule.
-- Record each open or deferred review finding, each blocked or split-off
+- Record each open or deferred finding, each blocked or split-off
   wider fix, and each problem outside the review scope as a follow-up
   item, not as a line in the plan. The section "Follow-up items" says how.
 - An open finding blocks only dependent work, as the `delegating` skill says.
@@ -196,7 +201,7 @@ plan that is already on `main` without the user's approval.
 ## Live and history
 
 In an active plan, completed milestones and checked TODOs are history; all
-other content is live. In a completed plan, open review findings and
+other content is live. In a completed plan, open findings and
 unchecked post-merge follow-ups are live; all other content is history. Do
 not change the words of history. See the `git-commit` skill for stale
 references and history links.

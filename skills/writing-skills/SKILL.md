@@ -71,7 +71,8 @@ between a real and a fake clock."
   it exists.
 - Write in Simplified Technical English, as the always-on rules say.
 - Use one word for one thing. When a skill defines a term, use that term
-  each time.
+  each time. Give each word one meaning. When two things share a word,
+  rename one.
 - In a list, each item names its subject. A pronoun points to the lead-in
   sentence of the list only, never to another item.
 - When a reference prompt returns verdict lines or slots, say in the skill

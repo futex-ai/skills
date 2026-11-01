@@ -60,8 +60,8 @@ layout.
   add a second runner to a package.
 - Unit tests do not use the real network, file system, clock, or a
   running server. Inject or stub those at the module boundary.
-- Tests must not assert elapsed time. See the `deterministic-tests`
-  skill, including its ESLint guard.
+- Tests must not assert elapsed time. See the `testing` skill,
+  including its ESLint guard.
 
 ## Diagnostics
 

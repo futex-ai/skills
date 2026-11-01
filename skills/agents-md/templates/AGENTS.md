@@ -37,7 +37,11 @@ skill at that moment instead of guessing the rule.
   says to use one.
 - End every task with a final report: what changed and the commit, each
   decision and its outcome, the checks that ran, anything skipped, and the
-  outstanding decisions or review items that still need the user.
+  outstanding decisions or findings that still need the user. When a
+  decision or a finding still needs the user, start the message with a
+  horizontal rule and a ⚠️ line that names it. Give it in full when it
+  is new or changed, or when the user asks. Otherwise give it in one
+  line.
 
 ## Commands
 
@@ -53,7 +57,9 @@ skill at that moment instead of guessing the rule.
 
 ## Repository rules
 
-<Rules that only this repository needs. Examples:>
+<Rules for work across this repository that only this repository needs. A
+rule for work on one application, package, or feature goes in the
+`README.md` next to its code. Examples:>
 
 - Changed TypeScript files are capped at 300 lines and protocol Markdown at
   250 lines by the repository gate.

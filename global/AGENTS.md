@@ -18,12 +18,12 @@ at that moment instead of guessing the rule.
 
 ## Decisions
 
-- Before you send a message with decisions, review findings, or a final
+- Before you send a message with decisions, findings, or a final
   report, read the `decisions-and-findings` skill. It says which questions
   are decisions. It gives the layout and the writing limits.
 - When a task needs decisions from the user, ask for all of them in one
   message, not one at a time. Number each decision. List the decisions and
-  the review findings by severity, highest first. For each give its
+  the findings by severity, highest first. For each give its
   severity and effort, the terms and the background that a reader without
   prior knowledge needs, the problem, the impact if no action is taken,
   lettered options, and the recommended option with one sentence of
@@ -40,8 +40,11 @@ at that moment instead of guessing the rule.
   step. Report it to the user as outstanding. Say what it blocks.
 - End every task with a final report: what changed and the commit, each
   decision and its outcome, the checks that ran and their results, anything
-  skipped or blocked, and the outstanding decisions or review items that
-  still need the user.
+  skipped or blocked, and the outstanding decisions or findings that
+  still need the user. When a decision or a finding still needs the
+  user, start the message with a horizontal rule and a ⚠️ line that
+  names it. Give it in full when it is new or changed, or when the user
+  asks. Otherwise give it in one line.
 
 ## Working
 
@@ -66,27 +69,6 @@ at that moment instead of guessing the rule.
   reports, findings files, verification evidence, measurements, and logs.
   Do not create evidence files in the repository. Add `.context/` to
   `.gitignore` if it is missing.
-
-## Testing
-
-- Test each requirement that a change adds or changes once, at the lowest
-  level that fails without the change. Read the `testing` skill before you
-  plan, write, change, or remove a test.
-- When you find a bug, add a test that captures the failure first, then fix
-  it.
-- See each new test fail. Write it before the code when you know the
-  expected result. Otherwise break the code once, see the test fail, and
-  restore the code.
-- Keep one-time proofs out of the test suite. Save the output of
-  equivalence, migration, stress, and third-party-tool checks under
-  `.context/`.
-- Never delete, skip, weaken, or special-case a failing test to get a
-  pass. When a test seems wrong, stop and ask.
-- When you add a feature, run a smoke test: start the server, run the
-  command, open the page.
-- Tests must not assert elapsed wall-clock time. Use operation counts,
-  captured inputs, event order, or fake-clock time. See the
-  `deterministic-tests` skill.
 
 ## Safety
 

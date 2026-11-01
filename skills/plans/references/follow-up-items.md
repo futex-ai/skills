@@ -8,13 +8,15 @@ layout.
 ## Adding an item
 
 - Add an item for each of these:
-  - a review finding with `Action: fix after merge`
-  - a review finding with `Action: ask the user`
+  - a finding with `Action: fix after merge`
+  - a finding with `Action: ask the user`
   - a blocked wider fix of a fixed finding, one item per class
   - a wider fix that the agent split off a fixed finding, one item per
     class
   - a problem that the review lists under `Outside the scope`
   - an unchecked post-merge task of a plan that the change deletes
+  - the work and the open decisions of a plan that will not merge, such
+    as the plan of a closed workspace
 - Name the file after the problem in concise kebab-case, for example
   `plans/follow-ups/cap-retry-loop.md`.
 - Before you add an item, search `plans/follow-ups/` for the same problem.
@@ -34,29 +36,57 @@ not have the plan, the review report, or the findings file.
 - Do not depend on a plan, a review report, a findings file, a file under
   `.context/`, a pull request, a chat, or another workspace.
 - In the body, do not use a number that only another document explains,
-  such as "user item 104", "finding 11", or "M14". Say what it stands
-  for. For a decision, give its choice and its date.
+  such as "user item 104", "finding 11", "M14", or "condition 3". Say
+  what it stands for. For a decision, give its choice and its date.
 - Name the live files of the repository by path: code, docs, and other
   follow-up items. Say what the item needs from each file.
 - The **Added** line can name the source and its finding number, as
   history. The body can end with a permalink to the source. The item must
   make sense without them.
+- An item holds one root question, or one post-merge task. When the work
+  has more than one open question, follow "Work with more than one open
+  question" below.
 - Write each field of the layout. When the source does not give a field,
   write it from the code and the docs. "Explaining items again" in the
-  `decisions-and-findings` skill says how. Add "(estimate)" after each
-  judgment that no review gave, also after the severity, the likelihood,
-  and the effort. The writer of the item always grades Confidence and
-  Harder later. They take no "(estimate)".
+  `decisions-and-findings` skill says how.
 - Keep every fact of the source. When a finding check moved a finding
   outside the scope, start from its full text in the findings file, not
   from its one line.
 - A flaky test gives its name, its failure text, the rerun outcome, and
   the suspected source.
-- When one item covers the problem of another, merge the two items. When
-  two linked items stay apart, give each a **Related** line. Name the
-  other file, and say what the link means.
+- When one item covers the problem of another, merge the two items. A
+  parent item and its decision items stay apart. When two linked items
+  stay apart, give each a **Related** line. Name the other file, and say
+  what the link means.
 - Before you commit the item, read it as a reader without context. Add
   each fact that you had to look up somewhere else.
+
+## Work with more than one open question
+
+An item holds one root question, as the item layout of the
+`decisions-and-findings` skill says. Some work has more than one open
+question, for example the open decisions of one plan. Split that work. A
+parent item holds the work. A decision item holds one open question of
+that work.
+
+- Apply the decision test of the `decisions-and-findings` skill to each
+  open question of the work.
+- Record each question that fails the test as a design call in the
+  parent item. Give its choice, its reason, and its date.
+- Write one decision item for each question that passes the test. Give
+  it the kind Needs decision and the full layout. Copy into it the facts
+  that its question needs.
+- The parent item holds the approach, the requirements, the design
+  calls, and each answer of the user with its date.
+- The **Reason** of the parent item names each open decision item. While
+  a decision item is open, the parent item has the kind Needs decision
+  and `Action: ask the user`. Its work depends on an open item, so the
+  decision test holds.
+- The **Related** line of each decision item names the parent item and
+  the other decision items of the work. It says that the work waits for
+  the answer.
+- When one question or no question passes the test, write one item. It
+  holds the work, the design calls, and the question that passes.
 
 ## The priority score
 
@@ -105,7 +135,14 @@ with a missing grade. Add the missing grade when you next edit the item.
   commit message.
 - When the user answers an item that needs a decision, apply the answer in
   a branch, and delete the item in that branch.
-- When the user drops an item, delete its file.
+- Do not start the work of a parent item while it names an open decision
+  item. Give the user its open decision items instead, in one message.
+- To apply the answer to a decision item, record the choice and its date
+  in the parent item. Delete the decision item in the same branch. After
+  the last answer, update the **Reason**, the **Kind**, and the **Action**
+  of the parent item.
+- When the user drops an item, delete its file. When the user drops a
+  parent item, also delete its decision items.
 
 ## Listing the items
 

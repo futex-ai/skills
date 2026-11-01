@@ -39,7 +39,8 @@ Make the lint message name the rule's doc. Test the rule with
   per-first-path counts, restores every original on return or throw, rejects
   nested calls, and fails a callback that returns a thenable because async
   work can escape the counting window. Pair it with a two-size assertion
-  that applies the acceptance relations from the skill. Counted code must
+  that applies the operation-count relations in
+  [deterministic-tests.md](deterministic-tests.md). Counted code must
   call `fs` and `path` through their default imports; a named import escapes
   the wrappers, and the positive smaller-size count catches that.
 - A duration-reporting helper that returns the callback's result, reports

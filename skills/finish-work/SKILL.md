@@ -32,9 +32,9 @@ name the blocker, and list the checks that did run.
   verification. Only the complete gate proves the work.
 - If a test that the diff does not touch fails and then passes on a rerun,
   it is an unrelated flaky test. Do not fix it in this branch. Report it
-  under the rules in the `deterministic-tests` skill.
+  under the rules for unrelated flaky tests in the `testing` skill.
 - A flaky test that the diff adds or changes may be fixed without asking
-  only under the flaky-test rule in the `deterministic-tests` skill.
+  only under the flaky-test rule of the `testing` skill.
 - Documentation-only or plan-only changes, including initial plan creation,
   do not require the gate. Validate the changed Markdown and review the diff
   instead. For a plan with a new decision, run the options check over it,
@@ -75,7 +75,7 @@ name the blocker, and list the checks that did run.
   check confirms its finding, finds its links, and checks its options. A
   finding that is not real or not in the scope is removed. The check
   corrects a wrong severity or category in place.
-- Apply the review-fix rule. Make the final call on the outcome of each
+- Apply the fix rule. Make the final call on the outcome of each
   confirmed finding, with the merged options. Fix the findings with
   `Action: fix now`, with the option that each names. Record a follow-up
   item for each other finding and for each wider fix that you split off,
@@ -103,12 +103,17 @@ name the blocker, and list the checks that did run.
 Write the final message in Simplified Technical English, with the layout
 and labels in the `decisions-and-findings` skill. Include:
 
+- Each item that still needs the user's answer, also an item from an
+  earlier message. Name it in the warning line at the top of the message.
+  Give it in full when it is new or changed, or when the user asks.
+  Otherwise give it in one line, as "Open items" in the
+  `decisions-and-findings` skill says.
 - What changed, the commit, and the branch or the pull request.
 - The checks that ran and their results. Name any check that was skipped or
   could not run, and why.
 - The test cost of the change: each test that it adds or removes, with its
   run time, as the `testing` skill says.
-- The fixed review findings, the deferred findings and wider fixes with
+- The fixed findings, the deferred findings and wider fixes with
   their follow-up items, and the findings that need a decision, each with
   a recommendation. Keep them in three lists.
 - The number of open follow-up items in the repository.
@@ -149,4 +154,7 @@ item only when the user asks for it.
       asked.
 - [ ] Final report in STE with fixed, deferred, and open findings, and the
       number of open follow-up items.
+- [ ] Each item that still needs the user named in the warning line at
+      the top, also an item from an earlier message. New and changed
+      items given in full, the others in one line.
 - [ ] After the merge, the user reminded of the open follow-up items.

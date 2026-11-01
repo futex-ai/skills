@@ -17,12 +17,12 @@ Codex, and with any other agent that reads the
 - `scripts/check.sh`: validates every skill.
 - `tests/`: shell tests for the scripts. `tests/run.sh` runs them all.
 - `plans/follow-ups/`: follow-up items, one file each, as the `plans`
-  skill says. `skills/plans/scripts/follow-ups.sh` lists them.
+  skill says.
 
 ## How the pieces fit
 
 1. **Always-on rules** in `global/AGENTS.md` apply in every session: writing
-   style, working habits, testing habits, safety rules. Keep this file short.
+   style, working habits, safety rules. Keep this file short.
    Every line costs context on every turn.
 2. **Skills** hold the detailed procedures. An agent sees the name and
    description of every installed skill, and loads a skill when the moment
@@ -31,13 +31,14 @@ Codex, and with any other agent that reads the
 3. **The per-repository `AGENTS.md`** holds what is specific to that
    repository: commands, layout, caps, product locations, review focus, and
    the choices that a skill leaves to the repository, such as the type
-   generator, the test runner, or the shared UI library. It does not
-   repeat the skill list. It does repeat the communication preference
-   (Simplified Technical English, faithful reporting, batched decisions in
-   the reply text and never in a question tool, final report) so that it
-   reaches an agent that does not have the global file installed. It
-   names one skill, `brainstorming`, so that an open idea gets a
-   brainstorm before any plan or change.
+   generator, the test runner, or the shared UI library. A rule for work
+   on one application, package, or feature lives in the `README.md` next
+   to its code instead. It does not repeat the skill list. It does repeat
+   the communication preference (Simplified Technical English, faithful
+   reporting, batched decisions in the reply text and never in a question
+   tool, final report) so that it reaches an agent that does not have the
+   global file installed. It names one skill, `brainstorming`, so that an
+   open idea gets a brainstorm before any plan or change.
 
 ## Skills
 
@@ -48,12 +49,12 @@ Codex, and with any other agent that reads the
 | `plans` | Before you write any code or start an implementation, when the user asks for a plan, before you create, edit, tick, or delete a plan, when you add a decision to a plan, when you find a TODO during implementation, when you add, list, or fix a follow-up item, and before you open a pull request for a plan. |
 | `implementation-review` | After you push, before you run or apply a review, when the user answers a review finding, when you decide whether to fix a finding now or after the merge, and when the user asks for a code review. |
 | `delegating` | When you work on a plan, before you delegate a task, create a Conductor workspace, session, or routine, start a subagent or a reviewer, or split work across workspaces, and when a model blocks a request. |
-| `decisions-and-findings` | Before you raise a question as a decision, and before you send decisions, review findings, or a final report, when you write the options of a decision, also under a brief output style. |
-| `testing` | Before you plan, write, change, port, or remove a test, when a plan, a review, or a brief asks for a test, when a test fails and you consider changing the test, and when the user asks to audit tests or cut test time. |
-| `deterministic-tests` | A test flakes, would assert elapsed time, or tempts you to add a sleep, a retry, or a longer time limit. |
+| `decisions-and-findings` | Before you raise a question as a decision, and before you send decisions, findings, or a final report, when you write the options of a decision, also under a brief output style. |
+| `findings` | The user types `/findings`, or asks to see, list, or reprint the open items, the findings, or the decisions of the conversation. |
+| `testing` | Before you implement a feature, a behaviour change, or a bug fix, before you plan, write, change, port, or remove a test, when a plan, a review, or a brief asks for a test, when a test fails or flakes, when a test would sleep, retry, or assert elapsed time, and when the user asks to audit tests or cut test time. |
 | `git-commit` | Before and after you commit, and when you write a commit or pull request message. When a diff deletes or renames something, or when you find dead code. |
 | `git-merge` | Before you merge or rebase, when you resolve conflicts, and after each merge commit. |
-| `documentation` | Before you edit a README, a doc, or a protocol doc, when a change could leave a doc stale, when you decide where a sentence belongs, and when a change or a review option conflicts with a protocol doc. |
+| `documentation` | Before you edit a README, a doc, or a protocol doc, before you add a rule to `AGENTS.md`, when a change could leave a doc stale, when you decide where a sentence belongs, and when a change or a review option conflicts with a protocol doc. |
 | `rust` | Before you edit Rust, add a crate or a dependency, or define an error type. |
 | `typescript` | Before you edit TypeScript or JavaScript, add an npm dependency, or set up a package. |
 | `databases` | Before you touch migrations, a schema, Diesel code, or store crates. |
@@ -81,9 +82,9 @@ implementor. It keeps the gate, the review, and the pull request.
 | 2 | Plan | Orchestrator | `plans`, `delegating`, `documentation`, `testing`, `decisions-and-findings`, `implementation-review`, `finish-work`, `git-commit` |
 | 3 | Milestone 1: mockups | `ui implementor` | `delegating`, `mockups`, `product-ui`, `typescript` |
 | 4 | Milestone 2: docs | `docs implementor` | `delegating`, `documentation` |
-| 5 | Backend milestones | `non-ui implementor` | `delegating`, `rust`, `databases`, `shared-types`, `testing`, `deterministic-tests`, `finish-work` |
+| 5 | Backend milestones | `non-ui implementor` | `delegating`, `rust`, `databases`, `shared-types`, `testing`, `finish-work` |
 | 6 | UI milestones | `ui implementor` | `delegating`, `product-ui`, `typescript`, `shared-types`, `mockups`, `testing`, `finish-work` |
-| 7 | Verify | Orchestrator | `finish-work`, `testing`, `deterministic-tests`, `documentation` |
+| 7 | Verify | Orchestrator | `finish-work`, `testing`, `documentation` |
 | 8 | Commit and push | Orchestrator | `git-commit`, `git-merge` |
 | 9 | Review and fix | Review agents, then orchestrator | `implementation-review`, `delegating`, `decisions-and-findings`, `testing`, `plans`, `git-commit` |
 | 10 | Pull request | Orchestrator | `plans`, `git-commit`, `finish-work` |

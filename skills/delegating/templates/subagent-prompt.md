@@ -15,8 +15,7 @@ Context:
 - <the file paths to read first>
 - <the commands that apply, for example the targeted test command from
   `AGENTS.md`>
-- <the skills to read, for example `deterministic-tests` for a flaky
-  test>
+- <the skills to read, for example `testing` for a flaky test>
 
 Steps:
 1. Read <the files> and understand what each test checks.

@@ -23,11 +23,12 @@ when to read it. [templates/AGENTS.md](templates/AGENTS.md) is the template.
 | Monolith section | Now lives in |
 | --- | --- |
 | General: response style and reporting | the template's `## Communication` section, the global always-on rules, and `decisions-and-findings` |
-| General: retries, file length, scratch output, testing habits, safety | the global always-on rules |
+| General: retries, file length, scratch output, safety | the global always-on rules |
+| General: where application-, crate-, and feature-specific rules live | `documentation` |
 | General: what to test, test levels, failing tests, removing tests | `testing` |
-| General: targeted tests, gate, commit, push, review loop | `finish-work` |
+| General: targeted tests, smoke tests, gate, commit, push, review loop | `finish-work` |
 | General: review format and auto-fix | `implementation-review`, with the layout in `decisions-and-findings` |
-| General: flaky tests, no wall-clock assertions | `deterministic-tests` |
+| General: flaky tests, no wall-clock assertions | `testing` |
 | General: product data, copy, left-border rule | `product-ui` |
 | Readme, Docs, Protocol Docs | `documentation` |
 | Mockups | `mockups` |
@@ -62,6 +63,9 @@ when to read it. [templates/AGENTS.md](templates/AGENTS.md) is the template.
      the lint that enforces them, link checks, generated directories,
      product locations and the shared UI library, review focus areas,
      production status. Keep it in the matching template section.
+   - **Package-specific**: a rule for `## Repository rules` that applies
+     only to work on one application, package, or feature. Move it to the
+     `README.md` next to its code, as the `documentation` skill says.
    - **Conflicting**: the repository says something different from the
      shared skill, for example an older plan index rule or an older review
      rule. The user decides.
@@ -71,7 +75,8 @@ when to read it. [templates/AGENTS.md](templates/AGENTS.md) is the template.
    The new `AGENTS.md` replaces content on `origin/main`, so change no
    tracked file in this repository before this checkpoint.
 5. Write the new `AGENTS.md` from the template with the decisions applied.
-   Fill every section. Keep `CLAUDE.md` as a symlink to `AGENTS.md`.
+   Fill every section. Move each package-specific rule to its `README.md`.
+   Keep `CLAUDE.md` as a symlink to `AGENTS.md`.
 6. Delete the approved files: the `docs/dev/*.md` files now covered by
    skills, and `docs/implementation-review-prompt.md` if the shared review
    prompt replaces it. Then search `docs/`, `plans/`, and every `README.md`
@@ -91,10 +96,12 @@ This task has one checkpoint message and one final report.
 
 **The checkpoint message**, after classification and before any change:
 
-- One line with the counts: rules covered, kept, conflicting, uncovered.
+- One line with the counts: rules covered, kept, moved, conflicting,
+  uncovered.
 - One line with the `futex-ai/skills` commit from step 1.
 - The repository-specific rules you will keep, grouped by template section,
-  one line each. Do not quote the old file at length.
+  and the package-specific rules you will move, grouped by `README.md`.
+  One line each. Do not quote the old file at length.
 - The numbered decisions. Every conflict, every uncovered rule, and every
   file deletion is one decision. Give the repository's wording and the
   shared skill's wording when there is one.
@@ -104,12 +111,14 @@ This task has one checkpoint message and one final report.
   - An uncovered rule offers: A, add it to a named shared skill with the
     proposed text; B, keep it as a repository rule; C, drop it.
   - A deletion offers: A, delete and update links; B, keep the file.
-- A short list of what happens after the answers: write the file, delete
-  the approved files, update links, run checks, commit, push.
+- A short list of what happens after the answers: write the file, move
+  the package-specific rules, delete the approved files, update links, run
+  checks, commit, push.
 
 **The final report**, after the commit, adds to the standard report:
 
 - The line count of `AGENTS.md` before and after.
-- The files deleted and the links updated.
+- The package-specific rules moved, the files deleted, and the links
+  updated.
 - The proposed shared-skill changes, with their text, so that the user can
   apply them in the skills repository.

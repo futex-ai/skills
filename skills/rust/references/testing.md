@@ -24,4 +24,4 @@
   directory. Do not use inline snapshots.
 - Unit tests mock trait boundaries with `unimock`; see
   [architecture.md](architecture.md). Tests must not assert elapsed time;
-  see the `deterministic-tests` skill.
+  see the `testing` skill.

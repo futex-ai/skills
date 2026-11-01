@@ -1,13 +1,9 @@
----
-name: deterministic-tests
-description: Use when a test fails and then passes on a rerun, when a test is flaky or timing-dependent, when a test would assert elapsed time, a timeout, or performance, when you want to add a sleep, a retry, or a longer time limit to a test, when you choose between a real and a fake clock, and when a review finding concerns a flaky, slow, or low-value test, gate, or check.
----
-
 # Deterministic tests
 
 Required tests check correctness without depending on machine speed. A test
 that passes on a fast machine and fails on a slow one is a bug in the test.
-The `testing` skill says what earns a test, and how to write and remove one.
+These rules cover time in tests, flaky tests, and slow tests, gates, and
+checks.
 
 ## Assertion rule
 
@@ -56,7 +52,7 @@ Use these instead of elapsed-time assertions.
 - Opt-in benchmarks outside the test tree are outside this rule.
 
 A lint can enforce the assertion rule in JavaScript and TypeScript test
-trees; see [references/eslint-guard.md](references/eslint-guard.md).
+trees. See [eslint-guard.md](eslint-guard.md).
 
 ## Flaky-test rule
 
@@ -85,12 +81,16 @@ fix it in this branch, so that one fix in a separate branch reaches every
 open branch quickly. The implementation review lists it under
 `Outside the scope`, not as a finding. Report it in the final message, and
 record it as a follow-up item, as the `plans` skill says. Add the test
-name, the failure text, the rerun outcome, and the suspected source.
+name, the failure text, the rerun outcome, and the suspected source. Grade
+its severity with the severity scale of the `decisions-and-findings` skill.
 
 ## Slow and low-value tests
 
-Slow, custom, or low-value tests, gates, lints, and checks get the outcome
-`ask the user`. Ask the user whether to fix or remove each one, and state
-what it protects and how long it runs. A test that the removal rule of the
-`testing` skill covers is removed without asking, with the proof that the
-rule requires.
+Make a slow test faster without asking when you remove no assertion and
+loosen none. To remove a test, follow the removal rule of the `testing`
+skill. Make a slow gate, lint, or check faster without asking when it
+still checks everything that it checked before. An option that removes,
+weakens, or replaces a gate, lint, or check needs the user, as the
+decision test of the `decisions-and-findings` skill says. Then ask
+whether to fix or remove it, and state what it protects and how long it
+runs.
