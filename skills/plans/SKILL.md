@@ -14,7 +14,9 @@ change. [templates/plan.md](templates/plan.md) is the starting point.
 - Write the code of a change only after the user approves its plan.
 - Create a plan only with the user's consent, and only after the relevant
   spec or protocol docs give enough context to plan the work safely. A
-  request for the change gives that consent.
+  request for the change gives that consent. The user's choice of its
+  approach in a brainstorm also gives it. Do not ask for consent in
+  either case.
 - When no user message or recorded decision chooses the approach of the
   change, brainstorm first with the `brainstorming` skill. The plan starts
   from the approach that the brainstorm chose.
