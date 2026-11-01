@@ -38,8 +38,10 @@ skill at that moment instead of guessing the rule.
 - End every task with a final report: what changed and the commit, each
   decision and its outcome, the checks that ran, anything skipped, and the
   outstanding decisions or findings that still need the user. When a
-  decision or a finding still needs the user, name it in the first
-  sentence. Give it in full, also when an earlier message gave it.
+  decision or a finding still needs the user, start the message with a
+  horizontal rule and a ⚠️ line that names it. Give it in full when it
+  is new or changed, or when the user asks. Otherwise give it in one
+  line.
 
 ## Commands
 

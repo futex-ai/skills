@@ -104,8 +104,9 @@ Write the final message in Simplified Technical English, with the layout
 and labels in the `decisions-and-findings` skill. Include:
 
 - Each item that still needs the user's answer, also an item from an
-  earlier message. Name it in the first sentence. Give it in full, as
-  "Open items" in the `decisions-and-findings` skill says.
+  earlier message. Name it in the warning line at the top of the message.
+  Give it in full when it is new or changed, and in one line otherwise,
+  as "Open items" in the `decisions-and-findings` skill says.
 - What changed, the commit, and the branch or the pull request.
 - The checks that ran and their results. Name any check that was skipped or
   could not run, and why.
@@ -152,6 +153,7 @@ item only when the user asks for it.
       asked.
 - [ ] Final report in STE with fixed, deferred, and open findings, and the
       number of open follow-up items.
-- [ ] Each item that still needs the user named in the first sentence and
-      given in full, also an item from an earlier message.
+- [ ] Each item that still needs the user named in the warning line at
+      the top, also an item from an earlier message. New and changed
+      items given in full, the others in one line.
 - [ ] After the merge, the user reminded of the open follow-up items.

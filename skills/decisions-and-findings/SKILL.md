@@ -70,7 +70,9 @@ Write in Simplified Technical English (ASD-STE100):
 
 ## Message order
 
-1. Start with one or two sentences that give the result or the question.
+1. When an item is open, start with the warning line that the "Open
+   items" section gives. Then give one or two sentences with the result
+   or the question.
 2. When the items share background, add a background paragraph. Say what
    the project is, what the feature does, and what changed. Use six
    sentences or fewer. The **Background** of each item then adds only what
@@ -91,12 +93,29 @@ answer. It stays open until the user answers it, also while you work on
 other tasks. The user must not miss it. While an item is open, each final
 report and each message with items does these things:
 
-- Its first sentence names the open items, as in "Two decisions need
-  your answer: items 4 and 7."
-- It gives each open item in full under the heading
-  `## Needs your answer`, before the final report. This includes each
-  open item of an earlier message. Do not shorten an open item to one
-  line or to a pointer to the earlier message.
+- It starts with a horizontal rule and a warning line that names the open
+  items, split out from the rest of the message:
+
+  ```markdown
+  ---
+
+  ⚠️ Three items still need your answer: items 1, 2, and 3
+
+  <The rest of the message.>
+  ```
+
+- It gives each new or changed open item in full under the heading
+  `## Needs your answer`, before the final report. Under the title of a
+  changed item, one sentence says what changed.
+- It gives each other open item one line under **Open** in the final
+  report. Give such an item in full only when the user asks for it. The
+  `findings` skill re-prints every item on request.
+
+An item changed when one of its fields changed since the last message
+that gave it in full. The fields are **Severity**, **Likelihood**,
+**Effort**, **Problem**, **Impact if no action**, **Options**,
+**Recommendation**, **Action**, and **Related**. New words with the same
+meaning are not a change.
 
 ## Item order
 
@@ -237,9 +256,9 @@ entry shape under a **Terms** heading.
 
 Read [references/explaining-items-again.md](references/explaining-items-again.md)
 before you give an earlier item again. This happens when the user asks
-for an explanation, more detail, or a shorter answer. It also happens
-when an open item goes into a later message. The reference says how to
-fill each field from the record.
+for an explanation, more detail, a shorter answer, or a re-print. It also
+happens when a changed open item goes into a later message. The reference
+says how to fill each field from the record.
 
 ## Final report
 
@@ -261,8 +280,9 @@ End every task with a final report. Under **Fixed**, **Deferred**, and
   check. Name each check that was skipped or blocked, and give the reason.
   Name each unrelated flaky test with its failure text, rerun outcome, and
   suspected source.
-- **Open:** one line for each open item: its number, its title, and what
-  it blocks. Add the open plan TODOs. Add the follow-up items of the
+- **Open:** one line for each open item. The line gives the number, the
+  title, the severity, the recommended option in a few words with its
+  letter, and what the item blocks. Add the open plan TODOs. Add the follow-up items of the
   blocked wider fixes and of the problems outside the review scope, and
   other skipped or blocked work. A blocked wider fix is one line per class.
   The line gives the wider fix, its effort, the item numbers it covers, and
