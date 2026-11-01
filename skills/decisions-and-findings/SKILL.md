@@ -97,12 +97,16 @@ report and each message with items does these things:
   items, split out from the rest of the message:
 
   ```markdown
-  ---
+  ***
 
   ⚠️ Three items still need your answer: items 1, 2, and 3
 
   <The rest of the message.>
   ```
+
+  Write the horizontal rule as `***`, not `---`. Conductor reads `---` on
+  the first line as the start of YAML front matter. Then Conductor shows
+  every list and quote of the message as plain text.
 
 - It gives each new or changed open item in full under the heading
   `## Needs your answer`, before the final report. Under the title of a
