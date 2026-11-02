@@ -30,7 +30,8 @@ Terms:
 
 ## Decisions
 
-The user answered these items on 2026-11-01, after a brainstorm.
+The user answered these items on 2026-11-01, after a brainstorm, so no
+options check ran.
 
 - **Item 1, A.** Write a new, small `coordinator` skill on this branch,
   from the request. Take the reader and its tests from PR #37, and add
@@ -59,8 +60,6 @@ The brainstorm left out these approaches:
 - The coordinator mode in the Claude Code binary, which has no docs, and
   a custom output style, which Conductor sets for each session.
 
-No options check ran, because the user answered each decision.
-
 ## Design
 
 Each design call is marked "My call", with its reason, on 2026-11-01.
@@ -81,8 +80,8 @@ Each design call is marked "My call", with its reason, on 2026-11-01.
   settles item 5 of PR #37 without a rename or an archive of a session.
 - It never edits, commits, or pushes in its own checkout. It only
   fast-forwards it, and writes only under `.context/coordinator/`.
-- Its board is `.context/coordinator/state.md`. My call: when the context
-  grows too long, a new session takes over from it after `/coordinator`.
+- Its board is `.context/coordinator/state.md`. My call: a new session
+  takes over from it after `/coordinator`.
 
 ### What goes to the user
 
@@ -162,10 +161,11 @@ to merge `main`, and names the new follow-up items, as `finish-work` says.
 
 ### The role hook
 
-- `skills/coordinator/scripts/role.sh start` writes `coordinator` to
-  `~/.futex/roles/<CLAUDE_CODE_SESSION_ID>`, and `stop` removes it.
-  Without a session id, it says that the hook needs Claude Code. My
-  call: the marker names a skill, so that another role can use the hook.
+- The skill's `role.sh start` writes `coordinator` to `~/.futex/roles/<id>`,
+  and `stop` removes it. `<id>` is `CONDUCTOR_SESSION_ID` when set, else
+  the Claude session id, which `/clear` changes (M3 review, finding 1).
+  Without a Claude session id, it says that the hook needs Claude Code.
+  My call: the marker names a skill, so that another role can use it.
 - `scripts/role-hook.sh` reads the hook input without jq. For a marked
   session it prints a short reminder on `UserPromptSubmit`, and on
   `SessionStart`, also after a compaction, to read the skill file now.

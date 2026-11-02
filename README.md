@@ -131,6 +131,8 @@ hook prints a short reminder. At a session start, also after a compaction,
 it tells the agent to read the skill file again. `install.sh --hooks` adds
 the hook, as [Keep an install current](#keep-an-install-current) says.
 Without it, as in Codex, type `/coordinator` again after a compaction.
+Outside Conductor, `/clear` starts a new session, so type it after a
+`/clear` too.
 
 ## Install
 
@@ -219,9 +221,10 @@ seven days.
 the same two events. It reminds a session of its role, such as the
 [coordinator](#coordinating-several-changes), on each prompt and at each
 session start. Claude Code waits for it, so that the reminder reaches the
-agent before it answers. An install that already has the update hooks gets
-the role hook when `install.sh --hooks` runs again. The update alone does
-not add it.
+agent before it answers. It keeps one small file for each marked session
+under `~/.futex/roles/`, and removes a file that was idle for 30 days. An
+install that already has the update hooks gets the role hook when
+`install.sh --hooks` runs again. The update alone does not add it.
 
 Claude Code runs hooks from settings files only after you trust the folder
 in an interactive session. `install.sh --uninstall` stops the loop and
