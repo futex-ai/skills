@@ -41,8 +41,8 @@ starts a full cycle too. This skill does not wake a sleeping session.
 1. Run `git fetch origin main` and `git merge --ff-only origin/main`.
    Read the board. Record the message on the board: a new change, an
    answer, or a workspace that the user hands over.
-2. Read each active child, and act on its result. Merge each child that
-   passes the merge check.
+2. Read each active child, and act on its current result. Merge each
+   child that passes the merge check.
 3. Start the new children. Start them in parallel only when they pass
    the independence test of the `delegating` skill. Otherwise start a
    child after the child that it conflicts with merges.
@@ -81,7 +81,7 @@ orchestrator, and record the message id on the board.
 | `waiting: <tasks>` | Send nothing. When the board shows the same tasks from the last cycle, send one status request. |
 | `error: stalled: <cause>` | Cancel the turn with `conductor session cancel`. Then act as on `error:`. |
 | `error: <cause>` | Raise an item for a usage limit or another block. Start a new orchestrator for a lost session. Send the retry message for each other error. |
-| A final report or a question | Act by the stage of the child, as `references/cycle.md` says. |
+| A final report or a question | Act by the stage of the child in each cycle, as `references/cycle.md` says. The board stops a second action. |
 | Other text, or nothing | Send one status request. |
 | An error of the reader, or `pending: working` with a warning | Send nothing. Give the error or the warning in the report. |
 
@@ -99,8 +99,9 @@ These go to the user, because you answer no item:
 - each brainstorm root question, each plan that waits for approval, and
   each split of a child into more children,
 - your own items: a block, a failed retry, a failed create, a repository
-  that you cannot reach, a scope wider than the request, and a merge that
-  a check blocks.
+  that you cannot reach, a scope wider than the request, a merge that a
+  check blocks, a merge error, and a pull request that the merge queue
+  removed.
 
 Give them in one numbered list per message, in the layout of the
 `decisions-and-findings` skill. Give each item the next free number of
@@ -134,9 +135,13 @@ request. When the child shows a cause outside the change, raise an item.
 Never run an admin bypass, such as `gh pr merge --admin`, on your own. An
 option of an item can name a bypass only as a step that the user runs.
 
-Merge as `references/cycle.md` says. Then archive the child. Send the
-merge-main message to each child that changes the same files. Name the
-follow-up items that the pull request adds.
+Merge as `references/cycle.md` says. When the merge stops because the
+child pushed after your check, or because `main` moved, check again in
+the next cycle. Raise each other merge error as an item that quotes it. A merge queue can
+hold the pull request for some cycles, at the stage `merge queued`. When
+GitHub shows the state `MERGED`, delete the branch, and archive the
+child. Send the merge-main message to each child that changes the same
+files. Name the follow-up items that the pull request adds.
 
 ## A long session
 
@@ -184,5 +189,6 @@ monitor, a sleep, or a resend loop.
 - [ ] Each item went to the user, and each answer went back in the
       child's numbers.
 - [ ] Each merge passed the merge check. No admin bypass ran.
-- [ ] Each merged child is archived. No wait or retry loop runs.
+- [ ] Each merged child is archived, and its branch is deleted. No wait
+      or retry loop runs.
 - [ ] The board is written, and the report gives each active child.

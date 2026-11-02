@@ -59,14 +59,11 @@ The brainstorm left out these approaches:
 Each design call is marked "My call", with its reason, on 2026-11-01.
 ### The role and its limits
 
-- The user starts it with `/coordinator` in a workspace of its own. My
-  call: the name says the role. Its description is the one in the stub
-  `skills/coordinator/SKILL.md`, which names the role hook's reminder.
-- It runs the `default orchestrator` action. My call: it needs the same
-  judgment, and the `models` table stays as the user set it.
-- It manages the children that it starts for the user and the workspaces
-  that the user hands to it, in any repository, with no sections. My
-  call: the request names workspaces, and the README fan-out session of
+- The user starts it with `/coordinator` in its own workspace. It runs the
+  `default orchestrator` action. My calls: the name says the role, and
+  the action needs no change to the `models` table.
+- It manages the children that it starts and the workspaces that the user
+  hands to it, in any repository. My call: the README fan-out of
   2026-11-01 spanned 13 repositories.
 - It sends every message for a child to the orchestrator, by the session
   id that it recorded at the start, or that the user named. My call: this
@@ -92,9 +89,8 @@ the child's numbers. The coordinator never answers an item.
 My call: under item 6 A the user approves each plan and each split of a
 child. I withdrew my brainstorm call that the coordinator approves plans.
 
-Alone, the coordinator starts a child for each change that the user asks
-for, sends status requests, retries, sends the gaps of the merge check
-back, merges, asks children to merge `main`, and archives them.
+Alone, it starts children, sends status requests, retries, and fix
+requests, merges, asks children to merge `main`, and archives them.
 
 ### Each cycle
 
@@ -148,10 +144,10 @@ The coordinator merges a child's pull request into `main` when:
    back as a gap. My call, 2026-11-02: the diff read found a defect that
    the child's review missed (F1, M1).
 
-It merges with the method that `AGENTS.md` names, or a squash, and
-deletes the branch. It never runs an admin bypass on its own. After the
-merge it archives the child, asks each child that edits the same files
-to merge `main`, and names the new follow-up items, as `finish-work` says.
+It merges with the method that `AGENTS.md` names, or a squash. It never
+runs an admin bypass on its own. After GitHub reports the merge, also from
+a merge queue, it deletes the branch, archives the child, asks children
+that edit the same files to merge `main`, and names the follow-up items.
 
 ### The role hook
 
@@ -267,11 +263,15 @@ It tests the hook and the reader in live sessions.
 
 - [x] Stop the update loop of `~/.futex/skills`, and run
       `scripts/install.sh --hooks` from this checkout.
+      Done another way: a link and two `jq` hook entries, with the loop on.
 - [x] In a scratch Claude session, run `role.sh start`, send a prompt,
       `/compact`, and `/clear`, and check the reminder after each. Add
       `PostCompact` when `SessionStart` does not fire after `/compact`.
       Check that `role.sh stop` ends the reminder.
 - [x] Run the reader on a finished, a working, and a failed session.
+  - [x] A finished and a working session.
+  - [x] Recorded failed sessions, read-only, after review round 1: a
+        `lastError`, a Claude `is_error` result, and a Codex `turn.failed`.
 - [x] Check that a message wakes a sleeping scratch workspace, because a
       child sleeps while it waits for the user's answers.
 - [x] Save the evidence in `.context/coordinator-skill/smoke.md`. Archive

@@ -45,11 +45,90 @@ test_last_report_gives_a_later_claude_error_across_pages() {
   assert_eq "error: error_during_execution: first failure: second failure" "$("$scripts/last-report.sh" s8)" "claude error list"
 }
 
-test_last_report_gives_the_codex_error_that_ended_the_turn() {
+test_last_report_gives_an_incomplete_turn_instead_of_a_retry_notice() {
   fake_conductor "$1"
   answer "session_status_s5" '{"status":"idle"}'
   page "session_message_s5_--limit_100_--offset_0" false '[{"type":"agent","content":{"rawPayload":{"event":{"type":"item.completed","item":{"type":"agentMessage","text":"saving the report"}}}}},{"type":"agent","content":{"rawPayload":{"event":{"type":"error","message":"Reconnecting... 1/5","willRetry":true,"additionalDetails":"last status: 429 Too Many Requests"}}}}]'
-  assert_eq "error: Reconnecting... 1/5: last status: 429 Too Many Requests" "$("$scripts/last-report.sh" s5)" "codex error"
+  assert_eq "error: the turn ended before it completed (error)" "$("$scripts/last-report.sh" s5)" "incomplete codex turn"
+}
+
+test_last_report_keeps_turn_failed_through_goal_completion() {
+  fake_conductor "$1"
+  local suffix
+  for suffix in ',{"type":"agent","receivedAt":"2026-10-31T10:01:00.000Z","content":{"rawPayload":{"event":{"type":"turn.completed"}}}}' ''; do
+    page "session_message_s1_--limit_100_--offset_0" false '[{"type":"agent","content":{"rawPayload":{"event":{"type":"item.completed","item":{"type":"agentMessage","text":"progress"}}}}},{"type":"agent","content":{"rawPayload":{"event":{"type":"error","message":"Reconnecting... 5/5","willRetry":true}}}},{"type":"agent","receivedAt":"2026-10-31T10:01:00.000Z","content":{"rawPayload":{"event":{"type":"turn.failed","error":{"message":"stream disconnected before completion","codexErrorInfo":"other","additionalDetails":"stream closed before response.completed"}}}}}'"$suffix]"
+    answer "session_status_s1" '{"status":"idle"}'
+    assert_eq "error: stream disconnected before completion: stream closed before response.completed" "$("$scripts/last-report.sh" s1)" "failed turn, goal suffix: $suffix"
+    answer "session_status_s1" '{"status":"working"}'
+    assert_eq "error: stalled: stream disconnected before completion: stream closed before response.completed" "$(LAST_REPORT_NOW=1793441760 "$scripts/last-report.sh" s1)" "stalled failed turn, goal suffix: $suffix"
+  done
+}
+
+test_last_report_needs_main_completion_after_the_last_codex_text() {
+  fake_conductor "$1"
+  answer "session_status_s1" '{"status":"idle"}'
+  page "session_message_s1_--limit_100_--offset_0" false '[{"type":"agent","content":{"rawPayload":{"event":{"type":"turn.completed"}}}},{"type":"agent","content":{"rawPayload":{"event":{"type":"item.completed","item":{"type":"agentMessage","text":"progress after completion"}}}}},{"type":"agent","content":{"rawPayload":{"parentToolUseId":"child","event":{"type":"turn.completed"}}}}]'
+  assert_eq "error: the turn ended before it completed (item.completed)" "$("$scripts/last-report.sh" s1)" "earlier or nested completion cannot confirm later main text"
+}
+
+test_last_report_ignores_nested_model_output() {
+  fake_conductor "$1"
+  answer "session_status_s1" '{"status":"idle"}'
+  local nested
+  for nested in '{"parentToolUseId":"child","event":{"type":"item.completed","item":{"type":"agentMessage","text":"nested Codex report"}}}' '{"type":"result","parent_tool_use_id":"child","result":"nested Claude report"}'; do
+    page "session_message_s1_--limit_100_--offset_0" false '[{"type":"agent","content":{"rawPayload":{"event":{"type":"item.completed","item":{"type":"agentMessage","text":"main report"}}}}},{"type":"agent","content":{"rawPayload":{"event":{"type":"turn.completed"}}}},{"type":"agent","content":{"rawPayload":'"$nested"'}}]'
+    assert_eq "main report" "$("$scripts/last-report.sh" s1)" "nested output: $nested"
+  done
+}
+
+test_last_report_ignores_zero_turn_reports_but_keeps_their_errors() {
+  fake_conductor "$1"
+  answer "session_status_s1" '{"status":"idle"}'
+  local events='[{"type":"agent","content":{"rawPayload":{"type":"result","num_turns":1,"parent_tool_use_id":null,"result":"main report"}}},{"type":"agent","content":{"rawPayload":{"type":"result","num_turns":0,"result":"","origin":{"kind":"task-notification"}}}}]'
+  page "session_message_s1_--limit_100_--offset_0" false "$events"
+  assert_eq "main report" "$("$scripts/last-report.sh" s1)" "zero-turn bookkeeping"
+  page "session_message_s1_--limit_100_--offset_0" false "$(jq '.[-1].content.rawPayload += {is_error:true, result:"API Error: 400"}' <<< "$events")"
+  assert_eq "error: API Error: 400" "$("$scripts/last-report.sh" s1)" "zero-turn error"
+}
+
+test_last_report_gives_a_readable_claude_error_without_text() {
+  fake_conductor "$1"
+  answer "session_status_s1" '{"status":"idle"}'
+  page "session_message_s1_--limit_100_--offset_0" false '[{"type":"agent","content":{"rawPayload":{"type":"result","is_error":true}}}]'
+  assert_eq "error: Claude error result with no message" "$("$scripts/last-report.sh" s1)" "empty Claude error"
+}
+
+test_last_report_gives_a_readable_codex_error_without_text() {
+  fake_conductor "$1"
+  answer "session_status_s1" '{"status":"working"}'
+  page "session_message_s1_--limit_100_--offset_0" false '[{"type":"agent","receivedAt":"2026-10-31T10:01:00.000Z","content":{"rawPayload":{"event":{"type":"error"}}}}]'
+  local out status=0
+  out="$(LAST_REPORT_NOW=1793441760 "$scripts/last-report.sh" s1)" || status=$?
+  assert_eq 0 "$status" "empty Codex error exit status"
+  assert_eq "error: stalled: Codex error with no message" "$out" "empty Codex error"
+}
+
+test_last_report_uses_the_last_main_error_and_ages_all_events() {
+  fake_conductor "$1"
+  answer "session_status_s1" '{"status":"working"}'
+  page "session_message_s1_--limit_100_--offset_0" false '[{"type":"agent","receivedAt":"2026-10-31T10:01:00.000Z","content":{"rawPayload":{"event":{"type":"error","message":"Reconnecting... 5/5"}}}},{"type":"agent","receivedAt":"2026-10-31T10:02:00.000Z","content":{"rawPayload":{"parentToolUseId":"child","event":{"type":"item.completed","item":{"type":"agentMessage","text":"nested report"}}}}}]'
+  assert_eq "error: stalled: Reconnecting... 5/5" "$(LAST_REPORT_NOW=1793441820 "$scripts/last-report.sh" s1)" "main error after nested output"
+  assert_eq "pending: working, last event 14m ago" "$(LAST_REPORT_NOW=1793441819 "$scripts/last-report.sh" s1)" "nested output updates the event age"
+  page "session_message_s1_--limit_100_--offset_0" false '[{"type":"agent","receivedAt":"2026-10-31T10:01:00.000Z","content":{"rawPayload":{"type":"result","num_turns":1,"result":"main report"}}},{"type":"agent","receivedAt":"2026-10-31T10:02:00.000Z","content":{"rawPayload":{"type":"result","parent_tool_use_id":"child","is_error":true,"result":"nested failure"}}}]'
+  assert_eq "pending: working, last event 15m ago" "$(LAST_REPORT_NOW=1793441820 "$scripts/last-report.sh" s1)" "nested error cannot stall the main session"
+  answer "session_status_s1" '{"status":"idle"}'
+  assert_eq "main report" "$("$scripts/last-report.sh" s1)" "nested error cannot fail the main request"
+}
+
+test_last_report_compares_status_error_times_with_fractions() {
+  fake_conductor "$1"
+  page "session_message_s1_--limit_100_--offset_0" false '[{"type":"userMessage","receivedAt":"2026-10-21T12:30:02.084Z","content":{"id":"m-1","message":"go"}}]'
+  answer "session_status_s1" '{"status":"idle","lastError":"thread not found","lastErrorAt":"2026-10-21T12:30:02.350812Z"}'
+  assert_eq "error: thread not found" "$("$scripts/last-report.sh" s1 m-1)" "later error in the same second"
+  answer "session_status_s1" '{"status":"idle","lastError":"old failure","lastErrorAt":"2026-10-21T12:30:02.083999Z"}'
+  assert_eq "" "$("$scripts/last-report.sh" s1 m-1)" "earlier error in the same second"
+  answer "session_status_s1" '{"status":"idle","lastError":"old failure","lastErrorAt":"2026-10-21T12:30:02.084000Z"}'
+  assert_eq "" "$("$scripts/last-report.sh" s1 m-1)" "equal times with different fraction lengths"
 }
 
 test_last_report_gives_the_codex_message_after_a_recovered_error() {
@@ -62,8 +141,11 @@ test_last_report_gives_the_codex_message_after_a_recovered_error() {
 test_last_report_reads_a_codex_session() {
   fake_conductor "$1"
   answer "session_status_s2" '{"status":"idle"}'
-  page "session_message_s2_--limit_100_--offset_0" false '[{"type":"agent","content":{"rawPayload":{"event":{"type":"item.completed","item":{"type":"reasoning","text":"hmm"}}}}},{"type":"agent","content":{"rawPayload":{"event":{"type":"item.completed","item":{"type":"agentMessage","text":"pong"}}}}},{"type":"agent","content":{"rawPayload":{"event":{"type":"turn.completed"}}}}]'
+  local events='[{"type":"agent","content":{"rawPayload":{"event":{"type":"item.completed","item":{"type":"reasoning","text":"hmm"}}}}},{"type":"agent","content":{"rawPayload":{"event":{"type":"item.completed","item":{"type":"agentMessage","text":"pong"}}}}},{"type":"agent","content":{"rawPayload":{"event":{"type":"turn.completed"}}}}]'
+  page "session_message_s2_--limit_100_--offset_0" false "$events"
   assert_eq "pong" "$("$scripts/last-report.sh" s2)" "codex report"
+  page "session_message_s2_--limit_100_--offset_0" false "$(jq '. + [{type:"agent",content:{rawPayload:{event:{type:"turn.started"}}}}, {type:"agent",content:{rawPayload:{event:{type:"turn.completed"}}}}]' <<< "$events")"
+  assert_eq "pong" "$("$scripts/last-report.sh" s2)" "a turn without model output keeps the last main output"
 }
 
 test_last_report_prints_nothing_until_the_latest_request_has_a_reply() {

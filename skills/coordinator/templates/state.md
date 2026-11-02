@@ -12,14 +12,14 @@ printed it.
 | <workspace id, or "none" before the create> | <owner/repo> | <name> | <session id of the orchestrator> | <id of the last message that you sent to it> | <branch, or #n> | <stage> | <the last result of the reader, the retry when you sent one, and what the next cycle does> | <date> |
 
 Stages: `new`, `brainstorm`, `plan`, `implementing`, `merge check`,
-`merged`, and `blocked`. The cycle reference of the skill says what each
-stage means.
+`merge queued`, `merged`, and `blocked`. The cycle reference of the skill
+says what each stage means.
 
 ## Relayed items
 
 | Number | Child | Child's number | Source report | State |
 | --- | --- | --- | --- | --- |
-| <your number> | <name of the child> | <the number of the child, or "own" for your own item> | <the id of the message that the report answered, and the date> | <"open", "answered <letter> on <date>", "sent in <message id>", or "closed on <date>"> |
+| <your number> | <name of the child> | <the number of the child, or "own" for your own item> | <the message id that you gave the reader for the report, and the date> | <"open", "answered <letter> on <date>", "sent in <message id>", or "closed on <date>"> |
 
 Give a new item the next free number. Keep its number in each later
 report.

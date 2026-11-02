@@ -7,13 +7,15 @@
 #   waiting: <tasks>        the request still runs background tasks
 #   error: <cause>          the request failed
 #   error: stalled: <cause> the working session stopped after an error
-#   <text>                  the last text of the request: a report or a question
-#   (nothing)               the request ended without text
+#   <text>                  the last main model report or question
+#   (nothing)               the request has no model output
 # The script reads the session status and the whole transcript, every page.
-# A working session is stalled when its last item after the latest request
-# is an error, and no item follows for 15 minutes. Otherwise it stays
-# pending: working, with the age of the last event after the request. When
-# no event follows, it uses the age of the request. With no known time, it
+# Only main events supply reports, errors, and task or session state.
+# Nested events still update the age. A working session is stalled when
+# its last main event is an error, and no event arrives for 15 minutes.
+# A Codex turn.failed stays failed through a goal-mode turn.completed.
+# Otherwise the session stays pending: working, with the last event age.
+# When no event follows, it uses the age of the request. With no known time, it
 # prints plain pending: working. When the transcript cannot be read, it
 # also writes the cause and a warning to stderr.
 # It looks only after the last user request. It waits while background
@@ -22,9 +24,10 @@
 # the agent goes on with the same request. A `running` state with no event
 # for 30 minutes is a stopped turn, and it does not wait. A failure in the
 # status after the request wins over the text of the transcript. Otherwise
-# the last of these events wins: a Claude result, a Codex agent message, or
-# a Codex error. A Codex error that the agent recovered from comes before a
-# later message, so the later message wins.
+# the last main model output wins. A Claude result with zero num_turns
+# gives no report, but can give an error. A Codex report needs a later main
+# turn.completed and no later turn.failed. An idle incomplete Codex turn
+# gives its failure cause, or an error with the last main event type.
 #
 # With an idle session and a message id, the script first checks that this
 # message is in the transcript. Conductor writes a sent message there only
@@ -69,7 +72,9 @@ fi
 # The $ names below are jq variables, not shell variables.
 # shellcheck disable=SC2016
 filter='
-def seconds: try (sub("\\.[0-9]+"; "") | fromdateiso8601) catch null;
+def seconds:
+  (try (capture("^(?<whole>.*?)(?<fraction>\\.[0-9]+)?Z$")
+        | (.whole + "Z" | fromdateiso8601) + (("0" + (.fraction // "")) | tonumber)) catch null) // null;
 def age:
   floor
   | if . < 60 then "\(.)s"
@@ -82,53 +87,61 @@ def claude_error:
     (.terminal_reason // empty | strings),
     ((.errors // [])[] | strings | select(. != "")),
     (.result // empty | strings | select(. != "")) ]
-  | if length > 0 then join(": ") else tojson end;
+  | if length > 0 then join(": ") else "Claude error result with no message" end;
 def codex_error:
-  [.event.message, .event.additionalDetails] | map(strings | select(. != ""))
-  | if length > 0 then join(": ") else (.event | tojson) end;
-def error_of:
-  if .type == "result" then (if .is_error then claude_error else null end)
-  elif .event?.type == "error" then codex_error
-  else null end;
-def text_of:
-  error_of as $error
-  | if $error != null then "error: " + $error
-  elif .type == "result" then .result
-  elif .event?.type == "item.completed" and .event.item.type == "agentMessage" then .event.item.text
-  else null end;
+  [.message, .additionalDetails] | map(strings | select(. != ""))
+  | if length > 0 then join(": ") else "Codex error with no message" end;
+def decode:
+  .receivedAt as $at
+  | (.content.rawPayload? | if type == "object" then . else {} end) as $raw
+  | ($raw.event // {}) as $event
+  | {at: $at, main: ($raw.parentToolUseId == null and $raw.parent_tool_use_id == null),
+     kind: ($event.type // $raw.subtype // $raw.type // "unknown"),
+     codex: ($event.type != null), raw: $raw,
+     error: (if $raw.type == "result" and $raw.is_error then ($raw | claude_error)
+             elif $event.type == "turn.failed" then ($event.error | codex_error)
+             elif $event.type == "error" then ($event | codex_error) else null end),
+     text: (if $raw.type == "result" and ($raw.num_turns == null or $raw.num_turns > 0) then $raw.result
+            elif $event.type == "item.completed" and $event.item.type == "agentMessage"
+            then $event.item.text else null end)};
 def names: map(.description // .task_id // "task") | join(", ");
 (env.STATUS | fromjson) as $status
 | (env.NOW | tonumber) as $now
 | (map(.type == "userMessage") | rindex(true)) as $at
 | (if $at == null then null else .[$at].receivedAt end) as $asked
-| (reduce (.[(if $at == null then 0 else $at + 1 end):][]
-           | {at: .receivedAt, event: (.content.rawPayload? | if type == "object" then . else {} end)}) as $item
-    ({live: [], state: null, seen: null, last: null, tail: null};
+| (reduce (.[(if $at == null then 0 else $at + 1 end):][] | decode) as $item
+    ({live: [], state: null, seen: null, last: null, tail: null, codex: false, completed: false, failed: null};
      .seen = ($item.at // .seen)
-     | .tail = $item
-     | if $item.event.subtype == "background_tasks_changed" then
-         .live = (($item.event.tasks // []) | map(select(.ambient != true)))
-       elif $item.event.subtype == "session_state_changed" then
-         .state = $item.event.state
-       else ($item.event | text_of) as $text
-         | if ($text | type) == "string" then .last = $text else . end
-       end)) as $walk
+     | if $item.main then
+         .tail = $item | .codex = (.codex or $item.codex)
+         | if $item.kind == "background_tasks_changed" then
+             .live = (($item.raw.tasks // []) | map(select(.ambient != true)))
+           elif $item.kind == "session_state_changed" then .state = $item.raw.state
+           elif $item.kind == "turn.started" then .completed = false | .failed = null
+           elif $item.kind == "turn.failed" then .failed = $item.error | .last = null
+           elif $item.kind == "turn.completed" then .completed = true
+           elif $item.error != null and ($item.codex | not) then .last = "error: " + $item.error
+           elif ($item.text | type) == "string" then
+             .last = $item.text | if $item.codex then .completed = false | .failed = null else . end
+           else . end
+       else . end)) as $walk
 | (($walk.seen // "") | seconds) as $seen
 | ($seen // (($asked // "") | seconds)) as $last_at
 | (if $last_at == null then "pending: working"
    else "pending: working, last event \(($now - $last_at) | age) ago" end) as $pending
 | if $status.status == "working" then
-    ($walk.tail.event | error_of) as $error
-    | ((($walk.tail.at // "") | seconds) // $now) as $tail_at
-    | if $error != null and ($now - $tail_at) >= 900 then "error: stalled: " + $error
+    ($walk.failed // $walk.tail.error) as $error
+    | if $error != null and ($now - ($last_at // $now)) >= 900 then "error: stalled: " + $error
       else $pending end
   elif ($walk.live | length) > 0 then "waiting: " + ($walk.live | names)
   elif $walk.state == "running" and ($now - ($seen // $now)) < 1800 then $pending
   elif ($status.lastError != null) and (($asked // "" | seconds) != null)
        and ((($status.lastErrorAt // "") | seconds) // 0) > ($asked | seconds) then
     "error: " + $status.lastError
-  else
-    $walk.last // empty
+  elif $walk.failed != null then "error: " + $walk.failed
+  elif $walk.codex and ($walk.completed | not) then
+    "error: the turn ended before it completed (\($walk.tail.kind))"
+  else $walk.last // empty
   end'
 
 NOW="${LAST_REPORT_NOW:-$(date -u +%s)}" STATUS="$status_json" jq -r "$filter" <<< "$transcript"
