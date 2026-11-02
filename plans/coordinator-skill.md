@@ -218,15 +218,19 @@ Depends on: 1
 
 The reader of PR #37 comes over with its tests and gets the stall result.
 
-- [ ] Copy `last-report.sh` and `conductor-pages.sh` to
+- [x] Copy `last-report.sh` and `conductor-pages.sh` to
       `skills/coordinator/scripts/` from the scripts of
       `skills/conductor-section-workspace-coordinator/` on
       `origin/calummoore/conductor-workspace-coordinator-skill`.
-- [ ] Copy the 14 `last_report` tests, the `list_all` test, and their
+      Branch: `conductor/coordinator-skill-m2-reader`.
+- [x] Copy the 13 `last_report` tests, the `list_all` test, and their
       helpers from `tests/coordinator_scripts_test.sh` on that branch.
-- [ ] Add `error: stalled: <cause>`, with a test, and a test that a long
+      Branch: `conductor/coordinator-skill-m2-reader`.
+- [x] Add `error: stalled: <cause>`, with a test, and a test that a long
       `working` turn without an error stays `pending: working`.
-- [ ] Run `tests/run.sh`, and `shellcheck -x` on both scripts.
+      Branch: `conductor/coordinator-skill-m2-reader`.
+- [x] Run `tests/run.sh`, and `shellcheck -x` on both scripts.
+      Branch: `conductor/coordinator-skill-m2-reader`.
 
 ## Milestone 3: Role hook
 
