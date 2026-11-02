@@ -18,13 +18,14 @@ The script waits for every run of the commit. It prints one line for each
 run: the result, the workflow, and the URL. Under a run that did not pass,
 it names each failed job and its first failed step.
 
-- A newer push replaces the commit to watch. Ignore the result of an older
-  commit. Only the runs of the last commit decide the merge.
+- Watch the last commit after each change that can start CI. These changes
+  are a push, the opening of the pull request, and a change from draft to
+  ready. A result from before the last change does not count. Only the
+  runs of the last commit decide the merge.
 - The script keeps no state. When a tool stops it, run it again on the
   same commit.
 - Some repositories run CI on pull requests only. There, a push before the
-  pull request opens starts no run. Run the script again after the pull
-  request opens.
+  pull request opens starts no run.
 
 Act on the exit status of the script:
 
@@ -33,8 +34,8 @@ Act on the exit status of the script:
   `cancelled`. Read the failure, as the next section says.
 - 2: a run still ran at the deadline, 60 minutes by default. Report it
   under **Checks** as pending.
-- 3: no run started in the grace period, 120 seconds by default. The push
-  starts no CI.
+- 3: no run started in the grace period, 120 seconds by default. The
+  change starts no CI.
 - 4: a usage error, no `gh`, or three failed `gh` calls in a row. Correct
   the call. Run the script again. When it fails again, report the blocker
   under **Checks**.
@@ -58,17 +59,27 @@ job, such as "Verify required jobs". It only repeats the other failures.
 
 ## Find the cause
 
-1. When the branch is behind the base branch of the pull request, merge
-   that base branch first, with the `git-merge` skill. The base branch is
-   usually `main`. Without a pull request, it is `main`. Pull request CI
-   tests the branch merged with its base branch. A count above 0 shows
-   that the branch is behind:
+1. This section gives each failure one label: a failure of the branch, a
+   flaky test, or an unrelated failure. Before the label of a failure of
+   the branch or of an unrelated failure, and before a claim, check the
+   base branch of the pull request. A pass on a rerun makes a flaky test
+   without this check. The command falls back to `main` when the branch
+   has no pull request:
 
    ```sh
-   base=$(gh pr view --json baseRefName --jq .baseRefName)
+   base=$(gh pr view --json baseRefName --jq .baseRefName 2>/dev/null \
+     || echo main)
    git fetch origin "$base"
    git rev-list --count "HEAD..origin/$base"
    ```
+
+   A count above 0 shows that the branch is behind. Then merge the base
+   branch with the `git-merge` skill. Push the merge, and watch the new
+   commit. Then start this section again with the result of that watch. A
+   rerun keeps the commit of its first run, so it cannot test a merge.
+
+   After three such merges for one failure, use the last run. A busy base
+   branch then cannot hold you in a loop.
 
 2. A failure belongs to the branch when its job, step, test, or file is
    one that the diff adds or changes. A file counts only when the error is
@@ -92,9 +103,10 @@ job, such as "Verify required jobs". It only repeats the other failures.
      the follow-up item that the `testing` skill asks for. It gets no fix
      pull request.
    - Do not rerun it again, because more reruns hide a flaky test.
-   - After a second failure, compare with `origin/main`. Read the run of
-     the job on the last `origin/main` commit. An older run does not show
-     the state of `origin/main`.
+   - After a second failure, check the base branch again, as step 1 says.
+     Then compare with `origin/main`. Read the run of the job on the last
+     `origin/main` commit. An older run does not show the state of
+     `origin/main`.
 
      ```sh
      gh run list --commit "$(git rev-parse origin/main)" --workflow <workflow>
@@ -148,9 +160,10 @@ fix pull request. One fix there reaches every open branch.
    fix pull request. That pull request deletes the item. When the item
    waits for the user, the failure waits too. Name the item in the report.
 
-3. Claim the failure. Push an empty commit on `origin/main` to a new branch
-   `ci-fix/<job>-<step>`. Open a draft pull request from it, titled
-   `fix(ci): <failure>`, with the failure text:
+3. Claim the failure. First check the base branch again, as step 1 of
+   "Find the cause" says. Then push an empty commit on `origin/main` to a
+   new branch `ci-fix/<job>-<step>`. Open a draft pull request from it,
+   titled `fix(ci): <failure>`, with the failure text:
 
    ```sh
    claim=$(git commit-tree 'origin/main^{tree}' -p origin/main \
@@ -195,22 +208,27 @@ fix pull request. One fix there reaches every open branch.
      request cannot turn it on.
    - The fix rule lets the agent make the fix without the user.
    - No finding of its review waits for the user.
-   - Each CI run of its last commit passed.
    - Its diff changes no checksum or digest, dependency version or
      lockfile, download URL, secret, or CI workflow file.
+   - Each CI run of its last commit passed, in a watch that started after
+     the pull request became ready.
+
+   Check the conditions other than CI first:
 
    ```sh
    git fetch origin main
    git show origin/main:AGENTS.md
    ```
 
-   When all of these hold, mark the pull request ready. Merge it with the
-   named method. The merge command below also deletes the branch. Then
-   watch the merge commit, because a push to `main` can deploy. Report a
-   failure there to the user at once.
+   When they hold, mark the pull request ready. Then watch the CI of its
+   last commit, because readiness can start more runs. Merge only when
+   each run of that watch passed. The merge command also deletes the
+   branch. Then watch the merge commit, because a push to `main` can
+   deploy. Report a failure there to the user at once.
 
    ```sh
    gh pr ready <number>
+   scripts/ci-wait.sh
    gh pr merge <number> --<method> --delete-branch
    git fetch origin main
    merge=$(gh pr view <number> --json mergeCommit --jq .mergeCommit.oid)
@@ -245,11 +263,11 @@ passed.
 
 ## Report
 
-Under **Checks**, give each CI run of the last push: the workflow, the
+Under **Checks**, give each CI run of the last commit: the workflow, the
 result, each rerun, and each fix commit.
 
 - Report a run that still ran at the deadline as pending.
-- Report a push that starts no run as "no CI run".
+- Report a commit that has no run as "no CI run".
 - Report a script that could not run, with its error.
 - An unrelated failure gives its fix pull request, or the follow-up item
   that waits for the user.

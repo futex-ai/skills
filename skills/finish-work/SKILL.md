@@ -100,12 +100,13 @@ name the blocker, and list the checks that did run.
 
 ## 7. CI
 
-- After each push, run `scripts/ci-wait.sh` in the background on the
-  pushed commit. It waits for the CI runs of the commit and prints their
-  results. Go on with the work while it runs.
+- Run `scripts/ci-wait.sh` in the background after each change that can
+  start CI. These changes are a push, the opening of the pull request, and
+  a change from draft to ready. The script waits for the CI runs of the
+  last commit and prints their results. Go on with the work while it runs.
 - When the script exits with a status other than 0, act as
   [references/ci.md](references/ci.md) says.
-- Before the report, wait for the CI of the last push.
+- Before the report, wait for the CI of the last such change.
 
 ## 8. Report
 
@@ -120,7 +121,7 @@ and labels in the `decisions-and-findings` skill. Include:
 - What changed, the commit, and the branch or the pull request.
 - The checks that ran and their results. Name any check that was skipped or
   could not run, and why.
-- Each CI run of the last push and its result. Give the fix pull request
+- Each CI run of the last commit and its result. Give the fix pull request
   or the follow-up item of each unrelated failure.
 - The test cost of the change: each test that it adds or removes, with its
   run time, as the `testing` skill says.
@@ -165,8 +166,9 @@ the failure, as [references/ci.md](references/ci.md) says.
       follow-up items.
 - [ ] Pull request opened once the implementation was complete or the user
       asked.
-- [ ] CI of the last push watched to its end. Each failure fixed in the
-      branch, given to a fix pull request, or reported.
+- [ ] CI watched to its end after the last change that can start CI. Each
+      failure fixed in the branch, given to a fix pull request, or
+      reported.
 - [ ] Final report in STE with fixed, deferred, and open findings, and the
       number of open follow-up items.
 - [ ] Each item that still needs the user named in the warning line at
