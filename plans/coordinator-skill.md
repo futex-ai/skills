@@ -50,15 +50,13 @@ The brainstorm left out these approaches:
 
 - A section in `delegating`, which is at its 200-line limit. Two skills,
   which split one role. A program, which needs a host that stays awake.
-- `/loop` or a rule in the skill to keep the role: `/loop` stops when the
-  workspace sleeps, and a rule fails when the agent forgets it.
-- The coordinator mode in the Claude Code binary, which has no docs, and
-  a custom output style, which Conductor sets for each session.
+- To keep the role: `/loop` stops when the workspace sleeps. A rule fails
+  when the agent forgets it. Conductor sets the output style itself. The
+  coordinator mode in the Claude Code binary has no docs.
 
 ## Design
 
 Each design call is marked "My call", with its reason, on 2026-11-01.
-
 ### The role and its limits
 
 - The user starts it with `/coordinator` in a workspace of its own. My
@@ -274,6 +272,8 @@ It tests the hook and the reader in live sessions.
       `PostCompact` when `SessionStart` does not fire after `/compact`.
       Check that `role.sh stop` ends the reminder.
 - [ ] Run the reader on a finished, a working, and a failed session.
+- [ ] Check that a message wakes a sleeping scratch workspace, because a
+      child sleeps while it waits for the user's answers.
 - [ ] Save the evidence in `.context/coordinator-skill/smoke.md`. Archive
       the scratch session, and restore the install and its loop.
 
