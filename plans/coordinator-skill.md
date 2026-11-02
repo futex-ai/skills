@@ -59,8 +59,7 @@ The brainstorm left out these approaches:
 - The coordinator mode in the Claude Code binary, which has no docs, and
   a custom output style, which Conductor sets for each session.
 
-No options check ran, because the user answered each decision and the
-plan adds no open decision.
+No options check ran, because the user answered each decision.
 
 ## Design
 
@@ -82,9 +81,8 @@ Each design call is marked "My call", with its reason, on 2026-11-01.
   settles item 5 of PR #37 without a rename or an archive of a session.
 - It never edits, commits, or pushes in its own checkout. It only
   fast-forwards it, and writes only under `.context/coordinator/`.
-- Its board lives in `.context/coordinator/state.md`. When the context
-  grows too long, it asks the user to start a new session there and type
-  `/coordinator`. My call: the new session takes over from the board.
+- Its board is `.context/coordinator/state.md`. My call: when the context
+  grows too long, a new session takes over from it after `/coordinator`.
 
 ### What goes to the user
 
@@ -100,9 +98,8 @@ and the child's own number, and keeps the child's letters. Each answer
 goes back to its child, in the child's numbers. The coordinator never
 answers an item and never applies an option.
 
-My call: the user approves each plan, and agrees before a child splits
-into more children. Item 6 A keeps every child question with the user,
-so I withdrew my brainstorm call that the coordinator approves plans.
+My call: under item 6 A the user approves each plan and each split of a
+child. I withdrew my brainstorm call that the coordinator approves plans.
 
 Alone, the coordinator starts a child for each change that the user asks
 for, sends status requests, retries, sends the gaps of the merge check
@@ -137,9 +134,9 @@ wake mechanism outside the skill. The skill does not wait for children.
 - A request that ends without a final report or a question gets one
   status request. A stalled child gets one cancel and one retry. A model
   block, or a retry that fails, becomes an item for the user.
-- `pending: working` also gives the age of the last event, and each
-  report names it for each working child. My call, 2026-11-02: case R3
-  hung for 22 hours with no error event, which the stall result misses.
+- The reader prints `pending: working, last event <age> ago`, and each
+  report names that age for each working child. My call, 2026-11-02:
+  case R3 hung for 22 hours with no error event, which the stall misses.
 
 ### Merging
 
@@ -256,6 +253,8 @@ The skill text, written from the recorded cases.
       `writing-skills` skill says, from the sessions `ef75f239` (README
       fan-out), `75b657aa` (PR #37), and `eee1022e` (the brainstorm of
       2026-10-30). Give the place, what the agent did, and its words.
+- [ ] Add the age of the last event to `pending: working` in the reader,
+      with tests, by the `non-ui implementor`.
 - [ ] Replace the stub `SKILL.md` with the skill, in about 150 lines.
       Add `references/cycle.md`, `templates/state.md`, and
       `templates/messages.md`, from the parts of PR #37 that still apply.
@@ -290,14 +289,12 @@ The complete checks, the review, and the pull request.
       `implementation-review` skill. Fix the `fix now` findings, record
       follow-up items for the rest, re-review once, and report.
 - [ ] Delete this plan when "Deleting the plan" of `plans` says.
-- [ ] Open the pull request. Its description gives the decisions, the
-      design calls, a permalink to this plan, and the follow-up items. It
-      says that an install gets the skill from `update.sh` or
-      `install.sh`, and the role hook from `install.sh --hooks`.
+- [ ] Open the pull request with the decisions, the design calls, a plan
+      permalink, and the follow-up items. Say that an install gets the
+      skill from `update.sh`, and the role hook from `install.sh --hooks`.
 
 ## Post-merge follow-up (non-blocking)
 
-- [ ] Ask the user whether to close PR #37. Before it closes, move its
-      follow-up items that still apply to `plans/follow-ups/`, with an
-      item for item 15 and an item for item 3 of its workspace.
+- [ ] Ask the user whether to close PR #37, after its follow-up items that
+      still apply move here, with items for its items 15 and 3.
 - [ ] Record the cases of the first real coordinator run.
