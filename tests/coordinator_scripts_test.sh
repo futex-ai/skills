@@ -101,11 +101,11 @@ test_last_report_is_pending_while_the_session_works() {
   # A long gate run has no error and stays pending.
   answer "session_status_s12" '{"status":"working"}'
   page "session_message_s12_--limit_100_--offset_0" false '[{"type":"userMessage","receivedAt":"2026-10-31T10:00:00.000Z","content":{"id":"m-1","message":"go"}},{"type":"agent","receivedAt":"2026-10-31T10:00:10.000Z","content":{"rawPayload":{"event":{"type":"item.started","item":{"type":"commandExecution","command":"tests/run.sh"}}}}}]'
-  assert_eq "pending: working" "$(LAST_REPORT_NOW=1793448000 "$scripts/last-report.sh" s12 m-1)" "working session"
+  assert_eq "pending: working, last event 1h 59m ago" "$(LAST_REPORT_NOW=1793448000 "$scripts/last-report.sh" s12 m-1)" "working session"
   # A command start after an error shows that the session recovered.
   answer "session_status_s18" '{"status":"working"}'
   page "session_message_s18_--limit_100_--offset_0" false '[{"type":"userMessage","receivedAt":"2026-10-31T10:00:00.000Z","content":{"id":"m-1","message":"go"}},{"type":"agent","receivedAt":"2026-10-31T10:00:05.000Z","content":{"rawPayload":{"event":{"type":"error","willRetry":true,"message":"Reconnecting... 1/5","additionalDetails":"exceeded retry limit, last status: 429 Too Many Requests"}}}},{"type":"agent","receivedAt":"2026-10-31T10:00:10.000Z","content":{"rawPayload":{"event":{"type":"item.started","item":{"type":"commandExecution","command":"tests/run.sh"}}}}}]'
-  assert_eq "pending: working" "$(LAST_REPORT_NOW=1793448000 "$scripts/last-report.sh" s18 m-1)" "recovered working session"
+  assert_eq "pending: working, last event 1h 59m ago" "$(LAST_REPORT_NOW=1793448000 "$scripts/last-report.sh" s18 m-1)" "recovered working session"
   # A failed transcript read keeps its cause, warns, and leaves the working
   # session pending.
   answer "session_status_s19" '{"status":"working"}'
@@ -118,6 +118,34 @@ test_last_report_is_pending_while_the_session_works() {
   assert_eq "$expected" "$(cat "$1/stderr")" "cause and warning"
 }
 
+test_last_report_shows_seconds_since_the_last_event() {
+  fake_conductor "$1"
+  answer "session_status_s20" '{"status":"working"}'
+  page "session_message_s20_--limit_100_--offset_0" false '[{"type":"userMessage","receivedAt":"2026-10-31T10:00:00.000Z","content":{"id":"m-1","message":"go"}},{"type":"agent","receivedAt":"2026-10-31T10:00:10.000Z","content":{"rawPayload":{"event":{"type":"turn.started"}}}}]'
+  assert_eq "pending: working, last event 45s ago" "$(LAST_REPORT_NOW=1793440855 "$scripts/last-report.sh" s20 m-1)" "event age below one minute"
+}
+
+test_last_report_shows_whole_minutes_since_the_last_event() {
+  fake_conductor "$1"
+  answer "session_status_s21" '{"status":"working"}'
+  page "session_message_s21_--limit_100_--offset_0" false '[{"type":"userMessage","receivedAt":"2026-10-31T10:00:00.000Z","content":{"id":"m-1","message":"go"}},{"type":"agent","receivedAt":"2026-10-31T10:00:10.000Z","content":{"rawPayload":{"event":{"type":"turn.started"}}}}]'
+  assert_eq "pending: working, last event 12m ago" "$(LAST_REPORT_NOW=1793441589 "$scripts/last-report.sh" s21 m-1)" "event age rounds down to minutes"
+}
+
+test_last_report_shows_days_and_hours_since_the_last_event() {
+  fake_conductor "$1"
+  answer "session_status_s22" '{"status":"working"}'
+  page "session_message_s22_--limit_100_--offset_0" false '[{"type":"userMessage","receivedAt":"2026-10-31T10:00:00.000Z","content":{"id":"m-1","message":"go"}},{"type":"agent","receivedAt":"2026-10-31T10:00:10.000Z","content":{"rawPayload":{"event":{"type":"turn.started"}}}}]'
+  assert_eq "pending: working, last event 2d 4h ago" "$(LAST_REPORT_NOW=1793631609 "$scripts/last-report.sh" s22 m-1)" "event age rounds down to days and hours"
+}
+
+test_last_report_uses_the_request_time_before_the_first_event() {
+  fake_conductor "$1"
+  answer "session_status_s23" '{"status":"working"}'
+  page "session_message_s23_--limit_100_--offset_0" false '[{"type":"userMessage","receivedAt":"2026-10-31T09:00:00.000Z","content":{"id":"m-1","message":"go"}},{"type":"agent","receivedAt":"2026-10-31T09:30:00.000Z","content":{"rawPayload":{"type":"result","is_error":false,"result":"previous report"}}},{"type":"userMessage","receivedAt":"2026-10-31T10:00:00.000Z","content":{"id":"m-2","message":"next task"}}]'
+  assert_eq "pending: working, last event 3h 5m ago" "$(LAST_REPORT_NOW=1793451959 "$scripts/last-report.sh" s23 m-2)" "latest request without a later event"
+}
+
 test_last_report_gives_a_stall_when_a_working_session_ends_on_an_error() {
   fake_conductor "$1"
   answer "session_status_s16" '{"status":"working"}'
@@ -126,7 +154,7 @@ test_last_report_gives_a_stall_when_a_working_session_ends_on_an_error() {
   answer "session_status_s17" '{"status":"working"}'
   page "session_message_s17_--limit_100_--offset_0" false '[{"type":"userMessage","receivedAt":"2026-10-31T10:00:00.000Z","content":{"id":"m-1","message":"go"}},{"type":"agent","receivedAt":"2026-10-31T10:01:00.000Z","content":{"rawPayload":{"type":"result","is_error":true,"result":"API Error: 529 Overloaded"}}}]'
   # The status request m-2 waits behind the stalled turn, so it is not in the transcript.
-  assert_eq "pending: working" "$(LAST_REPORT_NOW=1793441759 "$scripts/last-report.sh" s16 m-2)" "codex error at 899 seconds"
+  assert_eq "pending: working, last event 14m ago" "$(LAST_REPORT_NOW=1793441759 "$scripts/last-report.sh" s16 m-2)" "codex error at 899 seconds"
   assert_eq "error: stalled: Reconnecting... 1/5: exceeded retry limit, last status: 429 Too Many Requests" "$(LAST_REPORT_NOW=1793441760 "$scripts/last-report.sh" s16 m-2)" "codex error at 900 seconds"
   assert_eq "error: stalled: API Error: 529 Overloaded" "$(LAST_REPORT_NOW=1793441760 "$scripts/last-report.sh" s17 m-1)" "claude error at 900 seconds"
 }
@@ -146,7 +174,7 @@ test_last_report_is_pending_while_the_agent_still_runs() {
   answer "session_status_s15" '{"status":"idle"}'
   page "session_message_s15_--limit_100_--offset_0" false "$request]"
   # 10:02:00 UTC: one minute after the last event.
-  assert_eq "pending: working" "$(LAST_REPORT_NOW=1793440920 "$scripts/last-report.sh" s15 m-1)" "agent still running"
+  assert_eq "pending: working, last event 1m ago" "$(LAST_REPORT_NOW=1793440920 "$scripts/last-report.sh" s15 m-1)" "agent still running"
   # 11:00:00 UTC: no event for 59 minutes, so the turn has stopped.
   assert_eq "progress text" "$(LAST_REPORT_NOW=1793444400 "$scripts/last-report.sh" s15 m-1)" "stopped turn"
   answer "session_status_s14" '{"status":"idle"}'

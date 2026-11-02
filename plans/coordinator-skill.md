@@ -2,20 +2,17 @@
 
 Status: Active. On branch `calummoore/coordinator-skill-design`, no pull request yet. The pull request that completes the work deletes this plan, as the `plans` skill says.
 
-The user asked on 2026-11-01 for a coordinator skill. A coordinator is
-one session in its own Conductor workspace. It manages other workspaces
-and never works on its own branch. It talks to the orchestrator session
-of each workspace, and the user talks only to the coordinator. It keeps
-its role in context once started. It reports the findings up, passes
-the answers back, and merges each workspace into `main` when ready. It
-works as autonomously as possible.
+The user asked on 2026-11-01 for a coordinator skill: one session in its
+own Conductor workspace that manages other workspaces and never works on
+its own branch. It talks to the orchestrator session of each workspace,
+and the user talks only to it. It keeps its role in context. It reports
+the findings up, passes the answers back, and merges into `main` when
+ready, as autonomously as possible.
 
-The change does not wake a sleeping coordinator, as item 2 says. It does
-not edit or close PR #37. The facts behind the design are in
+The change does not wake a sleeping coordinator, as item 2 says, and
+does not change PR #37. The design facts are in
 `.context/coordinator-skill/brainstorm.md`. Contract owners: the
-[README](../README.md), and the skills whose rules the coordinator
-follows: `delegating`, `models`, `decisions-and-findings`,
-`finish-work`, and `plans`.
+[README](../README.md), and the skills that the coordinator follows.
 
 Terms:
 
@@ -51,10 +48,8 @@ options check ran.
 
 The brainstorm left out these approaches:
 
-- A section in `delegating`, which is at its 200-line limit, and two
-  coordinator skills, which split the rules of one role.
-- A program that drives the workspaces: it needs a host that stays awake
-  while workspaces sleep, and an agent must still read the reports.
+- A section in `delegating`, which is at its 200-line limit. Two skills,
+  which split one role. A program, which needs a host that stays awake.
 - `/loop` or a rule in the skill to keep the role: `/loop` stops when the
   workspace sleeps, and a rule fails when the agent forgets it.
 - The coordinator mode in the Claude Code binary, which has no docs, and
@@ -92,10 +87,9 @@ Under item 6 A, these go to the user, in one numbered list per message:
 - the coordinator's own items: a model block, a merge that a required
   check blocks, and a repository that it cannot reach.
 
-Each item uses the `decisions-and-findings` layout. It names its child
-and the child's own number, and keeps the child's letters. Each answer
-goes back to its child, in the child's numbers. The coordinator never
-answers an item and never applies an option.
+Each item, in the `decisions-and-findings` layout, names its child and
+the child's own number, and keeps its letters. Each answer goes back in
+the child's numbers. The coordinator never answers an item.
 
 My call: under item 6 A the user approves each plan and each split of a
 child. I withdrew my brainstorm call that the coordinator approves plans.
@@ -106,8 +100,8 @@ back, merges, asks children to merge `main`, and archives them.
 
 ### Each cycle
 
-Every message starts a cycle: from the user, from a child, or from the
-wake mechanism outside the skill. The skill does not wait for children.
+Every message starts a cycle, also a wake from outside the skill. The
+skill does not wait for children.
 
 1. Fetch, fast-forward to `origin/main`, read the board, and apply the
    message: new changes, answers, or a handed-over workspace.
@@ -130,17 +124,16 @@ wake mechanism outside the skill. The skill does not wait for children.
   `working` session whose last event is an error with no event in the
   next 15 minutes. My call: this is option A of item 16 of the PR #37
   workspace, and item 6 A gives retries to the coordinator.
-- A request that ends without a final report or a question gets one
-  status request. A stalled child gets one cancel and one retry. A model
-  block, or a retry that fails, becomes an item for the user.
+- A request without a final report or a question gets one status
+  request. A stalled child gets one cancel and one retry. A block, or a
+  failed retry, becomes an item.
 - The reader prints `pending: working, last event <age> ago`, and each
   report names that age for each working child. My call, 2026-11-02:
   case R3 hung for 22 hours with no error event, which the stall misses.
 
 ### Merging
 
-The coordinator merges a child's pull request into `main` when all of
-these hold:
+The coordinator merges a child's pull request into `main` when:
 
 1. The child's final report says that the implementation is complete
    under the `finish-work` skill, and that its review is done.
@@ -148,11 +141,14 @@ these hold:
 3. Each check that is not required passes, or fails on the latest run
    of `main` too. Otherwise the check goes back to the child once. When
    the child shows a cause outside the change, the merge becomes an item.
-   My call, corrected on 2026-11-02: a failure only on the branch can be
-   a regression, and the README fan-out merged two such checks unproven.
+   My call, corrected on 2026-11-02: such a failure can be a regression,
+   and the README fan-out merged two of them unproven (M2).
 4. The pull request is not a draft, and GitHub can merge it.
 5. Each item of the change is closed, or the user moved it to the
    post-merge follow-up.
+6. The coordinator read the diff. A defect or an out-of-scope change goes
+   back as a gap. My call, 2026-11-02: the diff read found a defect that
+   the child's review missed (F1, M1).
 
 It merges with the method that `AGENTS.md` names, or a squash, and
 deletes the branch. It never runs an admin bypass on its own. After the
@@ -175,9 +171,8 @@ to merge `main`, and names the new follow-up items, as `finish-work` says.
   and `--uninstall` removes it. My call: `update.sh` does not change,
   because each change under `scripts/` runs on every machine. An old
   install gets the role hook when `install.sh --hooks` runs again.
-- The first step of the skill checks for the role hook. When it is
-  missing, the coordinator tells the user to type `/coordinator` again
-  after a compaction. My call: graceful handling.
+- The first step of the skill checks for the role hook. My call: when it
+  is missing, the user types `/coordinator` again after a compaction.
 
 ### Rules from the recorded cases
 
@@ -193,7 +188,8 @@ My calls, 2026-11-02, each from a case in `.context/coordinator-skill/cases.md`:
   A child scope wider than the user's request is an item first (D1).
 - A change in the coordinator's own repository gets a child too, and the
   merge check decides for every child. It never does a child's work (O1,
-  D4, O2). It starts no wait. "status?" starts a full cycle (W1, W3).
+  D4, O2). It starts no wait. "status?" starts a full cycle (W1, W3). A
+  long age of the last event gets no action of its own (R3).
 
 ## Milestone 1: Documentation
 
@@ -257,12 +253,12 @@ The skill text, written from the recorded cases.
       `writing-skills` skill says, from the sessions `ef75f239` (README
       fan-out), `75b657aa` (PR #37), and `eee1022e` (the brainstorm of
       2026-10-30). Give the place, what the agent did, and its words.
-- [ ] Add the age of the last event to `pending: working` in the reader,
+- [x] Add the age of the last event to `pending: working` in the reader,
       with tests, by the `non-ui implementor`.
-- [ ] Replace the stub `SKILL.md` with the skill, in about 150 lines.
+- [x] Replace the stub `SKILL.md` with the skill, in about 150 lines.
       Add `references/cycle.md`, `templates/state.md`, and
       `templates/messages.md`, from the parts of PR #37 that still apply.
-- [ ] Walk each case with the final text, until each case gets the
+- [x] Walk each case with the final text, until each case gets the
       instruction that changes its outcome. Run `scripts/check.sh`.
 
 ## Milestone 5: Smoke test

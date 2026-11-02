@@ -1,7 +1,9 @@
 #!/usr/bin/env bash
 # Print the state of the latest request of a Conductor session, as one line:
 #   pending: <message-id>   the message that you sent has not started yet
-#   pending: working        the session works on the request
+#   pending: working, last event <age> ago
+#                           the session works, with the last event age
+#   pending: working        the session works, but no time is known
 #   waiting: <tasks>        the request still runs background tasks
 #   error: <cause>          the request failed
 #   error: stalled: <cause> the working session stopped after an error
@@ -10,8 +12,10 @@
 # The script reads the session status and the whole transcript, every page.
 # A working session is stalled when its last item after the latest request
 # is an error, and no item follows for 15 minutes. Otherwise it stays
-# pending: working, also when the transcript cannot be read. Then it also
-# writes the cause and a warning to stderr.
+# pending: working, with the age of the last event after the request. When
+# no event follows, it uses the age of the request. With no known time, it
+# prints plain pending: working. When the transcript cannot be read, it
+# also writes the cause and a warning to stderr.
 # It looks only after the last user request. It waits while background
 # tasks run. It also waits while the Agent SDK state of a Claude session is
 # `running`: Conductor shows the session as idle after each turn, also when
@@ -66,6 +70,13 @@ fi
 # shellcheck disable=SC2016
 filter='
 def seconds: try (sub("\\.[0-9]+"; "") | fromdateiso8601) catch null;
+def age:
+  floor
+  | if . < 60 then "\(.)s"
+    elif . < 3600 then "\(. / 60 | floor)m"
+    elif . < 86400 then "\(. / 3600 | floor)h \(. % 3600 / 60 | floor)m"
+    else "\(. / 86400 | floor)d \(. % 86400 / 3600 | floor)h"
+    end;
 def claude_error:
   [ (select(.subtype != null and .subtype != "success") | .subtype),
     (.terminal_reason // empty | strings),
@@ -102,14 +113,17 @@ def names: map(.description // .task_id // "task") | join(", ");
        else ($item.event | text_of) as $text
          | if ($text | type) == "string" then .last = $text else . end
        end)) as $walk
-| ((($walk.seen // "") | seconds) // $now) as $seen
+| (($walk.seen // "") | seconds) as $seen
+| ($seen // (($asked // "") | seconds)) as $last_at
+| (if $last_at == null then "pending: working"
+   else "pending: working, last event \(($now - $last_at) | age) ago" end) as $pending
 | if $status.status == "working" then
     ($walk.tail.event | error_of) as $error
     | ((($walk.tail.at // "") | seconds) // $now) as $tail_at
     | if $error != null and ($now - $tail_at) >= 900 then "error: stalled: " + $error
-      else "pending: working" end
+      else $pending end
   elif ($walk.live | length) > 0 then "waiting: " + ($walk.live | names)
-  elif $walk.state == "running" and ($now - $seen) < 1800 then "pending: working"
+  elif $walk.state == "running" and ($now - ($seen // $now)) < 1800 then $pending
   elif ($status.lastError != null) and (($asked // "" | seconds) != null)
        and ((($status.lastErrorAt // "") | seconds) // 0) > ($asked | seconds) then
     "error: " + $status.lastError
