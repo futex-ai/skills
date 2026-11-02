@@ -272,7 +272,7 @@ step 7 applies to the CI that starts when the pull request opens.
 - [x] Run the checks of the CI workflow: `scripts/check.sh`, `shellcheck -x` on
       every script, `tests/run.sh`, and the trailing-whitespace check.
 - [x] Commit with Conventional Commits and push the branch.
-- [ ] Review the complete local diff against `origin/main` with the
+- [x] Review the complete local diff against `origin/main` with the
       `implementation-review` skill after the push. Report the findings, then
       apply the fix rule: fix the `fix now` findings, record follow-up items
       under `plans/follow-ups/` for the rest, re-review once, and report.
