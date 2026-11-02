@@ -128,7 +128,10 @@ with a missing grade. Add the missing grade when you next edit the item.
 
 ## Working on an item
 
-- Work on an item only when the user asks for it.
+- Work on an item only when the user asks for it. The one exception is a
+  fix pull request for an unrelated CI failure. That pull request works on
+  the item that records the failure, and deletes the item. The
+  `finish-work` skill says when a fix pull request starts.
 - When the user asks for the next item, or for more than one, take the
   items in the order of `scripts/follow-ups.sh`.
 - The branch that fixes an item deletes its file. Name the item in the

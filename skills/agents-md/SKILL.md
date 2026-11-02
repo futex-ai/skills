@@ -59,10 +59,12 @@ when to read it. [templates/AGENTS.md](templates/AGENTS.md) is the template.
 3. Walk every rule and classify it:
    - **Covered**: the shared skill or the global file says the same thing.
      Drop it.
-   - **Repository-specific**: commands, paths, suite names, size caps and
-     the lint that enforces them, link checks, generated directories,
-     product locations and the shared UI library, review focus areas,
-     production status. Keep it in the matching template section.
+   - **Repository-specific**: commands, the agent-merge setting, paths,
+     suite names, size caps and the lint that enforces them, link checks,
+     generated directories, product locations and the shared UI library,
+     review focus areas, production status. Keep it in the matching
+     template section. A new `AGENTS.md` keeps the agent-merge setting
+     `off` until the user turns it on.
    - **Package-specific**: a rule for `## Repository rules` that applies
      only to work on one application, package, or feature. Move it to the
      `README.md` next to its code, as the `documentation` skill says.
