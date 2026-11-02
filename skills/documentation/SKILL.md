@@ -37,8 +37,7 @@ Each fact lives in one place. Other docs link to it.
 - User-facing interface documentation: CLI, API, and similar.
 - Developer get-started steps.
 - Key code jumping-in points.
-- Links to the architecture doc, the protocol docs, and the `plans/`
-  directory.
+- Links to the architecture doc and the protocol docs.
 
 Read the `README.md` for the area you work on before you change it, and
 update it with any new useful context in the same change.
