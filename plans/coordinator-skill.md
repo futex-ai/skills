@@ -235,13 +235,17 @@ Depends on: 1
 
 The role hook and its marker script, installed by `install.sh --hooks`.
 
-- [ ] Add `role.sh` and `scripts/role-hook.sh`, as the design says.
-- [ ] Add the hook entries to `install.sh --hooks` and `--uninstall`.
-- [ ] Add `tests/role_hook_test.sh`: no marker, the marker of another
+- [x] Add `role.sh` and `scripts/role-hook.sh`, as the design says.
+      Branch: `conductor/coordinator-skill-m3-role-hook`.
+- [x] Add the hook entries to `install.sh --hooks` and `--uninstall`.
+      Branch: `conductor/coordinator-skill-m3-role-hook`.
+- [x] Add `tests/role_hook_test.sh`: no marker, the marker of another
       session, each event, a bad session id, bad input, and a marker
       that `role.sh start` wrote. Update the hook checks in
       `tests/install_test.sh`.
-- [ ] Run `tests/run.sh`, and `shellcheck -x` on the new scripts.
+      Branch: `conductor/coordinator-skill-m3-role-hook`.
+- [x] Run `tests/run.sh`, and `shellcheck -x` on the new scripts.
+      Branch: `conductor/coordinator-skill-m3-role-hook`.
 
 ## Milestone 4: Skill text
 

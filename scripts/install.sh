@@ -12,7 +12,8 @@
 #   --opt-in      also link the opt-in skills, those with an opt-in file in
 #                 their directory; later runs keep a linked one current
 #                 without the flag
-#   --hooks       add the Claude Code hooks that run scripts/update.sh (needs jq)
+#   --hooks       add the Claude Code hooks that run scripts/update.sh and
+#                 scripts/role-hook.sh (needs jq)
 #   --quiet       print only new links, replaced paths, removed links, and skips
 #   --uninstall   stop the update loop, and remove the links and the hooks that
 #                 point into this repository
@@ -61,13 +62,15 @@ if (( codex_home )) || holds_our_link "$codex_root"; then skill_roots+=("$codex_
 global_links=("$HOME/.claude/CLAUDE.md" "$HOME/.codex/AGENTS.md")
 settings="$HOME/.claude/settings.json"
 update_script="$repo/scripts/update.sh"
+role_script="$repo/scripts/role-hook.sh"
 loop_lock="$HOME/.futex/skills-loop.lock"
 
-# Every hook entry that this script writes contains this text. The jq
-# programs below read $mark and $cmd as jq variables, not shell variables.
+# Every hook entry that this script writes contains one of these marks.
+# The jq programs below read the marks and paths as jq variables.
 hook_mark='/scripts/update.sh" --hook'
+role_mark='/scripts/role-hook.sh"'
 # shellcheck disable=SC2016
-drop_hooks='def ours: ((.command // "") | contains($mark));
+drop_hooks='def ours: ((.command // "") | (contains($mark) or contains($role_mark)));
   def drop: map(.hooks = ((.hooks // []) | map(select(ours | not))))
     | map(select((.hooks | length) > 0));
   .hooks = ((.hooks // {}) | with_entries(.value |= drop)
@@ -78,7 +81,11 @@ add_hooks="$drop_hooks"'
   | .hooks.SessionStart += [{hooks: [{type: "command",
       command: ("\"" + $cmd + "\" --hook --min-interval 60"), timeout: 60}]}]
   | .hooks.UserPromptSubmit += [{hooks: [{type: "command",
-      command: ("\"" + $cmd + "\" --hook --min-interval 300"), async: true}]}]'
+      command: ("\"" + $cmd + "\" --hook --min-interval 300"), async: true}]}]
+  | .hooks.SessionStart += [{hooks: [{type: "command",
+      command: ("\"" + $role_cmd + "\""), timeout: 10}]}]
+  | .hooks.UserPromptSubmit += [{hooks: [{type: "command",
+      command: ("\"" + $role_cmd + "\""), timeout: 10}]}]'
 
 link() {
   local target="$1" path="$2" old
@@ -146,7 +153,8 @@ write_hooks() {  # write_hooks <jq program> <verb>: rewrite settings.json
   fi
   mkdir -p "$(dirname "$target")"
   tmp="$(mktemp "$target.XXXXXX")"
-  if ! printf '%s' "$current" | jq --arg mark "$hook_mark" --arg cmd "$update_script" "$1" > "$tmp" 2>/dev/null \
+  if ! printf '%s' "$current" | jq --arg mark "$hook_mark" --arg role_mark "$role_mark" \
+    --arg cmd "$update_script" --arg role_cmd "$role_script" "$1" > "$tmp" 2>/dev/null \
     || ! jq -e 'type == "object"' "$tmp" >/dev/null 2>&1; then
     rm -f "$tmp"
     echo "skipped  hooks ($settings is not a JSON object)"; return 0
