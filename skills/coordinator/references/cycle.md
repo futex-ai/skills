@@ -93,7 +93,9 @@ approve it with the changes that the user names. C, stop the change.
   `default orchestrator` action, and the new orchestrator prompt. Record
   its id as the orchestrator.
 - Cancel a stalled session with `conductor session cancel <id>`. Then
-  send the retry message.
+  send the retry message in the same cycle. After a cancel, the
+  transcript keeps the running state, so the reader prints
+  `pending: working` for up to 30 minutes.
 - Send the retry message once for each other error.
 - After the one retry, a new error or a request without a final report or
   a question is a failed retry. A stream disconnect, such as a

@@ -265,16 +265,16 @@ Depends on: 3, 4
 
 It tests the hook and the reader in live sessions.
 
-- [ ] Stop the update loop of `~/.futex/skills`, and run
+- [x] Stop the update loop of `~/.futex/skills`, and run
       `scripts/install.sh --hooks` from this checkout.
-- [ ] In a scratch Claude session, run `role.sh start`, send a prompt,
+- [x] In a scratch Claude session, run `role.sh start`, send a prompt,
       `/compact`, and `/clear`, and check the reminder after each. Add
       `PostCompact` when `SessionStart` does not fire after `/compact`.
       Check that `role.sh stop` ends the reminder.
-- [ ] Run the reader on a finished, a working, and a failed session.
-- [ ] Check that a message wakes a sleeping scratch workspace, because a
+- [x] Run the reader on a finished, a working, and a failed session.
+- [x] Check that a message wakes a sleeping scratch workspace, because a
       child sleeps while it waits for the user's answers.
-- [ ] Save the evidence in `.context/coordinator-skill/smoke.md`. Archive
+- [x] Save the evidence in `.context/coordinator-skill/smoke.md`. Archive
       the scratch session, and restore the install and its loop.
 
 ## Milestone 6: Verification, commit, review, and pull request
