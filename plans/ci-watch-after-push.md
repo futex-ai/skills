@@ -176,6 +176,18 @@ and report. Its design calls, of 2026-11-01:
 - For CI that is not GitHub Actions, the report says that the agent cannot
   watch it.
 
+The fixes of review round 1 added these design calls, on 2026-11-02:
+
+- The agent watches again after each change that can start CI: a push, the
+  opening of the pull request, and a change from draft to ready. The merge
+  step marks the fix PR ready before its last watch. Review finding 1.
+- Before the label of a failure of the branch or of an unrelated failure,
+  and before a claim, the agent checks the base branch. When the branch is
+  behind, it merges, pushes, watches, and starts again, at most three times.
+  A pass on a rerun makes a flaky test without this check. Review finding 2.
+- The `AGENTS.md` of this repository gets `## CI` with `Agent merges: off`,
+  because `main` here reaches every machine within minutes of a merge.
+
 ## Milestone 1: Documentation
 
 Depends on: none
@@ -245,9 +257,9 @@ Depends on: 1, 2, 3, 4
 The orchestrator keeps the gate, the review, and the pull request. The new
 step 7 applies to the CI that starts when the pull request opens.
 
-- [ ] Run the checks of the CI workflow: `scripts/check.sh`, `shellcheck -x` on
+- [x] Run the checks of the CI workflow: `scripts/check.sh`, `shellcheck -x` on
       every script, `tests/run.sh`, and the trailing-whitespace check.
-- [ ] Commit with Conventional Commits and push the branch.
+- [x] Commit with Conventional Commits and push the branch.
 - [ ] Review the complete local diff against `origin/main` with the
       `implementation-review` skill after the push. Report the findings, then
       apply the fix rule: fix the `fix now` findings, record follow-up items

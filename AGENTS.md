@@ -74,6 +74,10 @@ example `~/.futex/skills` in a cloud workspace. Read the copy under
      `grep -rnE ' +$' --include='*.md' --include='*.sh' --include='*.yml' . --exclude-dir=.git --exclude-dir=.context`
 - Format: none. The trailing-whitespace check is the only format check.
 
+## CI
+
+- Agent merges: off
+
 ## Repository rules
 
 - Three files are named `AGENTS.md`. This file holds the rules for work in
