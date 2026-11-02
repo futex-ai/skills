@@ -5,7 +5,16 @@ set -euo pipefail
 source "$(dirname "${BASH_SOURCE[0]}")/lib.sh"
 export LC_ALL=C TZ=UTC
 
-role_marker() {  # role_marker <session id>: the marker path in the test HOME
+session() {  # session <dir> <claude id> [conductor id]: set the test HOME and ids
+  export HOME="$1/home" CLAUDE_CODE_SESSION_ID="$2"
+  if [[ -n "${3-}" ]]; then
+    export CONDUCTOR_SESSION_ID="$3"
+  else
+    unset CONDUCTOR_SESSION_ID
+  fi
+}
+
+role_marker() {  # role_marker <key>: the marker path in the test HOME
   printf '%s' "$HOME/.futex/roles/$1"
 }
 
@@ -19,7 +28,7 @@ hook() {  # hook <event> <session id>: run the hook as Claude Code would
 }
 
 test_hook_without_a_marker_is_silent_and_creates_nothing() {
-  export HOME="$1/home" CLAUDE_CODE_SESSION_ID=s1
+  session "$1" s1
   local out
   out="$(hook UserPromptSubmit s1)" || fail "hook exit status $?"
   assert_eq "" "$out" "unmarked session"
@@ -27,7 +36,7 @@ test_hook_without_a_marker_is_silent_and_creates_nothing() {
 }
 
 test_hook_ignores_another_sessions_marker() {
-  export HOME="$1/home" CLAUDE_CODE_SESSION_ID=other
+  session "$1" other
   local out
   role start > /dev/null || fail "start exit status $?"
   out="$(hook UserPromptSubmit s1)" || fail "hook exit status $?"
@@ -35,7 +44,7 @@ test_hook_ignores_another_sessions_marker() {
 }
 
 test_prompt_prints_the_started_roles_exact_reminder() {
-  export HOME="$1/home" CLAUDE_CODE_SESSION_ID=s1
+  session "$1" s1
   local out
   role start > /dev/null || fail "start exit status $?"
   out="$(printf '{"session_id":"s1","transcript_path":"/tmp/transcript.jsonl","cwd":"/tmp/project","hook_event_name":"UserPromptSubmit","prompt":"Continue"}' \
@@ -45,7 +54,7 @@ test_prompt_prints_the_started_roles_exact_reminder() {
 }
 
 test_session_start_prints_the_started_roles_read_now_reminder() {
-  export HOME="$1/home" CLAUDE_CODE_SESSION_ID=s1
+  session "$1" s1
   local out
   role start > /dev/null || fail "start exit status $?"
   out="$(hook SessionStart s1)" || fail "hook exit status $?"
@@ -53,8 +62,39 @@ test_session_start_prints_the_started_roles_read_now_reminder() {
     "$out" "session start reminder"
 }
 
+test_conductor_role_survives_clear() {
+  session "$1" s1 c1
+  local out
+  role start > /dev/null || fail "start exit status $?"
+  export CLAUDE_CODE_SESSION_ID=s2
+  out="$(hook SessionStart s2)" || fail "session start after clear exit status $?"
+  assert_eq "Role reminder: this session holds the coordinator role. Read $HOME/.claude/skills/coordinator/SKILL.md now, before you act, and follow the \`coordinator\` skill." \
+    "$out" "session start after clear"
+  out="$(hook UserPromptSubmit s2)" || fail "prompt after clear exit status $?"
+  assert_eq "Role reminder: this session holds the coordinator role. Follow the \`coordinator\` skill. When its full text is not in your context, read $HOME/.claude/skills/coordinator/SKILL.md first." \
+    "$out" "prompt after clear"
+}
+
+test_missing_or_invalid_conductor_id_uses_the_claude_id_and_clear_drops_the_role() {
+  local out conductor_id
+  for conductor_id in '' '../x'; do
+    session "$1" s1 "$conductor_id"
+    role start > /dev/null || fail "start with Conductor id '$conductor_id' exit status $?"
+    [[ -f "$(role_marker s1)" ]] || fail "Claude marker missing with Conductor id '$conductor_id'"
+    out="$(hook UserPromptSubmit s1)" || fail "prompt with Conductor id '$conductor_id' exit status $?"
+    assert_eq "Role reminder: this session holds the coordinator role. Follow the \`coordinator\` skill. When its full text is not in your context, read $HOME/.claude/skills/coordinator/SKILL.md first." \
+      "$out" "prompt with Conductor id '$conductor_id'"
+    export CLAUDE_CODE_SESSION_ID=s2
+    out="$(hook SessionStart s2)" || fail "session start after clear exit status $?"
+    assert_eq "" "$out" "session start after clear with Conductor id '$conductor_id'"
+    out="$(hook UserPromptSubmit s2)" || fail "prompt after clear exit status $?"
+    assert_eq "" "$out" "prompt after clear with Conductor id '$conductor_id'"
+    CLAUDE_CODE_SESSION_ID=s1 role stop > /dev/null || fail "stop exit status $?"
+  done
+}
+
 test_other_and_missing_events_stay_silent() {
-  export HOME="$1/home" CLAUDE_CODE_SESSION_ID=s1
+  session "$1" s1
   local out
   role start > /dev/null || fail "start exit status $?"
   out="$(hook Stop s1)" || fail "Stop exit status $?"
@@ -64,19 +104,21 @@ test_other_and_missing_events_stay_silent() {
 }
 
 test_bad_ids_and_marker_names_stay_silent() {
-  export HOME="$1/home" CLAUDE_CODE_SESSION_ID=s1
+  session "$1" s1
   local out
   role start > /dev/null || fail "start exit status $?"
   [[ -f "$(role_marker ../roles/s1)" ]] || fail "bad id does not reach the real marker"
   out="$(hook UserPromptSubmit ../roles/s1)" || fail "bad id exit status $?"
   assert_eq "" "$out" "bad session id"
+  out="$(CONDUCTOR_SESSION_ID=../roles/s1 hook UserPromptSubmit unmarked)" || fail "bad Conductor id exit status $?"
+  assert_eq "" "$out" "bad Conductor id falls back to an unmarked Claude id"
   printf '../coordinator\n' > "$(role_marker s1)" || fail "write bad marker"
   out="$(hook UserPromptSubmit s1)" || fail "bad marker exit status $?"
   assert_eq "" "$out" "bad skill name"
 }
 
 test_empty_and_broken_input_stay_silent() {
-  export HOME="$1/home" CLAUDE_CODE_SESSION_ID=s1
+  session "$1" s1
   local out input
   role start > /dev/null || fail "start exit status $?"
   out="$("$repo_under_test/scripts/role-hook.sh" < /dev/null)" || fail "no input exit status $?"
@@ -88,7 +130,7 @@ test_empty_and_broken_input_stay_silent() {
 }
 
 test_start_marks_the_session_and_reports_hook_installation() {
-  export HOME="$1/home" CLAUDE_CODE_SESSION_ID=s1
+  session "$1" s1
   local out marker
   marker="$(role_marker s1)"
   mkdir -p "$HOME/.claude"
@@ -106,7 +148,7 @@ role: the role hook is installed in $HOME/.claude/settings.json" "$out" "start w
 }
 
 test_stop_removes_the_marker_and_stops_reminders() {
-  export HOME="$1/home" CLAUDE_CODE_SESSION_ID=s1
+  session "$1" s1
   local out
   role start > /dev/null || fail "start exit status $?"
   out="$(role stop)" || fail "stop exit status $?"
@@ -119,13 +161,16 @@ test_stop_removes_the_marker_and_stops_reminders() {
 }
 
 test_missing_empty_and_bad_ids_create_no_role_directory() {
-  export HOME="$1/home"
+  session "$1" ''
   unset CLAUDE_CODE_SESSION_ID
   local out command id
   for command in start stop; do
     out="$(env -u CLAUDE_CODE_SESSION_ID "$repo_under_test/skills/coordinator/scripts/role.sh" "$command")" \
       || fail "$command without id exit status $?"
     assert_eq 'role: the role hook needs Claude Code; CLAUDE_CODE_SESSION_ID is missing or not valid' "$out" "$command without id"
+    out="$(CONDUCTOR_SESSION_ID=c1 env -u CLAUDE_CODE_SESSION_ID "$repo_under_test/skills/coordinator/scripts/role.sh" "$command")" \
+      || fail "$command in Conductor without Claude id exit status $?"
+    assert_eq 'role: the role hook needs Claude Code; CLAUDE_CODE_SESSION_ID is missing or not valid' "$out" "$command in Conductor without Claude id"
     for id in '' '../roles/s1'; do
       out="$(CLAUDE_CODE_SESSION_ID="$id" role "$command")" || fail "$command with id '$id' exit status $?"
       assert_eq 'role: the role hook needs Claude Code; CLAUDE_CODE_SESSION_ID is missing or not valid' "$out" "$command with id '$id'"
@@ -135,7 +180,7 @@ test_missing_empty_and_bad_ids_create_no_role_directory() {
 }
 
 test_cleanup_removes_idle_markers_after_refreshing_the_current_marker() {
-  export HOME="$1/home" CLAUDE_CODE_SESSION_ID=current
+  session "$1" current
   local out stale
   role start > /dev/null || fail "start current exit status $?"
   CLAUDE_CODE_SESSION_ID=old role start > /dev/null || fail "start old exit status $?"
@@ -156,7 +201,7 @@ test_cleanup_removes_idle_markers_after_refreshing_the_current_marker() {
 }
 
 test_usage_errors_print_usage_and_exit_two() {
-  export HOME="$1/home" CLAUDE_CODE_SESSION_ID=s1
+  session "$1" s1
   local arg status out errors errors_file="$1/errors"
   for arg in '' unknown start stop; do
     case "$arg" in
@@ -174,7 +219,7 @@ test_usage_errors_print_usage_and_exit_two() {
 }
 
 test_failed_refresh_and_cleanup_keep_the_reminder() {
-  export HOME="$1/home" CLAUDE_CODE_SESSION_ID=s1
+  session "$1" s1
   local out command
   role start > /dev/null || fail "start exit status $?"
   mkdir -p "$1/bin" || fail "create command directory"

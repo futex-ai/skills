@@ -1,10 +1,11 @@
 #!/usr/bin/env bash
 # Remind a Claude Code session of its role. skills/coordinator/scripts/role.sh
-# marks a session in ~/.futex/roles/<session_id>. For a marked session, this
-# hook prints plain text: a short reminder on UserPromptSubmit, and on
-# SessionStart, also after a compaction, a request to read the skill file now.
-# scripts/install.sh --hooks adds it as a synchronous hook on both events. It
-# removes the markers that are idle for more than 30 days.
+# writes ~/.futex/roles/<key>. The key is a valid CONDUCTOR_SESSION_ID, else
+# the input session_id. The Conductor id keeps the role after /clear.
+# Print plain text: a short reminder on UserPromptSubmit, and on SessionStart,
+# also after a compaction, a request to read the skill file now.
+# scripts/install.sh --hooks adds this synchronous hook on both events.
+# Remove markers idle for more than 30 days.
 #
 # Usage: role-hook.sh < hook-input.json
 # Every input exits 0. Failed marker maintenance does not stop a reminder.
@@ -21,11 +22,14 @@ json_field() {  # json_field <name>: a string field of the hook input, or nothin
   printf '%s\n' "$hook_input" | sed -n "s/.*\"$1\" *: *\"\([^\"]*\)\".*/\1/p" | head -n 1
 }
 
-session_id="$(json_field session_id)" || exit 0
-[[ "$session_id" =~ ^[A-Za-z0-9._-]+$ ]] || exit 0
+key="${CONDUCTOR_SESSION_ID-}"
+if [[ ! "$key" =~ ^[A-Za-z0-9._-]+$ ]]; then
+  key="$(json_field session_id)" || exit 0
+fi
+[[ "$key" =~ ^[A-Za-z0-9._-]+$ ]] || exit 0
 
 roles="$HOME/.futex/roles"
-marker="$roles/$session_id"
+marker="$roles/$key"
 role=""
 if [[ -f "$marker" ]]; then
   IFS= read -r role < "$marker" || true

@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 # Mark this Claude Code session with the coordinator role, or remove its
-# marker. The role hook reads the marker before each prompt and session start.
+# marker. The key is a valid CONDUCTOR_SESSION_ID, else CLAUDE_CODE_SESSION_ID.
+# The Conductor id keeps the role after /clear. The role hook reads the
+# marker before each prompt and session start.
 #
 # Usage: role.sh start|stop
 set -euo pipefail
@@ -18,8 +20,11 @@ if [[ ! "$session_id" =~ ^[A-Za-z0-9._-]+$ ]]; then
   exit 0
 fi
 
+key="${CONDUCTOR_SESSION_ID-}"
+if [[ ! "$key" =~ ^[A-Za-z0-9._-]+$ ]]; then key="$session_id"; fi
+
 roles="$HOME/.futex/roles"
-marker="$roles/$session_id"
+marker="$roles/$key"
 
 case "$1" in
   start)
