@@ -7,16 +7,16 @@ scheduled run.
 
 ## Watch
 
-To watch a commit, run `scripts/ci-wait.sh` of the `finish-work` skill on
-it, in the background. The script takes the `HEAD` commit by default:
+To watch a commit, run `scripts/ci-wait.sh [<commit>]` of the
+`finish-work` skill in the background. The commit is `HEAD` by default.
 
-```sh
-scripts/ci-wait.sh [<commit>]
-```
-
-The script waits for every run of the commit. It prints one line for each
-run: the result, the workflow, and the URL. Under a run that did not pass,
-it names each failed job and its first failed step.
+The script waits for every run of the commit. It ends only when no run or
+status changed for the grace period, 120 seconds by default, and in two
+polls in a row. So a run still joins the watch when a pull request
+opening, a change to ready, a rerun, or another run starts it late. It
+prints one line for each run: the result, the workflow, and the URL. Under
+a run that did not pass, it names each failed job and its first failed
+step.
 
 - Watch the last commit after each change that can start CI. These changes
   are a push, the opening of the pull request, and a change from draft to
@@ -34,8 +34,12 @@ Act on the exit status of the script:
   `cancelled`. Read the failure, as the next section says.
 - 2: a run still ran at the deadline, 60 minutes by default. Report it
   under **Checks** as pending.
-- 3: no run started in the grace period, 120 seconds by default. The
-  change starts no CI.
+- 3: no run started in the grace period, 120 seconds by default. When a
+  pull request is open, check it for a conflict with
+  `gh pr view --json mergeable --jq .mergeable`. Check again while it says
+  `UNKNOWN`. `CONFLICTING` means that CI cannot start. Then merge the base
+  branch, as step 1 of "Find the cause" says, and watch again. Otherwise,
+  the change starts no CI.
 - 4: a usage error, no `gh`, or three failed `gh` calls in a row. Correct
   the call. Run the script again. When it fails again, report the blocker
   under **Checks**.
@@ -60,16 +64,16 @@ job, such as "Verify required jobs". It only repeats the other failures.
 ## Find the cause
 
 1. This section gives each failure one label: a failure of the branch, a
-   flaky test, or an unrelated failure. Before the label of a failure of
-   the branch or of an unrelated failure, and before a claim, check the
-   base branch of the pull request. A pass on a rerun makes a flaky test
-   without this check. The command falls back to `main` when the branch
-   has no pull request:
+   flaky test, or an unrelated failure. Before you label a failure as one
+   of the branch or as unrelated, check the base branch. Check it before a
+   claim too. A pass on a rerun makes a flaky test without this check. The
+   command takes the base branch of the pull request, or `main` when the
+   branch has no pull request:
 
    ```sh
    base=$(gh pr view --json baseRefName --jq .baseRefName 2>/dev/null \
      || echo main)
-   git fetch origin "$base"
+   git fetch origin "$base" main
    git rev-list --count "HEAD..origin/$base"
    ```
 
@@ -104,27 +108,33 @@ job, such as "Verify required jobs". It only repeats the other failures.
      pull request.
    - Do not rerun it again, because more reruns hide a flaky test.
    - After a second failure, check the base branch again, as step 1 says.
-     Then compare with `origin/main`. Read the run of the job on the last
-     `origin/main` commit. An older run does not show the state of
-     `origin/main`.
+     Then read the failing job on two fresh commits, `origin/$base` and
+     `origin/main`. When the base is `main`, they are one commit.
 
      ```sh
-     gh run list --commit "$(git rev-parse origin/main)" --workflow <workflow>
+     gh run list --commit "$(git rev-parse <ref>)" --workflow <workflow> \
+       --event push --json databaseId,createdAt,conclusion
      gh run view <run>
      ```
 
-     When that commit has no run of the job, run the failing command on
-     `origin/main`. The failed step in the workflow file gives the command.
-     Run it in a separate worktree:
+     A pass counts only from a run of the job that started after the
+     failed run of the branch. A pull request run of the base does not
+     count, because it tests the base merged with another branch. Without
+     such a run, run the failing command on that commit in a separate
+     worktree. The failed step in the workflow file gives the command:
 
      ```sh
-     git worktree add --detach <dir> origin/main
+     git worktree add --detach <dir> <ref>
      git worktree remove <dir>      # after the run
      ```
 
-   - When the job fails on `origin/main` too, the failure is unrelated. Go
-     to "Fix an unrelated failure". When it passes there, the failure
-     belongs to the branch. Fix it in the branch, as step 2 says.
+   - When the job fails on both commits, the failure is unrelated. Go to
+     "Fix an unrelated failure".
+   - When it fails on the base and passes on `main`, the failure comes from
+     the base. Open no fix pull request. Make no fix in the branch. Report
+     the red CI under **Open**, with both commits.
+   - When it passes on the base, the failure belongs to the branch. Fix it
+     in the branch, as step 2 says.
 
 ## Fix an unrelated failure
 
@@ -271,5 +281,6 @@ result, each rerun, and each fix commit.
 - Report a script that could not run, with its error.
 - An unrelated failure gives its fix pull request, or the follow-up item
   that waits for the user.
-- A red run that waits for a fix pull request also goes under **Open**.
+- A red run that waits for a fix pull request, or for a fix in the base
+  branch, also goes under **Open**.
 - For CI that is not GitHub Actions, say that you cannot watch it.

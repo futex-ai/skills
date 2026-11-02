@@ -2,6 +2,7 @@
 # Tests for skills/finish-work/scripts/ci-wait.sh: running and late runs,
 # passing conclusions, the first failed step of each failed job, the
 # deadline, the no-run grace period, and recovery from failed gh calls.
+# A fake clock checks the grace period for late runs and reruns.
 set -euo pipefail
 # shellcheck source=tests/lib.sh
 source "$(dirname "${BASH_SOURCE[0]}")/lib.sh"
@@ -63,7 +64,21 @@ case "$command" in
 esac
 jq -r "$filter" "$file"
 EOF
-  chmod +x "$1/bin/gh"
+  cat > "$1/bin/date" <<'EOF'
+#!/usr/bin/env bash
+set -euo pipefail
+if [[ $# != 1 || "$1" != +%s ]]; then
+  echo "unexpected date arguments: $*" >&2
+  exit 1
+fi
+now=0
+if [[ -f "$CI_WAIT_SCENARIO/clock" ]]; then
+  read -r now < "$CI_WAIT_SCENARIO/clock"
+fi
+printf '%s\n' "$now"
+printf '%s\n' "$((now + 10))" > "$CI_WAIT_SCENARIO/clock"
+EOF
+  chmod +x "$1/bin/gh" "$1/bin/date"
   cd "$1/repo"
 }
 
@@ -88,7 +103,7 @@ test_waits_for_running_and_late_runs() {
   write_list 4 "$(run_json 11 check completed success)" "$(run_json 12 optional completed skipped)" "$(run_json 13 late completed neutral)"
   write_list 5 "$(run_json 13 late completed neutral)" "$(run_json 11 check completed success)" "$(run_json 12 optional completed skipped)"
   printf '{"jobs":[]}\n' > "$ci_scenario/jobs-12.json"
-  out="$(ci_wait 2>&1)" || status=$?
+  out="$(ci_wait --grace 0 2>&1)" || status=$?
   assert_eq 0 "$status" "exit status"
   assert_contains "$out" "success check https://example.test/runs/11" "completed run"
   assert_contains "$out" "skipped optional https://example.test/runs/12" "skipped run passes"
@@ -116,7 +131,7 @@ test_names_the_first_failed_step_of_each_failed_job() {
   {"name":"Neutral job","conclusion":"neutral","steps":[]}
 ]}
 EOF
-  out="$(ci_wait 2>&1)" || status=$?
+  out="$(ci_wait --grace 0 2>&1)" || status=$?
   assert_eq 1 "$status" "exit status"
   assert_contains "$out" "failure CI https://example.test/runs/21" "failed run"
   assert_contains "$out" "Rust tests: Build HMRC LTS" "first Rust failure"
@@ -155,7 +170,7 @@ test_polls_again_after_a_failed_gh_call() {
   make_ci_fixture "$1"
   write_list 1 "$(run_json 51 check completed success)"
   touch "$ci_scenario/fail-1"
-  out="$(ci_wait 2>&1)" || status=$?
+  out="$(ci_wait --grace 0 2>&1)" || status=$?
   assert_eq 0 "$status" "recovered exit status"
   assert_contains "$out" "warning:" "gh failure warning"
   assert_contains "$out" "simulated gh error on call 1" "gh diagnostic"
@@ -174,6 +189,54 @@ test_stops_after_three_failed_gh_calls() {
   assert_eq 3 "$(cat "$ci_scenario/count")" "stop after the third gh error"
   assert_contains "$out" "warning:" "gh failure warning"
   assert_contains "$out" "simulated gh error on call 3" "third gh diagnostic"
+}
+
+test_waits_for_a_late_pull_request_run() {
+  # Break: stop after two equal complete polls before the pull request run.
+  local out status=0
+  make_ci_fixture "$1"
+  write_list 1 "$(run_json 71 push completed success)"
+  write_list 2 "$(run_json 71 push completed success)"
+  write_list 3 "$(run_json 71 push completed success)" "$(run_json 72 pull_request queued '')"
+  write_list 4 "$(run_json 71 push completed success)" "$(run_json 72 pull_request completed success)"
+  out="$(ci_wait --grace 30 2>&1)" || status=$?
+  assert_eq 0 "$status" "exit status"
+  assert_contains "$out" "success pull_request https://example.test/runs/72" "late pull request run"
+}
+
+test_waits_for_a_late_workflow_run() {
+  # Break: stop after two equal complete polls before the workflow_run run.
+  local out status=0
+  make_ci_fixture "$1"
+  write_list 1 "$(run_json 81 CI completed success)"
+  write_list 2 "$(run_json 81 CI completed success)"
+  write_list 3 "$(run_json 81 CI completed success)" "$(run_json 82 workflow_run queued '')"
+  write_list 4 "$(run_json 81 CI completed success)" "$(run_json 82 workflow_run completed failure)"
+  cat > "$ci_scenario/jobs-82.json" <<'EOF'
+{"jobs":[{"name":"Deploy","conclusion":"failure","steps":[
+  {"name":"Deploy application","conclusion":"failure"}]}]}
+EOF
+  out="$(ci_wait --grace 30 2>&1)" || status=$?
+  assert_eq 1 "$status" "late workflow_run exit status"
+  assert_contains "$out" "failure workflow_run https://example.test/runs/82" "late workflow_run result"
+  assert_contains "$out" "Deploy: Deploy application" "late workflow_run failed job"
+}
+
+test_waits_for_a_rerun_with_the_same_id() {
+  # Break: compare only IDs, so a rerun does not restart the complete-list grace.
+  local out status=0
+  make_ci_fixture "$1"
+  write_list 1 "$(run_json 91 CI completed failure)"
+  write_list 2 "$(run_json 91 CI completed failure)"
+  write_list 3 "$(run_json 91 CI in_progress '')"
+  write_list 4 "$(run_json 91 CI completed success)"
+  printf '{"jobs":[]}\n' > "$ci_scenario/jobs-91.json"
+  out="$(ci_wait --grace 30 2>&1)" || status=$?
+  assert_eq 0 "$status" "rerun exit status"
+  assert_contains "$out" "success CI https://example.test/runs/91" "rerun result"
+  assert_lacks "$out" "failure CI" "old rerun result excluded"
+  # The clock advances by 10. Completion at poll 4 needs three more polls.
+  assert_eq 7 "$(cat "$ci_scenario/count")" "complete-list grace restarts after a rerun"
 }
 
 run_all_tests

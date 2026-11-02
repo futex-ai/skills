@@ -98,9 +98,10 @@ ci-wait.sh [--timeout <minutes>] [--grace <seconds>] [--interval <seconds>]
   `--repo`, give the full SHA, because the local clone may not have it.
 - It lists the runs with `gh run list --commit <sha>`. Design call: it filters
   them with `gh --jq`, because not every machine has `jq`.
-- It polls every `--interval` seconds, 30 by default. It ends when two polls in
-  a row show the same runs, and each run is `completed`. Design call: the
-  second poll catches a workflow that another workflow starts.
+- It polls every `--interval` seconds, 30 by default. It ends when the complete
+  run list stayed the same for the grace period, and in two polls in a row.
+  Design call of 2026-11-02, review finding 3: a run that an opening, a
+  change to ready, a rerun, or another run starts late still counts.
 - It prints one line for each run: the conclusion, the workflow, and the URL.
   A run passes when its conclusion is `success`, `skipped`, or `neutral`. For
   a run that did not pass, it adds each failed job and its first failed step.
@@ -187,6 +188,17 @@ The fixes of review round 1 added these design calls, on 2026-11-02:
   A pass on a rerun makes a flaky test without this check. Review finding 2.
 - The `AGENTS.md` of this repository gets `## CI` with `Agent merges: off`,
   because `main` here reaches every machine within minutes of a merge.
+
+The fixes of review round 2 added these design calls, on 2026-11-02:
+
+- The script reads the time with `date +%s`, so that its test can use a fake
+  clock. Review finding 3.
+- The base check fetches the base branch and `main`. After a second failure,
+  the agent reads the job on both fresh commits, and only a run that started
+  after the failed run counts. A failure only of the base gets no fix PR and
+  no fix in the branch, and goes under **Open**. Review finding 4.
+- Exit 3 with an open pull request: the agent checks it for a merge conflict,
+  because a conflict stops pull request CI.
 
 ## Milestone 1: Documentation
 

@@ -3,6 +3,9 @@
 # Usage: ci-wait.sh [--timeout <minutes>] [--grace <seconds>]
 #                   [--interval <seconds>] [--repo <owner/name>] [<commit>]
 # Defaults: 60 minutes, 120 seconds, 30 seconds, the local repo, and HEAD.
+# The grace period limits the wait for the first run.
+# A complete list must then stay unchanged for that period.
+# Completion needs two equal complete polls and the grace period or deadline.
 # With --repo, supply a full commit SHA. Requires gh, but does not need jq.
 # Exits: 0 passed, 1 failed, 2 pending at deadline, 3 no run, 4 usage/tool error.
 set -euo pipefail
@@ -66,9 +69,10 @@ else
   sha="$(git rev-parse --verify "${commit}^{commit}")" || usage_error "cannot resolve commit: $commit"
 fi
 
-SECONDS=0
-deadline=$((SECONDS + timeout * 60))
-grace_deadline=$((SECONDS + grace))
+now="$(date +%s)"
+deadline=$((now + timeout * 60))
+grace_deadline=$((now + grace))
+stable_since="$now"
 failures=0
 response=""
 runs=""
@@ -94,9 +98,9 @@ gh_query() {
 pause_poll() {
   local delay="$interval" remaining
   if [[ -z "$runs" ]]; then
-    remaining=$((grace_deadline - SECONDS))
+    remaining=$((grace_deadline - now))
   else
-    remaining=$((deadline - SECONDS))
+    remaining=$((deadline - now))
   fi
   if (( delay > remaining )); then delay="$remaining"; fi
   if (( delay > 0 )); then sleep "$delay"; fi
@@ -130,35 +134,34 @@ while :; do
        (if (.conclusion // "") == "" then "-" else .conclusion end),
        .workflowName, .url] | @tsv
     '; then
+    now="$(date +%s)"
     runs="$response"
+    if [[ "$runs" != "$previous" ]]; then stable_since="$now"; fi
     if [[ -z "$runs" ]]; then
       previous=""
-      if (( SECONDS >= grace_deadline )); then
+      if (( now >= grace_deadline )); then
         echo "no CI run for $sha"
         exit 3
       fi
     else
       complete=1
-      ids=""
       while IFS=$'\t' read -r id status rest; do
-        ids="$ids $id"
         if [[ "$status" != completed ]]; then complete=0; fi
       done <<< "$runs"
       if (( complete )); then
-        if [[ "$ids" == "$previous" ]]; then
+        if [[ "$runs" == "$previous" ]] && (( now - stable_since >= grace || now >= deadline )); then
           result=0
           report_runs || result=$?
           exit "$result"
         fi
-        previous="$ids"
-      else
-        previous=""
       fi
+      previous="$runs"
     fi
   else
+    now="$(date +%s)"
     previous=""
   fi
-  if [[ -n "$runs" ]] && (( complete == 0 && SECONDS >= deadline )); then
+  if [[ -n "$runs" ]] && (( complete == 0 && now >= deadline )); then
     report_runs || true
     echo "CI pending at deadline for $sha" >&2
     exit 2
